@@ -14,7 +14,14 @@ import {
   Heart,
   TrendingUp,
   FileCheck,
-  UserCheck
+  UserCheck,
+  Building2,
+  LandPlot,
+  GraduationCap,
+  HeartPulse,
+  Users,
+  Clock,
+  CheckCircle2
 } from "lucide-react";
 
 const STATES = [
@@ -36,27 +43,25 @@ const CASTES = [
 
 export default function Home() {
   const { isAuthenticated, isAdmin } = useAuth();
-  const { schemes, t } = useApp();
+  const { schemes } = useApp();
   const navigate = useNavigate();
 
-  // Calculator State
   const [calcAge, setCalcAge] = useState(25);
   const [calcIncome, setCalcIncome] = useState(150000);
   const [calcCaste, setCalcCaste] = useState("General");
   const [calcState, setCalcState] = useState("Gujarat");
   const [isCalculating, setIsCalculating] = useState(false);
 
-  // Dynamic Scheme Matching
   const matchedCount = useMemo(() => {
     if (!schemes) {
-return 0;
-}
+      return 0;
+    }
     const tempProfile = {
       age: Number(calcAge),
       annualIncome: Number(calcIncome),
       caste: calcCaste,
       state: calcState,
-      occupation: "Farmer / Agricultural Worker", // Default test occupation
+      occupation: "Farmer / Agricultural Worker",
       gender: "Male"
     };
     return schemes.filter(s => {
@@ -66,7 +71,6 @@ return 0;
   }, [schemes, calcAge, calcIncome, calcCaste, calcState]);
 
   const handleStartProfiling = () => {
-    // Save calculator details in localStorage to pre-fill the onboarding wizard
     const prefillData = {
       age: Number(calcAge),
       annualIncome: Number(calcIncome),
@@ -83,93 +87,100 @@ return 0;
   };
 
   return (
-    <div className="bg-slate-50 flex flex-col min-h-screen text-slate-800 font-sans">
+    <div className="bg-gray-50 flex flex-col min-h-screen text-gray-800 font-sans">
+      {/* Tricolor Banner */}
+      <div className="h-2 bg-gradient-to-r from-saffron via-white-official to-india-green"></div>
+
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 text-white py-20 px-4 md:px-8 overflow-hidden border-b border-indigo-900/40">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#4f46e5_1px,transparent_1px)] [background-size:24px_24px]"></div>
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
+      <section className="relative bg-gradient-to-br from-government-blue via-government-blue-light to-government-blue text-white py-16 md:py-24 px-4 md:px-8 overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]"></div>
 
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 relative z-10">
           {/* Hero Content */}
-          <div className="flex-1 space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide text-indigo-300">
-              <Sparkles className="h-4 w-4 text-amber-400 animate-pulse" />
-              <span>{t("home_engine_tag") || "AI-POWERED ELIGIBILITY GATEWAY"}</span>
+          <div className="flex-1 space-y-8 text-center lg:text-left">
+            <div className="inline-flex items-center space-x-2 bg-white/10 border border-white/20 px-4 py-2 rounded-full text-sm font-semibold tracking-wide text-white/90">
+              <Sparkles className="h-4 w-4 text-saffron" />
+              <span>OFFICIAL GOVERNMENT WELFARE PLATFORM</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
-              {t("home_hero_title") || "Direct Gateway to Government Welfare"}
-            </h1>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-white">
+                SchemeBridge
+              </h1>
+              <p className="text-xl sm:text-2xl font-medium text-white/90 mt-2">
+                Your Gateway to Government Welfare Schemes
+              </p>
+            </div>
 
-            <p className="text-slate-350 text-base sm:text-lg lg:text-xl leading-relaxed text-slate-300 max-w-2xl mx-auto lg:mx-0">
-              {t("home_hero_desc") || "SchemeBridge uses secure AI engines to parse socio-economic attributes, verify credentials via DigiLocker, and match you with central & state benefits instantly."}
+            <p className="text-gray-200 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Discover, apply, and track all Central and State Government welfare schemes through a single, secure platform.
+              Powered by AI eligibility matching and integrated with DigiLocker for seamless document verification.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
               {isAuthenticated ? (
                 <Link
                   to={isAdmin ? "/admin/dashboard" : "/dashboard"}
-                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3.5 rounded-xl font-bold transition shadow-lg shadow-indigo-650/40 hover:-translate-y-0.5"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-saffron hover:bg-saffron-dark text-government-blue-dark px-8 py-4 rounded-lg font-bold transition shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
-                  <span>{t("home_go_dashboard") || "Go to Citizen Dashboard"}</span>
+                  <span>Access Citizen Dashboard</span>
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               ) : (
                 <>
                   <Link
                     to="/signup"
-                    className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3.5 rounded-xl font-bold transition shadow-lg shadow-indigo-650/40 hover:-translate-y-0.5 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-saffron hover:bg-saffron-dark text-government-blue-dark px-8 py-4 rounded-lg font-bold transition shadow-lg hover:shadow-xl"
                   >
-                    <span>{t("home_cta_eligibility") || "Check Your Scheme Eligibility"}</span>
+                    <span>Register Now</span>
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full sm:w-auto inline-flex items-center justify-center bg-slate-800/90 text-white border border-slate-700 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-700 transition"
+                    className="w-full sm:w-auto inline-flex items-center justify-center bg-white/10 text-white border border-white/30 px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition"
                   >
-                    <span>{t("home_cta_signin") || "Sign In to Vault"}</span>
+                    <span>Sign In</span>
                   </Link>
                 </>
               )}
             </div>
 
-            {/* Micro badges */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-xs text-slate-400 pt-4">
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                {t("home_digilocker_integration") || "DigiLocker Integration"}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <FileCheck className="h-4 w-4 text-indigo-400" />
-                {t("home_secure_private") || "100% Secure & Private"}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <UserCheck className="h-4 w-4 text-indigo-400" />
-                {t("home_wcag_compliant") || "WCAG 2.1 Compliant"}
-              </span>
+            <div className="flex flex-wrap justify-center lg:justify-start gap-8 text-sm text-white/80 pt-4">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5 text-emerald" />
+                <span>DigiLocker Integration</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FileCheck className="h-5 w-5 text-emerald" />
+                <span>100% Secure & Private</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <UserCheck className="h-5 w-5 text-emerald" />
+                <span>WCAG 2.1 AA Compliant</span>
+              </div>
             </div>
           </div>
 
-          {/* Hero Interactive Calculator Widget */}
-          <div className="w-full lg:w-[460px] shrink-0">
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+          {/* Eligibility Calculator Widget */}
+          <div className="w-full lg:w-[480px] shrink-0">
+            <div className="bg-white rounded-xl p-6 md:p-8 shadow-xl space-y-6">
               <div>
-                <h3 className="text-lg font-extrabold text-white flex items-center gap-2">
-                  <span className="bg-indigo-600 p-1.5 rounded-lg text-white">⚡</span>
-                  {t("calc_title") || "Eligibility Calculator"}
-                </h3>
-                <p className="text-slate-400 text-xs mt-1 leading-relaxed">
-                  {t("calc_subtitle") || "Enter baseline socio-demographics to preview matching central & state schemes instantly."}
-                </p>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="bg-government-blue/10 p-2 rounded-lg">
+                    <Sparkles className="h-6 w-6 text-government-blue" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">AI Eligibility Checker</h3>
+                    <p className="text-gray-600 text-sm">Get instant scheme recommendations</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4 text-left">
-                {/* Age */}
+              <div className="space-y-5">
                 <div>
-                  <div className="flex justify-between text-xs font-bold text-slate-400 mb-1.5">
-                    <span className="uppercase tracking-wider">{t("calc_age_label") || "Age of Applicant"}</span>
-                    <span className="text-indigo-400 text-sm font-extrabold">{calcAge} {t("calc_years") || "years"}</span>
+                  <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
+                    <span>Age of Applicant</span>
+                    <span className="text-government-blue font-bold">{calcAge} years</span>
                   </div>
                   <input
                     type="range"
@@ -177,16 +188,15 @@ return 0;
                     max="100"
                     value={calcAge}
                     onChange={(e) => setCalcAge(e.target.value)}
-                    className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-government-blue"
                     aria-label="Age slider"
                   />
                 </div>
 
-                {/* Household Income */}
                 <div>
-                  <div className="flex justify-between text-xs font-bold text-slate-400 mb-1.5">
-                    <span className="uppercase tracking-wider">{t("calc_income_label") || "Annual Household Income"}</span>
-                    <span className="text-indigo-400 text-sm font-extrabold">₹{Number(calcIncome).toLocaleString("en-IN")}</span>
+                  <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
+                    <span>Annual Household Income</span>
+                    <span className="text-government-blue font-bold">₹{Number(calcIncome).toLocaleString("en-IN")}</span>
                   </div>
                   <input
                     type="range"
@@ -195,21 +205,20 @@ return 0;
                     step="10000"
                     value={calcIncome}
                     onChange={(e) => setCalcIncome(e.target.value)}
-                    className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-government-blue"
                     aria-label="Income slider"
                   />
                 </div>
 
-                {/* State & Caste Row */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                      {t("calc_state_label") || "Residence State"}
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Residence State
                     </label>
                     <select
                       value={calcState}
                       onChange={(e) => setCalcState(e.target.value)}
-                      className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-government-blue focus:border-government-blue focus:outline-none"
                     >
                       {STATES.map(st => (
                         <option key={st} value={st}>{st}</option>
@@ -217,13 +226,13 @@ return 0;
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                      {t("calc_caste_label") || "Social Category"}
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Social Category
                     </label>
                     <select
                       value={calcCaste}
                       onChange={(e) => setCalcCaste(e.target.value)}
-                      className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-government-blue focus:border-government-blue focus:outline-none"
                     >
                       {CASTES.map(c => (
                         <option key={c.value} value={c.value}>{c.label}</option>
@@ -233,24 +242,22 @@ return 0;
                 </div>
               </div>
 
-              {/* Dynamic Matches Counter Box */}
-              <div className="bg-indigo-950/70 border border-indigo-500/20 rounded-2xl p-5 text-center space-y-1">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-300">{t("calc_matches_label") || "Potential AI Matches"}</span>
-                <div className="text-3xl font-extrabold text-amber-400 flex items-center justify-center gap-2">
-                  <Sparkles className="h-5 w-5 text-amber-400 shrink-0" />
-                  {matchedCount} {matchedCount === 1 ? (t("calc_scheme_single") || "Scheme") : (t("calc_scheme_plural") || "Schemes")}
+              <div className="bg-government-blue/5 border border-government-blue/20 rounded-lg p-5 text-center space-y-2">
+                <span className="text-xs uppercase font-bold tracking-wider text-government-blue">Potential Schemes Eligible</span>
+                <div className="text-4xl font-extrabold text-saffron flex items-center justify-center gap-2">
+                  <Sparkles className="h-6 w-6 text-saffron shrink-0" />
+                  {matchedCount} {matchedCount === 1 ? "Scheme" : "Schemes"}
                 </div>
-                <p className="text-[10px] text-slate-400 leading-normal">
-                  {t("calc_rules_desc", { count: schemes?.length || 15 })}
+                <p className="text-sm text-gray-600">
+                  Based on {schemes?.length || 15}+ government welfare programs
                 </p>
               </div>
 
-              {/* CTA button */}
               <button
                 onClick={handleStartProfiling}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 shadow-lg transition active:scale-[0.98]"
+                className="w-full bg-government-blue hover:bg-government-blue-dark text-white py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-md transition hover:shadow-lg active:scale-[0.98]"
               >
-                <span>{t("calc_cta") || "Apply with Onboarding Wizard"}</span>
+                <span>Proceed with Application</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -258,150 +265,186 @@ return 0;
         </div>
       </section>
 
-      {/* Feature Showcase Grid */}
-      <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-16">
+      {/* Official Info Bar */}
+      <section className="bg-white border-b border-gray-200 py-6 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-wrap items-center justify-center gap-8 text-sm">
+            <div className="flex items-center gap-2 text-gray-700">
+              <Building2 className="h-4 w-4 text-government-blue" />
+              <span><strong>Ministry:</strong> Ministry of Social Justice & Empowerment</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-700">
+              <Clock className="h-4 w-4 text-government-blue" />
+              <span><strong>Last Updated:</strong> July 2026</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-700">
+              <CheckCircle2 className="h-4 w-4 text-india-green" />
+              <span><strong>Status:</strong> Operational</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-12">
         <div className="text-center space-y-4">
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">{t("home_feature_title") || "Unified Citizen Infrastructure"}</h2>
-          <p className="text-slate-500 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-            {t("home_feature_desc") || "Eliminate administrative delays. Discover benefits, secure your records, and file applications in under 5 minutes."}
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Key Features</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
+            Streamlined access to government welfare benefits through a single, integrated platform
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Card 1 */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md hover:border-indigo-100 transition duration-200">
-            <div className="bg-indigo-50 p-4 rounded-xl inline-block text-indigo-600">
-              <Search className="h-6 w-6" />
+          <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-card-hover hover:border-government-blue/20 transition duration-200">
+            <div className="bg-government-blue/10 p-4 rounded-lg inline-block text-government-blue mb-4">
+              <Search className="h-7 w-7" />
             </div>
-            <h3 className="font-bold text-lg text-slate-900">{t("home_f1_title") || "AI Scheme Matching"}</h3>
-            <p className="text-slate-600 text-xs leading-relaxed">
-              {t("home_f1_desc") || "Instantly calculates eligibility metrics based on complex state and national policies, sorting schemes matching your profile."}
+            <h3 className="font-bold text-lg text-gray-900 mb-2">AI-Powered Eligibility Matching</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Our advanced AI engine instantly evaluates your profile against hundreds of government schemes
+              to find the benefits you qualify for, saving you time and effort.
             </p>
           </div>
 
-          {/* Card 2 */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md hover:border-indigo-100 transition duration-200">
-            <div className="bg-amber-50 p-4 rounded-xl inline-block text-amber-600">
-              <ShieldCheck className="h-6 w-6" />
+          <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-card-hover hover:border-government-blue/20 transition duration-200">
+            <div className="bg-india-green/10 p-4 rounded-lg inline-block text-india-green mb-4">
+              <ShieldCheck className="h-7 w-7" />
             </div>
-            <h3 className="font-bold text-lg text-slate-900">{t("home_f2_title") || "Secure Document Locker"}</h3>
-            <p className="text-slate-600 text-xs leading-relaxed">
-              {t("home_f2_desc") || "Vault and link your verified government certifications securely using DigiLocker integrations to automatically pass audits."}
+            <h3 className="font-bold text-lg text-gray-900 mb-2">Secure Digital Document Vault</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Store and manage all your government-issued documents securely with DigiLocker integration.
+              Your documents are verified and easily accessible for scheme applications.
             </p>
           </div>
 
-          {/* Card 3 */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md hover:border-indigo-100 transition duration-200">
-            <div className="bg-emerald-50 p-4 rounded-xl inline-block text-emerald-600">
-              <Layers className="h-6 w-6" />
+          <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-card-hover hover:border-government-blue/20 transition duration-200">
+            <div className="bg-saffron/20 p-4 rounded-lg inline-block text-saffron-dark mb-4">
+              <Layers className="h-7 w-7" />
             </div>
-            <h3 className="font-bold text-lg text-slate-900">{t("home_f3_title") || "Unified Trackers"}</h3>
-            <p className="text-slate-600 text-xs leading-relaxed">
-              {t("home_f3_desc") || "View application progress, review logs, and receive real-time sms or email updates for social security checks."}
+            <h3 className="font-bold text-lg text-gray-900 mb-2">Real-Time Application Tracking</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Track the progress of all your applications in one place. Receive updates, review officer comments,
+              and download acknowledgments instantly.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Policy Focus Sections */}
-      <section className="bg-slate-900 text-white py-16 px-4 md:px-8 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full text-xs font-bold text-indigo-300">
-              <span>{t("home_democratizing_welfare") || "DEMOCRATIZING WELFARE"}</span>
-            </div>
-            <h2 className="text-3xl font-extrabold tracking-tight">{t("home_focusing_sectors") || "Focusing on Priority Sectors"}</h2>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              {t("home_sectors_desc") || "SchemeBridge addresses details regarding multiple socioeconomic constraints, including rural subsidies, credit linkages, agricultural subsidies, educational grants, housing assistance, and pension schemes."}
+      {/* Priority Sectors Section */}
+      <section className="bg-gray-100 py-16 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Priority Sectors</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base">
+              Comprehensive coverage across key government welfare domains
             </p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-start gap-2.5">
-                <div className="bg-indigo-600/45 p-1.5 rounded-lg text-indigo-400 mt-0.5"><Award className="h-4 w-4" /></div>
-                <div>
-                  <h4 className="text-xs font-bold">{t("home_agri_support") || "Agriculture Support"}</h4>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{t("home_agri_desc") || "PM-KISAN, crop subsidies, irrigation packages."}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <div className="bg-indigo-650/45 p-1.5 rounded-lg text-indigo-400 mt-0.5"><BookOpen className="h-4 w-4" /></div>
-                <div>
-                  <h4 className="text-xs font-bold">{t("home_edu_grants") || "Education Grants"}</h4>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{t("home_edu_desc") || "National scholarships, fee reimbursements."}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <div className="bg-indigo-650/45 p-1.5 rounded-lg text-indigo-400 mt-0.5"><Heart className="h-4 w-4" /></div>
-                <div>
-                  <h4 className="text-xs font-bold">{t("home_health_cover") || "Health Cover"}</h4>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{t("home_health_desc") || "Ayushman Bharat, medical aids, maternal benefits."}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <div className="bg-indigo-650/45 p-1.5 rounded-lg text-indigo-400 mt-0.5"><TrendingUp className="h-4 w-4" /></div>
-                <div>
-                  <h4 className="text-xs font-bold">{t("home_social_security") || "Social Security"}</h4>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{t("home_social_security_desc") || "Atal Pension, housing loans, subsidy grants."}</p>
-                </div>
-              </div>
-            </div>
           </div>
-          <div className="bg-slate-800 rounded-3xl p-6 md:p-8 border border-slate-700/60 shadow-xl space-y-4">
-            <h3 className="text-lg font-bold">{t("home_sandbox_metrics") || "AI Sandbox Simulation Metrics"}</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {t("home_sandbox_desc") || "Evaluating local server states, database synchronization times, and API simulations:"}
-            </p>
-            <div className="space-y-3">
-              <div>
-                <div className="flex justify-between text-[10px] text-slate-400 mb-1">
-                  <span>{t("home_latency_label") || "SCHEME CLASSIFICATION LATENCY"}</span>
-                  <span className="font-bold text-indigo-400">12ms</span>
-                </div>
-                <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-500 w-11/12"></div>
-                </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center">
+              <div className="bg-saffron/10 p-3 rounded-lg inline-block text-saffron-dark mb-4">
+                <LandPlot className="h-8 w-8 mx-auto" />
               </div>
-              <div>
-                <div className="flex justify-between text-[10px] text-slate-400 mb-1">
-                  <span>{t("home_sync_label") || "DIGILOCKER API SYNC SPEED"}</span>
-                  <span className="font-bold text-emerald-400">350ms</span>
-                </div>
-                <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 w-4/5"></div>
-                </div>
+              <h4 className="font-bold text-gray-900 mb-1">Agriculture</h4>
+              <p className="text-gray-600 text-xs">PM-KISAN, Crop Subsidies</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center">
+              <div className="bg-government-blue/10 p-3 rounded-lg inline-block text-government-blue mb-4">
+                <GraduationCap className="h-8 w-8 mx-auto" />
               </div>
-              <div>
-                <div className="flex justify-between text-[10px] text-slate-400 mb-1">
-                  <span>{t("home_accuracy_label") || "ACCURACY SCORES (MOCK DATABASE)"}</span>
-                  <span className="font-bold text-amber-400">99.8%</span>
-                </div>
-                <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-amber-500 w-[99%]"></div>
-                </div>
+              <h4 className="font-bold text-gray-900 mb-1">Education</h4>
+              <p className="text-gray-600 text-xs">Scholarships, Fee Reimbursement</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center">
+              <div className="bg-india-green/10 p-3 rounded-lg inline-block text-india-green mb-4">
+                <HeartPulse className="h-8 w-8 mx-auto" />
               </div>
+              <h4 className="font-bold text-gray-900 mb-1">Healthcare</h4>
+              <p className="text-gray-600 text-xs">Ayushman Bharat, Medical Aids</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center">
+              <div className="bg-gray-100 p-3 rounded-lg inline-block text-gray-700 mb-4">
+                <Users className="h-8 w-8 mx-auto" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-1">Social Security</h4>
+              <p className="text-gray-600 text-xs">Pensions, Housing Assistance</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Statistics Section */}
-      <section id="benefits" className="bg-indigo-900 text-white py-14 px-4 border-t border-indigo-950">
+      <section className="bg-gradient-to-r from-government-blue via-government-blue-light to-government-blue text-white py-12 px-4">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <p className="text-4xl font-extrabold text-amber-400">{t("home_stat_schemes_val") || "350+"}</p>
-            <p className="text-xs text-indigo-200 uppercase tracking-widest mt-1.5 font-bold">{t("home_stat_schemes") || "Welfare Programs"}</p>
+            <p className="text-3xl md:text-4xl font-extrabold text-saffron">350+</p>
+            <p className="text-sm text-white/90 uppercase tracking-widest mt-2 font-semibold">Welfare Programs</p>
           </div>
           <div>
-            <p className="text-4xl font-extrabold text-amber-400">{t("home_stat_apps_val") || "12 Lakhs"}</p>
-            <p className="text-xs text-indigo-200 uppercase tracking-widest mt-1.5 font-bold">{t("home_stat_apps") || "Processed Apps"}</p>
+            <p className="text-3xl md:text-4xl font-extrabold text-saffron">12 Lakhs+</p>
+            <p className="text-sm text-white/90 uppercase tracking-widest mt-2 font-semibold">Applications Processed</p>
           </div>
           <div>
-            <p className="text-4xl font-extrabold text-amber-400">{t("home_stat_accuracy_val") || "99.8%"}</p>
-            <p className="text-xs text-indigo-200 uppercase tracking-widest mt-1.5 font-bold">{t("home_stat_accuracy") || "Matching Accuracy"}</p>
+            <p className="text-3xl md:text-4xl font-extrabold text-saffron">99.8%</p>
+            <p className="text-sm text-white/90 uppercase tracking-widest mt-2 font-semibold">Matching Accuracy</p>
           </div>
           <div>
-            <p className="text-4xl font-extrabold text-amber-400">{t("home_stat_disbursed_val") || "₹4.2 Cr"}</p>
-            <p className="text-xs text-indigo-200 uppercase tracking-widest mt-1.5 font-bold">{t("home_stat_disbursed") || "Funds Disbursed"}</p>
+            <p className="text-3xl md:text-4xl font-extrabold text-saffron">₹4.2 Cr+</p>
+            <p className="text-sm text-white/90 uppercase tracking-widest mt-2 font-semibold">Funds Disbursed</p>
           </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-white py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            Start Your Welfare Journey Today
+          </h2>
+          <p className="text-gray-600 text-base mb-8 max-w-2xl mx-auto">
+            Register now and discover all the government benefits you are eligible for.
+            Complete your profile and start applying in minutes.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            {isAuthenticated ? (
+              <Link
+                to={isAdmin ? "/admin/dashboard" : "/dashboard"}
+                className="inline-flex items-center justify-center space-x-2 bg-saffron hover:bg-saffron-dark text-government-blue-dark px-8 py-4 rounded-lg font-bold transition shadow-lg hover:shadow-xl"
+              >
+                <span>Go to Dashboard</span>
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/signup"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-government-blue hover:bg-government-blue-dark text-white px-8 py-4 rounded-lg font-bold transition shadow-lg hover:shadow-xl"
+                >
+                  <span>Create Your Account</span>
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+                <Link
+                  to="/login"
+                  className="w-full sm:w-auto inline-flex items-center justify-center bg-gray-100 text-gray-900 border border-gray-300 px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition"
+                >
+                  <span>Sign In</span>
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer Info */}
+      <section className="bg-gray-50 border-t border-gray-200 py-8 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-gray-600 text-sm">
+            <strong>Disclaimer:</strong> This is a demonstration platform. For official government services,
+            please refer to the respective ministry websites.
+          </p>
         </div>
       </section>
     </div>

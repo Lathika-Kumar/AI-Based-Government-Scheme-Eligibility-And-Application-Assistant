@@ -10,14 +10,27 @@ import {
   TrendingUp,
   Search,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Users,
+  UserPlus,
+  FileText
 } from "lucide-react";
+
+// List of available officers for assignment
+const AVAILABLE_OFFICERS = [
+  "Priya Patel",
+  "Amit Singh",
+  "Sanjay Kumar",
+  "Neha Sharma",
+  "Ravi Shankar"
+];
 
 export default function GrievanceManagementDesk({ grievances, updateGrievanceStatus }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [expandedId, setExpandedId] = useState(null);
   const [replyText, setReplyText] = useState("");
+  const [internalNoteText, setInternalNoteText] = useState("");
 
   // Ticket discussions state mapped by ticket ID
   const [discussions, setDiscussions] = useState({
@@ -28,6 +41,34 @@ export default function GrievanceManagementDesk({ grievances, updateGrievanceSta
     "GRV-5219": [
       { sender: "citizen", date: "2026-06-16", text: "My auto-debit registration was rejected. Uploaded my bank passbook again." },
       { sender: "officer", date: "2026-06-17", text: "Verified passbook details. Routing code updated. Auto-debit successfully verified." }
+    ]
+  });
+
+  // Internal notes per ticket
+  const [internalNotes, setInternalNotes] = useState({
+    "GRV-7401": [
+      { author: "Amit Singh", date: "2026-06-18", text: "Follow up with SBI nodal officer." }
+    ]
+  });
+
+  // Assigned officers per ticket
+  const [assignedOfficers, setAssignedOfficers] = useState({
+    "GRV-7401": "Sanjay Kumar",
+    "GRV-5219": "Priya Patel"
+  });
+
+  // Timelines per ticket
+  const [timelines, setTimelines] = useState({
+    "GRV-7401": [
+      { date: "2026-06-18", event: "Grievance received", actor: "System" },
+      { date: "2026-06-18", event: "Assigned to Sanjay Kumar", actor: "Admin" },
+      { date: "2026-06-19", event: "First response sent", actor: "Sanjay Kumar" }
+    ],
+    "GRV-5219": [
+      { date: "2026-06-16", event: "Grievance received", actor: "System" },
+      { date: "2026-06-16", event: "Assigned to Priya Patel", actor: "Admin" },
+      { date: "2026-06-17", event: "Verified documents", actor: "Priya Patel" },
+      { date: "2026-06-17", event: "Resolved", actor: "Priya Patel" }
     ]
   });
 
@@ -73,19 +114,53 @@ export default function GrievanceManagementDesk({ grievances, updateGrievanceSta
     });
 
     setReplyText("");
-    alert("Reply sent to citizen.");
+  };
+
+  const handleAddInternalNote = (ticketId) => {
+    if (!internalNoteText.trim()) return;
+    const nowStr = new Date().toISOString().split("T")[0];
+    const existing = internalNotes[ticketId] || [];
+    setInternalNotes({
+      ...internalNotes,
+      [ticketId]: [...existing, { author: "Current Officer", date: nowStr, text: internalNoteText }]
+    });
+    setInternalNoteText("");
   };
 
   const handleResolve = (ticketId) => {
     updateGrievanceStatus(ticketId, "Resolved");
     setSlaTimes((prev) => ({ ...prev, [ticketId]: 0 }));
+    // Update timeline
+    const nowStr = new Date().toISOString().split("T")[0];
+    setTimelines({
+      ...timelines,
+      [ticketId]: [...(timelines[ticketId] || []), { date: nowStr, event: "Resolved", actor: "Current Officer" }]
+    });
   };
 
   const handleEscalate = (ticketId) => {
     updateGrievanceStatus(ticketId, "In Review");
     // Extend SLA timer on escalation
     setSlaTimes((prev) => ({ ...prev, [ticketId]: (prev[ticketId] || 0) + 14400 }));
-    alert("Ticket escalated to regional nodal head.");
+    // Update timeline
+    const nowStr = new Date().toISOString().split("T")[0];
+    setTimelines({
+      ...timelines,
+      [ticketId]: [...(timelines[ticketId] || []), { date: nowStr, event: "Escalated to Nodal Head", actor: "Current Officer" }]
+    });
+  };
+
+  const handleAssignOfficer = (ticketId, officerName) => {
+    setAssignedOfficers({
+      ...assignedOfficers,
+      [ticketId]: officerName
+    });
+    // Update timeline
+    const nowStr = new Date().toISOString().split("T")[0];
+    setTimelines({
+      ...timelines,
+      [ticketId]: [...(timelines[ticketId] || []), { date: nowStr, event: `Assigned to ${officerName}`, actor: "Admin" }]
+    });
   };
 
   // Map ticket category to priorities
@@ -93,24 +168,21 @@ export default function GrievanceManagementDesk({ grievances, updateGrievanceSta
     return (grievances || []).map((g) => {
       const isResolved = g.status === "Resolved" || g.status === "Closed";
       let priority = "Medium";
-      let assignedOfficer = "Priya Patel";
 
       if (g.category.includes("Delay") || g.category.includes("Payment")) {
         priority = "Critical";
-        assignedOfficer = "Sanjay Kumar";
       } else if (g.category.includes("Verify") || g.category.includes("Document")) {
         priority = "High";
-        assignedOfficer = "Amit Singh";
       }
 
       return {
         ...g,
         priority,
-        assignedOfficer,
+        assignedOfficer: assignedOfficers[g.id] || "Priya Patel",
         sla: isResolved ? 0 : slaTimes[g.id] ?? (priority === "Critical" ? 3600 : 7200)
       };
     });
-  }, [grievances, slaTimes]);
+  }, [grievances, slaTimes, assignedOfficers]);
 
   const filteredTickets = React.useMemo(() => {
     return enrichedGrievances
@@ -198,6 +270,8 @@ export default function GrievanceManagementDesk({ grievances, updateGrievanceSta
                 {filteredTickets.map((ticket) => {
                   const isExpanded = expandedId === ticket.id;
                   const currentThread = discussions[ticket.id] || [];
+                  const currentTimeline = timelines[ticket.id] || [];
+                  const currentInternalNotes = internalNotes[ticket.id] || [];
 
                   return (
                     <React.Fragment key={ticket.id}>
@@ -230,8 +304,8 @@ export default function GrievanceManagementDesk({ grievances, updateGrievanceSta
                           {ticket.relatedScheme}
                         </td>
                         <td className="px-5 py-3.5">
-                          <div className="flex items-center gap-1.5 font-mono text-slate-655 text-slate-600 font-bold">
-                            <Clock className={`h-3.5 w-3.5 ${ticket.sla > 0 ? "text-indigo-650 text-indigo-600" : "text-slate-400"}`} />
+                          <div className="flex items-center gap-1.5 font-mono text-slate-600 font-bold">
+                            <Clock className={`h-3.5 w-3.5 ${ticket.sla > 0 ? "text-indigo-600" : "text-slate-400"}`} />
                             <span>{ticket.sla > 0 ? formatSla(ticket.sla) : "SLA Met"}</span>
                           </div>
                         </td>
@@ -259,25 +333,34 @@ export default function GrievanceManagementDesk({ grievances, updateGrievanceSta
                           <td colSpan="9" className="bg-slate-50/50 px-6 py-5 border-y border-slate-100 text-xs">
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                               
-                              {/* Ticket details */}
+                              {/* Left column: Citizen profile, complaint details, attachments, timeline */}
                               <div className="lg:col-span-5 space-y-4">
-                                <div>
-                                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Demographics</span>
-                                  <p className="font-bold text-slate-800 mt-0.5">{ticket.citizenName}</p>
-                                  <p className="text-[10px] text-slate-500 font-medium mt-0.5">Email: {ticket.citizenEmail} | Phone: {ticket.citizenPhone}</p>
+                                <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+                                  <div className="flex items-center gap-3 mb-3">
+                                    <div className="h-10 w-10 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 flex items-center justify-center font-black text-xs">
+                                      {ticket.citizenName.split(" ").map(x => x[0]).join("")}
+                                    </div>
+                                    <div>
+                                      <p className="font-bold text-slate-800 text-sm">{ticket.citizenName}</p>
+                                      <p className="text-[10px] text-slate-500">Email: {ticket.citizenEmail} | Phone: {ticket.citizenPhone}</p>
+                                    </div>
+                                  </div>
                                 </div>
+
                                 <div className="space-y-1">
                                   <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Grievance Description</span>
-                                  <div className="bg-white border border-slate-150 p-4 rounded-xl text-[11px] font-medium leading-relaxed text-slate-700 shadow-sm">
+                                  <div className="bg-white border border-slate-200 p-4 rounded-xl text-[11px] font-medium leading-relaxed text-slate-700 shadow-sm">
                                     {ticket.description}
                                   </div>
                                 </div>
+
                                 {ticket.supportingNote && (
                                   <div>
                                     <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Citizen Remarks</span>
                                     <p className="text-slate-500 mt-0.5 italic font-medium">"{ticket.supportingNote}"</p>
                                   </div>
                                 )}
+
                                 <div className="space-y-1.5">
                                   <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Attached files</span>
                                   <div className="flex gap-2">
@@ -287,57 +370,135 @@ export default function GrievanceManagementDesk({ grievances, updateGrievanceSta
                                     </button>
                                   </div>
                                 </div>
+
+                                {/* Timeline */}
+                                <div className="space-y-2">
+                                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Grievance Timeline</span>
+                                  <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                                    <div className="space-y-3">
+                                      {currentTimeline.map((entry, idx) => (
+                                        <div key={idx} className="flex gap-3">
+                                          <div className="flex flex-col items-center">
+                                            <div className="w-2 h-2 rounded-full bg-indigo-600 mt-1" />
+                                            {idx < currentTimeline.length - 1 && <div className="w-0.5 h-full bg-slate-200" />}
+                                          </div>
+                                          <div className="pb-3">
+                                            <div className="flex justify-between items-start">
+                                              <p className="text-xs font-bold text-slate-800">{entry.event}</p>
+                                              <span className="text-[9px] text-slate-400">{entry.date}</span>
+                                            </div>
+                                            <p className="text-[10px] text-slate-500 mt-0.5">By: {entry.actor}</p>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
 
-                              {/* Discussion Feed */}
+                              {/* Right column: Assign Officer, Discussion, Internal Notes, Actions */}
                               <div className="lg:col-span-7 space-y-4 flex flex-col">
-                                <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Communication Thread</span>
-                                
-                                <div className="flex-1 bg-white border border-slate-200 rounded-xl p-4 min-h-[160px] max-h-56 overflow-y-auto space-y-3 shadow-sm scrollbar-thin">
-                                  {currentThread.length === 0 ? (
-                                    <p className="text-center text-slate-400 py-8 text-[11px] font-semibold">No discussions on this ticket yet.</p>
-                                  ) : (
-                                    currentThread.map((msg, index) => (
-                                      <div
-                                        key={index}
-                                        className={`flex flex-col max-w-[85%] ${
-                                          msg.sender === "officer" ? "ml-auto items-end" : "items-start"
-                                        }`}
-                                      >
+                                {/* Assign Officer */}
+                                <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+                                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block mb-2">Assign Officer</span>
+                                  <div className="flex items-center gap-2">
+                                    <Users className="h-4 w-4 text-slate-400" />
+                                    <select
+                                      value={ticket.assignedOfficer}
+                                      onChange={(e) => handleAssignOfficer(ticket.id, e.target.value)}
+                                      className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    >
+                                      {AVAILABLE_OFFICERS.map(officer => (
+                                        <option key={officer} value={officer}>{officer}</option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                </div>
+
+                                {/* Discussion Feed */}
+                                <div className="space-y-2 flex-1">
+                                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Communication Thread</span>
+                                  <div className="bg-white border border-slate-200 rounded-xl p-4 min-h-[120px] max-h-48 overflow-y-auto space-y-3 shadow-sm">
+                                    {currentThread.length === 0 ? (
+                                      <p className="text-center text-slate-400 py-8 text-[11px] font-semibold">No discussions on this ticket yet.</p>
+                                    ) : (
+                                      currentThread.map((msg, index) => (
                                         <div
-                                          className={`p-3 rounded-2xl text-[11px] font-medium leading-relaxed shadow-sm ${
-                                            msg.sender === "officer"
-                                              ? "bg-indigo-650 bg-indigo-600 text-white rounded-tr-none"
-                                              : "bg-slate-50 text-slate-700 border border-slate-150 rounded-tl-none"
+                                          key={index}
+                                          className={`flex flex-col max-w-[85%] ${
+                                            msg.sender === "officer" ? "ml-auto items-end" : "items-start"
                                           }`}
                                         >
-                                          {msg.text}
+                                          <div
+                                            className={`p-3 rounded-2xl text-[11px] font-medium leading-relaxed shadow-sm ${
+                                              msg.sender === "officer"
+                                                ? "bg-indigo-600 text-white rounded-tr-none"
+                                                : "bg-slate-50 text-slate-700 border border-slate-200 rounded-tl-none"
+                                            }`}
+                                          >
+                                            {msg.text}
+                                          </div>
+                                          <span className="text-[8px] text-slate-400 font-semibold mt-1">
+                                            {msg.sender === "officer" ? "Officer" : "Citizen"} • {msg.date}
+                                          </span>
                                         </div>
-                                        <span className="text-[8px] text-slate-400 font-semibold mt-1">
-                                          {msg.sender === "officer" ? "Officer" : "Citizen"} • {msg.date}
-                                        </span>
-                                      </div>
-                                    ))
-                                  )}
+                                      ))
+                                    )}
+                                  </div>
+
+                                  <div className="flex gap-2">
+                                    <input
+                                      type="text"
+                                      placeholder="Write response message..."
+                                      value={replyText}
+                                      onChange={(e) => setReplyText(e.target.value)}
+                                      className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 font-medium"
+                                    />
+                                    <button
+                                      onClick={() => handleReplySubmit(ticket.id)}
+                                      className="px-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition shadow-sm flex items-center justify-center"
+                                    >
+                                      <Send className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                </div>
+
+                                {/* Internal Notes */}
+                                <div className="space-y-2">
+                                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Internal Notes</span>
+                                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-2 max-h-32 overflow-y-auto shadow-sm">
+                                    {currentInternalNotes.length === 0 ? (
+                                      <p className="text-center text-amber-600/60 py-4 text-[11px] font-semibold">No internal notes yet.</p>
+                                    ) : (
+                                      currentInternalNotes.map((note, idx) => (
+                                        <div key={idx} className="bg-white border border-amber-100 p-2 rounded-lg text-[11px]">
+                                          <div className="flex justify-between items-center mb-1">
+                                            <span className="font-bold text-amber-800">{note.author}</span>
+                                            <span className="text-[9px] text-amber-600">{note.date}</span>
+                                          </div>
+                                          <p className="text-slate-700">{note.text}</p>
+                                        </div>
+                                      ))
+                                    )}
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <input
+                                      type="text"
+                                      placeholder="Add internal note..."
+                                      value={internalNoteText}
+                                      onChange={(e) => setInternalNoteText(e.target.value)}
+                                      className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium"
+                                    />
+                                    <button
+                                      onClick={() => handleAddInternalNote(ticket.id)}
+                                      className="px-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl transition shadow-sm flex items-center justify-center"
+                                    >
+                                      <FileText className="h-4 w-4" />
+                                    </button>
+                                  </div>
                                 </div>
 
                                 {/* Actions Bar */}
-                                <div className="flex gap-2">
-                                  <input
-                                    type="text"
-                                    placeholder="Write response message..."
-                                    value={replyText}
-                                    onChange={(e) => setReplyText(e.target.value)}
-                                    className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 font-medium"
-                                  />
-                                  <button
-                                    onClick={() => handleReplySubmit(ticket.id)}
-                                    className="px-3 bg-indigo-650 bg-indigo-600 hover:bg-indigo-705 hover:bg-indigo-700 text-white rounded-xl transition shadow-sm flex items-center justify-center"
-                                  >
-                                    <Send className="h-4 w-4" />
-                                  </button>
-                                </div>
-
                                 <div className="pt-2 border-t border-slate-100 flex gap-2">
                                   <button
                                     onClick={() => handleResolve(ticket.id)}

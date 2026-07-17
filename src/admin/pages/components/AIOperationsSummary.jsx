@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Sparkles, Activity, CheckCircle, AlertCircle, Clock, TrendingUp } from "lucide-react";
+import React from "react";
+import { Sparkles, Activity, Clock, TrendingUp } from "lucide-react";
 
-export default function AIOperationsSummary({ pendingReviews, pendingDocuments }) {
-  const [lastUpdated, setLastUpdated] = useState(new Date());
-  const [confidenceScore, setConfidenceScore] = useState(97);
-  const [processingPerformance, setProcessingPerformance] = useState(98.4);
-  const [isLive, setIsLive] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLastUpdated(new Date());
-      // Simulate slight fluctuations in metrics
-      setConfidenceScore(prev => Math.min(99, Math.max(95, prev + (Math.random() - 0.5))));
-      setProcessingPerformance(prev => Math.min(99.9, Math.max(97, prev + (Math.random() - 0.5) * 0.2)));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+export default function AIOperationsSummary({ summaryData }) {
+  const {
+    pendingReviews = 0,
+    pendingDocuments = 0,
+    nearingSLA = 0,
+    aiRecommendation = "No current recommendations.",
+    confidence = 97.4,
+    processingPerformance = 98.4,
+    avgProcessingTime = "2.3 Days",
+    lastUpdated = "Just Now",
+    systemStatus = "Healthy"
+  } = summaryData || {};
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -23,8 +20,6 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
     if (hour < 17) return "Good Afternoon";
     return "Good Evening";
   };
-
-  const adminName = "Rajesh";
 
   const getStatusColor = (score) => {
     if (score >= 95) return "text-emerald-400";
@@ -66,9 +61,9 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
           
           {/* Live Status Indicator */}
           <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${isLive ? "bg-emerald-400 animate-pulse" : "bg-slate-500"}`} />
+            <div className={`w-2 h-2 rounded-full bg-emerald-400 animate-pulse`} />
             <span className="text-[10px] font-bold text-indigo-300">
-              {isLive ? "LIVE" : "OFFLINE"}
+              STATUS: {systemStatus.toUpperCase()}
             </span>
           </div>
         </div>
@@ -76,7 +71,7 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
         {/* Greeting and Summary */}
         <div className="mb-6 p-4 bg-white/5 rounded-xl border border-white/5">
           <p className="text-sm font-semibold text-slate-200 leading-relaxed">
-            {getGreeting()} {adminName}. {pendingReviews} applications require review. {pendingDocuments} documents require verification. 18 applications are nearing processing deadline.
+            {getGreeting()}. {pendingReviews} applications require review. {pendingDocuments} documents require verification. {nearingSLA} applications are nearing processing deadline.
           </p>
         </div>
 
@@ -84,10 +79,10 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           <div className="space-y-1.5 p-3.5 bg-white/5 rounded-xl border border-white/5 flex flex-col justify-between hover:bg-white/10 transition">
             <span className="text-[9px] font-black text-indigo-300 uppercase tracking-wider block">
-              Today's Priorities
+              Average processing
             </span>
             <p className="text-xs text-slate-200 leading-normal font-semibold">
-              Triage 12 crop-insurance files matching low-income parameters.
+              Currently averaging {avgProcessingTime} per case lifecycle.
             </p>
           </div>
 
@@ -105,7 +100,7 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
               Document Workload
             </span>
             <p className="text-xs text-slate-200 leading-normal font-semibold">
-              {pendingDocuments} files in queue. 2 Aadhaar mismatches flagged by OCR.
+              {pendingDocuments} files in queue requiring credential validation.
             </p>
           </div>
 
@@ -114,7 +109,7 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
               Deadlines Approaching
             </span>
             <p className="text-xs text-slate-200 leading-normal font-semibold">
-              PM-KISAN Gujarat registry cycle closing in 8 days.
+              {nearingSLA} applications nearing target SLA threshold limit.
             </p>
           </div>
 
@@ -123,7 +118,7 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
               AI Recommendation
             </span>
             <p className="text-xs text-slate-200 leading-normal font-semibold">
-              Review Scholarship applications first.
+              {aiRecommendation}
             </p>
           </div>
         </div>
@@ -141,13 +136,13 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
                   AI Confidence
                 </p>
                 <p className="text-2xl font-black text-white mt-1">
-                  {confidenceScore.toFixed(1)}%
+                  {confidence.toFixed(1)}%
                 </p>
               </div>
             </div>
             <div className={`text-right`}>
-              <span className={`text-xs font-bold ${getStatusColor(confidenceScore)}`}>
-                {getStatusLabel(confidenceScore)}
+              <span className={`text-xs font-bold ${getStatusColor(confidence)}`}>
+                {getStatusLabel(confidence)}
               </span>
             </div>
           </div>
@@ -185,18 +180,9 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
                   Last Updated
                 </p>
                 <p className="text-sm font-bold text-white mt-1">
-                  {lastUpdated.toLocaleTimeString("en-IN", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit"
-                  })}
+                  {lastUpdated}
                 </p>
               </div>
-            </div>
-            <div className={`text-right`}>
-              <span className={`text-xs font-bold ${getStatusColor(processingPerformance)}`}>
-                {getStatusLabel(processingPerformance)}
-              </span>
             </div>
           </div>
         </div>
@@ -204,3 +190,4 @@ export default function AIOperationsSummary({ pendingReviews, pendingDocuments }
     </div>
   );
 }
+

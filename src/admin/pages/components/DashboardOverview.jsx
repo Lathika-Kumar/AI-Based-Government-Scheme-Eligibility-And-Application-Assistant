@@ -1,4 +1,5 @@
-import React from "react";
+// src/admin/pages/components/DashboardOverview.jsx
+import React, { useCallback, useEffect, useState } from "react";
 import { useApp } from "@context/AppContext";
 import { useAuth } from "@context/AuthContext";
 import {
@@ -12,163 +13,234 @@ import {
   ChevronRight
 } from "lucide-react";
 
-// New enterprise components
+// Enterprise components
 import WelcomeCard from "./WelcomeCard";
 import KPICard from "./KPICard";
 import AIOperationsSummary from "./AIOperationsSummary";
 import PriorityQueue from "./PriorityQueue";
 import QuickActions from "./QuickActions";
-import AnalyticsPreview from "./AnalyticsPreview";
 import RecentActivity from "./RecentActivity";
 import AIAlerts from "./AIAlerts";
+import NotificationDrawer from "./NotificationDrawer";
 
+// Service functions
+import {
+  refreshMetrics,
+  getPriorityQueue,
+  getAnalyticsData,
+  getAIOperationsSummary
+} from "../../services/dashboardService";
 
 export default function DashboardOverview({
-  applications,
-  schemes,
-  grievances,
   navigateToTab,
   onSelectApplication
 }) {
   const { user } = useAuth();
-  const { documents } = useApp();
+  const {
+    applications,
+    schemes,
+    grievances,
+    documents,
+    recentActivities,
+    notifications,
+    updateApplicationPriority
+  } = useApp();
 
-  const totalApps = applications?.length || 0;
-  const pendingReviewsCount = applications?.filter(a => a.currentStage !== "Approved" && a.currentStage !== "Rejected")?.length || 0;
-  const approvedToday = 14;
-  const rejectedToday = 3;
-  const activeSchemesCount = schemes?.filter(s => s.status === "published")?.length || 0;
-  const pendingDocumentsCount = documents?.filter(d => d.status !== "verified" && d.status !== "rejected").length || 8;
-  const registeredCitizens = "14,802";
-  const averageProcessingTime = "4.2 Days";
+  // State
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [metrics, setMetrics] = useState({});
+  const [priorityQueue, setPriorityQueue] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState({});
+  const [aiSummary, setAiSummary] = useState({});
 
+  const loadDashboardData = useCallback(() => {
+    try {
+      setLoading(true);
+      const m = refreshMetrics({ applications, schemes, documents, grievances });
+      setMetrics(m);
+      const pq = getPriorityQueue(applications, grievances);
+      setPriorityQueue(pq);
+      const ad = getAnalyticsData(applications, schemes);
+      setAnalyticsData(ad);
+      const ais = getAIOperationsSummary(applications, documents, grievances);
+      setAiSummary(ais);
+    } catch (e) {
+      console.error("Dashboard load error", e);
+      setError(e.message || "Failed to load dashboard data");
+    } finally {
+      setLoading(false);
+    }
+  }, [applications, schemes, documents, grievances]);
+
+  // Initial load
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
+
+  const handleRefresh = () => {
+    loadDashboardData();
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <span className="text-indigo-600">Loading dashboard…</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 bg-red-100 text-red-800 rounded">
+        <p>Error loading dashboard: {error}</p>
+        <button onClick={handleRefresh} className="mt-2 text-sm underline">Retry</button>
+      </div>
+    );
+  }
+
+  // Build KPI data from metrics
   const kpis = [
     {
       title: "Total Applications",
-      value: totalApps + 524,
+      value: metrics.totalApps,
       change: "+12.4%",
       isPositive: true,
       subtext: "vs last month",
       icon: FileText,
       color: "text-indigo-600 bg-indigo-50 border-indigo-100",
-      sparklineData: [40, 45, 42, 50, 48, 55, 52, 60, 58, 65]
+      sparklineData: []
     },
     {
       title: "Pending Review",
-      value: pendingReviewsCount,
+      value: metrics.pendingReviewsCount,
       change: "-5.1%",
       isPositive: true,
       subtext: "vs last week",
       icon: Clock,
       color: "text-amber-600 bg-amber-50 border-amber-100",
-      sparklineData: [50, 48, 45, 42, 40, 38, 35, 32, 30, 28]
+      sparklineData: []
     },
     {
       title: "Approved Today",
-      value: approvedToday,
+      value: metrics.approvedToday,
       change: "+15.0%",
       isPositive: true,
       subtext: "vs daily average",
       icon: CheckCircle,
       color: "text-emerald-600 bg-emerald-50 border-emerald-100",
-      sparklineData: [8, 10, 9, 11, 12, 10, 13, 14, 12, 14]
+      sparklineData: []
     },
     {
       title: "Rejected Today",
-      value: rejectedToday,
+      value: metrics.rejectedToday,
       change: "-20.0%",
-      isPositive: true,
+      isPositive: false,
       subtext: "vs daily average",
       icon: XCircle,
       color: "text-rose-600 bg-rose-50 border-rose-100",
-      sparklineData: [5, 4, 6, 5, 4, 3, 4, 3, 3, 3]
+      sparklineData: []
     },
     {
       title: "Pending Documents",
-      value: pendingDocumentsCount,
+      value: metrics.pendingDocumentsCount,
       change: "-12.5%",
       isPositive: true,
       subtext: "vs yesterday",
       icon: Clock,
       color: "text-orange-600 bg-orange-50 border-orange-100",
-      sparklineData: [15, 14, 13, 12, 11, 10, 9, 8, 8, 8]
+      sparklineData: []
     },
     {
       title: "Active Schemes",
-      value: activeSchemesCount,
+      value: metrics.activeSchemesCount,
       change: "+2",
       isPositive: true,
       subtext: "this quarter",
       icon: Users,
       color: "text-sky-600 bg-sky-50 border-sky-100",
-      sparklineData: [5, 6, 6, 7, 7, 8, 8, 8, 9, 9]
+      sparklineData: []
     },
     {
       title: "Registered Citizens",
-      value: registeredCitizens,
+      value: metrics.registeredCitizens,
       change: "+18.2%",
       isPositive: true,
       subtext: "vs last month",
       icon: Users,
       color: "text-violet-600 bg-violet-50 border-violet-100",
-      sparklineData: [12000, 12500, 13000, 13500, 13800, 14000, 14200, 14500, 14700, 14802]
+      sparklineData: []
     },
     {
       title: "Avg Processing Time",
-      value: averageProcessingTime,
+      value: metrics.averageProcessingTime,
       change: "-1.5 Days",
       isPositive: true,
       subtext: "SLA target: 7 Days",
       icon: Clock,
       color: "text-teal-600 bg-teal-50 border-teal-100",
-      sparklineData: [6.5, 6.2, 5.8, 5.5, 5.2, 5.0, 4.8, 4.5, 4.3, 4.2]
+      sparklineData: []
+    },
+    {
+      title: "Processing Performance",
+      value: metrics.processingPerformance,
+      change: "+0.8%",
+      isPositive: true,
+      subtext: "SLA Target: 95%",
+      icon: TrendingUp,
+      color: "text-emerald-600 bg-emerald-50 border-emerald-100",
+      sparklineData: []
     }
   ];
 
   return (
     <div className="space-y-6">
       {/* Welcome Card */}
-      <WelcomeCard user={user} />
+      <WelcomeCard user={user} onRefresh={handleRefresh} />
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {kpis.map((kpi, idx) => (
           <KPICard key={idx} {...kpi} />
         ))}
       </div>
 
       {/* AI Operations Summary */}
-      <AIOperationsSummary 
-        pendingReviews={pendingReviewsCount} 
-        pendingDocuments={pendingDocumentsCount} 
+      <AIOperationsSummary
+        summaryData={aiSummary}
       />
 
       {/* Quick Actions */}
       <QuickActions onNavigate={navigateToTab} />
 
       {/* Split Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Priority Queue */}
-          <PriorityQueue onReview={(app) => {
-            if (onSelectApplication) onSelectApplication(app);
-            navigateToTab("applications");
-          }} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Priority Queue */}
+            <PriorityQueue
+              data={priorityQueue}
+              onReview={(app) => {
+                if (onSelectApplication) onSelectApplication(app);
+                navigateToTab("applications");
+              }}
+              onSetPriority={updateApplicationPriority}
+            />
+          </div>
 
-          {/* Analytics Preview */}
-          <AnalyticsPreview />
+          {/* Right Column */}
+          <div className="space-y-6">
+            {/* Recent Activity */}
+            <RecentActivity activities={recentActivities} onViewAll={() => navigateToTab("audits")} />
+
+            {/* AI Alerts */}
+            <AIAlerts />
+
+            {/* Notification Drawer */}
+            <NotificationDrawer notifications={notifications} />
+          </div>
         </div>
-
-        {/* Right Column */}
-        <div className="space-y-6">
-          {/* Recent Activity */}
-          <RecentActivity onViewAll={() => navigateToTab("audits")} />
-
-          {/* AI Alerts */}
-          <AIAlerts />
-        </div>
-      </div>
     </div>
   );
 }
+

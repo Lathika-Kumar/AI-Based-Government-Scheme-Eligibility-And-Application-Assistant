@@ -17,40 +17,21 @@ import {
   Line
 } from "recharts";
 
-const applicationsByState = [
-  { name: "Uttar Pradesh", value: 310 },
-  { name: "Gujarat", value: 240 },
-  { name: "Maharashtra", value: 198 },
-  { name: "Tamil Nadu", value: 167 },
-  { name: "Karnataka", value: 145 }
-];
+export default function AnalyticsPreview({ data }) {
+  // Expected data shape:
+  // {
+  //   applicationsByState: [{ name, value }],
+  //   applicationsByCategory: [{ name, value, color }],
+  //   approvalRateData: [{ month, rate }],
+  //   monthlyTrendData: [{ month, applications, approved, rejected }]
+  // }
+  const {
+    applicationsByState = [],
+    applicationsByCategory = [],
+    approvalRateData = [],
+    monthlyTrendData = []
+  } = data || {};
 
-const applicationsByCategory = [
-  { name: "Agriculture", value: 450, color: "#4F46E5" },
-  { name: "Housing", value: 300, color: "#2563EB" },
-  { name: "Social Welfare", value: 250, color: "#16A34A" },
-  { name: "Education", value: 380, color: "#D97706" }
-];
-
-const approvalRateData = [
-  { month: "Jan", rate: 82 },
-  { month: "Feb", rate: 85 },
-  { month: "Mar", rate: 88 },
-  { month: "Apr", rate: 87 },
-  { month: "May", rate: 90 },
-  { month: "Jun", rate: 91.5 }
-];
-
-const monthlyTrendData = [
-  { month: "Jan", applications: 420, approved: 345, rejected: 75 },
-  { month: "Feb", applications: 480, approved: 408, rejected: 72 },
-  { month: "Mar", applications: 520, approved: 458, rejected: 62 },
-  { month: "Apr", applications: 490, approved: 426, rejected: 64 },
-  { month: "May", applications: 550, approved: 495, rejected: 55 },
-  { month: "Jun", applications: 580, approved: 531, rejected: 49 }
-];
-
-export default function AnalyticsPreview() {
   return (
     <div className="space-y-3.5">
       <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider select-none">

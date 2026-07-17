@@ -6,6 +6,7 @@ import { AlertTriangle, ShieldCheck } from "lucide-react";
 
 // Sub-components
 import DashboardOverview from "./components/DashboardOverview";
+import AnalyticsDashboard from "./components/AnalyticsDashboard";
 import ApplicationsManagement from "./components/ApplicationsManagement";
 import ApplicationReviewWorkspace from "./components/ApplicationReviewWorkspace";
 import DocumentVerificationCenter from "./components/DocumentVerificationCenter";
@@ -15,6 +16,7 @@ import GrievanceManagementDesk from "./components/GrievanceManagementDesk";
 import AuditLogsConsole from "./components/AuditLogsConsole";
 import AdminNotificationsCenter from "./components/AdminNotificationsCenter";
 import AdminSettingsPanel from "./components/AdminSettingsPanel";
+import GovernmentReportsCenter from "./components/GovernmentReportsCenter";
 
 // Loading Skeleton component
 function SkeletonLoader({ type }) {
@@ -132,14 +134,23 @@ export default function AdminDashboard({ tab = "overview" }) {
 
     switch (selectedTab) {
       case "overview":
-      case "analytics":
         return (
           <DashboardOverview
             applications={applications}
             schemes={schemes}
             grievances={grievances}
+            documents={documents}
             navigateToTab={setSelectedTab}
             onSelectApplication={setSelectedAppForReview}
+          />
+        );
+      case "analytics":
+        return (
+          <AnalyticsDashboard
+            applications={applications}
+            schemes={schemes}
+            documents={documents}
+            grievances={grievances}
           />
         );
       case "applications":
@@ -189,6 +200,15 @@ export default function AdminDashboard({ tab = "overview" }) {
         return <AuditLogsConsole auditLogs={auditLogs} />;
       case "notifications":
         return <AdminNotificationsCenter />;
+      case "reports":
+        return (
+          <GovernmentReportsCenter
+            applications={applications}
+            schemes={schemes}
+            documents={documents}
+            grievances={grievances}
+          />
+        );
       case "settings":
         return <AdminSettingsPanel />;
       default:
@@ -217,6 +237,7 @@ export default function AdminDashboard({ tab = "overview" }) {
               {selectedTab === "grievances" && "Grievance Desk Tickets"}
               {selectedTab === "audits" && "Security Audit Registry"}
               {selectedTab === "notifications" && "Operational Notifications"}
+              {selectedTab === "reports" && "Government Reports Center"}
               {selectedTab === "settings" && "Console Settings Panel"}
             </h1>
           </div>

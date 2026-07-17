@@ -49,6 +49,7 @@ export const ADMIN_ROUTES = Object.freeze({
   USERS: "/admin/users",
   GRIEVANCES: "/admin/grievances",
   ANALYTICS: "/admin/analytics",
+  REPORTS: "/admin/reports",
   AUDIT: "/admin/audit",
 });
 

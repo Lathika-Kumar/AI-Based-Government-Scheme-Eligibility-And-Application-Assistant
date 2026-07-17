@@ -35,10 +35,12 @@ const Dashboard      = lazy(() => import("@user/pages/Dashboard"));
 const Profile        = lazy(() => import("@user/pages/Profile"));
 const Recommendations = lazy(() => import("@user/pages/schemes/Recommendations"));
 const SchemeDetails  = lazy(() => import("@user/pages/schemes/SchemeDetails"));
+const ApplicationWizard = lazy(() => import("@user/pages/schemes/ApplicationWizard"));
 const Documents      = lazy(() => import("@user/pages/Documents"));
 const Tracker        = lazy(() => import("@user/pages/Tracker"));
 const Notifications  = lazy(() => import("@user/pages/Notifications"));
 const Help           = lazy(() => import("@user/pages/Help"));
+const Feedback       = lazy(() => import("@user/pages/Feedback"));
 
 // ── Lazy loaded pages — Admin Portal ─────────────────────────────────────────
 const AdminDashboard = lazy(() => import("@admin/pages/AdminDashboard"));
@@ -85,7 +87,7 @@ return <Navigate to="/onboarding" replace />;
 
 /**
  * AdminGuard — Restrict access to admin-only routes.
- * Redirects unauthenticated users to /login, citizens to /unauthorized.
+ * Redirects unauthenticated users to /login, citizens to their own /dashboard.
  */
 function AdminGuard({ children }) {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -93,7 +95,7 @@ function AdminGuard({ children }) {
 return <Navigate to="/login" replace />;
 }
   if (!isAdmin) {
-return <Navigate to="/unauthorized" replace />;
+return <Navigate to="/dashboard" replace />;
 }
   return children;
 }
@@ -153,10 +155,12 @@ function AppRoutes() {
           <Route path="/profile"         element={<Profile />} />
           <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/scheme/:id"      element={<SchemeDetails />} />
+          <Route path="/scheme/:id/apply" element={<ApplicationWizard />} />
           <Route path="/documents"       element={<Documents />} />
           <Route path="/tracker"         element={<Tracker />} />
           <Route path="/notifications"   element={<Notifications />} />
           <Route path="/help"            element={<Help />} />
+          <Route path="/feedback"        element={<Feedback />} />
         </Route>
 
         {/* ── ADMIN ROUTES ──────────────────────────────────────────────────── */}
@@ -169,6 +173,7 @@ function AppRoutes() {
           <Route path="users"        element={<AdminDashboard tab="users" />} />
           <Route path="grievances"   element={<AdminDashboard tab="grievances" />} />
           <Route path="analytics"    element={<AdminDashboard tab="analytics" />} />
+          <Route path="reports"      element={<AdminDashboard tab="reports" />} />
           <Route path="audit"        element={<AdminDashboard tab="audits" />} />
           <Route path="notifications" element={<AdminDashboard tab="notifications" />} />
           <Route path="settings"     element={<AdminDashboard tab="settings" />} />

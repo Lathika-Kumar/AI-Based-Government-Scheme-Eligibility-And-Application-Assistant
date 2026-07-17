@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useApp } from "@context/AppContext";
+import { ROLE_LABELS, ROLE_PERMISSIONS, hasPermission } from "@constants/roles";
 import {
   ShieldCheck,
   LogOut,
@@ -11,6 +12,7 @@ import {
   LayoutDashboard,
   FileText,
   FileCheck,
+  FileSpreadsheet,
   BookOpen,
   Users,
   BarChart3,
@@ -18,8 +20,6 @@ import {
   History,
   Bell,
   Sliders,
-  Menu,
-  X,
   Search,
   Sparkles,
   ChevronRight,
@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { CONFIG } from "@config/env";
 import NotificationDrawer from "@admin/pages/components/NotificationDrawer";
+import { globalSearch } from "../services/dashboardService";
 
 function OfficialBanner() {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,11 +73,21 @@ function OfficialBanner() {
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
-  const { resetData, language, changeLanguage, t, applications, schemes, grievances, documents } = useApp();
+  const {
+    resetData,
+    language,
+    changeLanguage,
+    t,
+    applications,
+    schemes,
+    grievances,
+    documents,
+    usersRegistry
+  } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentTime, setCurrentTime] = useState("");
@@ -94,6 +105,28 @@ export default function AdminLayout() {
     return () => clearInterval(interval);
   }, []);
 
+  // Keyboard shortcut listener for Global Search (Ctrl/⌘ + K, /)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ctrl + K or Cmd + K
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+      // "/" key when focus is not in any input or textarea field
+      if (
+        e.key === "/" &&
+        document.activeElement.tagName !== "INPUT" &&
+        document.activeElement.tagName !== "TEXTAREA"
+      ) {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -106,50 +139,24 @@ export default function AdminLayout() {
     { label: "Scheme Management", path: "/admin/schemes", icon: BookOpen },
     { label: "User Management", path: "/admin/users", icon: Users },
     { label: "Analytics", path: "/admin/analytics", icon: BarChart3 },
+    { label: "Reports", path: "/admin/reports", icon: FileSpreadsheet },
     { label: "Grievances", path: "/admin/grievances", icon: MessageSquare },
     { label: "Audit Logs", path: "/admin/audit", icon: History },
     { label: "Settings", path: "/admin/settings", icon: Sliders }
   ];
 
-  // Categorized Global Search Results
+  // Categorized Global Search Results using dashboardService
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return null;
-    const query = searchQuery.toLowerCase();
-
-    const matchedApps = (applications || []).filter(
-      (a) => a.applicantName.toLowerCase().includes(query) || a.id.toLowerCase().includes(query)
-    ).slice(0, 3);
-
-    const matchedSchemes = (schemes || []).filter(
-      (s) => s.name.toLowerCase().includes(query) || s.ministry.toLowerCase().includes(query)
-    ).slice(0, 3);
-
-    const matchedGrievances = (grievances || []).filter(
-      (g) => g.citizenName.toLowerCase().includes(query) || g.id.toLowerCase().includes(query)
-    ).slice(0, 3);
-
-    const matchedDocs = (documents || []).filter(
-      (d) => d.name.toLowerCase().includes(query)
-    ).slice(0, 3);
-
-    const admins = [
-      { name: "Sanjay Kumar (Admin)", role: "Super Admin", dept: "Govt. Scheme Evaluation Board" },
-      { name: "Amit Singh (Verification)", role: "Verification Officer", dept: "Document Verification Directorate" },
-      { name: "Neha Sharma (Schemes)", role: "Scheme Manager", dept: "Ministry of Social Welfare" },
-      { name: "Priya Patel (Support)", role: "Support Officer", dept: "Public Relations" }
-    ];
-    const matchedAdmins = admins.filter(
-      (a) => a.name.toLowerCase().includes(query) || a.role.toLowerCase().includes(query)
-    ).slice(0, 2);
-
-    return {
-      applications: matchedApps,
-      schemes: matchedSchemes,
-      grievances: matchedGrievances,
-      documents: matchedDocs,
-      admins: matchedAdmins
-    };
-  }, [searchQuery, applications, schemes, grievances, documents]);
+    return globalSearch(searchQuery, {
+      applications,
+      schemes,
+      citizens: usersRegistry?.citizens || [],
+      documents,
+      grievances,
+      officers: usersRegistry?.officers || []
+    });
+  }, [searchQuery, applications, schemes, grievances, documents, usersRegistry]);
 
   // AI Quick action command executor
   const runAiCommand = (cmd) => {
@@ -168,8 +175,16 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
-      <OfficialBanner />
+    <div className="flex flex-col h-screen bg-slate-50 font-sans overflow-hidden">
+      {/* Top banners - fixed */}
+      <div className="flex-shrink-0 z-40">
+        <OfficialBanner />
+        {/* Security Banner indicator */}
+        <div className="bg-red-700 text-white text-[11px] py-1 px-4 font-bold tracking-wider flex items-center justify-center space-x-2 select-none border-b border-red-800">
+          <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+          <span>{t("admin_secure_area")} (Nodal Evaluation Console)</span>
+        </div>
+      </div>
 
       {/* Accessible skip link */}
       <a
@@ -179,24 +194,16 @@ export default function AdminLayout() {
         {t("nav_skip_content")}
       </a>
 
-      {/* Security Banner indicator */}
-      <div className="bg-red-700 text-white text-[11px] py-1 px-4 font-bold tracking-wider flex items-center justify-center space-x-2 select-none border-b border-red-800">
-        <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-        <span>{t("admin_secure_area")} (Nodal Evaluation Console)</span>
-      </div>
-
       {/* Layout Wrapper */}
       <div className="flex-1 flex overflow-hidden relative">
         
         {/* ── SIDEBAR ── */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transition-transform duration-300 lg:translate-x-0 lg:static lg:h-auto ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className="fixed left-0 top-[5.5rem] h-[calc(100vh-5.5rem)] w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between z-30"
         >
           {/* Logo / Header Area */}
           <div className="flex flex-col">
-            <div className="h-16 border-b border-slate-800 flex items-center justify-between px-4">
+            <div className="h-16 border-b border-slate-800 flex items-center px-4">
               <div className="flex items-center space-x-2.5">
                 <div className="bg-rose-600 text-white p-2 rounded-xl">
                   <Building className="h-4.5 w-4.5" />
@@ -208,16 +215,10 @@ export default function AdminLayout() {
                   </span>
                 </div>
               </div>
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="lg:hidden text-slate-400 hover:text-white p-1 rounded-lg"
-              >
-                <X className="h-5 w-5" />
-              </button>
             </div>
 
             {/* Navigation links */}
-            <nav className="p-3.5 space-y-1 overflow-y-auto">
+            <nav className="p-3.5 space-y-1 overflow-y-auto flex-1">
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 return (
@@ -225,7 +226,6 @@ export default function AdminLayout() {
                     key={item.label}
                     onClick={() => {
                       navigate(item.path);
-                      setSidebarOpen(false);
                     }}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[11px] font-bold transition duration-155 ${
                       isActive
@@ -243,35 +243,42 @@ export default function AdminLayout() {
             </nav>
           </div>
 
-          {/* Footer Area with telemetries */}
-          <div className="p-4 border-t border-slate-800 bg-slate-950/40 text-[10px] text-slate-500 font-semibold space-y-2 select-none">
-            <div className="flex items-center justify-between">
-              <span>SLA Target Rate:</span>
-              <span className="text-emerald-500">94.2%</span>
+          {/* Footer Area with sign out and telemetries */}
+          <div className="border-t border-slate-800 bg-slate-950/40 select-none flex-shrink-0">
+            {/* Sign Out Button */}
+            <div className="p-4">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition duration-150"
+              >
+                <LogOut className="h-4 w-4 shrink-0" />
+                <span>Sign Out</span>
+              </button>
             </div>
-            <div className="flex items-center justify-between">
-              <span>Uptime SLA:</span>
-              <span className="text-emerald-500">99.98%</span>
-            </div>
-            <div className="flex items-center justify-between pt-1 border-t border-slate-800 text-[9px] text-slate-600 font-medium">
-              <span>Node IP: 10.120.4.24</span>
-              <span>v{CONFIG.PORTAL_VERSION}</span>
+            {/* Telemetries */}
+            <div className="px-4 pb-4 text-[10px] text-slate-500 font-semibold space-y-2 border-t border-slate-800 pt-4">
+              <div className="flex items-center justify-between">
+                <span>SLA Target Rate:</span>
+                <span className="text-emerald-500">94.2%</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Uptime SLA:</span>
+                <span className="text-emerald-500">99.98%</span>
+              </div>
+              <div className="flex items-center justify-between pt-1 border-t border-slate-800 text-[9px] text-slate-600 font-medium">
+                <span>Node IP: 10.120.4.24</span>
+                <span>v{CONFIG.PORTAL_VERSION}</span>
+              </div>
             </div>
           </div>
         </aside>
 
         {/* ── CONTENT CONTAINER ── */}
-        <div className="flex-grow flex flex-col min-w-0 overflow-y-auto">
+        <div className="flex-grow flex flex-col min-w-0 overflow-y-auto ml-64">
           
           {/* ── TOP HEADER ── */}
-          <header className="sticky top-0 z-30 bg-white border-b border-slate-200 h-16 shrink-0 flex items-center justify-between px-4 sm:px-6 shadow-sm">
+          <header className="sticky top-0 bg-white border-b border-slate-200 h-16 shrink-0 flex items-center justify-between px-4 sm:px-6 shadow-sm">
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-1.5 hover:bg-slate-100 rounded-lg text-slate-600"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
 
               {/* Global Search Bar Trigger */}
               <div
@@ -407,10 +414,23 @@ export default function AdminLayout() {
               ) : searchResults ? (
                 <div className="space-y-4">
                   {/* Schemes */}
-                  {searchResults.schemes.length > 0 && (
+                  {searchResults.schemes?.items?.length > 0 && (
                     <div className="space-y-1.5">
-                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Schemes Database</span>
-                      {searchResults.schemes.map((s) => (
+                      <div className="flex justify-between items-center">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Schemes Database</span>
+                        {searchResults.schemes.hasMore && (
+                          <button
+                            onClick={() => {
+                              navigate("/admin/schemes");
+                              setSearchOpen(false);
+                            }}
+                            className="text-[9px] font-bold text-indigo-650 text-indigo-600 hover:underline"
+                          >
+                            View All ({searchResults.schemes.totalCount})
+                          </button>
+                        )}
+                      </div>
+                      {searchResults.schemes.items.map((s) => (
                         <div
                           key={s.id}
                           onClick={() => {
@@ -430,10 +450,23 @@ export default function AdminLayout() {
                   )}
 
                   {/* Applications */}
-                  {searchResults.applications.length > 0 && (
+                  {searchResults.applications?.items?.length > 0 && (
                     <div className="space-y-1.5">
-                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Citizen Applications</span>
-                      {searchResults.applications.map((a) => (
+                      <div className="flex justify-between items-center">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Citizen Applications</span>
+                        {searchResults.applications.hasMore && (
+                          <button
+                            onClick={() => {
+                              navigate("/admin/applications");
+                              setSearchOpen(false);
+                            }}
+                            className="text-[9px] font-bold text-indigo-650 text-indigo-600 hover:underline"
+                          >
+                            View All ({searchResults.applications.totalCount})
+                          </button>
+                        )}
+                      </div>
+                      {searchResults.applications.items.map((a) => (
                         <div
                           key={a.id}
                           onClick={() => {
@@ -443,7 +476,7 @@ export default function AdminLayout() {
                           className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-indigo-50/50 cursor-pointer transition border border-transparent hover:border-indigo-100 text-xs font-semibold text-slate-700"
                         >
                           <div className="flex items-center gap-2">
-                            <FileText className="h-3.5 w-3.5 text-indigo-650 text-indigo-600" />
+                            <FileText className="h-3.5 w-3.5 text-indigo-600" />
                             <span>{a.applicantName} ({a.id})</span>
                           </div>
                           <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
@@ -452,11 +485,132 @@ export default function AdminLayout() {
                     </div>
                   )}
 
-                  {/* Grievances */}
-                  {searchResults.grievances.length > 0 && (
+                  {/* Citizens */}
+                  {searchResults.citizens?.items?.length > 0 && (
                     <div className="space-y-1.5">
-                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Grievance desk Tickets</span>
-                      {searchResults.grievances.map((g) => (
+                      <div className="flex justify-between items-center">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Registered Citizens</span>
+                        {searchResults.citizens.hasMore && (
+                          <button
+                            onClick={() => {
+                              navigate("/admin/users");
+                              setSearchOpen(false);
+                            }}
+                            className="text-[9px] font-bold text-indigo-650 text-indigo-600 hover:underline"
+                          >
+                            View All ({searchResults.citizens.totalCount})
+                          </button>
+                        )}
+                      </div>
+                      {searchResults.citizens.items.map((c) => (
+                        <div
+                          key={c.email}
+                          onClick={() => {
+                            navigate("/admin/users");
+                            setSearchOpen(false);
+                          }}
+                          className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-indigo-50/50 cursor-pointer transition border border-transparent hover:border-indigo-100 text-xs font-semibold text-slate-700"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Users className="h-3.5 w-3.5 text-indigo-600" />
+                            <span>{c.name} ({c.email})</span>
+                          </div>
+                          <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Documents */}
+                  {searchResults.documents?.items?.length > 0 && (
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Documents Vault</span>
+                        {searchResults.documents.hasMore && (
+                          <button
+                            onClick={() => {
+                              navigate("/admin/documents");
+                              setSearchOpen(false);
+                            }}
+                            className="text-[9px] font-bold text-indigo-650 text-indigo-600 hover:underline"
+                          >
+                            View All ({searchResults.documents.totalCount})
+                          </button>
+                        )}
+                      </div>
+                      {searchResults.documents.items.map((d) => (
+                        <div
+                          key={d.id}
+                          onClick={() => {
+                            navigate("/admin/documents");
+                            setSearchOpen(false);
+                          }}
+                          className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-indigo-50/50 cursor-pointer transition border border-transparent hover:border-indigo-100 text-xs font-semibold text-slate-700"
+                        >
+                          <div className="flex items-center gap-2">
+                            <FileCheck className="h-3.5 w-3.5 text-indigo-600" />
+                            <span>{d.name} ({d.type})</span>
+                          </div>
+                          <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Officers */}
+                  {searchResults.officers?.items?.length > 0 && (
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Administrative Officers</span>
+                        {searchResults.officers.hasMore && (
+                          <button
+                            onClick={() => {
+                              navigate("/admin/users");
+                              setSearchOpen(false);
+                            }}
+                            className="text-[9px] font-bold text-indigo-650 text-indigo-600 hover:underline"
+                          >
+                            View All ({searchResults.officers.totalCount})
+                          </button>
+                        )}
+                      </div>
+                      {searchResults.officers.items.map((o) => (
+                        <div
+                          key={o.email}
+                          onClick={() => {
+                            navigate("/admin/users");
+                            setSearchOpen(false);
+                          }}
+                          className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-indigo-50/50 cursor-pointer transition border border-transparent hover:border-indigo-100 text-xs font-semibold text-slate-700"
+                        >
+                          <div className="flex items-center gap-2">
+                            <UserCheck className="h-3.5 w-3.5 text-indigo-600" />
+                            <span>{o.name} ({o.email} - {o.dept})</span>
+                          </div>
+                          <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Grievances */}
+                  {searchResults.grievances?.items?.length > 0 && (
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Grievance desk Tickets</span>
+                        {searchResults.grievances.hasMore && (
+                          <button
+                            onClick={() => {
+                              navigate("/admin/grievances");
+                              setSearchOpen(false);
+                            }}
+                            className="text-[9px] font-bold text-indigo-650 text-indigo-600 hover:underline"
+                          >
+                            View All ({searchResults.grievances.totalCount})
+                          </button>
+                        )}
+                      </div>
+                      {searchResults.grievances.items.map((g) => (
                         <div
                           key={g.id}
                           onClick={() => {
@@ -476,7 +630,7 @@ export default function AdminLayout() {
                   )}
 
                   {/* No results checks */}
-                  {Object.values(searchResults).every((arr) => arr.length === 0) && (
+                  {Object.values(searchResults).every((cat) => !cat.items || cat.items.length === 0) && (
                     <div className="p-8 text-center text-slate-400 text-xs font-bold">
                       No matching records found. Try typing another query.
                     </div>

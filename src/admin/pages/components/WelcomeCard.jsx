@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { User, Building, Calendar, Clock, Shield } from "lucide-react";
+import { User, Building, Calendar, Clock, Shield, RefreshCcw } from "lucide-react";
 
-export default function WelcomeCard({ user }) {
+export default function WelcomeCard({ user, onRefresh }) {
   const [greeting, setGreeting] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [currentTime, setCurrentTime] = useState("");
@@ -49,6 +49,15 @@ export default function WelcomeCard({ user }) {
       {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl -ml-12 -mb-12 pointer-events-none" />
+      
+      {/* Refresh button */}
+      <button 
+        onClick={() => onRefresh && onRefresh()} 
+        aria-label="Refresh Dashboard" 
+        className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition z-20"
+      >
+        <RefreshCcw className="h-4 w-4 text-white" />
+      </button>
 
       <div className="relative z-10">
         {/* Government of India branding */}

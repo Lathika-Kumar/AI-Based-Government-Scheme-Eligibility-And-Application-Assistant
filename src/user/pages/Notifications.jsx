@@ -39,30 +39,30 @@ const CATEGORIES = [
 
 const PRIORITY_CONFIG = {
   critical: {
-    border: "border-l-rose-500",
-    dot: "bg-rose-500",
-    badge: "bg-rose-50 text-rose-800 border-rose-200",
-    ring: "ring-rose-100",
+    border: "border-l-red-500",
+    dot: "bg-red-500",
+    badge: "bg-red-50 text-red-800 border-red-200",
+    ring: "ring-red-100",
   },
   high: {
-    border: "border-l-amber-500",
-    dot: "bg-amber-500",
-    badge: "bg-amber-50 text-amber-800 border-amber-200",
-    ring: "ring-amber-100",
+    border: "border-l-saffron-dark",
+    dot: "bg-saffron-dark",
+    badge: "bg-saffron/10 text-saffron-dark border-saffron/20",
+    ring: "ring-saffron/10",
   },
   normal: {
-    border: "border-l-indigo-400",
-    dot: "bg-indigo-400",
-    badge: "bg-indigo-50 text-indigo-700 border-indigo-200",
-    ring: "ring-indigo-100",
+    border: "border-l-government-blue",
+    dot: "bg-government-blue",
+    badge: "bg-government-blue/10 text-government-blue border-government-blue/20",
+    ring: "ring-government-blue/10",
   },
 };
 
 const CATEGORY_COLORS = {
-  application: "bg-indigo-50 text-indigo-700",
-  document: "bg-emerald-50 text-emerald-700",
-  deadline: "bg-rose-50 text-rose-700",
-  system: "bg-violet-50 text-violet-700",
+  application: "bg-government-blue/10 text-government-blue",
+  document: "bg-india-green/10 text-india-green",
+  deadline: "bg-saffron/10 text-saffron-dark",
+  system: "bg-gray-100 text-gray-700",
 };
 
 function timeAgo(timestamp, language) {
@@ -90,20 +90,20 @@ function NotificationCard({ notif, onRead, onDismiss }) {
   const navigate = useNavigate();
   const IconComp = ICON_MAP[notif.icon] || Bell;
   const priority = PRIORITY_CONFIG[notif.priority] || PRIORITY_CONFIG.normal;
-  const catColor = CATEGORY_COLORS[notif.category] || "bg-slate-50 text-slate-700";
+  const catColor = CATEGORY_COLORS[notif.category] || "bg-gray-100 text-gray-700";
 
   const handleAction = () => {
     if (!notif.read) {
-onRead(notif.id);
-}
+      onRead(notif.id);
+    }
     if (notif.actionRoute) {
-navigate(notif.actionRoute);
-}
+      navigate(notif.actionRoute);
+    }
   };
 
   return (
     <div
-      className={`bg-white border border-slate-200 border-l-4 ${priority.border} rounded-2xl p-4 transition hover:shadow-md ${
+      className={`bg-white border border-gray-200 border-l-4 ${priority.border} rounded-2xl p-4 transition hover:shadow-md ${
         !notif.read ? "shadow-sm" : "opacity-80"
       }`}
     >
@@ -119,23 +119,23 @@ navigate(notif.actionRoute);
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className={`text-xs font-bold leading-snug ${!notif.read ? "text-slate-900" : "text-slate-600"}`}>
+              <h3 className={`text-xs font-bold leading-snug ${!notif.read ? "text-gray-900" : "text-gray-600"}`}>
                 {t("notif_" + notif.id + "_title") || notif.title}
               </h3>
               {!notif.read && (
-                <span className="h-2 w-2 bg-indigo-500 rounded-full shrink-0" />
+                <span className="h-2 w-2 bg-government-blue rounded-full shrink-0" />
               )}
             </div>
             <button
               onClick={() => onDismiss(notif.id)}
-              className="text-slate-300 hover:text-rose-400 p-1 rounded-lg transition shrink-0"
+              className="text-gray-300 hover:text-red-400 p-1 rounded-lg transition shrink-0"
               title={t("notif_dismiss") || "Dismiss"}
             >
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
 
-          <p className="text-[11px] text-slate-500 leading-relaxed mt-1">
+          <p className="text-[11px] text-gray-500 leading-relaxed mt-1">
             {t("notif_" + notif.id + "_body") || notif.body}
           </p>
 
@@ -144,17 +144,17 @@ navigate(notif.actionRoute);
               <span className={`text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full border ${priority.badge}`}>
                 {t("vault_priority_" + notif.priority) || notif.priority}
               </span>
-              <span className={`text-[9px] font-semibold uppercase px-2 py-0.5 rounded-full ${catColor}`}>
+              <span className={`text-[9px] font-semibold uppercase px-2 py-0.5 rounded-full border ${catColor} border-gray-200`}>
                 {t("notif_cat_" + notif.category) || notif.category}
               </span>
-              <span className="text-[10px] text-slate-400">{timeAgo(notif.timestamp, language)}</span>
+              <span className="text-[10px] text-gray-400">{timeAgo(notif.timestamp, language)}</span>
             </div>
 
             <div className="flex items-center gap-2">
               {!notif.read && (
                 <button
                   onClick={() => onRead(notif.id)}
-                  className="text-[10px] text-slate-400 hover:text-indigo-600 font-semibold transition flex items-center gap-1"
+                  className="text-[10px] text-gray-400 hover:text-government-blue font-semibold transition flex items-center gap-1"
                 >
                   <CheckCircle2 className="h-3 w-3" />
                   {t("notif_mark_read_btn") || "Mark read"}
@@ -163,7 +163,7 @@ navigate(notif.actionRoute);
               {notif.actionRoute && (
                 <button
                   onClick={handleAction}
-                  className="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-lg transition"
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-government-blue hover:text-government-blue-dark bg-government-blue/10 hover:bg-government-blue/20 px-2.5 py-1 rounded-lg transition"
                 >
                   {t("notif_" + notif.id + "_action") || notif.actionLabel || "View"}
                   <ArrowRight className="h-3 w-3" />
@@ -189,6 +189,8 @@ export default function Notifications() {
 
   const [activeCategory, setActiveCategory] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 700);
@@ -201,29 +203,42 @@ export default function Notifications() {
     );
   }, [notifications, activeCategory]);
 
+  // Reset page when filtered changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filtered]);
+
+  // Paginated list
+  const paginated = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filtered.slice(start, start + itemsPerPage);
+  }, [filtered, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
   const criticalCount = notifications.filter((n) => n.priority === "critical" && !n.read).length;
 
   return (
     <div className="space-y-5">
       {isLoading ? (
         <div className="space-y-3">
-          <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm animate-pulse">
-            <div className="h-5 w-36 bg-slate-200 rounded mb-2" />
-            <div className="h-3 w-48 bg-slate-100 rounded" />
+          <div className="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm animate-pulse">
+            <div className="h-5 w-36 bg-gray-200 rounded mb-2" />
+            <div className="h-3 w-48 bg-gray-100 rounded" />
           </div>
           {[1,2,3,4].map(i => <ListRowSkeleton key={i} />)}
         </div>
       ) : (<>
       {/* Header */}
-      <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+      <div className="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="bg-indigo-600 p-2.5 rounded-xl">
+            <div className="bg-government-blue p-2.5 rounded-xl">
               <Bell className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-slate-900">{t("notif_title") || "Notifications"}</h1>
-              <p className="text-slate-500 text-xs mt-0.5">
+              <h1 className="text-lg font-bold text-gray-900">{t("notif_title") || "Notifications"}</h1>
+              <p className="text-gray-500 text-xs mt-0.5">
                 {unreadCount > 0
                   ? t("notif_unread_" + (unreadCount === 1 ? "singular" : "plural"), { n: unreadCount }) || `${unreadCount} unread notification${unreadCount > 1 ? "s" : ""}`
                   : t("notif_all_read") || "All caught up"}
@@ -233,7 +248,7 @@ export default function Notifications() {
           {unreadCount > 0 && (
             <button
               onClick={markAllNotificationsRead}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-xl transition shrink-0"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-government-blue hover:text-government-blue-dark bg-government-blue/10 hover:bg-government-blue/20 px-4 py-2 rounded-xl transition shrink-0"
             >
               <CheckCheck className="h-4 w-4" />
               {t("notif_mark_all_as_read") || "Mark all as read"}
@@ -243,8 +258,8 @@ export default function Notifications() {
 
         {/* Critical banner */}
         {criticalCount > 0 && (
-          <div className="mt-4 flex items-start gap-2.5 bg-rose-50 border border-rose-200 p-3.5 rounded-xl text-xs text-rose-800">
-            <AlertCircle className="h-4 w-4 text-rose-600 shrink-0 mt-0.5" />
+          <div className="mt-4 flex items-start gap-2.5 bg-red-50 border border-red-200 p-3.5 rounded-xl text-xs text-red-800">
+            <AlertCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />
             <p>
               <strong>
                 {t(criticalCount === 1 ? "notif_critical_alerts" : "notif_critical_alerts_plural", { n: criticalCount }) ||
@@ -268,8 +283,8 @@ export default function Notifications() {
               onClick={() => setActiveCategory(cat.id)}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition shrink-0 ${
                 activeCategory === cat.id
-                  ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white border border-slate-200 text-slate-600 hover:border-slate-300"
+                  ? "bg-gray-900 text-white shadow-sm"
+                  : "bg-white border border-gray-200 text-gray-600 hover:border-gray-300"
               }`}
             >
               {t("notif_cat_" + cat.id) || cat.label}
@@ -277,7 +292,7 @@ export default function Notifications() {
                 className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
                   activeCategory === cat.id
                     ? "bg-white/20 text-white"
-                    : "bg-slate-100 text-slate-500"
+                    : "bg-gray-100 text-gray-500"
                 }`}
               >
                 {catCount}
@@ -309,13 +324,13 @@ export default function Notifications() {
         />
       ) : (
         <div className="space-y-3">
-          {/* Unread section */}
-          {filtered.some((n) => !n.read) && (
+          {/* Unread section in current page */}
+          {paginated.some((n) => !n.read) && (
             <div className="space-y-3">
-              <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold px-1">
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold px-1">
                 {t("notif_unread_label") || "Unread"}
               </p>
-              {filtered
+              {paginated
                 .filter((n) => !n.read)
                 .map((notif) => (
                   <NotificationCard
@@ -328,13 +343,13 @@ export default function Notifications() {
             </div>
           )}
 
-          {/* Read section */}
-          {filtered.some((n) => n.read) && (
+          {/* Read section in current page */}
+          {paginated.some((n) => n.read) && (
             <div className="space-y-3">
-              <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold px-1 mt-2">
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold px-1 mt-2">
                 {t("notif_earlier_label") || "Earlier"}
               </p>
-              {filtered
+              {paginated
                 .filter((n) => n.read)
                 .map((notif) => (
                   <NotificationCard
@@ -344,6 +359,44 @@ export default function Notifications() {
                     onDismiss={dismissNotification}
                   />
                 ))}
+            </div>
+          )}
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between bg-white border border-gray-200 rounded-2xl p-3 text-xs">
+              <span className="text-gray-500 font-semibold">
+                Page <span className="text-gray-800 font-bold">{currentPage}</span> of <span className="text-gray-800 font-bold">{totalPages}</span>
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  Prev
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-2.5 py-1 rounded-lg text-sm font-bold transition ${
+                      page === currentPage
+                        ? "bg-government-blue text-white shadow-sm"
+                        : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-2.5 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           )}
         </div>

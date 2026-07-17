@@ -70,16 +70,13 @@ export default function Profile() {
           .high-contrast-mode {
             filter: contrast(1.2);
           }
-          .high-contrast-mode bg-white, 
           .high-contrast-mode .bg-white {
             background-color: #000000 !important;
             color: #FFFF00 !important;
             border-color: #FFFF00 !important;
           }
-          .high-contrast-mode text-slate-800,
-          .high-contrast-mode text-slate-900,
-          .high-contrast-mode .text-slate-900,
-          .high-contrast-mode .text-slate-800 {
+          .high-contrast-mode .text-gray-800,
+          .high-contrast-mode .text-gray-900 {
             color: #FFFF00 !important;
           }
           .high-contrast-mode select,
@@ -95,8 +92,8 @@ export default function Profile() {
       rootEl.classList.remove("high-contrast-mode");
       const styleEl = document.getElementById("high-contrast-styles");
       if (styleEl) {
-styleEl.remove();
-}
+        styleEl.remove();
+      }
     }
 
     // Dynamic Font Size adjustment on main container
@@ -196,9 +193,9 @@ styleEl.remove();
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-xs animate-pulse">
-          <div className="h-6 w-48 bg-slate-200 rounded mb-2" />
-          <div className="h-3 w-80 bg-slate-100 rounded" />
+        <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-xs animate-pulse">
+          <div className="h-6 w-48 bg-gray-200 rounded mb-2" />
+          <div className="h-3 w-80 bg-gray-100 rounded" />
         </div>
         <FormSectionSkeleton />
         <FormSectionSkeleton />
@@ -211,27 +208,27 @@ styleEl.remove();
     <div className="space-y-6">
 
       {/* Page Header */}
-      <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-xs space-y-4">
+      <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-xs space-y-4">
         <div>
-          <h1 className="text-xl font-black text-slate-900 tracking-tight">{t("profile_title") || "Eligibility Profile"}</h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <h1 className="text-xl font-black text-gray-900 tracking-tight">{t("profile_title") || "Eligibility Profile"}</h1>
+          <p className="text-xs text-gray-500 mt-0.5">
             {t("profile_subtitle") || "Keep your socio-economic attributes accurate. These fields determine matching government schemes."}
           </p>
         </div>
 
         {/* Dynamic Completion Percentage Bar */}
-        <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
+        <div className="bg-gray-50 border border-gray-200 p-4 rounded-xl space-y-2">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-bold text-slate-700">{t("profile_completion") || "Profile Completion Progress"}</span>
-            <span className="font-black text-indigo-700">{profileCompletionPercentage}%</span>
+            <span className="font-bold text-gray-700">{t("profile_completion") || "Profile Completion Progress"}</span>
+            <span className="font-black text-government-blue">{profileCompletionPercentage}%</span>
           </div>
-          <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-indigo-650 bg-indigo-600 rounded-full transition-all duration-500"
+              className="h-full bg-government-blue rounded-full transition-all duration-500"
               style={{ width: `${profileCompletionPercentage}%` }}
             />
           </div>
-          <p className="text-[10px] text-slate-400 font-medium leading-none">
+          <p className="text-[10px] text-gray-400 font-medium leading-none">
             {profileCompletionPercentage === 100
               ? (t("profile_complete_msg") || "✓ Profile completely populated. Match engine operating at maximum efficiency.")
               : (t("profile_incomplete_msg") || "Complete the remaining demographic parameters to receive fully authenticated recommendation files.")}
@@ -240,8 +237,8 @@ styleEl.remove();
       </div>
 
       {savedSuccess && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-4 rounded-xl flex items-center gap-2 shadow-xs">
-          <Sparkles className="h-4 w-4 text-emerald-600 shrink-0" />
+        <div className="bg-india-green/10 border border-india-green/20 text-india-green-dark text-xs p-4 rounded-xl flex items-center gap-2 shadow-xs">
+          <Sparkles className="h-4 w-4 text-india-green shrink-0" />
           <span>{t("profile_saved_success") || "Profile configuration successfully saved! Redirecting to Dashboard..."}</span>
         </div>
       )}
@@ -250,18 +247,18 @@ styleEl.remove();
       <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
         {/* Left Columns: Form Fields */}
-        <div className="lg:col-span-2 space-y-6 bg-white border border-slate-200 p-6 rounded-2xl shadow-xs">
+        <div className="lg:col-span-2 space-y-6 bg-white border border-gray-200 p-6 rounded-2xl shadow-xs">
 
           {/* Section 1: Personal Information */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-              <User className="h-4.5 w-4.5 text-indigo-500" />
-              <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">{t("profile_personal_info") || "Personal Information"}</h3>
+            <div className="flex items-center gap-2 border-b border-gray-100 pb-2">
+              <User className="h-4.5 w-4.5 text-government-blue" />
+              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest">{t("profile_personal_info") || "Personal Information"}</h3>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_full_name") || "Full Name"}
                 </label>
                 <input
@@ -271,12 +268,12 @@ styleEl.remove();
                   onChange={handleInputChange}
                   required
                   placeholder={t("profile_enter_name") || "Enter your name"}
-                  className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-950 transition"
+                  className="w-full text-xs px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-government-blue transition"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_age") || "Age (Years)"}
                 </label>
                 <input
@@ -287,19 +284,19 @@ styleEl.remove();
                   required
                   min="1"
                   max="120"
-                  className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 transition"
+                  className="w-full text-xs px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-government-blue transition"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_gender") || "Gender"}
                 </label>
                 <select
                   name="gender"
                   value={formData.gender}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   <option value="Male">{t("profile_gender_male") || "Male"}</option>
                   <option value="Female">{t("profile_gender_female") || "Female"}</option>
@@ -308,14 +305,14 @@ styleEl.remove();
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_state") || "State of Residence"}
                 </label>
                 <select
                   name="state"
                   value={formData.state}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   {INDIAN_STATES_AND_UTS.map((st) => (
                     <option key={st} value={st}>{st}</option>
@@ -326,22 +323,22 @@ styleEl.remove();
           </div>
 
           {/* Section 2: Education & Occupation */}
-          <div className="space-y-4 pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-              <Briefcase className="h-4.5 w-4.5 text-indigo-500" />
-              <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">{t("profile_education_occupation") || "Education & Occupation"}</h3>
+          <div className="space-y-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2 border-b border-gray-100 pb-2">
+              <Briefcase className="h-4.5 w-4.5 text-government-blue" />
+              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest">{t("profile_education_occupation") || "Education & Occupation"}</h3>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_edu_qualification") || "Educational Qualification"}
                 </label>
                 <select
                   name="education"
                   value={formData.education}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   {EDUCATION_OPTIONS.map((edu) => (
                     <option key={edu} value={edu}>{edu}</option>
@@ -350,14 +347,14 @@ styleEl.remove();
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_primary_occupation") || "Primary Occupation"}
                 </label>
                 <select
                   name="occupation"
                   value={formData.occupation}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   {OCCUPATION_OPTIONS.map((occ) => (
                     <option key={occ} value={occ}>{occ}</option>
@@ -366,7 +363,7 @@ styleEl.remove();
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_annual_income") || "Annual Household Income (₹)"}
                 </label>
                 <input
@@ -376,9 +373,9 @@ styleEl.remove();
                   onChange={handleInputChange}
                   required
                   min="0"
-                  className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 transition"
+                  className="w-full text-xs px-3.5 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-government-blue transition"
                 />
-                <span className="text-[9px] text-slate-400 font-semibold block mt-1 leading-none">
+                <span className="text-[9px] text-gray-400 font-semibold block mt-1 leading-none">
                   {t("profile_income_hint") || "Provide gross annual income. This will be validated against your Income Certificate."}
                 </span>
               </div>
@@ -386,21 +383,21 @@ styleEl.remove();
           </div>
 
           {/* Section 3: Social Group */}
-          <div className="space-y-4 pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-              <MapPin className="h-4.5 w-4.5 text-indigo-500" />
-              <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">{t("profile_social_group") || "Socio-demographic Category"}</h3>
+          <div className="space-y-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2 border-b border-gray-100 pb-2">
+              <MapPin className="h-4.5 w-4.5 text-government-blue" />
+              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest">{t("profile_social_group") || "Socio-demographic Category"}</h3>
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                 {t("profile_caste_category") || "Caste / Reservation Category"}
               </label>
               <select
                 name="caste"
                 value={formData.caste}
                 onChange={handleInputChange}
-                className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
               >
                 {CASTE_OPTIONS.map((cst) => (
                   <option key={cst} value={cst}>{cst}</option>
@@ -410,22 +407,22 @@ styleEl.remove();
           </div>
 
           {/* Section 4: System Preferences (Language & Accessibility) */}
-          <div className="space-y-4 pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-              <Eye className="h-4.5 w-4.5 text-indigo-500" />
-              <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">{t("profile_sys_prefs") || "System Preferences & Accessibility"}</h3>
+          <div className="space-y-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2 border-b border-gray-100 pb-2">
+              <Eye className="h-4.5 w-4.5 text-government-blue" />
+              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest">{t("profile_sys_prefs") || "System Preferences & Accessibility"}</h3>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_pref_language") || "Preferred Portal Language"}
                 </label>
                 <select
                   name="preferredLanguage"
                   value={formData.preferredLanguage}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   <option value="en">English</option>
                   <option value="hi">हिंदी (Hindi)</option>
@@ -436,14 +433,14 @@ styleEl.remove();
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_font_size") || "Display Font Size"}
                 </label>
                 <select
                   name="fontSize"
                   value={formData.fontSize}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   <option value="normal">{t("profile_font_normal") || "Normal Text"}</option>
                   <option value="large">{t("profile_font_large") || "Large Text"}</option>
@@ -452,14 +449,14 @@ styleEl.remove();
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_contrast_mode") || "Color Contrast Mode"}
                 </label>
                 <select
                   name="highContrast"
                   value={formData.highContrast}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   <option value="standard">{t("profile_contrast_standard") || "Standard Contrast"}</option>
                   <option value="high-contrast">{t("profile_contrast_high") || "High Contrast Mode"}</option>
@@ -467,14 +464,14 @@ styleEl.remove();
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {t("profile_audio_narration") || "Audio Screen Narration"}
                 </label>
                 <select
                   name="audioGuidance"
                   value={formData.audioGuidance}
                   onChange={handleInputChange}
-                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 bg-slate-50 text-slate-700 hover:bg-slate-100/50 focus:outline-none cursor-pointer"
+                  className="w-full text-xs border border-gray-200 rounded-xl px-3.5 py-2.5 bg-gray-50 text-gray-700 hover:bg-gray-100/50 focus:outline-none focus:ring-1 focus:ring-government-blue cursor-pointer"
                 >
                   <option value="disabled">{t("profile_audio_disabled") || "Disabled"}</option>
                   <option value="enabled">{t("profile_audio_enabled") || "Enabled (Text-to-Speech Assistance)"}</option>
@@ -484,10 +481,10 @@ styleEl.remove();
           </div>
 
           {/* Form Actions */}
-          <div className="flex justify-end pt-4 border-t border-slate-100">
+          <div className="flex justify-end pt-4 border-t border-gray-100">
             <button
               type="submit"
-              className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-3 rounded-xl shadow-xs transition active:scale-95"
+              className="inline-flex items-center gap-2 bg-government-blue hover:bg-government-blue-dark text-white text-xs font-bold px-5 py-3 rounded-xl shadow-xs transition active:scale-95"
             >
               <Save className="h-4.5 w-4.5" />
               {t("profile_save_btn") || "Save Profile Attributes"}
@@ -499,37 +496,37 @@ styleEl.remove();
         <div className="space-y-6">
 
           {/* Document Vault Sync */}
-          <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs space-y-4">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-              <FileText className="h-4.5 w-4.5 text-indigo-500" />
-              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest">{t("profile_vault_status") || "Document Vault Status"}</h3>
+          <div className="bg-white border border-gray-200 p-5 rounded-2xl shadow-xs space-y-4">
+            <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
+              <FileText className="h-4.5 w-4.5 text-government-blue" />
+              <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">{t("profile_vault_status") || "Document Vault Status"}</h3>
             </div>
 
             {documents.length === 0 ? (
-              <div className="text-center py-6 text-slate-400">
+              <div className="text-center py-6 text-gray-400">
                 <FileText className="h-8 w-8 mx-auto mb-2 opacity-30" />
                 <p className="text-xs">{t("profile_no_docs") || "No documents uploaded."}</p>
-                <Link to="/documents" className="text-xs text-indigo-600 font-bold underline mt-1 inline-block">
+                <Link to="/documents" className="text-xs text-government-blue font-bold underline mt-1 inline-block">
                   {t("profile_go_vault") || "Go to Document Vault"}
                 </Link>
               </div>
             ) : (
               <div className="space-y-2">
                 {documents.map((doc) => (
-                  <div key={doc.id} className="border border-slate-100 p-3 rounded-xl bg-slate-50/50 flex flex-col gap-1.5 text-xs">
+                  <div key={doc.id} className="border border-gray-100 p-3 rounded-xl bg-gray-50/50 flex flex-col gap-1.5 text-xs">
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-slate-805 text-slate-800 truncate pr-1">{doc.name}</span>
+                      <span className="font-bold text-gray-800 truncate pr-1">{doc.name}</span>
                       <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded border ${
                         doc.status === "verified"
-                          ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                          ? "bg-india-green/10 border-india-green/20 text-india-green"
                           : doc.status === "uploaded" || doc.status === "pending_review"
-                          ? "bg-amber-50 border-amber-200 text-amber-700"
-                          : "bg-rose-50 border-rose-200 text-rose-700"
+                          ? "bg-saffron/10 border-saffron/20 text-saffron-dark"
+                          : "bg-red-50 border-red-200 text-red-700"
                       }`}>
                         {doc.status === "pending_review" ? (t("vault_status_pending") || "Pending Review") : doc.status}
                       </span>
                     </div>
-                    <div className="flex justify-between text-[10px] text-slate-400 font-semibold mt-0.5 leading-none">
+                    <div className="flex justify-between text-[10px] text-gray-400 font-semibold mt-0.5 leading-none">
                       <span>Updated: {doc.date}</span>
                       <span>Issuer: {doc.issuer ? doc.issuer.split(" ")[0] : "Govt"}</span>
                     </div>
@@ -539,7 +536,7 @@ styleEl.remove();
                 <div className="pt-2">
                   <Link
                     to="/documents"
-                    className="w-full inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-350 text-slate-700 text-xs font-bold py-2 rounded-xl transition"
+                    className="w-full inline-flex items-center justify-center gap-1.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-bold py-2 rounded-xl transition"
                   >
                     {t("profile_manage_vault") || "Manage Document Vault"}
                   </Link>
@@ -549,16 +546,16 @@ styleEl.remove();
           </div>
 
           {/* Secure Aadhaar Session Details */}
-          <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs space-y-4">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-              <ShieldCheck className="h-4.5 w-4.5 text-indigo-500" />
-              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest">{t("profile_auth_security") || "Authentication Security"}</h3>
+          <div className="bg-white border border-gray-200 p-5 rounded-2xl shadow-xs space-y-4">
+            <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
+              <ShieldCheck className="h-4.5 w-4.5 text-government-blue" />
+              <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">{t("profile_auth_security") || "Authentication Security"}</h3>
             </div>
 
-            <div className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+            <div className="flex items-center justify-between p-3.5 bg-gray-50 border border-gray-200 rounded-xl">
               <div>
-                <p className="text-xs font-bold text-slate-700">{t("profile_mfa_title") || "Aadhaar MFA Protection"}</p>
-                <p className="text-[9px] text-slate-400 mt-0.5 leading-snug">
+                <p className="text-xs font-bold text-gray-700">{t("profile_mfa_title") || "Aadhaar MFA Protection"}</p>
+                <p className="text-[9px] text-gray-400 mt-0.5 leading-snug">
                   {t("profile_mfa_desc") || "Require Aadhaar OTP for final application disbursements."}
                 </p>
               </div>
@@ -566,7 +563,7 @@ styleEl.remove();
                 type="button"
                 onClick={toggleMfa}
                 className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  mfaEnabled ? "bg-indigo-600" : "bg-slate-300"
+                  mfaEnabled ? "bg-government-blue" : "bg-gray-300"
                 }`}
                 role="switch"
                 aria-checked={mfaEnabled}
@@ -579,10 +576,10 @@ styleEl.remove();
               </button>
             </div>
 
-            <div className="bg-gradient-to-br from-indigo-950 to-slate-950 text-indigo-300 p-4 border border-indigo-900 rounded-xl space-y-2 text-xs">
+            <div className="bg-gradient-to-br from-government-blue-dark to-gray-900 text-government-blue-light p-4 border border-government-blue/20 rounded-xl space-y-2 text-xs">
               <div className="flex justify-between">
                 <span className="opacity-70">{t("profile_session_status") || "Active Session Status"}</span>
-                <span className="text-emerald-400 font-bold">{t("profile_secure_ssl") || "Secure SSL Link"}</span>
+                <span className="text-india-green font-bold">{t("profile_secure_ssl") || "Secure SSL Link"}</span>
               </div>
               <div className="flex justify-between">
                 <span className="opacity-70">{t("profile_audited_ip") || "Audited IP Address"}</span>

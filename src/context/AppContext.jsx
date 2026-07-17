@@ -78,6 +78,30 @@ const DEFAULT_GRIEVANCES = [
   }
 ];
 
+const DEFAULT_FEEDBACK = [
+  {
+    id: "FB-1001",
+    citizenName: "Rajesh Patel",
+    citizenEmail: "rajesh.patel@gmail.com",
+    type: "Portal Rating",
+    rating: 5,
+    comment: "Excellent portal! Very easy to use and AI recommendations are accurate.",
+    date: "2026-06-20",
+    status: "Acknowledged"
+  },
+  {
+    id: "FB-1002",
+    citizenName: "Sunita Sharma",
+    citizenEmail: "sunita@demo.com",
+    type: "Scheme Suggestion",
+    rating: 4,
+    comment: "Would love to see more educational schemes for girl students.",
+    relatedScheme: "Education Schemes",
+    date: "2026-06-19",
+    status: "Under Review"
+  }
+];
+
 // ── Default initial applications ───────────────────────────────────────────
 const DEFAULT_APPLICATIONS = [
   {
@@ -146,6 +170,83 @@ const DEFAULT_APPLICATIONS = [
     nextAction: "Income mismatch. Please upload correct income certificate or file a grievance.",
   }
 ];
+
+const DEFAULT_RECENT_ACTIVITIES = [
+  {
+    id: "act-1",
+    officerName: "Priya Sharma",
+    module: "Applications",
+    activityType: "Approved Application",
+    description: "Application APP-1042 was verified and approved.",
+    relatedEntityId: "APP-1042",
+    timestamp: "5 mins ago",
+    status: "Success"
+  },
+  {
+    id: "act-2",
+    officerName: "Amit Singh",
+    module: "Documents",
+    activityType: "Document Flagged",
+    description: "Aadhaar Card uploaded by Rajesh Patel flagged for OCR warning.",
+    relatedEntityId: "DOC-9023",
+    timestamp: "45 mins ago",
+    status: "Warning"
+  },
+  {
+    id: "act-3",
+    officerName: "Sanjay Kumar",
+    module: "Schemes",
+    activityType: "New Scheme Drafted",
+    description: "Created new scheme draft for Pradhan Mantri Awas Yojana.",
+    relatedEntityId: "pm-awas-yojana",
+    timestamp: "2 hours ago",
+    status: "Success"
+  },
+  {
+    id: "act-4",
+    officerName: "Priya Patel",
+    module: "Grievances",
+    activityType: "Grievance Resolved",
+    description: "Ticket GRV-5219 marked as resolved.",
+    relatedEntityId: "GRV-5219",
+    timestamp: "4 hours ago",
+    status: "Success"
+  },
+  {
+    id: "act-5",
+    officerName: "System",
+    module: "Security",
+    activityType: "MFA Check Triggered",
+    description: "System-wide security policy enforced: Aadhaar OTP-based authentication.",
+    relatedEntityId: "SEC-1002",
+    timestamp: "Yesterday",
+    status: "Info"
+  }
+];
+
+const DEFAULT_USERS_REGISTRY = {
+  citizens: [
+    { name: "Rajesh Patel", email: "citizen@demo.com", phone: "9876543210", state: "Gujarat", occupation: "Farmer", status: "Active", lastLogin: "2 hours ago", workload: "3 applications submitted" },
+    { name: "Aravind Swamy", email: "aravind@demo.com", phone: "9876543211", state: "Tamil Nadu", occupation: "Self-Employed", status: "Active", lastLogin: "1 day ago", workload: "1 application in review" },
+    { name: "Sunita Sharma", email: "sunita@demo.com", phone: "9876543212", state: "Uttar Pradesh", occupation: "Student", status: "Active", lastLogin: "10 mins ago", workload: "2 applications approved" },
+    { name: "Vikram Singh", email: "vikram@demo.com", phone: "9876543213", state: "Maharashtra", occupation: "Unemployed", status: "Suspended", lastLogin: "3 days ago", workload: "No active applications" }
+  ],
+  officers: [
+    { name: "Amit Singh (Verification)", email: "verify@schemebridge.gov.in", phone: "9876543214", dept: "Document Verification Directorate", status: "Active", lastLogin: "5 mins ago", workload: "12 applications in queue" },
+    { name: "Karan Johar", email: "karan@schemebridge.gov.in", phone: "9876543215", dept: "Aadhaar Audit Division", status: "Active", lastLogin: "4 hours ago", workload: "8 applications in queue" }
+  ],
+  managers: [
+    { name: "Neha Sharma (Schemes)", email: "schemes@schemebridge.gov.in", phone: "9876543216", dept: "Ministry of Social Welfare", status: "Active", lastLogin: "12 mins ago", workload: "Managing 5 active schemes" },
+    { name: "Suresh Prabhu", email: "suresh@schemebridge.gov.in", phone: "9876543217", dept: "Ministry of Agriculture", status: "Active", lastLogin: "2 days ago", workload: "Managing 2 active schemes" }
+  ],
+  support: [
+    { name: "Priya Patel", email: "priya@schemebridge.gov.in", phone: "9876543218", dept: "Public Relations & Grievances", status: "Active", lastLogin: "1 hour ago", workload: "8 tickets assigned" },
+    { name: "Ravi Shankar", email: "ravi@schemebridge.gov.in", phone: "9876543219", dept: "Call Support Desk", status: "Active", lastLogin: "30 mins ago", workload: "14 tickets assigned" }
+  ],
+  admins: [
+    { name: "Sanjay Kumar (Admin)", email: "admin@schemebridge.gov.in", phone: "9876543220", dept: "Govt. Scheme Evaluation Board", status: "Active", lastLogin: "Just now", workload: "Super privileges" }
+  ]
+};
 
 export const AppProvider = ({ children }) => {
   const { user } = useAuth();
@@ -272,6 +373,24 @@ return JSON.parse(savedDocs);
   const [grievances, setGrievances] = useState(() => {
     const saved = localStorage.getItem("schemebridge_grievances");
     return saved ? JSON.parse(saved) : DEFAULT_GRIEVANCES;
+  });
+
+  // ── Feedback Database ────────────────────────────────────────────────────
+  const [feedback, setFeedback] = useState(() => {
+    const saved = localStorage.getItem("schemebridge_feedback");
+    return saved ? JSON.parse(saved) : DEFAULT_FEEDBACK;
+  });
+
+  // ── Recent Activities ─────────────────────────────────────────────────────
+  const [recentActivities, setRecentActivities] = useState(() => {
+    const saved = localStorage.getItem("schemebridge_recent_activities");
+    return saved ? JSON.parse(saved) : DEFAULT_RECENT_ACTIVITIES;
+  });
+
+  // ── Users Registry ────────────────────────────────────────────────────────
+  const [usersRegistry, setUsersRegistry] = useState(() => {
+    const saved = localStorage.getItem("schemebridge_users_registry");
+    return saved ? JSON.parse(saved) : DEFAULT_USERS_REGISTRY;
   });
 
   // ── Language & Translations ───────────────────────────────────────────────
@@ -420,6 +539,18 @@ return JSON.parse(savedDocs);
     localStorage.setItem("schemebridge_grievances", JSON.stringify(grievances));
   }, [grievances]);
 
+  useEffect(() => {
+    localStorage.setItem("schemebridge_feedback", JSON.stringify(feedback));
+  }, [feedback]);
+
+  useEffect(() => {
+    localStorage.setItem("schemebridge_recent_activities", JSON.stringify(recentActivities));
+  }, [recentActivities]);
+
+  useEffect(() => {
+    localStorage.setItem("schemebridge_users_registry", JSON.stringify(usersRegistry));
+  }, [usersRegistry]);
+
   // ── Audit Log Action ──────────────────────────────────────────────────────
   const addAuditLog = (actionType, entityType, entityName, detail, actor = "Sanjay Kumar (Admin)") => {
     const now = new Date().toISOString();
@@ -474,6 +605,14 @@ return false;
     setSavedSchemes((prev) => prev.filter((s) => s.schemeId !== scheme.id));
     setApplications((prev) => [newApp, ...prev]);
     addAuditLog("Create", "Application", scheme.name, `Citizen ${profile.name} submitted application reference ${newApp.referenceNo}.`, profile.name);
+    addRecentActivity({
+      officerName: profile.name || "Citizen",
+      module: "Applications",
+      activityType: "Submitted Application",
+      description: `Citizen ${profile.name} submitted application reference ${newApp.referenceNo}.`,
+      relatedEntityId: newApp.id,
+      status: "Success"
+    });
     return true;
   };
 
@@ -510,6 +649,14 @@ return false;
       })
     );
     addAuditLog("Status Change", "Application", schemeName, `Application ${appId} for ${applicantName} updated to status '${newStage}'.`, "Sanjay Kumar (Admin)");
+    addRecentActivity({
+      officerName: "Sanjay Kumar (Admin)",
+      module: "Applications",
+      activityType: `${newStage} Application`,
+      description: `Application ${appId} for ${applicantName} was updated to status '${newStage}'.`,
+      relatedEntityId: appId,
+      status: newStage === "Approved" ? "Success" : newStage === "Rejected" ? "Failure" : "Success"
+    });
   };
 
   // ── Save to Tracker (without applying) ───────────────────────────────────
@@ -679,6 +826,14 @@ return false;
     };
     setSchemes((prev) => [...prev, newScheme]);
     addAuditLog("Create", "Scheme", scheme.name, `New scheme administrative record created in '${newScheme.status}' mode.`);
+    addRecentActivity({
+      officerName: "Sanjay Kumar (Admin)",
+      module: "Schemes",
+      activityType: "Create Scheme",
+      description: `New scheme administrative record '${scheme.name}' created in '${newScheme.status}' mode.`,
+      relatedEntityId: finalId,
+      status: "Success"
+    });
   };
 
   const editScheme = (updatedScheme) => {
@@ -723,6 +878,24 @@ return false;
     return newGrievance.id;
   };
 
+  // ── Feedback Submission Actions ─────────────────────────────────────────
+  const submitFeedback = (data) => {
+    const newFeedback = {
+      id: `FB-${  Math.floor(1000 + Math.random() * 9000)}`,
+      citizenName: profile?.name || "Citizen",
+      citizenEmail: user?.email || "",
+      type: data.type,
+      rating: data.rating,
+      comment: data.comment,
+      relatedScheme: data.relatedScheme || null,
+      status: "Received",
+      date: new Date().toISOString().split("T")[0],
+    };
+    setFeedback((prev) => [newFeedback, ...prev]);
+    addAuditLog("Create", "Feedback", data.type, `Feedback reference ${newFeedback.id} submitted.`, profile?.name || "Citizen");
+    return newFeedback.id;
+  };
+
   const updateGrievanceStatus = (id, newStatus) => {
     let category = "Grievance";
     let relatedScheme = "Scheme";
@@ -737,6 +910,81 @@ return false;
       })
     );
     addAuditLog("Status Change", "Grievance", category, `Grievance ${id} status updated to '${newStatus}' for ${relatedScheme}.`, "Sanjay Kumar (Admin)");
+  };
+
+  const addRecentActivity = (activity) => {
+    const newActivity = {
+      id: `act-${Date.now()}`,
+      timestamp: "Just Now",
+      ...activity
+    };
+    setRecentActivities((prev) => [newActivity, ...prev].slice(0, 20));
+  };
+
+  const toggleRegistryUserStatus = (roleKey, email) => {
+    setUsersRegistry((prev) => {
+      const list = prev[roleKey] || [];
+      const updatedList = list.map((u) =>
+        u.email === email ? { ...u, status: u.status === "Active" ? "Suspended" : "Active" } : u
+      );
+      return { ...prev, [roleKey]: updatedList };
+    });
+  };
+
+  const updateRegistryUser = (roleKey, email, updates) => {
+    setUsersRegistry((prev) => {
+      const list = prev[roleKey] || [];
+      const updatedList = list.map((u) =>
+        u.email === email ? { ...u, ...updates } : u
+      );
+      return { ...prev, [roleKey]: updatedList };
+    });
+  };
+
+  const resetUserPassword = (email) => {
+    // Mock implementation
+    addAuditLog("Password Reset", "User", email, "Password reset initiated for user.");
+  };
+
+  const assignUserRole = (email, oldRole, newRole) => {
+    setUsersRegistry((prev) => {
+      const oldList = prev[oldRole] || [];
+      const userToMove = oldList.find((u) => u.email === email);
+      if (!userToMove) return prev;
+
+      const newOldList = oldList.filter((u) => u.email !== email);
+      const newNewList = [...(prev[newRole] || []), userToMove];
+
+      return { ...prev, [oldRole]: newOldList, [newRole]: newNewList };
+    });
+    addAuditLog("Role Change", "User", email, `User role changed from ${oldRole} to ${newRole}.`);
+  };
+
+  const updateApplicationPriority = (appId, manualPriority) => {
+    let schemeName = "Scheme";
+    let applicantName = "Citizen";
+    setApplications((prev) =>
+      prev.map((a) => {
+        if (a.id === appId) {
+          schemeName = a.schemeName;
+          applicantName = a.applicantName;
+          return {
+            ...a,
+            manualPriority,
+          };
+        }
+        return a;
+      })
+    );
+    addAuditLog("Edit", "Application", schemeName, `Application ${appId} priority manually set to '${manualPriority}'.`, "Sanjay Kumar (Admin)");
+    addRecentActivity({
+      officerName: "Sanjay Kumar (Admin)",
+      module: "Applications",
+      activityType: "Set Priority",
+      description: `Application ${appId} priority manually set to '${manualPriority}'.`,
+      relatedEntityId: appId,
+      status: "Success"
+    });
   };
 
   const resetData = () => {
@@ -797,6 +1045,19 @@ return false;
         grievances,
         submitGrievance,
         updateGrievanceStatus,
+        // Feedback
+        feedback,
+        submitFeedback,
+        // Recent Activities
+        recentActivities,
+        addRecentActivity,
+        // Users Registry
+        usersRegistry,
+        toggleRegistryUserStatus,
+        updateRegistryUser,
+        resetUserPassword,
+        assignUserRole,
+        updateApplicationPriority,
         // Utilities
         resetData,
       }}

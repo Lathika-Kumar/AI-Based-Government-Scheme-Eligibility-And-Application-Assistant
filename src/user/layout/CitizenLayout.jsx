@@ -18,7 +18,8 @@ import {
   RefreshCw,
   HelpCircle,
   Check,
-  ArrowRight
+  ArrowRight,
+  ThumbsUp
 } from "lucide-react";
 
 function OfficialBanner() {
@@ -191,7 +192,8 @@ return n.category === "deadline";
     { name: "Matching Schemes", translationKey: "nav_schemes", path: "/recommendations", icon: Sparkles },
     { name: "Document Vault", translationKey: "nav_vault", path: "/documents", icon: FileText },
     { name: "Application Tracker", translationKey: "nav_tracker", path: "/tracker", icon: ClipboardList },
-    { name: "Help & Support", translationKey: "nav_help", path: "/help", icon: HelpCircle }
+    { name: "Help & Support", translationKey: "nav_help", path: "/help", icon: HelpCircle },
+    { name: "Your Feedback", translationKey: "nav_feedback", path: "/feedback", icon: ThumbsUp }
   ];
 
   return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "@context/AppContext";
 import { getDocReadinessForScheme } from "@utils/documentReadiness";
-import { TimelineSkeleton } from "@components/ui/LoadingSkeleton";
+import { ListRowSkeleton } from "@components/ui/LoadingSkeleton";
 import EmptyState from "@components/ui/EmptyState";
 import SchemeAIChatWidget from "@components/SchemeAIChatWidget";
 import {
@@ -38,7 +38,6 @@ import {
   Plus
 } from "lucide-react";
 
-// Overall stage mapping to indices
 const STAGE_INDICES = {
   "Saved": 0,
   "Preparing Documents": 1,
@@ -58,7 +57,6 @@ const TIMELINE_STAGES = [
   { key: "Approved", label: "Approved / Rejected", description: "Final decision completed and mandate generated." }
 ];
 
-// Returns overall project progress percentage
 function getOverallProgress(stage) {
   switch (stage) {
     case "Saved": return 15;
@@ -72,22 +70,13 @@ function getOverallProgress(stage) {
   }
 }
 
-// Get dynamic color scheme for ministry category
 function getMinistryBgColor(ministry = "") {
   const m = ministry.toLowerCase();
-  if (m.includes("finance")) {
-return "bg-indigo-50 text-indigo-700 border-indigo-150";
-}
-  if (m.includes("agriculture")) {
-return "bg-emerald-50 text-emerald-700 border-emerald-150";
-}
-  if (m.includes("housing")) {
-return "bg-amber-50 text-amber-700 border-amber-150";
-}
-  if (m.includes("women")) {
-return "bg-rose-50 text-rose-700 border-rose-150";
-}
-  return "bg-slate-50 text-slate-700 border-slate-150";
+  if (m.includes("finance")) return "bg-government-blue/10 text-government-blue border-government-blue/20";
+  if (m.includes("agriculture")) return "bg-india-green/10 text-india-green border-india-green/20";
+  if (m.includes("housing")) return "bg-saffron/10 text-saffron-dark border-saffron/20";
+  if (m.includes("women")) return "bg-rose-50 text-rose-700 border-rose-200";
+  return "bg-gray-50 text-gray-700 border-gray-200";
 }
 
 export default function Tracker() {
@@ -97,31 +86,27 @@ export default function Tracker() {
     schemes,
     documents,
     profile,
-    submitGrievance,
-    language,
-    t
+    submitGrievance
   } = useApp();
 
   const navigate = useNavigate();
 
-  // Page States
   const [selectedId, setSelectedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("latest");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  // Chat/AI States
   const [aiChatOpen, setAiChatOpen] = useState(false);
   const [aiInitialQuery, setAiInitialQuery] = useState("");
 
-  // Grievance panel per selected application
   const [showGrievance, setShowGrievance] = useState(false);
   const [grievanceData, setGrievanceData] = useState({ category: "Delay in Processing", description: "" });
   const [grievanceSuccess, setGrievanceSuccess] = useState(false);
 
-  // Simulation loading
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 800);
     return () => clearTimeout(timer);
@@ -136,7 +121,6 @@ export default function Tracker() {
     }, 600);
   };
 
-  // Combine applications and savedSchemes into a unified list
   const allEntries = useMemo(() => {
     return [
       ...applications.map((a) => ({ ...a, _type: "applied" })),
@@ -144,15 +128,12 @@ export default function Tracker() {
     ];
   }, [applications, savedSchemes]);
 
-  // Filter entries
   const filteredEntries = useMemo(() => {
     return allEntries.filter((entry) => {
-      // 1. Status Filter
       const stage = entry.currentStage || entry.stage || "Saved";
       if (statusFilter !== "all" && stage !== statusFilter) {
         return false;
       }
-      // 2. Search Query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchesName = entry.schemeName.toLowerCase().includes(q);
@@ -165,7 +146,10 @@ export default function Tracker() {
     });
   }, [allEntries, statusFilter, searchQuery]);
 
-  // Sort entries
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredEntries]);
+
   const sortedEntries = useMemo(() => {
     const list = [...filteredEntries];
     if (sortBy === "latest") {
@@ -186,34 +170,29 @@ export default function Tracker() {
         const stageB = b.currentStage || b.stage || "";
         return stageA.localeCompare(stageB);
       });
-    } else if (sortBy === "deadline") {
-      // Sort alphabetically as fallback
-      list.sort((a, b) => a.schemeName.localeCompare(b.schemeName));
     }
     return list;
   }, [filteredEntries, sortBy]);
 
-  // Selected Entry Selection
+  const paginatedEntries = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return sortedEntries.slice(start, start + itemsPerPage);
+  }, [sortedEntries, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(sortedEntries.length / itemsPerPage);
+
   const selectedEntry = useMemo(() => {
-    if (sortedEntries.length === 0) {
-return null;
-}
+    if (sortedEntries.length === 0) return null;
     const found = sortedEntries.find((e) => (e.id || e.schemeId) === selectedId);
     return found || sortedEntries[0];
   }, [sortedEntries, selectedId]);
 
-  // Calculate readiness of the selected entry
   const selectedReadiness = useMemo(() => {
-    if (!selectedEntry) {
-return null;
-}
+    if (!selectedEntry) return null;
     const scheme = schemes.find((s) => s.id === selectedEntry.schemeId);
-    return scheme
-      ? getDocReadinessForScheme(scheme.requiredDocuments, documents)
-      : { readinessScore: 0, missingDocs: [] };
+    return scheme ? getDocReadinessForScheme(scheme.requiredDocuments, documents) : { readinessScore: 0, missingDocs: [] };
   }, [selectedEntry, schemes, documents]);
 
-  // Overall counts for summary headers
   const stats = useMemo(() => {
     return {
       total: allEntries.length,
@@ -223,16 +202,13 @@ return null;
     };
   }, [allEntries, applications]);
 
-  // Grievance Submit Handler
   const handleGrievanceSubmit = (e) => {
     e.preventDefault();
-    if (!grievanceData.description.trim() || !selectedEntry) {
-return;
-}
+    if (!grievanceData.description.trim() || !selectedEntry) return;
 
     submitGrievance({
       phone: profile?.phone || "9876543210",
-      email: profile?.email || "rajesh.patel@gmail.com",
+      email: profile?.email || "citizen@schemebridge.gov.in",
       relatedScheme: selectedEntry.schemeName,
       category: grievanceData.category,
       description: grievanceData.description,
@@ -246,29 +222,27 @@ return;
     }, 2000);
   };
 
-  // Get status color mappings
   const getStatusBadge = (stage) => {
     switch (stage) {
       case "Saved":
-        return { label: "Draft", style: "bg-slate-100 text-slate-700 border-slate-200" };
+        return { label: "Draft", style: "bg-gray-100 text-gray-700 border-gray-200" };
       case "Preparing Documents":
-        return { label: "Preparing", style: "bg-amber-50 text-amber-700 border-amber-250 border-amber-200" };
+        return { label: "Preparing", style: "bg-saffron/10 text-saffron-dark border-saffron/20" };
       case "Ready to Apply":
-        return { label: "Ready", style: "bg-blue-50 text-blue-700 border-blue-200" };
+        return { label: "Ready", style: "bg-government-blue/10 text-government-blue border-government-blue/20" };
       case "Submitted":
-        return { label: "Applied", style: "bg-indigo-50 text-indigo-700 border-indigo-200" };
+        return { label: "Applied", style: "bg-government-blue/10 text-government-blue border-government-blue/20" };
       case "Under Review":
-        return { label: "Under Review", style: "bg-blue-50 text-blue-800 border-blue-200" };
+        return { label: "Under Review", style: "bg-government-blue/10 text-government-blue border-government-blue/20" };
       case "Approved":
-        return { label: "Approved", style: "bg-emerald-50 text-emerald-800 border-emerald-200" };
+        return { label: "Approved", style: "bg-india-green/10 text-india-green border-india-green/20" };
       case "Rejected":
-        return { label: "Rejected", style: "bg-rose-50 text-rose-800 border-rose-200" };
+        return { label: "Rejected", style: "bg-red-50 text-red-700 border-red-200" };
       default:
-        return { label: stage, style: "bg-slate-100 text-slate-700 border-slate-200" };
+        return { label: stage, style: "bg-gray-100 text-gray-700 border-gray-200" };
     }
   };
 
-  // Simulated expected decision and benefits mapping
   const getSchemeAdditions = (schemeId) => {
     switch (schemeId) {
       case "atal-pension-yojana":
@@ -290,74 +264,68 @@ return;
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-1 sm:px-4">
-      {/* Centralized Stat Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: t("track_total_apps") || "Total Applications", val: stats.total, color: "border-b-slate-400 text-slate-900" },
-          { label: t("track_submitted_apps") || "Submitted Applications", val: stats.applied, color: "border-b-indigo-500 text-indigo-700" },
-          { label: t("track_under_review") || "Under Review Desk", val: stats.review, color: "border-b-blue-500 text-blue-700" },
-          { label: t("track_approved_mandates") || "Approved Mandates", val: stats.approved, color: "border-b-emerald-500 text-emerald-700" }
+          { label: "Total Applications", val: stats.total, color: "border-b-gray-400 text-gray-900" },
+          { label: "Submitted Applications", val: stats.applied, color: "border-b-government-blue text-government-blue" },
+          { label: "Under Review", val: stats.review, color: "border-b-saffron text-saffron-dark" },
+          { label: "Approved Mandates", val: stats.approved, color: "border-b-india-green text-india-green" }
         ].map((sItem, index) => (
-          <div key={index} className={`bg-white border border-slate-200 border-b-4 ${sItem.color} rounded-2xl p-4 shadow-sm flex flex-col justify-between`}>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{sItem.label}</span>
-            <span className="text-3xl font-black mt-2 leading-none">{sItem.val}</span>
+          <div key={index} className={`bg-white border border-gray-200 border-b-4 ${sItem.color} rounded-2xl p-4 shadow-sm flex flex-col justify-between`}>
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">{sItem.label}</span>
+            <span className="text-3xl font-bold mt-2 leading-none">{sItem.val}</span>
           </div>
         ))}
       </div>
 
-      {/* Main Two-Column Structure */}
       {isLoading ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 space-y-4">
-            <div className="bg-white border border-slate-200 p-4 rounded-2xl animate-pulse space-y-3">
-              <div className="h-9 w-full bg-slate-200 rounded-xl" />
-              <div className="h-10 w-full bg-slate-100 rounded-xl" />
+            <div className="bg-white border border-gray-200 p-4 rounded-2xl animate-pulse space-y-3">
+              <div className="h-9 w-full bg-gray-200 rounded-xl" />
+              <div className="h-10 w-full bg-gray-100 rounded-xl" />
             </div>
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white border border-slate-200 p-5 rounded-2xl animate-pulse space-y-3">
-                <div className="h-4 w-3/4 bg-slate-200 rounded" />
-                <div className="h-3 w-1/2 bg-slate-100 rounded" />
-                <div className="h-2 w-full bg-slate-100 rounded" />
+              <div key={i} className="bg-white border border-gray-200 p-5 rounded-2xl animate-pulse space-y-3">
+                <div className="h-4 w-3/4 bg-gray-200 rounded" />
+                <div className="h-3 w-1/2 bg-gray-100 rounded" />
+                <div className="h-2 w-full bg-gray-100 rounded" />
               </div>
             ))}
           </div>
           <div className="lg:col-span-7 space-y-6">
-            <TimelineSkeleton />
+            <ListRowSkeleton />
           </div>
         </div>
       ) : allEntries.length === 0 ? (
         <EmptyState
           icon={ClipboardList}
-          title={t("tracker_empty_title") || "Nothing tracked yet"}
-          description={t("tracker_empty_desc") || "Browse scheme recommendations and save or apply to schemes to track them here."}
+          title="Nothing tracked yet"
+          description="Browse scheme recommendations and save or apply to schemes to track them here."
           action={{
-            label: t("tracker_find_schemes") || "Find Matching Schemes",
+            label: "Find Matching Schemes",
             onClick: () => navigate("/recommendations"),
             icon: Sparkles
           }}
         />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-          {/* ================= LEFT COLUMN: LIST PANEL ================= */}
           <div className="lg:col-span-5 space-y-4">
-
-            {/* Top Toolbar card */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm space-y-3">
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <Search className="absolute left-2.5 top-2 h-4 w-4 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t("track_search_placeholder") || "Search by scheme name, ID or ministry..."}
-                    className="w-full text-xs pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-800"
+                    placeholder="Search by scheme name, ID or ministry..."
+                    className="w-full text-sm pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-government-blue text-gray-800"
                   />
                 </div>
                 <button
                   onClick={handleRefresh}
-                  className={`p-2 border border-slate-200 rounded-xl text-slate-500 hover:text-slate-800 bg-white hover:bg-slate-50 transition shrink-0 ${isRefreshing ? "animate-spin" : ""}`}
+                  className={`p-2 border border-gray-200 rounded-xl text-gray-500 hover:text-gray-800 bg-white hover:bg-gray-50 transition shrink-0 ${isRefreshing ? "animate-spin" : ""}`}
                   title="Refresh List"
                 >
                   <RefreshCw className="h-4.5 w-4.5" />
@@ -366,56 +334,51 @@ return;
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">{t("gen_filter") || "Status Filter"}</label>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Status Filter</label>
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full text-xs p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full text-sm p-2 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-government-blue"
                   >
-                    <option value="all">{t("tracker_tab_all") || "All Statuses"}</option>
-                    <option value="Saved">{t("tracker_stage_saved") || "Draft / Saved"}</option>
-                    <option value="Preparing Documents">{t("tracker_stage_preparing") || "Preparing"}</option>
-                    <option value="Ready to Apply">{t("tracker_stage_ready") || "Ready to Apply"}</option>
-                    <option value="Submitted">{t("tracker_stage_submitted") || "Submitted / Applied"}</option>
-                    <option value="Under Review">{t("tracker_stage_review") || "Under Review"}</option>
-                    <option value="Approved">{t("tracker_stage_approved") || "Approved"}</option>
-                    <option value="Rejected">{t("tracker_stage_rejected") || "Rejected"}</option>
+                    <option value="all">All Statuses</option>
+                    <option value="Saved">Draft / Saved</option>
+                    <option value="Preparing Documents">Preparing</option>
+                    <option value="Ready to Apply">Ready to Apply</option>
+                    <option value="Submitted">Submitted / Applied</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">{t("track_sort_by") || "Sort By"}</label>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Sort By</label>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full text-xs p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full text-sm p-2 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-government-blue"
                   >
-                    <option value="latest">{t("track_sort_latest") || "Latest Updates"}</option>
-                    <option value="oldest">{t("track_sort_oldest") || "Oldest Updates"}</option>
-                    <option value="status">{t("track_sort_status") || "Status Order"}</option>
-                    <option value="deadline">{t("track_sort_name") || "Alphabetical"}</option>
+                    <option value="latest">Latest Updates</option>
+                    <option value="oldest">Oldest Updates</option>
+                    <option value="status">Status Order</option>
                   </select>
                 </div>
               </div>
             </div>
 
-            {/* List Stack */}
-            <div className="space-y-3 max-h-[640px] overflow-y-auto pr-1">
+            <div className="space-y-3 max-h-[560px] overflow-y-auto pr-1">
               {sortedEntries.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-400 text-xs">
+                <div className="bg-white border border-gray-200 rounded-2xl p-10 text-center text-gray-400 text-sm">
                   No applications match your active search filter criteria.
                 </div>
               ) : (
-                sortedEntries.map((entry) => {
+                paginatedEntries.map((entry) => {
                   const isSelected = selectedEntry && (entry.id || entry.schemeId) === (selectedEntry.id || selectedEntry.schemeId);
                   const badge = getStatusBadge(entry.currentStage || entry.stage);
                   const scheme = schemes.find((s) => s.id === entry.schemeId);
-                  const docReadiness = scheme
-                    ? getDocReadinessForScheme(scheme.requiredDocuments, documents)
-                    : { readinessScore: 0 };
+                  const docReadiness = scheme ? getDocReadinessForScheme(scheme.requiredDocuments, documents) : { readinessScore: 0 };
                   const progressPct = getOverallProgress(entry.currentStage || entry.stage);
 
-                  // Dynamically build clean initials/logo label
                   const initials = entry.schemeName
                     .replace("Pradhan Mantri", "PM")
                     .split(" ")
@@ -433,65 +396,58 @@ return;
                       }}
                       className={`w-full text-left p-4 rounded-2xl border transition duration-200 flex flex-col gap-3 hover:-translate-y-0.5 hover:shadow-md ${
                         isSelected
-                          ? "bg-indigo-50/40 border-indigo-500 ring-1 ring-indigo-500 shadow-sm"
-                          : "bg-white border-slate-200 hover:border-slate-350"
+                          ? "bg-government-blue/5 border-government-blue ring-1 ring-government-blue/30 shadow-sm"
+                          : "bg-white border-gray-200 hover:border-gray-300"
                       }`}
                     >
                       <div className="flex items-start gap-3 w-full">
-                        {/* Scheme Logo Box */}
-                        <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center font-black text-xs border ${getMinistryBgColor(entry.ministry)}`}>
+                        <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center font-bold text-sm border ${getMinistryBgColor(entry.ministry)}`}>
                           {initials.slice(0, 3)}
                         </div>
 
-                        {/* Title & Status */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider truncate">
+                          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider truncate">
                             {entry.ministry.split(" / ")[0]}
                           </p>
-                          <h3 className="text-xs font-bold text-slate-800 truncate mt-0.5">
+                          <h3 className="text-sm font-bold text-gray-800 truncate mt-0.5">
                             {entry.schemeName}
                           </h3>
-                          <p className="text-[10px] text-slate-400 font-mono mt-0.5">
+                          <p className="text-[10px] text-gray-400 font-mono mt-0.5">
                             ID: {entry.id || entry.referenceNo || "Draft Entry"}
                           </p>
                         </div>
 
-                        {/* Badge */}
                         <span className={`text-[10px] px-2 py-0.5 border rounded-full font-bold uppercase ${badge.style} shrink-0`}>
                           {badge.label}
                         </span>
                       </div>
 
-                      {/* Progress Metrics */}
-                      <div className="space-y-2 pt-1 w-full border-t border-slate-100/60">
-                        {/* Document readiness */}
+                      <div className="space-y-2 pt-1 w-full border-t border-gray-100/60">
                         <div>
-                          <div className="flex justify-between text-[9px] text-slate-400 font-semibold mb-1">
-                            <span>{t("rec_doc_readiness") || "Docs Upload Readiness"}</span>
-                            <span className="text-slate-600 font-bold">{docReadiness.readinessScore}%</span>
+                          <div className="flex justify-between text-[10px] text-gray-400 font-semibold mb-1">
+                            <span>Document Readiness</span>
+                            <span className="text-gray-600 font-bold">{docReadiness.readinessScore}%</span>
                           </div>
-                          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-emerald-500 transition-all duration-300" style={{ width: `${docReadiness.readinessScore}%` }} />
+                          <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-india-green transition-all duration-300" style={{ width: `${docReadiness.readinessScore}%` }} />
                           </div>
                         </div>
 
-                        {/* Overall application step progress */}
                         <div>
-                          <div className="flex justify-between text-[9px] text-slate-400 font-semibold mb-1">
-                            <span>{t("tracker_current_stage") || "Lifecycle Pipeline Progress"}</span>
-                            <span className="text-indigo-600 font-bold">{progressPct}%</span>
+                          <div className="flex justify-between text-[10px] text-gray-400 font-semibold mb-1">
+                            <span>Lifecycle Pipeline Progress</span>
+                            <span className="text-government-blue font-bold">{progressPct}%</span>
                           </div>
-                          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-indigo-600 transition-all duration-300" style={{ width: `${progressPct}%` }} />
+                          <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-government-blue transition-all duration-300" style={{ width: `${progressPct}%` }} />
                           </div>
                         </div>
                       </div>
 
-                      {/* Card Footer */}
-                      <div className="flex justify-between items-center text-[10px] text-slate-400 font-medium pt-1">
-                        <span>{entry._type === "applied" ? (t("tracker_applied_on") || "Applied: ") : (t("tracker_saved_on") || "Saved: ")}{entry.appliedDate || entry.savedDate}</span>
+                      <div className="flex justify-between items-center text-[10px] text-gray-400 font-medium pt-1">
+                        <span>{entry._type === "applied" ? "Applied: " : "Saved: "}{entry.appliedDate || entry.savedDate}</span>
                         {entry._type === "saved" && (
-                          <span className="text-[9px] text-slate-500 font-bold italic">{t("tracker_stage_saved") || "Draft saved"}</span>
+                          <span className="text-[9px] text-gray-500 font-bold italic">Draft saved</span>
                         )}
                       </div>
                     </button>
@@ -500,105 +456,119 @@ return;
               )}
             </div>
 
-            {/* Bottom New Application Call */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between bg-white border border-gray-200 rounded-2xl p-3 text-sm">
+                <span className="text-gray-500 font-semibold">
+                  Page <span className="text-gray-800 font-bold">{currentPage}</span> of <span className="text-gray-800 font-bold">{totalPages}</span>
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-2.5 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  >
+                    Prev
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-2.5 py-1 rounded-lg text-sm font-bold transition ${
+                        page === currentPage
+                          ? "bg-government-blue text-white shadow-sm"
+                          : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-2.5 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+
             <Link
               to="/recommendations"
-              className="w-full flex items-center justify-center gap-2 py-3 bg-slate-50 hover:bg-slate-100 border border-dashed border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:text-indigo-700 transition"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-gray-50 hover:bg-gray-100 border border-dashed border-gray-300 rounded-xl text-sm font-bold text-gray-700 hover:text-government-blue transition"
             >
-              <Plus className="h-4 w-4 text-slate-500" />
-              <span>{t("tracker_find_schemes") || "Start New Application"}</span>
+              <Plus className="h-4 w-4 text-gray-500" />
+              <span>Start New Application</span>
             </Link>
-
           </div>
 
-          {/* ================= RIGHT COLUMN: DETAIL PANEL ================= */}
           <div className="lg:col-span-7 space-y-6">
             {selectedEntry ? (
               <div className="space-y-6">
-                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                    {/* Header Info */}
                     <div className="flex gap-3">
-                      <div className={`h-12 w-12 rounded-2xl flex items-center justify-center font-black text-sm border shrink-0 ${getMinistryBgColor(selectedEntry.ministry)}`}>
+                      <div className={`h-12 w-12 rounded-2xl flex items-center justify-center font-bold text-base border shrink-0 ${getMinistryBgColor(selectedEntry.ministry)}`}>
                         {selectedEntry.schemeName.split(" ").slice(0, 3).map((w) => w[0]).join("").toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
                           {selectedEntry.ministry}
                         </p>
-                        <h2 className="text-base font-black text-slate-800 mt-0.5">
+                        <h2 className="text-lg font-bold text-gray-800 mt-0.5">
                           {selectedEntry.schemeName}
                         </h2>
-                        <div className="flex flex-wrap gap-x-4 text-[10px] text-slate-400 mt-2 font-medium">
-                          <span>{t("gen_id") || "ID"}: <strong className="font-mono text-slate-600">{selectedEntry.id || selectedEntry.referenceNo || "Draft"}</strong></span>
-                          <span>{t("gen_applied") || "Submission"}: <strong className="text-slate-600">{selectedEntry.appliedDate || "Not Submitted"}</strong></span>
+                        <div className="flex flex-wrap gap-x-4 text-[10px] text-gray-400 mt-2 font-medium">
+                          <span>ID: <strong className="font-mono text-gray-600">{selectedEntry.id || selectedEntry.referenceNo || "Draft"}</strong></span>
+                          <span>Submission: <strong className="text-gray-600">{selectedEntry.appliedDate || "Not Submitted"}</strong></span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Premium Status summary panel */}
-                    <div className="bg-slate-50 border border-slate-150 rounded-xl p-3 text-right self-stretch sm:self-auto flex sm:flex-col justify-between sm:justify-start items-center sm:items-end gap-2 shrink-0">
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{t("tracker_current_stage") || "Application Status"}</span>
-                      <span className={`text-xs px-2.5 py-0.5 border rounded-full font-bold uppercase ${getStatusBadge(currentStage).style}`}>
+                    <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-right self-stretch sm:self-auto flex sm:flex-col justify-between sm:justify-start items-center sm:items-end gap-2 shrink-0">
+                      <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Application Status</span>
+                      <span className={`text-sm px-2.5 py-0.5 border rounded-full font-bold uppercase ${getStatusBadge(currentStage).style}`}>
                         {getStatusBadge(currentStage).label}
                       </span>
-                      <span className="text-[9px] text-slate-400 mt-1">
-                        {selectedEntry.appliedDate ? `${t("tracker_applied_on") || "As of: "}${selectedEntry.appliedDate}` : `${t("tracker_saved_on") || "Saved: "}${selectedEntry.savedDate}`}
+                      <span className="text-[10px] text-gray-400 mt-1">
+                        {selectedEntry.appliedDate ? `As of: ${selectedEntry.appliedDate}` : `Saved: ${selectedEntry.savedDate}`}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* 2. TIMELINE PANEL */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-5">
-                    <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest flex items-center gap-1.5">
-                      <CalendarDays className="h-4 w-4 text-indigo-600" />
-                      {t("track_stage_logs") || "Application Lifecycle Pipeline"}
+                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-5">
+                    <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest flex items-center gap-1.5">
+                      <CalendarDays className="h-4 w-4 text-government-blue" />
+                      Application Lifecycle Pipeline
                     </h3>
-                    <span className="text-[10px] text-slate-400 font-medium">Auto-synced with State Portal</span>
+                    <span className="text-[10px] text-gray-400 font-medium">Auto-synced with State Portal</span>
                   </div>
 
-                  <div className="relative pl-6 border-l-2 border-slate-100 space-y-6">
-                    {/* Render timeline steps */}
-                    {TIMELINE_STAGES.map((step, idx) => {
-                      const historyEntry = stageHistory.find((h) => h.stage === step.key) ||
-                        (step.key === "Saved" ? { date: selectedEntry.savedDate } : null) ||
-                        (step.key === "Submitted" ? { date: selectedEntry.appliedDate } : null);
+                  <div className="relative pl-6 border-l-2 border-gray-100 space-y-6">
+                    {TIMELINE_STAGES.map((stage, idx) => {
+                      const historyEntry = stageHistory.find((h) => h.stage === stage.key) ||
+                        (stage.key === "Saved" ? { date: selectedEntry.savedDate } : null) ||
+                        (stage.key === "Submitted" ? { date: selectedEntry.appliedDate } : null);
 
                       const isCompleted = idx < currentStageIdx;
                       const isCurrent = idx === currentStageIdx;
                       const isFuture = idx > currentStageIdx;
-                      const isRejectedState = currentStage === "Rejected" && step.key === "Approved";
+                      const isRejectedState = currentStage === "Rejected" && stage.key === "Approved";
 
-                      // Icon styling
-                      let iconColor = "bg-slate-100 border-slate-300 text-slate-400";
+                      let iconColor = "bg-gray-100 border-gray-300 text-gray-400";
                       let linePulse = false;
 
                       if (isCompleted) {
-                        iconColor = "bg-emerald-500 border-emerald-500 text-white";
+                        iconColor = "bg-india-green border-india-green text-white";
                       } else if (isCurrent) {
-                        iconColor = "bg-indigo-650 bg-indigo-600 border-indigo-600 text-white";
+                        iconColor = "bg-government-blue border-government-blue text-white";
                         linePulse = true;
                       }
 
-                      const getStepTranslation = (k) => {
-                        switch (k) {
-                          case "Saved": return { label: t("tracker_stage_saved"), desc: t("tracker_saved_hint") || step.description };
-                          case "Preparing Documents": return { label: t("tracker_stage_preparing"), desc: step.description };
-                          case "Ready to Apply": return { label: t("tracker_stage_ready"), desc: step.description };
-                          case "Submitted": return { label: t("tracker_stage_submitted"), desc: step.description };
-                          case "Under Review": return { label: t("tracker_stage_review"), desc: step.description };
-                          case "Approved": return { label: t("tracker_stage_approved"), desc: step.description };
-                          case "Rejected": return { label: t("tracker_stage_rejected"), desc: step.description };
-                          default: return { label: k, desc: step.description };
-                        }
-                      };
-                      const stepTrans = getStepTranslation(step.key);
-
                       return (
                         <div key={idx} className="relative group">
-                          {/* Pulsing indicator if current step */}
                           <div className={`absolute -left-[35px] top-1.5 h-6 w-6 rounded-full flex items-center justify-center border-2 transition-all ${iconColor}`}>
                             {isCompleted ? (
                               <Check className="h-3.5 w-3.5" />
@@ -608,25 +578,25 @@ return;
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                               </span>
                             ) : (
-                              <Circle className="h-2 w-2 text-slate-300" />
+                              <Circle className="h-2 w-2 text-gray-300" />
                             )}
                           </div>
 
                           <div className="space-y-0.5">
                             <div className="flex items-center justify-between gap-2 flex-wrap">
-                              <h4 className={`text-xs font-bold ${
-                                isCompleted ? "text-emerald-700" : isCurrent ? "text-indigo-700 font-extrabold" : "text-slate-400"
+                              <h4 className={`text-sm font-bold ${
+                                isCompleted ? "text-india-green" : isCurrent ? "text-government-blue font-extrabold" : "text-gray-400"
                               }`}>
-                                {isRejectedState ? (t("tracker_stage_rejected") || "Rejected") : (stepTrans.label || step.label)}
+                                {isRejectedState ? "Rejected" : stage.label}
                               </h4>
                               {historyEntry && (
-                                <span className="text-[10px] text-slate-400 font-semibold">{historyEntry.date}</span>
+                                <span className="text-[10px] text-gray-400 font-semibold">{historyEntry.date}</span>
                               )}
                             </div>
-                            <p className="text-[11px] text-slate-500 max-w-lg leading-relaxed">
-                              {step.key === "Approved" && currentStage === "Rejected"
+                            <p className="text-xs text-gray-500 max-w-lg leading-relaxed">
+                              {stage.key === "Approved" && currentStage === "Rejected"
                                 ? "Application declined verification checks. Please address the remarks."
-                                : stepTrans.desc}
+                                : stage.description}
                             </p>
                           </div>
                         </div>
@@ -635,46 +605,44 @@ return;
                   </div>
                 </div>
 
-                {/* 3. APPLICATION SUMMARY CARD */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
-                  <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest flex items-center gap-1.5 pb-2 border-b border-slate-100">
-                    <FileText className="h-4 w-4 text-indigo-600" />
-                    {t("track_disbursement_details") || "Benefit Mandate Details"}
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
+                  <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest flex items-center gap-1.5 pb-2 border-b border-gray-100">
+                    <FileText className="h-4 w-4 text-government-blue" />
+                    Benefit Mandate Details
                   </h3>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     {[
-                      { label: t("det_implemented_by") || "Sponsoring Department", val: selectedEntry.ministry, icon: Building },
-                            { label: t("gen_ref") || "Reference Number", val: selectedEntry.referenceNo || "Awaiting Submission", icon: ClipboardList, mono: true },
-                      { label: t("profile_full_name") || "Applicant Name", val: profile?.name || "Rajesh Patel", icon: User },
-                      { label: t("track_benefit_label") || "Monthly / Direct Benefit", val: schemeAdditions?.benefit || "Direct Bank Mandate", icon: CreditCard },
-                      { label: t("track_expected_disbursement") || "Target Expected Decision", val: schemeAdditions?.expectedDate || "Pending Review", icon: CalendarDays },
-                      { label: t("track_disbursement_details") || "Disbursement Mode", val: "Direct Benefit Transfer (DBT)", icon: ArrowUpRight }
+                      { label: "Sponsoring Department", val: selectedEntry.ministry, icon: Building },
+                      { label: "Reference Number", val: selectedEntry.referenceNo || "Awaiting Submission", icon: ClipboardList, mono: true },
+                      { label: "Applicant Name", val: profile?.name || "Rajesh Kumar", icon: User },
+                      { label: "Monthly / Direct Benefit", val: schemeAdditions?.benefit || "Direct Bank Mandate", icon: CreditCard },
+                      { label: "Target Expected Decision", val: schemeAdditions?.expectedDate || "Pending Review", icon: CalendarDays },
+                      { label: "Disbursement Mode", val: "Direct Benefit Transfer (DBT)", icon: ArrowUpRight }
                     ].map((item, index) => (
-                      <div key={index} className="flex gap-2.5 items-start p-2 bg-slate-50 rounded-xl border border-slate-100">
-                        <item.icon className="h-4.5 w-4.5 text-slate-400 shrink-0 mt-0.5" />
+                      <div key={index} className="flex gap-2.5 items-start p-2 bg-gray-50 rounded-xl border border-gray-100">
+                        <item.icon className="h-4.5 w-4.5 text-gray-400 shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{item.label}</p>
-                          <p className={`text-slate-800 font-bold mt-0.5 ${item.mono ? "font-mono text-[11px]" : ""}`}>{item.val}</p>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
+                          <p className={`text-gray-800 font-bold mt-0.5 ${item.mono ? "font-mono text-sm" : ""}`}>{item.val}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* 4. OFFICER REMARKS CARD */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                    <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest flex items-center gap-1.5">
-                      <User className="h-4 w-4 text-indigo-600" />
-                      {t("track_officer_remarks") || "Verification Authority Remarks"}
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                    <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest flex items-center gap-1.5">
+                      <User className="h-4 w-4 text-government-blue" />
+                      Verification Authority Remarks
                     </h3>
                     <span className={`text-[10px] px-2 py-0.5 border rounded-full font-bold flex items-center gap-1 ${
                       currentStage === "Approved"
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-150"
+                        ? "bg-india-green/10 text-india-green border-india-green/20"
                         : currentStage === "Rejected"
-                        ? "bg-rose-50 text-rose-700 border-rose-150"
-                        : "bg-amber-50 text-amber-700 border-amber-150"
+                        ? "bg-red-50 text-red-700 border-red-200"
+                        : "bg-saffron/10 text-saffron-dark border-saffron/20"
                     }`}>
                       {currentStage === "Approved" ? (
                         <>
@@ -695,55 +663,51 @@ return;
                   <div className="space-y-3 text-xs">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="font-bold text-slate-700">{schemeAdditions?.officer || "Automated Desk Officer"}</p>
-                        <p className="text-[9px] text-slate-400">Department Verification Desk</p>
+                        <p className="font-bold text-gray-700">{schemeAdditions?.officer || "Automated Desk Officer"}</p>
+                        <p className="text-[10px] text-gray-400">Department Verification Desk</p>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-semibold">{selectedEntry.appliedDate || selectedEntry.savedDate}</span>
+                      <span className="text-[10px] text-gray-400 font-semibold">{selectedEntry.appliedDate || selectedEntry.savedDate}</span>
                     </div>
 
-                    <p className="text-slate-600 italic bg-slate-50 p-3 rounded-xl border border-slate-100 leading-relaxed">
+                    <p className="text-gray-600 italic bg-gray-50 p-3 rounded-xl border border-gray-100 leading-relaxed">
                       "{schemeAdditions?.remarks || "Automatic state socio-demographic records checks passed. Initial application verified."}"
                     </p>
                   </div>
                 </div>
 
-                {/* 5. NEXT STEP ACTION CARD */}
-                <div className={`p-4 rounded-2xl border flex items-start gap-3 shadow-xs ${
+                <div className={`p-4 rounded-2xl border flex items-start gap-3 shadow-sm ${
                   currentStage === "Rejected"
-                    ? "bg-rose-50 border-rose-200 text-rose-800"
+                    ? "bg-red-50 border-red-200 text-red-800"
                     : currentStage === "Approved"
-                    ? "bg-emerald-50 border-emerald-250 border-emerald-200 text-emerald-800"
-                    : "bg-amber-50 border-amber-250 border-amber-200 text-amber-800"
+                    ? "bg-india-green/5 border-india-green/20 text-india-green-dark"
+                    : "bg-saffron/10 border-saffron/20 text-saffron-dark"
                 }`}>
                   {currentStage === "Rejected" ? (
-                    <ShieldAlert className="h-5 w-5 text-rose-500 shrink-0 mt-0.5" />
+                    <ShieldAlert className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
                   ) : currentStage === "Approved" ? (
-                    <ShieldCheck className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
+                    <ShieldCheck className="h-5 w-5 text-india-green shrink-0 mt-0.5" />
                   ) : (
-                    <Clock className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                    <Clock className="h-5 w-5 text-saffron-dark shrink-0 mt-0.5" />
                   )}
                   <div className="space-y-1">
-                    <p className="text-xs font-bold uppercase tracking-wider">{t("tracker_next") || "Citizen Next Action Required"}</p>
-                    <p className="text-xs leading-relaxed font-semibold">
+                    <p className="text-xs font-bold uppercase tracking-wider">Citizen Next Action Required</p>
+                    <p className="text-xs leading-relaxed font-medium">
                       {currentStage === "Rejected"
-                        ? "ITR mismatch detected. Complete document reconciliation or upload correct income certificate via vault."
+                        ? "ITR mismatch detected. Complete document reconciliation or upload revised income certificate via vault."
                         : currentStage === "Approved"
-                        ? "No actions required. First direct transfer installment scheduled for the next state DBT release cycle."
-                        : selectedEntry.nextAction || "Await official desk verification. Expected completion date is listed on summary."}
+                        ? "No actions required. First direct transfer installment scheduled for next state DBT release cycle."
+                        : selectedEntry.nextAction || "Awaiting official desk verification. Expected completion date listed on summary."}
                     </p>
                   </div>
                 </div>
 
-                {/* 6. AI INSIGHT CARD */}
-                <div className="bg-gradient-to-br from-indigo-900 to-slate-900 border border-indigo-950 rounded-2xl p-5 shadow-md text-white space-y-2">
+                <div className="bg-gradient-to-br from-government-blue to-government-blue-dark border border-government-blue/20 rounded-2xl p-5 shadow-md text-white space-y-2">
                   <div className="flex items-center gap-1.5">
-                    <BrainCircuit className="h-4.5 w-4.5 text-indigo-300 shrink-0" />
-                    <span className="text-xs font-black tracking-widest text-indigo-300 uppercase">{t("dash_insights_title") || "AI Insight Summary"}</span>
+                    <BrainCircuit className="h-4.5 w-4.5 text-saffron shrink-0" />
+                    <span className="text-xs font-bold tracking-widest text-saffron uppercase">AI Insight Summary</span>
                   </div>
-                  <p className="text-xs font-medium text-slate-200 leading-relaxed">
-                    {currentStage === "Approved"
-                      ? "Congratulations! Your application has been approved. The direct benefit amount is expected to be credited within 7–10 working days."
-                      : currentStage === "Rejected"
+                  <p className="text-xs font-medium text-white/90 leading-relaxed">
+                    {currentStage === "Rejected"
                       ? "Your income certificate parameters mismatch with state registries. Uploading a revised income certificate showing OBC ceiling category may clear reconciliation desk."
                       : selectedReadiness?.missingDocs?.length > 0
                       ? `Your vault is missing ${selectedReadiness.missingDocs.slice(0, 1).join("")}. Uploading it will trigger automated state routing checks.`
@@ -751,38 +715,37 @@ return;
                   </p>
                 </div>
 
-                {/* 7. QUICK ACTIONS */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
-                  <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest pb-1 border-b border-slate-100">
-                    {t("dash_nudges_title") || "Quick Citizen Actions"}
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-3">
+                  <h3 className="text-xs font-bold text-gray-800 uppercase tracking-widest pb-1 border-b border-gray-100">
+                    Quick Citizen Actions
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[10px] font-bold">
                     <button
                       onClick={() => alert("Downloading official submission receipt mandate...")}
-                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-slate-200 rounded-xl bg-slate-50 hover:bg-slate-100 hover:border-slate-300 text-slate-600 transition"
+                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-gray-300 text-gray-600 transition"
                     >
-                      <Download className="h-4 w-4" /> {t("track_download") || "Download Receipt"}
+                      <Download className="h-4 w-4" /> Download Receipt
                     </button>
 
                     <button
                       onClick={() => navigate("/documents")}
-                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-slate-200 rounded-xl bg-slate-50 hover:bg-slate-100 hover:border-slate-300 text-slate-600 transition"
+                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-gray-300 text-gray-600 transition"
                     >
-                      <FileText className="h-4 w-4" /> {t("prof_manage_vault") || "View Documents"}
+                      <FileText className="h-4 w-4" /> View Documents
                     </button>
 
                     <button
                       onClick={() => navigate("/help")}
-                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-slate-200 rounded-xl bg-slate-50 hover:bg-slate-100 hover:border-slate-300 text-slate-600 transition"
+                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-gray-300 text-gray-600 transition"
                     >
-                      <PhoneCall className="h-4 w-4" /> {t("err_btn_contact_support") || "Contact Support"}
+                      <PhoneCall className="h-4 w-4" /> Contact Support
                     </button>
 
                     <button
                       onClick={() => setShowGrievance(!showGrievance)}
-                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-slate-200 rounded-xl bg-slate-50 hover:bg-slate-100 hover:border-slate-300 text-slate-600 transition"
+                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-gray-300 text-gray-600 transition"
                     >
-                      <MessageSquareWarning className="h-4 w-4" /> {t("track_raise_grievance_btn") || "File Grievance"}
+                      <MessageSquareWarning className="h-4 w-4" /> File Grievance
                     </button>
 
                     <button
@@ -790,64 +753,63 @@ return;
                         navigator.clipboard.writeText(window.location.href);
                         alert("Application reference URL link copied to clipboard!");
                       }}
-                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-slate-200 rounded-xl bg-slate-50 hover:bg-slate-100 hover:border-slate-300 text-slate-600 transition col-span-2 sm:col-span-1"
+                      className="flex flex-col items-center justify-center gap-1.5 p-2.5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-gray-300 text-gray-600 transition col-span-2 sm:col-span-1"
                     >
-                      <Share2 className="h-4 w-4" /> {t("gen_share") || "Share App"}
+                      <Share2 className="h-4 w-4" /> Share App
                     </button>
                   </div>
                 </div>
 
-                {/* Grievance Quick Submit Drawer/Panel */}
                 {showGrievance && (
-                  <div className="bg-white border border-rose-250 border-rose-200 rounded-2xl p-5 shadow-sm space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <MessageSquareWarning className="h-4 w-4 text-rose-500" />
-                      {t("track_grievance_form_title") || "File a Grievance"} for {selectedEntry.schemeName}
+                  <div className="bg-white border border-red-200 rounded-2xl p-5 shadow-sm space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <h4 className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
+                      <MessageSquareWarning className="h-4 w-4 text-red-500" />
+                      File a Grievance for {selectedEntry.schemeName}
                     </h4>
 
                     {grievanceSuccess ? (
-                      <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl text-xs font-bold flex items-center gap-2">
-                        <Check className="h-4 w-4 text-emerald-500" />
-                        {t("track_grievance_success") || "Grievance ticket registered successfully. Syncing portal logs."}
+                      <div className="bg-india-green/5 border border-india-green/20 text-india-green p-4 rounded-xl text-xs font-bold flex items-center gap-2">
+                        <Check className="h-4 w-4 text-india-green" />
+                        Grievance ticket registered successfully. Syncing portal logs.
                       </div>
                     ) : (
                       <form onSubmit={handleGrievanceSubmit} className="space-y-3">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">{t("help_label_category") || "Grievance Category"}</label>
+                          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Grievance Category</label>
                           <select
                             value={grievanceData.category}
                             onChange={(e) => setGrievanceData({ ...grievanceData, category: e.target.value })}
-                            className="w-full text-xs p-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500 bg-slate-50"
+                            className="w-full text-sm p-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 bg-gray-50"
                           >
-                            <option value="Delay in Processing">{t("help_cat_payment") || "Delay in Processing"}</option>
-                            <option value="Document Rejected Unfairly">{t("help_cat_doc_block") || "Document Rejected Unfairly"}</option>
-                            <option value="Technical Error">{t("help_cat_link_broken") || "Technical Error"}</option>
-                            <option value="Other">{t("help_cat_general") || "Other Category"}</option>
+                            <option value="Delay in Processing">Delay in Processing</option>
+                            <option value="Document Rejected Unfairly">Document Rejected Unfairly</option>
+                            <option value="Technical Error">Technical Error</option>
+                            <option value="Other">Other Category</option>
                           </select>
 
-                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">{t("help_label_desc") || "Detailed Description"}</label>
+                          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Detailed Description</label>
                           <textarea
                             value={grievanceData.description}
                             onChange={(e) => setGrievanceData({ ...grievanceData, description: e.target.value })}
-                            placeholder={t("track_grievance_desc_placeholder") || "Detail your complaint. Mention registry records and references..."}
+                            placeholder="Detail your complaint. Mention registry records and references..."
                             rows={3}
                             required
-                            className="w-full text-xs p-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500 bg-slate-50"
+                            className="w-full text-sm p-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 bg-gray-50"
                           />
                         </div>
-                        <div className="flex justify-end gap-2 text-xs">
+                        <div className="flex justify-end gap-2 text-sm">
                           <button
                             type="button"
                             onClick={() => setShowGrievance(false)}
-                            className="px-3 py-2 font-bold text-slate-500 hover:text-slate-800"
+                            className="px-3 py-2 font-bold text-gray-500 hover:text-gray-800"
                           >
-                            {t("gen_cancel") || "Cancel"}
+                            Cancel
                           </button>
                           <button
                             type="submit"
-                            className="px-4 py-2 font-black bg-rose-600 hover:bg-rose-700 text-white rounded-xl flex items-center gap-1.5 shadow-sm transition"
+                            className="px-4 py-2 font-extrabold bg-red-600 hover:bg-red-700 text-white rounded-xl flex items-center gap-1.5 shadow-sm transition"
                           >
-                            <Send className="h-3.5 w-3.5" /> {t("track_grievance_form_title") || "Submit Grievance"}
+                            <Send className="h-3.5 w-3.5" /> Submit Grievance
                           </button>
                         </div>
                       </form>
@@ -857,16 +819,14 @@ return;
 
               </div>
             ) : (
-              <div className="h-full bg-white border border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center text-slate-400 text-xs">
-                {t("tracker_empty_title") || "Select an application from the Left Panel list view to display details."}
+              <div className="h-full bg-white border border-gray-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center text-gray-400 text-sm">
+                Select an application from the Left Panel list view to display details.
               </div>
             )}
           </div>
-
         </div>
       )}
 
-      {/* Floating SchemeBridge AI Assistant Widget */}
       <SchemeAIChatWidget
         isOpen={aiChatOpen}
         initialQuery={aiInitialQuery}
@@ -884,10 +844,9 @@ return;
         }}
       />
 
-      {/* Floating Bot trigger button */}
       <button
         onClick={() => setAiChatOpen(true)}
-        className="fixed bottom-6 right-6 h-12 w-12 rounded-full bg-indigo-650 bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-xl border border-indigo-500 hover:scale-105 transition z-40"
+        className="fixed bottom-6 right-6 h-12 w-12 rounded-full bg-government-blue hover:bg-government-blue-dark text-white flex items-center justify-center shadow-xl border border-government-blue-light hover:scale-105 transition z-40"
         title="Ask SchemeAI"
         aria-label="Open SchemeAI Assistant"
       >

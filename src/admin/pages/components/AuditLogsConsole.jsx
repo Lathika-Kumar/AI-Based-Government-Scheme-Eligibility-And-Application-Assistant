@@ -6,7 +6,14 @@ import {
   AlertTriangle,
   CheckCircle,
   FileText,
-  Calendar
+  Calendar,
+  Clock,
+  User,
+  Users,
+  Settings,
+  FileCheck,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 
 export default function AuditLogsConsole({ auditLogs }) {
@@ -14,6 +21,7 @@ export default function AuditLogsConsole({ auditLogs }) {
   const [filterModule, setFilterModule] = useState("all");
   const [filterSeverity, setFilterSeverity] = useState("all");
   const [filterTime, setFilterTime] = useState("all");
+  const [viewMode, setViewMode] = useState("table"); // "table" or "timeline"
 
   // Enrich audit logs with IP, Device, Role, and Security Anomaly Flags
   const enrichedLogs = useMemo(() => {
@@ -111,70 +119,112 @@ export default function AuditLogsConsole({ auditLogs }) {
   };
 
   const severityColors = {
-    Success: "bg-emerald-50 text-emerald-700 border-emerald-150 border-emerald-200",
+    Success: "bg-emerald-50 text-emerald-700 border-emerald-200",
     Info: "bg-blue-50 text-blue-700 border-blue-200",
     Warning: "bg-amber-50 text-amber-700 border-amber-200",
-    Critical: "bg-rose-50 text-rose-700 border-rose-200 hover:animate-pulse"
+    Critical: "bg-rose-50 text-rose-700 border-rose-200"
+  };
+
+  const getEntityIcon = (entityType) => {
+    switch (entityType) {
+      case "scheme":
+        return <Settings className="h-4 w-4" />;
+      case "application":
+        return <FileCheck className="h-4 w-4" />;
+      case "document":
+        return <FileText className="h-4 w-4" />;
+      case "grievance":
+        return <AlertTriangle className="h-4 w-4" />;
+      case "user":
+        return <User className="h-4 w-4" />;
+      default:
+        return <Clock className="h-4 w-4" />;
+    }
   };
 
   return (
     <div className="space-y-4">
       {/* ── Filter / Control Bar ── */}
       <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-3">
-        <div className="flex flex-col md:flex-row gap-3">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search audit trail by actor, entity details..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 hover:bg-slate-100/50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 transition"
-            />
+        <div className="flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-3 flex-1">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search audit trail by actor, entity details..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-slate-50 hover:bg-slate-100/50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 transition"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {/* Time Filter */}
+              <select
+                value={filterTime}
+                onChange={(e) => setFilterTime(e.target.value)}
+                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              >
+                <option value="all">All History</option>
+                <option value="today">Today</option>
+              </select>
+
+              {/* Module Filter */}
+              <select
+                value={filterModule}
+                onChange={(e) => setFilterModule(e.target.value)}
+                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              >
+                <option value="all">All Modules</option>
+                <option value="scheme">Scheme Management</option>
+                <option value="application">Application Desk</option>
+                <option value="document">Document Vault</option>
+                <option value="grievance">Grievance Desk</option>
+                <option value="user">User Management</option>
+              </select>
+
+              {/* Severity Filter */}
+              <select
+                value={filterSeverity}
+                onChange={(e) => setFilterSeverity(e.target.value)}
+                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              >
+                <option value="all">All Severities</option>
+                <option value="flagged">⚠️ Anomaly Flags Only</option>
+                <option value="Success">Success Logs</option>
+                <option value="Warning">Warning Logs</option>
+                <option value="Critical">Critical Logs</option>
+              </select>
+            </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {/* Time Filter */}
-            <select
-              value={filterTime}
-              onChange={(e) => setFilterTime(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
-            >
-              <option value="all">All History</option>
-              <option value="today">Today</option>
-            </select>
-
-            {/* Module Filter */}
-            <select
-              value={filterModule}
-              onChange={(e) => setFilterModule(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
-            >
-              <option value="all">All Modules</option>
-              <option value="scheme">Scheme Management</option>
-              <option value="application">Application Desk</option>
-              <option value="document">Document Vault</option>
-              <option value="grievance">Grievance Desk</option>
-            </select>
-
-            {/* Severity Filter */}
-            <select
-              value={filterSeverity}
-              onChange={(e) => setFilterSeverity(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
-            >
-              <option value="all">All Severities</option>
-              <option value="flagged">⚠️ Anomaly Flags Only</option>
-              <option value="Success">Success Logs</option>
-              <option value="Warning">Warning Logs</option>
-              <option value="Critical">Critical Logs</option>
-            </select>
+          <div className="flex gap-2">
+            {/* View Mode Toggle */}
+            <div className="flex bg-slate-100 p-1 rounded-xl">
+              <button
+                onClick={() => setViewMode("table")}
+                className={`px-3 py-2 rounded-lg text-xs font-bold transition ${
+                  viewMode === "table" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Table
+              </button>
+              <button
+                onClick={() => setViewMode("timeline")}
+                className={`px-3 py-2 rounded-lg text-xs font-bold transition ${
+                  viewMode === "timeline" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Timeline
+              </button>
+            </div>
 
             {/* Export CSV */}
             <button
               onClick={handleExport}
               disabled={filteredLogs.length === 0}
-              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-750 text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl text-xs font-bold flex items-center gap-1.5 transition"
+              className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm"
             >
               <Download className="h-3.5 w-3.5" />
               <span>Export CSV</span>
@@ -183,7 +233,7 @@ export default function AuditLogsConsole({ auditLogs }) {
         </div>
       </div>
 
-      {/* ── Main Activity Grid ── */}
+      {/* ── Main View: Table or Timeline ── */}
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
         {filteredLogs.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center space-y-3">
@@ -195,7 +245,7 @@ export default function AuditLogsConsole({ auditLogs }) {
               </p>
             </div>
           </div>
-        ) : (
+        ) : viewMode === "table" ? (
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left">
               <thead className="bg-slate-50/70 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-bold text-[9px] select-none">
@@ -212,7 +262,7 @@ export default function AuditLogsConsole({ auditLogs }) {
                   <th className="px-4 py-3.5">Severity</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-semibold text-slate-655 text-slate-700">
+              <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
                 {filteredLogs.map((log) => (
                   <tr
                     key={log.id}
@@ -257,6 +307,62 @@ export default function AuditLogsConsole({ auditLogs }) {
                 ))}
               </tbody>
             </table>
+          </div>
+        ) : (
+          <div className="p-6 space-y-4">
+            {filteredLogs.map((log) => (
+              <div
+                key={log.id}
+                className={`flex gap-4 pb-6 border-b border-slate-100 last:border-0 last:pb-0 ${
+                  log.securityFlag ? "bg-rose-50/10 -mx-6 px-6 py-4 rounded-xl" : ""
+                }`}
+              >
+                <div className="flex flex-col items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    log.severity === "Success" ? "bg-emerald-100 text-emerald-600" :
+                    log.severity === "Warning" ? "bg-amber-100 text-amber-600" :
+                    log.severity === "Critical" ? "bg-rose-100 text-rose-600" :
+                    "bg-blue-100 text-blue-600"
+                  }`}>
+                    {getEntityIcon(log.entityType)}
+                  </div>
+                  {filteredLogs.indexOf(log) < filteredLogs.length - 1 && (
+                    <div className="w-0.5 h-full bg-slate-200 mt-2"></div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-slate-800">{log.actor}</span>
+                      <span className="text-[10px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full font-medium">
+                        {log.role}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-slate-400 font-medium">
+                        {new Date(log.timestamp).toLocaleString("en-IN", { timeZone: "IST" })}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full border text-[9px] font-bold inline-flex items-center gap-1 ${severityColors[log.severity] || ""}`}>
+                        {log.securityFlag && <ShieldAlert className="h-3 w-3 text-rose-600 shrink-0" />}
+                        {log.severity}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-xs font-bold text-slate-700">{log.actionType}</span>
+                    <span className="text-xs text-slate-500 mx-1">on</span>
+                    <span className="text-xs font-bold text-indigo-600">{log.entityType}</span>
+                    <span className="text-xs text-slate-500 mx-1">:</span>
+                    <span className="text-xs font-bold text-slate-800">{log.entityName}</span>
+                  </div>
+                  <p className="text-xs text-slate-600 mb-2">{log.detail}</p>
+                  <div className="flex gap-4 text-[10px] text-slate-400">
+                    <span>IP: {log.ip}</span>
+                    <span>Device: {log.device}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

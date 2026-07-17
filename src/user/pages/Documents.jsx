@@ -32,91 +32,80 @@ import {
 const STATUS_META = {
   verified: {
     label: "Verified",
-    badge: "bg-emerald-50 text-emerald-800 border-emerald-200",
+    badge: "bg-india-green/10 text-india-green border-india-green/20",
     icon: CheckCircle,
-    iconColor: "text-emerald-500",
-    dot: "bg-emerald-500",
+    iconColor: "text-india-green",
+    dot: "bg-india-green",
   },
   uploaded: {
     label: "Uploaded",
-    badge: "bg-blue-50 text-blue-800 border-blue-200",
+    badge: "bg-government-blue/10 text-government-blue border-government-blue/20",
     icon: UploadCloud,
-    iconColor: "text-blue-500",
-    dot: "bg-blue-400",
+    iconColor: "text-government-blue",
+    dot: "bg-government-blue",
   },
   pending_review: {
     label: "Pending Review",
-    badge: "bg-amber-50 text-amber-800 border-amber-200",
+    badge: "bg-saffron/10 text-saffron-dark border-saffron/20",
     icon: Clock,
-    iconColor: "text-amber-500",
-    dot: "bg-amber-400",
+    iconColor: "text-saffron-dark",
+    dot: "bg-saffron",
   },
   rejected: {
     label: "Rejected",
-    badge: "bg-rose-50 text-rose-800 border-rose-200",
+    badge: "bg-red-50 text-red-700 border-red-200",
     icon: XCircle,
-    iconColor: "text-rose-500",
-    dot: "bg-rose-400",
+    iconColor: "text-red-500",
+    dot: "bg-red-500",
   },
   unlinked: {
     label: "Not Linked",
-    badge: "bg-slate-100 text-slate-600 border-slate-200",
+    badge: "bg-gray-100 text-gray-500 border-gray-200",
     icon: AlertCircle,
-    iconColor: "text-slate-400",
-    dot: "bg-slate-300",
+    iconColor: "text-gray-400",
+    dot: "bg-gray-300",
   },
 };
 
 const TYPE_ICON_COLOR = {
-  "Identity Proof": "bg-indigo-50 text-indigo-600",
-  "Financial Proof": "bg-emerald-50 text-emerald-600",
-  "Category Proof": "bg-amber-50 text-amber-600",
-  "Property Proof": "bg-violet-50 text-violet-600",
-  "Academic Proof": "bg-blue-50 text-blue-600",
-  "Domicile Proof": "bg-rose-50 text-rose-500",
+  "Identity Proof": "bg-government-blue/10 text-government-blue",
+  "Financial Proof": "bg-india-green/10 text-india-green",
+  "Category Proof": "bg-saffron/10 text-saffron-dark",
+  "Property Proof": "bg-purple-100 text-purple-600",
+  "Academic Proof": "bg-blue-100 text-blue-600",
+  "Domicile Proof": "bg-rose-100 text-rose-600",
 };
 
 const SOURCE_BADGE = {
-  DigiLocker: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  "State e-District Portal": "bg-blue-50 text-blue-700 border-blue-200",
-  "Manual Upload": "bg-slate-100 text-slate-600 border-slate-200",
-  "Government API": "bg-indigo-50 text-indigo-700 border-indigo-200",
-  "Officer Verified": "bg-purple-50 text-purple-700 border-purple-200",
+  DigiLocker: "bg-india-green/10 text-india-green border-india-green/20",
+  "State e-District Portal": "bg-government-blue/10 text-government-blue border-government-blue/20",
+  "Manual Upload": "bg-gray-100 text-gray-600 border-gray-200",
+  "Government API": "bg-purple-100 text-purple-700 border-purple-200",
+  "Officer Verified": "bg-india-green/10 text-india-green border-india-green/20",
 };
 
 function isExpired(expiryDate) {
   if (!expiryDate || expiryDate === "No Expiration") {
-return false;
-}
+    return false;
+  }
   return new Date(expiryDate) < new Date();
 }
 
 function DocumentCard({ doc, onRemove, onChangeStatus, linkedSchemes = [], viewMode = "list" }) {
-  const { language, t } = useApp();
   const meta = STATUS_META[doc.status] || STATUS_META.unlinked;
   const StatusIcon = meta.icon;
-  const typeColor = TYPE_ICON_COLOR[doc.type] || "bg-slate-100 text-slate-500";
+  const typeColor = TYPE_ICON_COLOR[doc.type] || "bg-gray-100 text-gray-500";
   const expired = isExpired(doc.expiryDate);
   const sourceBadgeClass = SOURCE_BADGE[doc.source] || SOURCE_BADGE["Manual Upload"];
-
-  const getStatusLabel = (status) => {
-    switch (status) {
-      case "verified": return t("vault_status_verified") || "Verified";
-      case "uploaded": return t("vault_status_uploaded") || "Uploaded";
-      case "pending_review": return t("vault_status_pending") || "Pending Review";
-      case "rejected": return t("vault_status_rejected") || "Rejected";
-      default: return t("vault_status_unlinked") || "Not Linked";
-    }
-  };
 
   const isGrid = viewMode === "grid";
 
   return (
-    <div className={`bg-white border ${expired ? "border-rose-200 shadow-rose-50" : "border-slate-200"} rounded-2xl p-4 flex ${isGrid ? "flex-col" : "flex-col sm:flex-row sm:items-center"} gap-4 hover:shadow-sm transition relative`}>
+    <div className={`bg-white border ${expired ? "border-red-200 shadow-sm" : "border-gray-200"} rounded-2xl p-4 flex ${isGrid ? "flex-col" : "flex-col sm:flex-row sm:items-center"} gap-4 hover:shadow-md transition relative`}>
       {expired && (
-        <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-rose-100 text-rose-700 text-[9px] font-extrabold px-2 py-0.5 rounded-full border border-rose-200 select-none">
+        <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-red-50 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-red-200 select-none">
           <CalendarX className="h-3 w-3" />
-          {t("vault_expired") || "Expired"}
+          Expired
         </div>
       )}
       <div className={`flex items-start ${isGrid ? "justify-between" : "gap-4 w-full sm:w-auto flex-1 min-w-0"}`}>
@@ -127,35 +116,34 @@ function DocumentCard({ doc, onRemove, onChangeStatus, linkedSchemes = [], viewM
 
           <div className="flex-1 min-w-0 space-y-1.5">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-bold text-slate-800 text-sm truncate">{doc.name}</h3>
+              <h3 className="font-bold text-gray-800 text-sm truncate">{doc.name}</h3>
               {doc.status === "verified" && !expired && (
-                <span className="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-extrabold border border-emerald-200 select-none flex items-center gap-1">
-                  ✓ {t("vault_status_verified_registry") || "Verified Registry"}
+                <span className="text-[10px] bg-india-green/10 text-india-green px-1.5 py-0.5 rounded font-extrabold border border-india-green/20 select-none flex items-center gap-1">
+                  <ShieldCheck className="h-3 w-3" /> Verified Registry
                 </span>
               )}
             </div>
 
             {/* Verification Source Badge */}
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${sourceBadgeClass}`}>
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${sourceBadgeClass}`}>
                 {doc.source || "Manual Upload"}
               </span>
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded border bg-slate-50 text-slate-500 border-slate-200">
-                OCR: {t("vault_ocr_soon") || "Coming Soon"}
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded border bg-gray-50 text-gray-500 border-gray-200">
+                OCR: Coming Soon
               </span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-slate-400 font-medium">
-              <span>{t("vault_label_issuer") || "Issuer: "}<strong className="text-slate-600">{doc.issuer || "Self-Uploaded"}</strong></span>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-gray-400 font-medium">
+              <span>Issuer: <strong className="text-gray-600">{doc.issuer || "Self-Uploaded"}</strong></span>
               <span>&bull;</span>
-              <span className={expired ? "text-rose-500 font-bold" : ""}>
-                {t("vault_label_expires") || "Expires: "}
-                <strong className={expired ? "text-rose-600" : "text-slate-600"}>{doc.expiryDate || "No Expiration"}</strong>
+              <span className={expired ? "text-red-500 font-bold" : ""}>
+                Expires: <strong className={expired ? "text-red-600" : "text-gray-600"}>{doc.expiryDate || "No Expiration"}</strong>
               </span>
               {doc.date && (
                 <>
                   <span>&bull;</span>
-                  <span>{t("vault_label_uploaded") || "Uploaded: "}{doc.date}</span>
+                  <span>Uploaded: {doc.date}</span>
                 </>
               )}
             </div>
@@ -163,11 +151,11 @@ function DocumentCard({ doc, onRemove, onChangeStatus, linkedSchemes = [], viewM
             {/* Linked schemes */}
             {linkedSchemes.length > 0 && (
               <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wide">
-                  {t("vault_label_linked_schemes") || "Linked Schemes:"}
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  Linked Schemes:
                 </span>
                 {linkedSchemes.map((s) => (
-                  <span key={s.id} className="bg-indigo-50 border border-indigo-100 text-indigo-700 px-1.5 py-0.2 rounded text-[9px] font-bold">
+                  <span key={s.id} className="bg-government-blue/10 border border-government-blue/20 text-government-blue px-1.5 py-0.2 rounded text-[10px] font-bold">
                     {s.name.split(" (")[0]}
                   </span>
                 ))}
@@ -179,29 +167,30 @@ function DocumentCard({ doc, onRemove, onChangeStatus, linkedSchemes = [], viewM
         {isGrid && (
           <div className="flex items-center gap-2">
             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] font-bold ${meta.badge}`}>
-              <StatusIcon className={`h-3 w-3 ${meta.iconColor}`} />
+              <StatusIcon className="h-3 w-3" />
+              {meta.label}
             </span>
           </div>
         )}
       </div>
 
-      <div className={`flex flex-col sm:flex-row sm:items-center ${isGrid ? "justify-between pt-3 border-t border-slate-100" : "gap-3 shrink-0"}`}>
+      <div className={`flex flex-col sm:flex-row sm:items-center ${isGrid ? "justify-between pt-3 border-t border-gray-100" : "gap-3 shrink-0"}`}>
         {!isGrid && (
           <div className="flex items-center gap-2">
             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] font-bold ${meta.badge}`}>
-              <StatusIcon className={`h-3 w-3 ${meta.iconColor}`} />
-              {getStatusLabel(doc.status)}
+              <StatusIcon className="h-3 w-3" />
+              {meta.label}
             </span>
             <select
               value={doc.status}
               onChange={(e) => onChangeStatus(doc.id, e.target.value)}
-              className="text-[10px] border border-slate-200 rounded-lg px-2 py-0.5 text-slate-600 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-400"
+              className="text-[10px] border border-gray-200 rounded-lg px-2 py-0.5 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-government-blue"
               title="Change status (mock)"
             >
-              <option value="verified">{t("vault_status_verified") || "Verified"}</option>
-              <option value="uploaded">{t("vault_status_uploaded") || "Uploaded"}</option>
-              <option value="pending_review">{t("vault_status_pending") || "Pending Review"}</option>
-              <option value="rejected">{t("vault_status_rejected") || "Rejected"}</option>
+              <option value="verified">Verified</option>
+              <option value="uploaded">Uploaded</option>
+              <option value="pending_review">Pending Review</option>
+              <option value="rejected">Rejected</option>
             </select>
           </div>
         )}
@@ -210,30 +199,30 @@ function DocumentCard({ doc, onRemove, onChangeStatus, linkedSchemes = [], viewM
           <select
             value={doc.status}
             onChange={(e) => onChangeStatus(doc.id, e.target.value)}
-            className="text-[10px] border border-slate-200 rounded-lg px-2 py-1.5 text-slate-600 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-400 w-28"
+            className="text-[10px] border border-gray-200 rounded-lg px-2 py-1.5 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-government-blue w-28"
             title="Change status (mock)"
           >
-            <option value="verified">{t("vault_status_verified") || "Verified"}</option>
-            <option value="uploaded">{t("vault_status_uploaded") || "Uploaded"}</option>
-            <option value="pending_review">{t("vault_status_pending") || "Pending Review"}</option>
-            <option value="rejected">{t("vault_status_rejected") || "Rejected"}</option>
+            <option value="verified">Verified</option>
+            <option value="uploaded">Uploaded</option>
+            <option value="pending_review">Pending Review</option>
+            <option value="rejected">Rejected</option>
           </select>
         )}
 
         <div className="flex items-center gap-1">
-          <button className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Preview">
+          <button className="p-1.5 text-gray-400 hover:text-government-blue hover:bg-government-blue/10 rounded-lg transition" title="Preview">
             <Eye className="h-4 w-4" />
           </button>
-          <button className="p-1.5 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition" title="Replace">
+          <button className="p-1.5 text-gray-400 hover:text-india-green hover:bg-india-green/10 rounded-lg transition" title="Replace">
             <RefreshCw className="h-4 w-4" />
           </button>
-          <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Download">
+          <button className="p-1.5 text-gray-400 hover:text-government-blue hover:bg-government-blue/10 rounded-lg transition" title="Download">
             <Download className="h-4 w-4" />
           </button>
-          <div className="w-px h-4 bg-slate-200 mx-1"></div>
+          <div className="w-px h-4 bg-gray-200 mx-1"></div>
           <button
             onClick={() => onRemove(doc.id)}
-            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition"
             title="Remove document"
           >
             <Trash2 className="h-4 w-4" />
@@ -245,50 +234,46 @@ function DocumentCard({ doc, onRemove, onChangeStatus, linkedSchemes = [], viewM
 }
 
 function SchemeReadinessCard({ scheme, documents }) {
-  const { language, t } = useApp();
   const readiness = getDocReadinessForScheme(scheme.requiredDocuments, documents);
   const barColor =
     readiness.readinessLabel === "Ready"
-      ? "bg-emerald-500"
+      ? "bg-india-green"
       : readiness.readinessLabel === "Partially Ready"
-      ? "bg-amber-400"
-      : "bg-rose-400";
+      ? "bg-saffron"
+      : "bg-red-500";
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
+    <div className="bg-white border border-gray-200 rounded-2xl p-4 space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[10px] text-slate-400 uppercase tracking-wide font-semibold">{scheme.ministry}</p>
-          <h4 className="text-xs font-bold text-slate-800 mt-0.5 leading-snug">{scheme.name}</h4>
+          <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">{scheme.ministry}</p>
+          <h4 className="text-xs font-bold text-gray-800 mt-0.5 leading-snug">{scheme.name}</h4>
         </div>
         <span
           className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full border ${
             readiness.readinessLabel === "Ready"
-              ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+              ? "bg-india-green/10 text-india-green border-india-green/20"
               : readiness.readinessLabel === "Partially Ready"
-              ? "bg-amber-100 text-amber-700 border-amber-200"
-              : "bg-rose-100 text-rose-700 border-rose-200"
+              ? "bg-saffron/10 text-saffron-dark border-saffron/20"
+              : "bg-red-50 text-red-700 border-red-200"
           }`}
         >
-          {readiness.readinessLabel === "Ready" ? (t("vault_ready") || "Ready") :
-           readiness.readinessLabel === "Partially Ready" ? (t("vault_partially_ready") || "Partially Ready") :
-           (t("vault_missing_docs") || "Missing Documents")}
+          {readiness.readinessLabel === "Ready" ? "Ready" :
+           readiness.readinessLabel === "Partially Ready" ? "Partially Ready" :
+           "Missing Documents"}
         </span>
       </div>
 
       <div>
         <div className="flex justify-between mb-1">
-          <span className="text-[10px] text-slate-400">
-            {t("vault_docs_ready_count", { available: readiness.totalAvailable, required: readiness.totalRequired }) ||
-             (language === "hi"
-               ? `${readiness.totalAvailable}/${readiness.totalRequired} दस्तावेज़ तैयार`
-               : `${readiness.totalAvailable}/${readiness.totalRequired} documents ready`)}
+          <span className="text-[10px] text-gray-400">
+            {readiness.totalAvailable}/{readiness.totalRequired} documents ready
           </span>
-          <span className="text-[10px] font-bold text-slate-600">{readiness.readinessScore}%</span>
+          <span className="text-[10px] font-bold text-gray-600">{readiness.readinessScore}%</span>
         </div>
-        <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+        <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
           <div
-            className={`h-full rounded-full ${barColor}`}
+            className={`h-full rounded-full transition-all duration-300 ${barColor}`}
             style={{ width: `${readiness.readinessScore}%` }}
           />
         </div>
@@ -296,11 +281,11 @@ function SchemeReadinessCard({ scheme, documents }) {
 
       {readiness.missingDocs.length > 0 && (
         <div className="space-y-1">
-          <p className="text-[10px] font-semibold text-rose-700 uppercase tracking-wide">
-            {t("vault_missing_prefix") || "Missing:"}
+          <p className="text-[10px] font-semibold text-red-700 uppercase tracking-wider">
+            Missing:
           </p>
           {readiness.missingDocs.map((doc) => (
-            <div key={doc} className="flex items-center gap-1.5 text-[11px] text-rose-600">
+            <div key={doc} className="flex items-center gap-1.5 text-[11px] text-red-600">
               <XCircle className="h-3 w-3 shrink-0" />
               {doc}
             </div>
@@ -310,11 +295,11 @@ function SchemeReadinessCard({ scheme, documents }) {
 
       {readiness.availableDocs.length > 0 && (
         <div className="space-y-1">
-          <p className="text-[10px] font-semibold text-emerald-700 uppercase tracking-wide">
-            {t("vault_available_prefix") || "Available:"}
+          <p className="text-[10px] font-semibold text-india-green uppercase tracking-wider">
+            Available:
           </p>
           {readiness.availableDocs.map((doc) => (
-            <div key={doc} className="flex items-center gap-1.5 text-[11px] text-emerald-600">
+            <div key={doc} className="flex items-center gap-1.5 text-[11px] text-india-green">
               <CheckCircle className="h-3 w-3 shrink-0" />
               {doc}
             </div>
@@ -324,9 +309,9 @@ function SchemeReadinessCard({ scheme, documents }) {
 
       <Link
         to={`/scheme/${scheme.id}`}
-        className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 text-xs font-semibold"
+        className="inline-flex items-center gap-1 text-government-blue hover:text-government-blue-dark text-xs font-semibold"
       >
-        {t("vault_view_scheme_details") || "View scheme details"}
+        View scheme details
         <ArrowRight className="h-3.5 w-3.5" />
       </Link>
     </div>
@@ -372,8 +357,6 @@ export default function Documents() {
     schemes,
     applications,
     savedSchemes,
-    language,
-    t,
   } = useApp();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -418,8 +401,8 @@ export default function Documents() {
   const handleUploadSubmit = (e) => {
     e.preventDefault();
     if (!newDocName.trim()) {
-return;
-}
+      return;
+    }
     addDocument(
       newDocName.trim(),
       newDocType,
@@ -438,18 +421,18 @@ return;
     let match = true;
     if (statusFilter !== "all") {
       if (statusFilter === "verified" && d.status !== "verified") {
-match = false;
-}
+        match = false;
+      }
       if (statusFilter === "pending" && d.status !== "pending_review" && d.status !== "uploaded") {
-match = false;
-}
+        match = false;
+      }
       if (statusFilter === "rejected" && d.status !== "rejected") {
-match = false;
-}
+        match = false;
+      }
     }
     if (categoryFilter !== "all" && d.type !== categoryFilter) {
-match = false;
-}
+      match = false;
+    }
     if (searchQuery.trim() !== "") {
       const q = searchQuery.toLowerCase();
       if (!d.name.toLowerCase().includes(q) && !d.issuer?.toLowerCase().includes(q)) {
@@ -520,32 +503,32 @@ match = false;
   };
 
   const PRIORITY_STYLE = {
-    High: "bg-rose-50 border-rose-200 text-rose-700",
-    Medium: "bg-amber-50 border-amber-200 text-amber-700",
-    Low: "bg-slate-50 border-slate-200 text-slate-600",
+    High: "bg-red-50 border-red-200 text-red-700",
+    Medium: "bg-saffron/10 border-saffron/20 text-saffron-dark",
+    Low: "bg-gray-50 border-gray-200 text-gray-600",
   };
 
   // ── Skeleton loading guard ────────────────────────────────────────────────
   if (isLoading) {
     return (
       <div className="space-y-5">
-        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm animate-pulse">
-          <div className="h-5 w-40 bg-slate-200 rounded mb-2" />
-          <div className="h-3 w-64 bg-slate-100 rounded" />
+        <div className="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm animate-pulse">
+          <div className="h-5 w-40 bg-gray-200 rounded mb-2" />
+          <div className="h-3 w-64 bg-gray-100 rounded" />
         </div>
-        <div className="bg-slate-900 rounded-2xl p-5 animate-pulse space-y-3">
-          <div className="h-5 w-48 bg-slate-700 rounded" />
+        <div className="bg-gradient-to-br from-government-blue to-government-blue-dark rounded-2xl p-5 animate-pulse space-y-3">
+          <div className="h-5 w-48 bg-gray-700 rounded" />
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
-                <div className="h-8 w-10 bg-slate-700 rounded mx-auto mb-1.5" />
-                <div className="h-2.5 w-12 bg-slate-700 rounded mx-auto" />
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center">
+                <div className="h-8 w-10 bg-gray-700 rounded mx-auto mb-1.5" />
+                <div className="h-2.5 w-12 bg-gray-700 rounded mx-auto" />
               </div>
             ))}
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1,2,3,4,5,6].map(i => <DocumentCardSkeleton key={i} />)}
+          {[1, 2, 3, 4, 5, 6].map(i => <DocumentCardSkeleton key={i} />)}
         </div>
       </div>
     );
@@ -555,14 +538,14 @@ match = false;
     <div className="space-y-5">
       {/* Onboarding Banner */}
       {isOnboarding && documents.length === 0 && (
-        <div className="bg-indigo-900 border border-indigo-700 rounded-2xl p-6 text-white space-y-4">
+        <div className="bg-gradient-to-r from-government-blue to-government-blue-dark border border-government-blue/20 rounded-2xl p-6 text-white space-y-4">
           <div className="flex items-center gap-3">
-            <div className="bg-indigo-600 p-2 rounded-xl">
-              <ShieldCheck className="h-5 w-5 text-white" />
+            <div className="bg-white/10 p-2 rounded-xl">
+              <ShieldCheck className="h-5 w-5 text-saffron" />
             </div>
             <div>
-              <h2 className="text-sm font-bold">Welcome! Let's Set Up Your Document Vault</h2>
-              <p className="text-indigo-300 text-xs mt-0.5">
+              <h2 className="text-sm font-bold">Welcome! Let's Set Up Your Digital Locker</h2>
+              <p className="text-white/80 text-xs mt-0.5">
                 Uploading your documents is required to apply for any government scheme.
               </p>
             </div>
@@ -576,18 +559,18 @@ match = false;
               { name: "Bank Account Passbook", type: "Financial Proof", issuer: "Your Bank" },
               { name: "Domicile / Residence Certificate", type: "Domicile Proof", issuer: "Local Authority" },
             ].map((doc, i) => (
-              <div key={i} className="flex items-center gap-2 bg-indigo-800/50 border border-indigo-700 rounded-xl px-3 py-2">
-                <FileText className="h-3.5 w-3.5 text-indigo-300 shrink-0" />
+              <div key={i} className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2">
+                <FileText className="h-3.5 w-3.5 text-saffron shrink-0" />
                 <div>
                   <p className="text-xs font-semibold text-white">{doc.name}</p>
-                  <p className="text-[10px] text-indigo-300">{doc.type}</p>
+                  <p className="text-[10px] text-white/70">{doc.type}</p>
                 </div>
               </div>
             ))}
           </div>
           <button
             onClick={() => openUploadModalWithPrefill()}
-            className="inline-flex items-center gap-2 bg-white text-indigo-900 px-5 py-2.5 rounded-xl text-xs font-bold shadow hover:bg-indigo-50 transition"
+            className="inline-flex items-center gap-2 bg-white text-government-blue-dark px-5 py-2.5 rounded-xl text-xs font-bold shadow hover:bg-gray-50 transition"
           >
             <UploadCloud className="h-4 w-4" />
             Start Uploading Documents
@@ -597,87 +580,85 @@ match = false;
       )}
 
       {/* === Header === */}
-      <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-bold text-slate-900">{t("vault_title")}</h1>
-          <p className="text-slate-500 text-xs mt-1">{t("vault_desc")}</p>
+          <h1 className="text-lg font-bold text-gray-800">Digital Locker</h1>
+          <p className="text-gray-500 text-xs mt-1">Manage your documents and certificates</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleDigiLockerImport}
             disabled={isImporting}
-            className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition shrink-0 disabled:opacity-70"
+            className="inline-flex items-center gap-1.5 bg-india-green hover:bg-india-green-dark text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition shrink-0 disabled:opacity-70"
           >
             <RefreshCw className={`h-4 w-4 ${isImporting ? "animate-spin" : ""}`} />
-            {t("vault_btn_import") || "Import from DigiLocker"}
+            Import from DigiLocker
           </button>
           <button
             onClick={() => openUploadModalWithPrefill()}
-            className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition shrink-0"
+            className="inline-flex items-center gap-1.5 bg-government-blue hover:bg-government-blue-dark text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition shrink-0"
           >
             <UploadCloud className="h-4 w-4" />
-            {t("vault_btn_add") || "Add Document"}
+            Add Document
           </button>
           <button
             onClick={() => setAiChatOpen(true)}
-            className="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition shrink-0"
+            className="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition shrink-0"
           >
-            <Bot className="h-4 w-4 text-indigo-400" />
-            {t("vault_btn_ai") || "SchemeAI"}
+            <Bot className="h-4 w-4 text-government-blue-light" />
+            SchemeAI
           </button>
         </div>
       </div>
 
       {/* === AI Document Intelligence Dashboard === */}
-      <div className="bg-gradient-to-br from-slate-900 to-indigo-950 border border-indigo-900/50 rounded-2xl p-5 space-y-4 shadow-lg">
+      <div className="bg-gradient-to-br from-government-blue to-government-blue-dark border border-government-blue/20 rounded-2xl p-5 space-y-4 shadow-md">
         <div className="flex items-center gap-2.5">
-          <div className="bg-indigo-500/20 p-2 rounded-xl border border-indigo-400/20">
-            <Sparkles className="h-5 w-5 text-indigo-400" />
+          <div className="bg-white/10 p-2 rounded-xl">
+            <Sparkles className="h-5 w-5 text-saffron" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">{t("vault_ai_doc_intel") || "AI Document Intelligence"}</h2>
-            <p className="text-indigo-300 text-[10px] uppercase tracking-wider font-semibold">{t("vault_realtime_analysis") || "Real-time vault analysis"}</p>
+            <h2 className="text-sm font-bold text-white">AI Document Intelligence</h2>
+            <p className="text-saffron/80 text-[10px] uppercase tracking-widest font-semibold">Real-time vault analysis</p>
           </div>
         </div>
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center">
             <p className="text-2xl font-black text-white">{totalDocs}</p>
-            <p className="text-[10px] text-indigo-300 font-semibold uppercase tracking-wide mt-1">{t("vault_total") || "Total"}</p>
+            <p className="text-[10px] text-white/80 font-semibold uppercase tracking-wider mt-1">Total</p>
           </div>
-          <div className="bg-emerald-500/10 border border-emerald-400/20 rounded-xl p-3 text-center">
-            <p className="text-2xl font-black text-emerald-400">{verifiedDocs}</p>
-            <p className="text-[10px] text-emerald-300 font-semibold uppercase tracking-wide mt-1">{t("vault_status_verified") || "Verified"}</p>
+          <div className="bg-india-green/10 border border-india-green/20 rounded-2xl p-3 text-center">
+            <p className="text-2xl font-black text-india-green">{verifiedDocs}</p>
+            <p className="text-[10px] text-india-green/80 font-semibold uppercase tracking-wider mt-1">Verified</p>
           </div>
-          <div className="bg-rose-500/10 border border-rose-400/20 rounded-xl p-3 text-center">
-            <p className="text-2xl font-black text-rose-400">{expiredDocs}</p>
-            <p className="text-[10px] text-rose-300 font-semibold uppercase tracking-wide mt-1">{t("vault_status_expired") || "Expired"}</p>
+          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-3 text-center">
+            <p className="text-2xl font-black text-red-400">{expiredDocs}</p>
+            <p className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider mt-1">Expired</p>
           </div>
-          <div className={`rounded-xl p-3 text-center border ${vaultScore.score >= 75 ? "bg-emerald-500/10 border-emerald-400/20" : vaultScore.score >= 40 ? "bg-amber-500/10 border-amber-400/20" : "bg-rose-500/10 border-rose-400/20"}`}>
-            <p className={`text-2xl font-black ${vaultScore.score >= 75 ? "text-emerald-400" : vaultScore.score >= 40 ? "text-amber-400" : "text-rose-400"}`}>{vaultScore.score}%</p>
-            <p className={`text-[10px] font-semibold uppercase tracking-wide mt-1 ${vaultScore.score >= 75 ? "text-emerald-300" : vaultScore.score >= 40 ? "text-amber-300" : "text-rose-300"}`}>{t("vault_readiness") || "Readiness"}</p>
+          <div className={`rounded-2xl p-3 text-center border ${vaultScore.score >= 75 ? "bg-india-green/10 border-india-green/20" : vaultScore.score >= 40 ? "bg-saffron/10 border-saffron/20" : "bg-red-500/10 border-red-500/20"}`}>
+            <p className={`text-2xl font-black ${vaultScore.score >= 75 ? "text-india-green" : vaultScore.score >= 40 ? "text-saffron-dark" : "text-red-400"}`}>{vaultScore.score}%</p>
+            <p className={`text-[10px] font-semibold uppercase tracking-wider mt-1 ${vaultScore.score >= 75 ? "text-india-green/80" : vaultScore.score >= 40 ? "text-saffron-dark/80" : "text-red-400/80"}`}>Readiness</p>
           </div>
         </div>
 
         {/* AI Recommendation Banner */}
-        <div className="bg-indigo-600/20 border border-indigo-400/30 rounded-xl p-3.5 flex items-start gap-3">
-          <Bot className="h-4 w-4 text-indigo-400 shrink-0 mt-0.5" />
-          <div className="text-xs text-indigo-200 leading-relaxed">
+        <div className="bg-white/10 border border-white/20 rounded-2xl p-3.5 flex items-start gap-3">
+          <Bot className="h-4 w-4 text-saffron shrink-0 mt-0.5" />
+          <div className="text-xs text-white/90 leading-relaxed">
             {expiredDocs > 0 && (
               <p className="mb-1">
-                <span className="text-rose-300 font-bold">{t("vault_expired_detected") || "⚠ Expired Documents Detected:"}</span>{" "}
-                {t("vault_expired_desc", { count: expiredDocs }) || `${expiredDocs} document${expiredDocs > 1 ? "s have" : " has"} expired. Renew them to maintain uninterrupted scheme eligibility.`}
+                <span className="text-red-300 font-bold">⚠ Expired Documents Detected:</span> {expiredDocs} document{expiredDocs > 1 ? "s have" : " has"} expired. Renew them to maintain uninterrupted scheme eligibility.
               </p>
             )}
             {aiSuggestions.length > 0 ? (
               <p>
-                <span className="text-emerald-300 font-bold">{t("vault_ai_insight") || "AI Insight:"}</span>{" "}
-                {t("vault_ai_insight_desc", { doc: aiSuggestions[0].missingDoc, count: aiSuggestions[0].schemesUnlocked.length }) || `Upload ${aiSuggestions[0].missingDoc} to unlock ${aiSuggestions[0].schemesUnlocked.length} scheme${aiSuggestions[0].schemesUnlocked.length > 1 ? "s" : ""}. Your vault readiness will increase by an estimated 15–20%.`}
+                <span className="text-india-green font-bold">AI Insight:</span> Upload {aiSuggestions[0].missingDoc} to unlock {aiSuggestions[0].schemesUnlocked.length} scheme{aiSuggestions[0].schemesUnlocked.length > 1 ? "s" : ""}. Your vault readiness will increase by an estimated 15–20%.
               </p>
             ) : (
               <p>
-                <span className="text-emerald-300 font-bold">{t("vault_all_clear") || "All Clear:"}</span> {t("vault_all_clear_desc") || "Your document vault is fully prepared for all tracked schemes. Review the readiness scores below."}
+                <span className="text-india-green font-bold">All Clear:</span> Your document vault is fully prepared for all tracked schemes. Review the readiness scores below.
               </p>
             )}
           </div>
@@ -688,49 +669,47 @@ match = false;
       {aiSuggestions.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-amber-500" />
-            <h2 className="text-sm font-bold text-slate-800">
-              {t("vault_ai_suggestions_title") || (language === "hi" ? "AI अनुशंसाएं" : "AI Suggestions")} ({aiSuggestions.length})
-            </h2>
+            <Zap className="h-4 w-4 text-saffron-dark" />
+            <h2 className="text-sm font-bold text-gray-800">AI Suggestions ({aiSuggestions.length})</h2>
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             {aiSuggestions.map((sug) => (
               <div
                 key={sug.id}
-                className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 hover:shadow-sm transition"
+                className="bg-white border border-gray-200 rounded-2xl p-4 space-y-3 hover:shadow-md transition"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <div className="bg-amber-50 p-2 rounded-lg border border-amber-100">
-                      <FileText className="h-4 w-4 text-amber-600" />
+                    <div className="bg-saffron/10 p-2 rounded-lg border border-saffron/20">
+                      <FileText className="h-4 w-4 text-saffron-dark" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-800 leading-tight">{sug.missingDoc}</p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">{t("vault_missing_doc") || "Missing document"}</p>
+                      <p className="text-xs font-bold text-gray-800 leading-tight">{sug.missingDoc}</p>
+                      <p className="text-[10px] text-gray-400 mt-0.5">Missing document</p>
                     </div>
                   </div>
-                  <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full border ${PRIORITY_STYLE[sug.priority]}`}>
-                    {t(`vault_priority_${sug.priority.toLowerCase()}`) || sug.priority} {t("vault_priority_label") || "Priority"}
+                  <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${PRIORITY_STYLE[sug.priority]}`}>
+                    {sug.priority} Priority
                   </span>
                 </div>
 
                 <div className="space-y-1.5 text-[10px]">
-                  <div className="flex items-start gap-1.5 text-emerald-700">
+                  <div className="flex items-start gap-1.5 text-india-green">
                     <Sparkles className="h-3 w-3 shrink-0 mt-0.5" />
-                    <span><strong>{t("vault_unlocks") || "Unlocks"}:</strong> {sug.schemesUnlocked.join(", ")}</span>
+                    <span><strong>Unlocks:</strong> {sug.schemesUnlocked.join(", ")}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-slate-500">
+                  <div className="flex items-center gap-1.5 text-gray-500">
                     <Clock className="h-3 w-3 shrink-0" />
-                    <span>{t("vault_est_completion") || "Est. completion"}: {sug.eta}</span>
+                    <span>Est. completion: {sug.eta}</span>
                   </div>
                 </div>
 
                 <button
                   onClick={() => openUploadModalWithPrefill(sug.missingDoc)}
-                  className="w-full inline-flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-[10px] font-bold shadow-sm transition"
+                  className="w-full inline-flex items-center justify-center gap-1.5 bg-government-blue hover:bg-government-blue-dark text-white py-2 rounded-xl text-[10px] font-bold shadow-sm transition"
                 >
                   <UploadCloud className="h-3.5 w-3.5" />
-                  {t("vault_btn_upload_specific", { docName: sug.missingDoc.split(" ")[0] }) || `Upload ${sug.missingDoc.split(" ")[0]}`}
+                  Upload {sug.missingDoc.split(" ")[0]}
                   <ArrowRight className="h-3 w-3" />
                 </button>
               </div>
@@ -740,18 +719,18 @@ match = false;
       )}
 
       {/* DigiLocker Trust Card */}
-      <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-slate-300 flex items-start gap-3.5 shadow-sm">
-        <ShieldCheck className="h-5 w-5 text-indigo-400 shrink-0 mt-0.5" />
+      <div className="bg-gray-900 border border-gray-800 p-5 rounded-2xl text-gray-300 flex items-start gap-3.5 shadow-sm">
+        <ShieldCheck className="h-5 w-5 text-government-blue-light shrink-0 mt-0.5" />
         <div className="text-xs space-y-1.5 leading-relaxed">
           <h3 className="font-bold text-white text-xs">
-            {t("vault_trust_card_title") || "Simulated Digital Locker Registry Integrity"}
+            Simulated Digital Locker Registry Integrity
           </h3>
           <p>
-            {t("vault_trust_card_desc") || "SchemeBridge emulates national registry linkages (Aadhaar, PAN, Caste Registry). Documents bearing the Verified Registry tag are cryptographically matched. Uploaded documents remain in demo-only sandboxed storage."}
+            SchemeBridge emulates national registry linkages (Aadhaar, PAN, Caste Registry). Documents bearing the Verified Registry tag are cryptographically matched. Uploaded documents remain in demo-only sandboxed storage.
           </p>
           <div className="flex flex-wrap gap-2 pt-1">
             {["DigiLocker", "State e-District Portal", "Manual Upload", "Government API (Future)", "Officer Verified (Future)"].map((src) => (
-              <span key={src} className="text-[9px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+              <span key={src} className="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">
                 {src}
               </span>
             ))}
@@ -761,94 +740,91 @@ match = false;
 
       {/* Vault Completeness Score */}
       {trackedSchemes.length > 0 && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-5">
+        <div className="bg-white border border-gray-200 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-indigo-500" />
-              <h2 className="text-sm font-bold text-slate-800">
-                {t("vault_score_title") || "Vault Readiness Score"}
+              <ShieldCheck className="h-5 w-5 text-government-blue" />
+              <h2 className="text-sm font-bold text-gray-800">
+                Vault Readiness Score
               </h2>
             </div>
             <span
               className={`text-xs font-bold px-3 py-1 rounded-full border ${
                 vaultScore.score === 100
-                  ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                  ? "bg-india-green/10 text-india-green border-india-green/20"
                   : vaultScore.score >= 50
-                  ? "bg-amber-100 text-amber-700 border-amber-200"
-                  : "bg-rose-100 text-rose-700 border-rose-200"
+                  ? "bg-saffron/10 text-saffron-dark border-saffron/20"
+                  : "bg-red-50 text-red-700 border-red-200"
               }`}
             >
               {vaultScore.score}% · {vaultScore.label}
             </span>
           </div>
-          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
             <div
-              className={`h-full rounded-full transition-all ${
+              className={`h-full rounded-full transition-all duration-300 ${
                 vaultScore.score === 100
-                  ? "bg-emerald-500"
+                  ? "bg-india-green"
                   : vaultScore.score >= 50
-                  ? "bg-amber-400"
-                  : "bg-rose-400"
+                  ? "bg-saffron"
+                  : "bg-red-500"
               }`}
               style={{ width: `${vaultScore.score}%` }}
             />
           </div>
-          <p className="text-[11px] text-slate-400 mt-2">
-            {t("vault_score_desc", { docs: documents.length, schemes: trackedSchemes.length }) ||
-              (language === "hi"
-                ? `आपकी तिजोरी में ${documents.length} दस्तावेज़ और ${trackedSchemes.length} ट्रैक की गई योजनाएं हैं।`
-                : `Based on ${documents.length} document${documents.length !== 1 ? "s" : ""} in your vault across ${trackedSchemes.length} tracked scheme${trackedSchemes.length !== 1 ? "s" : ""}.`)}
+          <p className="text-[11px] text-gray-500 mt-2">
+            Based on {documents.length} document{documents.length !== 1 ? "s" : ""} in your vault across {trackedSchemes.length} tracked scheme{trackedSchemes.length !== 1 ? "s" : ""}.
           </p>
         </div>
       )}
 
       {/* Document Vault */}
       <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-3">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-bold text-slate-700">
-              {t("vault_your_docs") || "Your Documents"} ({filteredDocs.length})
+            <h2 className="text-sm font-bold text-gray-700">
+              Your Documents ({filteredDocs.length})
             </h2>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <div className="relative">
-              <Search className="absolute left-2.5 top-1.5 h-3.5 w-3.5 text-slate-400" />
+              <Search className="absolute left-2.5 top-1.5 h-3.5 w-3.5 text-gray-400" />
               <input
                 type="text"
-                placeholder={t("vault_search_placeholder") || "Search..."}
+                placeholder="Search documents..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 text-[11px] border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 w-32 sm:w-48 transition"
+                className="pl-8 pr-3 py-1.5 text-[11px] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-government-blue bg-gray-50 w-32 sm:w-48 transition"
               />
             </div>
 
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-2 py-1.5 text-[11px] border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+              className="px-2 py-1.5 text-[11px] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-government-blue bg-white"
             >
-              <option value="all">{t("vault_cat_all") || "All Categories"}</option>
-              <option value="Identity Proof">{t("vault_cat_identity") || "Identity Proof"}</option>
-              <option value="Financial Proof">{t("vault_cat_financial") || "Financial Proof"}</option>
-              <option value="Category Proof">{t("vault_cat_category") || "Category Proof"}</option>
-              <option value="Property Proof">{t("vault_cat_property") || "Property Proof"}</option>
-              <option value="Academic Proof">{t("vault_cat_academic") || "Academic Proof"}</option>
-              <option value="Domicile Proof">{t("vault_cat_domicile") || "Domicile Proof"}</option>
+              <option value="all">All Categories</option>
+              <option value="Identity Proof">Identity Proof</option>
+              <option value="Financial Proof">Financial Proof</option>
+              <option value="Category Proof">Category Proof</option>
+              <option value="Property Proof">Property Proof</option>
+              <option value="Academic Proof">Academic Proof</option>
+              <option value="Domicile Proof">Domicile Proof</option>
             </select>
 
-            <div className="flex gap-1 bg-slate-100 p-1 rounded-xl shrink-0 select-none">
+            <div className="flex gap-1 bg-gray-100 p-1 rounded-xl shrink-0 select-none">
               {[
-                { id: "all", label: t("vault_status_all") },
-                { id: "verified", label: t("vault_status_verified") },
-                { id: "pending", label: t("vault_status_pending") },
-                { id: "rejected", label: t("vault_status_rejected") },
+                { id: "all", label: "All" },
+                { id: "verified", label: "Verified" },
+                { id: "pending", label: "Pending" },
+                { id: "rejected", label: "Rejected" },
               ].map((f) => (
                 <button
                   key={f.id}
                   onClick={() => setStatusFilter(f.id)}
                   className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold capitalize transition ${
-                    statusFilter === f.id ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
+                    statusFilter === f.id ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"
                   }`}
                 >
                   {f.label}
@@ -856,17 +832,17 @@ match = false;
               ))}
             </div>
 
-            <div className="flex gap-1 bg-slate-100 p-1 rounded-xl shrink-0 ml-1">
+            <div className="flex gap-1 bg-gray-100 p-1 rounded-xl shrink-0 ml-1">
               <button
                 onClick={() => setViewMode("list")}
-                className={`p-1 rounded-lg transition ${viewMode === "list" ? "bg-white shadow-sm text-slate-900" : "text-slate-400"}`}
+                className={`p-1 rounded-lg transition ${viewMode === "list" ? "bg-white shadow-sm text-gray-900" : "text-gray-400"}`}
                 title="List View"
               >
                 <List className="h-3.5 w-3.5" />
               </button>
               <button
                 onClick={() => setViewMode("grid")}
-                className={`p-1 rounded-lg transition ${viewMode === "grid" ? "bg-white shadow-sm text-slate-900" : "text-slate-400"}`}
+                className={`p-1 rounded-lg transition ${viewMode === "grid" ? "bg-white shadow-sm text-gray-900" : "text-gray-400"}`}
                 title="Grid View"
               >
                 <Grid className="h-3.5 w-3.5" />
@@ -876,19 +852,19 @@ match = false;
         </div>
 
         {filteredDocs.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center space-y-2">
-            <FileText className="h-10 w-10 text-slate-300 mx-auto" />
-            <p className="font-semibold text-slate-600 text-sm">
-              {t("vault_empty_title") || "No documents found"}
+          <div className="bg-white border border-gray-200 rounded-2xl p-10 text-center space-y-2">
+            <FileText className="h-10 w-10 text-gray-300 mx-auto" />
+            <p className="font-semibold text-gray-600 text-sm">
+              No documents found
             </p>
-            <p className="text-slate-400 text-xs">
-              {t("vault_empty_desc") || "No records correspond to the selected filter criteria."}
+            <p className="text-gray-400 text-xs">
+              No records correspond to the selected filter criteria.
             </p>
           </div>
         ) : Object.keys(docsByType).length > 0 ? (
           Object.entries(docsByType).map(([type, docs]) => (
             <div key={type} className="space-y-2">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-1">
                 {type}
               </p>
               <div className={viewMode === "grid" ? "grid sm:grid-cols-2 gap-3" : "space-y-2"}>
@@ -911,8 +887,8 @@ match = false;
       {/* Scheme Readiness Section */}
       {trackedSchemes.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-sm font-bold text-slate-700">
-            {t("vault_readiness_title") || "Readiness for Your Tracked Schemes"}
+          <h2 className="text-sm font-bold text-gray-700">
+            Readiness for Your Tracked Schemes
           </h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {trackedSchemes.map((scheme) => (
@@ -923,15 +899,15 @@ match = false;
       )}
 
       {trackedSchemes.length === 0 && (
-        <div className="bg-white border border-dashed border-slate-200 rounded-2xl p-8 text-center space-y-2">
-          <p className="text-xs text-slate-400">
-            {t("vault_no_tracked_desc") || "Save or apply to schemes to see document readiness here."}
+        <div className="bg-white border border-dashed border-gray-200 rounded-2xl p-8 text-center space-y-2">
+          <p className="text-xs text-gray-400">
+            Save or apply to schemes to see document readiness here.
           </p>
           <Link
             to="/recommendations"
-            className="text-indigo-600 text-xs font-semibold inline-flex items-center gap-1 hover:text-indigo-800"
+            className="text-government-blue text-xs font-semibold inline-flex items-center gap-1 hover:text-government-blue-dark"
           >
-            {t("vault_browse_schemes") || "Browse schemes"}
+            Browse schemes
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -941,36 +917,36 @@ match = false;
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm"
             onClick={() => setIsModalOpen(false)}
           />
-          <div className="relative bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
-            <div className="bg-slate-900 text-white p-5 flex items-center justify-between">
+          <div className="relative bg-white rounded-2xl border border-gray-200 shadow-2xl max-w-md w-full overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
+            <div className="bg-gradient-to-r from-government-blue to-government-blue-dark text-white p-5 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <UploadCloud className="h-5 w-5 text-indigo-400" />
+                <UploadCloud className="h-5 w-5 text-saffron" />
                 <h3 className="font-bold text-sm">
-                  {t("vault_modal_title") || "Add Document to Vault"}
+                  Add Document to Digital Locker
                 </h3>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg transition"
+                className="text-white/70 hover:text-white p-1 rounded-lg transition"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {prefillDocName && (
-              <div className="bg-indigo-50 border-b border-indigo-100 px-6 py-3 flex items-center gap-2 text-xs text-indigo-700 font-semibold">
-                <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
-                AI Suggestion: <span className="font-black text-indigo-900">{prefillDocName}</span>
+              <div className="bg-government-blue/5 border-b border-government-blue/20 px-6 py-3 flex items-center gap-2 text-xs text-government-blue font-semibold">
+                <Sparkles className="h-3.5 w-3.5 text-government-blue" />
+                AI Suggestion: <span className="font-black text-government-blue-dark">{prefillDocName}</span>
               </div>
             )}
 
             <form onSubmit={handleUploadSubmit} className="p-6 space-y-4 text-xs">
               <div>
-                <label htmlFor="newDocName" className="block font-semibold text-slate-600 mb-1.5">
-                  {t("vault_modal_doc_name") || "Document / Certificate Name *"}
+                <label htmlFor="newDocName" className="block font-semibold text-gray-600 mb-1.5">
+                  Document / Certificate Name *
                 </label>
                 <input
                   id="newDocName"
@@ -979,13 +955,13 @@ match = false;
                   placeholder="e.g. Income Certificate 2026"
                   value={newDocName}
                   onChange={(e) => setNewDocName(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg transition"
+                  className="w-full px-3 py-2 border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-government-blue rounded-lg transition"
                 />
               </div>
 
               <div>
-                <label htmlFor="newDocIssuer" className="block font-semibold text-slate-600 mb-1.5">
-                  {t("vault_modal_issuer") || "Issuing Authority (Issuer) *"}
+                <label htmlFor="newDocIssuer" className="block font-semibold text-gray-600 mb-1.5">
+                  Issuing Authority (Issuer) *
                 </label>
                 <input
                   id="newDocIssuer"
@@ -994,13 +970,13 @@ match = false;
                   placeholder="e.g. UIDAI, State Revenue Board"
                   value={newDocIssuer}
                   onChange={(e) => setNewDocIssuer(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg transition"
+                  className="w-full px-3 py-2 border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-government-blue rounded-lg transition"
                 />
               </div>
 
               <div>
-                <label htmlFor="newDocExpiry" className="block font-semibold text-slate-600 mb-1.5">
-                  {t("vault_modal_expiry") || "Expiration Date (or \"No Expiration\")"}
+                <label htmlFor="newDocExpiry" className="block font-semibold text-gray-600 mb-1.5">
+                  Expiration Date (or "No Expiration")
                 </label>
                 <input
                   id="newDocExpiry"
@@ -1008,59 +984,59 @@ match = false;
                   placeholder="e.g. 2028-12-31, No Expiration"
                   value={newDocExpiry}
                   onChange={(e) => setNewDocExpiry(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg transition"
+                  className="w-full px-3 py-2 border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-government-blue rounded-lg transition"
                 />
               </div>
 
               <div>
-                <label htmlFor="newDocType" className="block font-semibold text-slate-600 mb-1.5">
-                  {t("vault_modal_category") || "Document Category"}
+                <label htmlFor="newDocType" className="block font-semibold text-gray-600 mb-1.5">
+                  Document Category
                 </label>
                 <select
                   id="newDocType"
                   value={newDocType}
                   onChange={(e) => setNewDocType(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg transition"
+                  className="w-full px-3 py-2 border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-government-blue rounded-lg transition"
                 >
-                  <option value="Identity Proof">{t("vault_cat_identity_full") || "Identity Proof (Aadhaar, Voter ID)"}</option>
-                  <option value="Financial Proof">{t("vault_cat_financial_full") || "Financial Proof (Income, Bank Passbook)"}</option>
-                  <option value="Category Proof">{t("vault_cat_category_full") || "Category Proof (Caste Certificate)"}</option>
-                  <option value="Property Proof">{t("vault_cat_property_full") || "Property Proof (Khatauni, Land Records)"}</option>
-                  <option value="Academic Proof">{t("vault_cat_academic_full") || "Academic Proof (Marksheet, College Receipt)"}</option>
-                  <option value="Domicile Proof">{t("vault_cat_domicile_full") || "Domicile Proof (Ration Card, Address Proof)"}</option>
+                  <option value="Identity Proof">Identity Proof (Aadhaar, Voter ID)</option>
+                  <option value="Financial Proof">Financial Proof (Income, Bank Passbook)</option>
+                  <option value="Category Proof">Category Proof (Caste Certificate)</option>
+                  <option value="Property Proof">Property Proof (Khatauni, Land Records)</option>
+                  <option value="Academic Proof">Academic Proof (Marksheet, College Receipt)</option>
+                  <option value="Domicile Proof">Domicile Proof (Ration Card, Address Proof)</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="newDocStatus" className="block font-semibold text-slate-600 mb-1.5">
-                  {t("vault_modal_status_label") || "Verification Status (mock)"}
+                <label htmlFor="newDocStatus" className="block font-semibold text-gray-600 mb-1.5">
+                  Verification Status (mock)
                 </label>
                 <select
                   id="newDocStatus"
                   value={newDocStatus}
                   onChange={(e) => setNewDocStatus(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg transition"
+                  className="w-full px-3 py-2 border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-government-blue rounded-lg transition"
                 >
-                  <option value="uploaded">{t("vault_modal_status_uploaded") || "Uploaded (pending verification)"}</option>
-                  <option value="verified">{t("vault_status_verified") || "Verified"}</option>
-                  <option value="pending_review">{t("vault_status_pending") || "Pending Review"}</option>
-                  <option value="rejected">{t("vault_status_rejected") || "Rejected"}</option>
+                  <option value="uploaded">Uploaded (pending verification)</option>
+                  <option value="verified">Verified</option>
+                  <option value="pending_review">Pending Review</option>
+                  <option value="rejected">Rejected</option>
                 </select>
               </div>
 
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
+              <div className="flex justify-end gap-2 pt-4 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl font-semibold transition"
+                  className="px-4 py-2 border border-gray-200 hover:bg-gray-50 text-gray-600 rounded-xl font-semibold transition"
                 >
-                  {t("gen_cancel") || "Cancel"}
+                  Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-sm transition"
+                  className="px-4 py-2 bg-government-blue hover:bg-government-blue-dark text-white rounded-xl font-bold shadow-sm transition"
                 >
-                  {t("vault_modal_submit") || "Add to Vault"}
+                  Add to Vault
                 </button>
               </div>
             </form>
