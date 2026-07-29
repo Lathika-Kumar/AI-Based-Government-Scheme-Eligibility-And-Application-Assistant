@@ -1,0 +1,34 @@
+Files modified:
+- src/components/ui/ProgressCard.jsx
+- src/user/pages/Documents.jsx
+
+Changes made:
+
+1. ProgressCard.jsx:
+   - Increased outer padding from p-4 to p-5 to match StatCard
+   - Changed shadow from shadow-xs to shadow-sm
+   - Added hover:shadow-md and transition duration-200 for consistent hover animation
+   - Increased icon size from h-3.5 w-3.5 to h-5 w-5
+   - Updated icon container padding from p-1.5 to p-3 (removed any border that wasn't there)
+   - Changed label typography to match StatCard: text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none
+   - Changed percentage value typography to match StatCard value: text-2xl font-black text-slate-900 tracking-tight (when showPercentage is true)
+   - Kept description styling as text-[10px] text-slate-400 (already matched)
+
+2. Documents.jsx (containing DocumentCard and SchemeReadinessCard):
+
+   DocumentCard:
+   - Changed outer padding from p-4 to p-5
+   - Moved shadow-sm outside of conditional to always apply (was only in expired state)
+   - Added hover:shadow-md and transition duration-200 for consistent hover
+   - Changed document name (h3) typography from font-bold text-gray-800 text-sm truncate to text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate
+   - Kept icon container and sizing as they already matched (p-3 rounded-xl with h-5 w-5 icon)
+
+   SchemeReadinessCard:
+   - Changed outer padding from p-4 to p-5
+   - Added shadow-sm for consistent elevation (no hover effect as it's not interactive)
+   - Changed scheme name (h4) typography from text-xs font-bold text-gray-800 mt-0.5 leading-snug to text-[10px] font-bold text-slate-400 uppercase tracking-widest
+   - Kept readiness badge and progress bar styling as they already aligned with standards
+
+Note: SchemeCard.jsx was not found in the codebase, so SchemeReadinessCard (the scheme card component in Documents.jsx) was updated instead to fulfill the spirit of the request.
+
+Build result: Not executed as per instructions, but changes are ready for build.
