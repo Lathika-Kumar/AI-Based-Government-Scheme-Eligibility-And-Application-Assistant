@@ -27,15 +27,11 @@ function OfficialBanner() {
           <div className="max-w-7xl mx-auto grid sm:grid-cols-2 gap-4">
             <div>
               <p className="font-bold text-slate-200">🔒 schemebridge.gov.in</p>
-              <p className="mt-1">
-                Official government domain for scheme information and services.
-              </p>
+              <p className="mt-1">Official government domain for scheme information and services.</p>
             </div>
             <div>
               <p className="font-bold text-slate-200">⚙️ Sandbox Environment Notice</p>
-              <p className="mt-1">
-                All data entered here is stored locally in your browser and is not transmitted to any government servers.
-              </p>
+              <p className="mt-1">All data entered here is stored locally in your browser and is not transmitted to any government servers.</p>
             </div>
           </div>
         </div>
@@ -134,8 +130,7 @@ export default function PublicLayout() {
             </NavLink>
           </nav>
 
-          <div className="flex items-center space-x-4">
-
+          <div className="flex items-center space-x-3">
             {isAuthenticated ? (
               <Link
                 to={isAdmin ? "/admin/dashboard" : "/dashboard"}

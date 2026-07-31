@@ -192,7 +192,7 @@ export default function AdminLayout() {
         {/* Security Banner indicator */}
         <div className="bg-red-700 text-white text-[11px] py-1 px-4 font-bold tracking-wider flex items-center justify-center space-x-2 select-none border-b border-red-800">
           <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-          <span>Secure Area (Nodal Evaluation Console)</span>
+          <span>Secure Area</span>
         </div>
       </div>
 
@@ -279,7 +279,7 @@ export default function AdminLayout() {
                 className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition duration-150"
               >
                 <LogOut className="h-4 w-4 shrink-0" />
-                <span>Sign Out</span>
+                <span>Logout</span>
               </button>
             </div>
             {/* Telemetries */}
@@ -339,7 +339,7 @@ export default function AdminLayout() {
               <button
                 onClick={resetData}
                 className="p-2 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 rounded-xl transition"
-                title="Reset all simulation records"
+                title="Reset"
               >
                 <RefreshCw className="h-4 w-4" />
               </button>
@@ -348,7 +348,7 @@ export default function AdminLayout() {
               <button
                 onClick={() => setNotificationDrawerOpen(true)}
                 className="p-2 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-indigo-600 rounded-xl transition relative"
-                title="Notification Logs"
+                title="Notifications"
               >
                 <Bell className="h-4 w-4" />
                 <span className="absolute top-1 right-1 h-2 w-2 bg-indigo-600 rounded-full"></span>
@@ -371,7 +371,7 @@ export default function AdminLayout() {
               <button
                 onClick={handleLogout}
                 className="p-2 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-500 hover:text-rose-600 rounded-xl transition"
-                title="Logout Console Session"
+                title="Logout"
               >
                 <LogOut className="h-4 w-4" />
               </button>
@@ -398,7 +398,7 @@ export default function AdminLayout() {
               <Search className="h-5 w-5 text-slate-400 shrink-0" />
               <input
                 type="text"
-                placeholder="Search across schemes, applications, audit logs..."
+                placeholder="Search by ID, citizen name, or scheme..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-grow text-xs font-semibold focus:outline-none text-slate-700 placeholder-slate-400"
@@ -616,7 +616,7 @@ export default function AdminLayout() {
                   {searchResults.grievances?.items?.length > 0 && (
                     <div className="space-y-1.5">
                       <div className="flex justify-between items-center">
-                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Grievance desk Tickets</span>
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Grievance Desk Tickets</span>
                         {searchResults.grievances.hasMore && (
                           <button
                             onClick={() => {

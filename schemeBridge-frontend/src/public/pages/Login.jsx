@@ -231,7 +231,7 @@ export default function Login() {
 
             {!isAdminEmail && (
               <div className="text-center text-sm text-gray-600 pt-3 border-t border-gray-100">
-                New to SchemeBridge?{" "}
+                New to SchemeBridge? {" "}
                 <Link to="/signup" className="text-government-blue hover:text-government-blue-dark font-bold hover:underline ml-1">
                   Create an Account
                 </Link>

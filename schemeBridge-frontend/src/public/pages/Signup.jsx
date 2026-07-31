@@ -120,7 +120,7 @@ export default function Signup() {
                   <input
                     id="signup-name"
                     type="text"
-                    placeholder="Enter your full name"
+                    placeholder="Enter your name"
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
@@ -162,7 +162,7 @@ export default function Signup() {
                   <input
                     id="signup-password"
                     type="password"
-                    placeholder="Minimum 8 characters"
+                    placeholder="Password must be at least 8 characters long."
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-government-blue focus:bg-white transition"
@@ -214,7 +214,7 @@ export default function Signup() {
             </form>
 
             <p className="text-center text-sm text-gray-600 pt-1">
-              Already have an account?{" "}
+              Already have an account? {" "}
               <Link to="/login" className="text-government-blue hover:text-government-blue-dark font-bold underline ml-1">
                 Sign In
               </Link>
@@ -223,7 +223,7 @@ export default function Signup() {
         </div>
 
         <p className="text-center text-[11px] text-white/70 tracking-wide uppercase font-medium">
-          Secured Government Service Portal
+          Secure Encrypted
         </p>
       </div>
     </div>

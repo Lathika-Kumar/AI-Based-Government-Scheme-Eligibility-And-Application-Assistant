@@ -33,10 +33,10 @@ export default function ForgotPassword() {
       const res = await forgotPassword({ email: targetEmail });
       setSubmitted(true);
       setSuccessMessage(res.message || `Password reset instructions sent to ${targetEmail}`);
-      showToast("success", "Reset Link Sent", "Check your email inbox for further instructions.");
+      showToast("Reset Link Sent", "Reset Link Sent", "Check your email inbox for further instructions.");
     } catch (err) {
       setError(err.message || "Failed to process password reset. Please try again.");
-      showToast("error", "Request Failed", err.message);
+      showToast("Request Failed", "Request Failed", err.message);
     } finally {
       setLoading(false);
     }
