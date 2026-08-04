@@ -30,6 +30,8 @@ export const ENDPOINTS = Object.freeze({
     REGISTER: "/auth/register",
     REFRESH_TOKEN: "/auth/refresh",
     VERIFY_OTP: "/auth/verify-otp",
+    SEND_EMAIL_OTP: "/auth/send-email-otp",
+    SEND_PHONE_OTP: "/auth/send-phone-otp",
     FORGOT_PASSWORD: "/auth/forgot-password",
     RESET_PASSWORD: "/auth/reset-password",
   },
@@ -39,6 +41,7 @@ export const ENDPOINTS = Object.freeze({
     GET: "/profile",
     UPDATE: "/profile",
     COMPLETION: "/profile/completion",
+    SUMMARY: "/profile/summary",
     PREFERENCES: "/profile/preferences",
   },
 
@@ -48,8 +51,16 @@ export const ENDPOINTS = Object.freeze({
     DETAIL: "/schemes/:id",
     RECOMMENDATIONS: "/schemes/recommendations",
     CATEGORIES: "/schemes/categories",
+    FEATURED: "/schemes/featured",
+    TRENDING: "/schemes/trending",
+    LATEST: "/schemes/latest",
     SEARCH: "/schemes/search",
     ELIGIBILITY: "/schemes/:id/eligibility",
+  },
+
+  // ── Dashboard ─────────────────────────────────────────────────────────────
+  DASHBOARD: {
+    SUMMARY: "/dashboard/summary",
   },
 
   // ── Documents ─────────────────────────────────────────────────────────────

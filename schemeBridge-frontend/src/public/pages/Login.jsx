@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
+import { useToast } from "@components/ui/ToastNotification";
 import { validateSchema, loginSchema } from "@utils/validation";
 import {
   Building2, Mail, Lock, ArrowRight, AlertCircle, UserCheck, ShieldCheck
@@ -9,6 +10,7 @@ import {
 export default function Login() {
   const { login, quickLogin } = useAuth();
   const navigate = useNavigate();
+  const showToast = useToast();
 
   const [email, setEmail]             = useState("");
   const [password, setPassword]       = useState("");
@@ -26,11 +28,26 @@ export default function Login() {
 
     if (isUserAdmin) {
       navigate("/admin/dashboard");
-    } else if (!loggedInUser.onboardingComplete) {
-      navigate("/onboarding");
-    } else {
-      navigate("/dashboard");
+      return;
     }
+
+    // Draft Registration Resume Logic
+    if (loggedInUser.status === "PENDING_VERIFICATION") {
+      showToast("Welcome back! Your account is almost ready. Please complete verification to continue.", "info");
+      if (loggedInUser.verificationMethod) {
+        navigate("/otp-verification");
+      } else {
+        navigate("/verification-method");
+      }
+      return;
+    }
+
+    if (!loggedInUser.onboardingComplete) {
+      navigate("/onboarding");
+      return;
+    }
+
+    navigate("/dashboard");
   };
 
   const handleQuickLogin = async (roleType) => {
@@ -58,18 +75,14 @@ export default function Login() {
 
     setLoading(true);
     setLoadingPhase("Signing In...");
-    await new Promise(r => setTimeout(r, 400));
 
-    const result = login(email, password);
+    const result = await login(email, password);
     if (result.error) {
       setError(result.error);
       setLoading(false);
       setLoadingPhase("");
       return;
     }
-
-    setLoadingPhase("Signing In...");
-    await new Promise(r => setTimeout(r, 350));
 
     setLoading(false);
     setLoadingPhase("");
@@ -117,19 +130,19 @@ export default function Login() {
                   type="button"
                   onClick={() => handleQuickLogin("citizen")}
                   disabled={loading}
-                  className="bg-white hover:bg-government-blue/5 hover:border-government-blue/30 border border-gray-200 rounded-lg py-3 px-3 text-left transition text-xs flex flex-col justify-between"
+                  className="bg-white hover:bg-government-blue/5 hover:border-government-blue/30 border border-gray-200 rounded-lg py-3 px-3 text-left transition text-xs flex flex-col justify-between cursor-pointer"
                 >
                   <span className="font-bold text-gray-800">Citizen Profile</span>
-                  <span className="text-[11px] text-gray-500">Ramesh Kumar (Farmer)</span>
+                  <span className="text-[11px] text-gray-500 font-medium">Rajesh Patel (Verified)</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleQuickLogin("admin")}
                   disabled={loading}
-                  className="bg-white hover:bg-government-blue/5 hover:border-government-blue/30 border border-gray-200 rounded-lg py-3 px-3 text-left transition text-xs flex flex-col justify-between"
+                  className="bg-white hover:bg-government-blue/5 hover:border-government-blue/30 border border-gray-200 rounded-lg py-3 px-3 text-left transition text-xs flex flex-col justify-between cursor-pointer"
                 >
                   <span className="font-bold text-gray-800">Admin Evaluator</span>
-                  <span className="text-[11px] text-gray-500">Verification Officer</span>
+                  <span className="text-[11px] text-gray-500 font-medium">Verification Officer</span>
                 </button>
               </div>
             </div>
@@ -156,8 +169,6 @@ export default function Login() {
                       fieldErrors.email ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:ring-government-blue'
                     }`}
                     autoComplete="email"
-                    aria-invalid={!!fieldErrors.email}
-                    aria-describedby={fieldErrors.email ? "email-error" : undefined}
                   />
                 </div>
                 {fieldErrors.email && (
@@ -197,8 +208,6 @@ export default function Login() {
                       fieldErrors.password ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:ring-government-blue'
                     }`}
                     autoComplete="current-password"
-                    aria-invalid={!!fieldErrors.password}
-                    aria-describedby={fieldErrors.password ? "password-error" : undefined}
                   />
                 </div>
                 {fieldErrors.password && (
@@ -213,7 +222,7 @@ export default function Login() {
                 id="login-submit"
                 type="submit"
                 disabled={loading}
-                className="w-full bg-government-blue hover:bg-government-blue-dark disabled:opacity-70 text-white py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200"
+                className="w-full bg-government-blue hover:bg-government-blue-dark disabled:opacity-70 text-white py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center gap-2.5">
@@ -247,7 +256,7 @@ export default function Login() {
           </div>
           <div className="flex items-center gap-1">
             <UserCheck className="h-3.5 w-3.5" />
-            <span>Encrypted</span>
+            <span>Encrypted Platform</span>
           </div>
         </div>
       </div>

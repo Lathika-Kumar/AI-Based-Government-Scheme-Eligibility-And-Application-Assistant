@@ -6,13 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-/**
- * MongoDB repository for User entity operations.
- */
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
-
     Optional<User> findByEmail(String email);
-
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
 }

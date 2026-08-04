@@ -1,45 +1,61 @@
 package com.schemebridge.entity;
 
-import com.schemebridge.enums.Role;
+import com.schemebridge.enums.AccountStatus;
+import com.schemebridge.enums.RoleEnum;
+import com.schemebridge.enums.VerificationMethod;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Mongo document representing a registered user (Citizen or Admin).
- */
-@Data
-@Builder
+@Document(collection = "users")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
-public class User {
+@Builder
+public class User extends BaseEntity {
 
     @Id
     private String id;
-
-    private String name;
 
     @Indexed(unique = true)
     private String email;
 
     private String password;
 
-    private String mobile;
+    private String fullName;
 
-    private Role role;
+    @Indexed(unique = true, sparse = true)
+    private String phoneNumber;
 
-    @CreatedDate
-    private Instant createdAt;
+    @Builder.Default
+    private Set<RoleEnum> roles = new HashSet<>();
 
-    @LastModifiedDate
-    private Instant updatedAt;
+    @Builder.Default
+    private AccountStatus status = AccountStatus.PENDING_VERIFICATION;
+
+    @Builder.Default
+    private Boolean enabled = true;
+
+    private VerificationMethod verificationMethod;
+
+    @Builder.Default
+    private Boolean emailVerified = false;
+
+    @Builder.Default
+    private Boolean phoneVerified = false;
+
+    @Builder.Default
+    private Boolean onboardingCompleted = false;
+
+    @Builder.Default
+    private Integer onboardingStep = 1;
 }

@@ -11,13 +11,14 @@ export default function Signup() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [name, setName]         = useState("");
-  const [email, setEmail]       = useState("");
-  const [password, setPassword] = useState("");
-  const [consent, setConsent]   = useState(false);
-  const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
-  const [hasPrefill, setHasPrefill] = useState(false);
+  const [name, setName]                 = useState("");
+  const [email, setEmail]               = useState("");
+  const [password, setPassword]         = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [consent, setConsent]           = useState(false);
+  const [error, setError]               = useState("");
+  const [loading, setLoading]           = useState(false);
+  const [hasPrefill, setHasPrefill]     = useState(false);
 
   useEffect(() => {
     const isPrefillQuery = location.search.includes("prefill=1");
@@ -31,7 +32,7 @@ export default function Signup() {
     e.preventDefault();
     setError("");
 
-    if (!name.trim())  {
+    if (!name.trim()) {
       setError("Please enter your full name.");
       return;
     }
@@ -43,8 +44,12 @@ export default function Signup() {
       setError("Please enter a valid email address.");
       return;
     }
-    if (!password)     {
+    if (!password) {
       setError("Please enter a password.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match. Please check and try again.");
       return;
     }
     const strengthResult = checkPasswordStrength(password);
@@ -52,15 +57,13 @@ export default function Signup() {
       setError(strengthResult.feedback[0] || "Password must be at least 8 characters long.");
       return;
     }
-    if (!consent)      {
+    if (!consent) {
       setError("Please agree to the privacy policy and consent parameters.");
       return;
     }
 
     setLoading(true);
-    await new Promise(r => setTimeout(r, 450));
-
-    const result = signup(name.trim(), email.trim(), password);
+    const result = await signup(name.trim(), email.trim(), password);
     setLoading(false);
 
     if (result.error) {
@@ -68,7 +71,8 @@ export default function Signup() {
       return;
     }
 
-    navigate("/onboarding");
+    // Redirect to Account Created confirmation screen
+    navigate("/account-created");
   };
 
   return (
@@ -120,7 +124,7 @@ export default function Signup() {
                   <input
                     id="signup-name"
                     type="text"
-                    placeholder="Enter your name"
+                    placeholder="Enter your full name"
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
@@ -162,9 +166,27 @@ export default function Signup() {
                   <input
                     id="signup-password"
                     type="password"
-                    placeholder="Password must be at least 8 characters long."
+                    placeholder="Min 8 characters (letters + numbers)"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-government-blue focus:bg-white transition"
+                    autoComplete="new-password"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="signup-confirm-password" className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Confirm Password <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    id="signup-confirm-password"
+                    type="password"
+                    placeholder="Re-enter your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-government-blue focus:bg-white transition"
                     autoComplete="new-password"
                   />
@@ -197,7 +219,7 @@ export default function Signup() {
                 id="signup-submit"
                 type="submit"
                 disabled={loading}
-                className="w-full bg-saffron hover:bg-saffron-dark disabled:opacity-70 text-government-blue-dark py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition"
+                className="w-full bg-saffron hover:bg-saffron-dark disabled:opacity-70 text-government-blue-dark py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
@@ -223,7 +245,7 @@ export default function Signup() {
         </div>
 
         <p className="text-center text-[11px] text-white/70 tracking-wide uppercase font-medium">
-          Secure Encrypted
+          Secure Encrypted Platform
         </p>
       </div>
     </div>

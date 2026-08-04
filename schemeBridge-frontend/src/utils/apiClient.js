@@ -3,8 +3,10 @@
  * Provides a centralized HTTP client for all API requests
  */
 
+import { API_BASE } from "@config/api";
+
 class ApiClient {
-  constructor(baseURL = "/api/v1", defaultHeaders = {}) {
+  constructor(baseURL = API_BASE, defaultHeaders = {}) {
     this.baseURL = baseURL;
     this.defaultHeaders = {
       "Content-Type": "application/json",
@@ -45,6 +47,9 @@ class ApiClient {
    * @returns {string} Full URL
    */
   buildUrl(endpoint) {
+    if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
+      return endpoint;
+    }
     return `${this.baseURL}${endpoint}`;
   }
 
@@ -156,9 +161,19 @@ class ApiClient {
 
         const data = await response.json();
 
+        // Unwrap SchemeBridge ApiResponse envelope { success, message, data }
+        const payload = data && typeof data.success === "boolean"
+          ? (data.success ? data.data : (() => {
+              const err = new Error(data.message || "Request failed");
+              err.status = response.status;
+              err.data = data;
+              throw err;
+            })())
+          : data;
+
         // Apply response interceptors
         const modifiedResponse = await this.applyResponseInterceptors({
-          data,
+          data: payload,
           status: response.status,
           headers: response.headers,
         });

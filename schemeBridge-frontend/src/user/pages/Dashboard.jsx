@@ -4,9 +4,13 @@ import { useAuth } from "@context/AuthContext";
 import { useApp } from "@context/AppContext";
 import { checkEligibility } from "@utils/eligibilityEngine";
 import { getDocReadinessForScheme } from "@utils/documentReadiness";
-import { calculateCompletion } from "@data/mockProfile";
-import { MOCK_RECENT_ACTIVITIES, MOCK_QUICK_ACTIONS } from "@data/mockDashboard";
+import profileService from "@services/profileService";
+import notificationService from "@services/notificationService";
+import dashboardService from "@services/dashboardService";
+import schemeService from "@services/schemeService";
+import applicationService from "@services/applicationService";
 import SchemeAIChatWidget from "@components/SchemeAIChatWidget";
+import FirstTimeWelcomeCard from "@components/ui/FirstTimeWelcomeCard";
 import { StatCardSkeleton, FormSectionSkeleton } from "@components/ui/LoadingSkeleton";
 import { usePageMeta } from "@utils/usePageMeta";
 import {
@@ -37,6 +41,17 @@ export default function Dashboard() {
   const [aiInitialQuery, setAiInitialQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  // First-time arrival welcome card state
+  const [showWelcomeCard, setShowWelcomeCard] = useState(() => {
+    const seen = localStorage.getItem("schemebridge_welcome_seen");
+    return !seen;
+  });
+
+  const handleDismissWelcomeCard = () => {
+    localStorage.setItem("schemebridge_welcome_seen", "true");
+    setShowWelcomeCard(false);
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
@@ -50,7 +65,7 @@ export default function Dashboard() {
   }, []);
 
   const evalProfile = useMemo(() => ({
-    name: profile?.name || user?.name || "Citizen",
+    name: profile?.name || user?.fullName || user?.name || "Citizen",
     age: profile?.age || user?.age || 32,
     annualIncome: profile?.annualIncome || user?.income || 180000,
     occupation: profile?.occupation || user?.occupation || "Farmer",
@@ -67,8 +82,116 @@ export default function Dashboard() {
   const appliedCount = applications.length;
   const verifiedDocCount = documents.filter(d => d.status === "verified").length;
 
-  const profileCompletionScore = useMemo(() => {
-    return calculateCompletion(evalProfile);
+  // Prefer backend-provided summary values when available
+  const displayedMatchingCount = dashboardSummary?.eligibleSchemesCount ?? matchingCount;
+  const displayedAppliedCount = (dashboardSummary?.completedApplicationsCount ?? 0) + (dashboardSummary?.pendingApplicationsCount ?? 0) || appliedCount;
+  const displayedDocumentReadiness = dashboardSummary?.documentCompletionPercentage ?? avgSavedReadiness;
+  const displayedProfileCompletion = dashboardSummary?.profileCompletionPercentage ?? profileCompletionScore;
+
+  const [profileCompletionScore, setProfileCompletionScore] = useState(() => {
+    const fields = ["name", "age", "annualIncome", "occupation", "caste", "gender", "state"];
+    const present = fields.filter((f) => !!evalProfile?.[f]).length;
+    return Math.round((present / fields.length) * 100);
+  });
+
+  // Dashboard summary from backend (optional)
+  const [dashboardSummary, setDashboardSummary] = useState(null);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
+  const [dashboardError, setDashboardError] = useState(null);
+
+  const [recommendationCount, setRecommendationCount] = useState(null);
+  const [recentSchemesList, setRecentSchemesList] = useState([]);
+  const [recentApplicationsList, setRecentApplicationsList] = useState([]);
+
+  const [recentActivities, setRecentActivities] = useState([]);
+  const quickActions = [
+    { id: "qa-recommendations", path: "/recommendations" },
+    { id: "qa-documents", path: "/documents" },
+    { id: "qa-profile", path: "/profile" },
+    { id: "qa-tracker", path: "/tracker" },
+  ];
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await profileService.getCompletionScore(evalProfile);
+        if (mounted && res && typeof res.score === "number") setProfileCompletionScore(res.score);
+      } catch (err) {
+        console.warn("Profile completion fetch failed, using local heuristic", err);
+      }
+
+      try {
+        // Only use local recent activities when notification backend is not available
+        const saved = localStorage.getItem("schemebridge_recent_activities");
+        if (mounted && saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) setRecentActivities(parsed.slice(0, 5));
+        }
+      } catch (err) {
+        console.warn("Reading recent activities from localStorage failed", err);
+      }
+
+      // Fetch consolidated dashboard summary (if backend exposes it)
+      try {
+        setDashboardLoading(true);
+        setDashboardError(null);
+        const summary = await dashboardService.getSummary();
+        if (mounted && summary) setDashboardSummary(summary);
+      } catch (err) {
+        console.warn("Dashboard summary fetch failed", err);
+        if (mounted) setDashboardError(err);
+      } finally {
+        if (mounted) setDashboardLoading(false);
+      }
+
+      // Fetch recommendations, recent schemes and applications (backend endpoints available)
+      try {
+        const recs = await schemeService.getRecommendations(evalProfile);
+        if (mounted && recs) {
+          // recs may be an object map or array depending on backend; normalize
+          if (Array.isArray(recs)) setRecommendationCount(recs.length);
+          else if (typeof recs === "object") setRecommendationCount(Object.keys(recs).length);
+        }
+      } catch (e) {
+        console.warn("Fetching recommendations failed", e);
+      }
+
+      try {
+        const schemesRes = await schemeService.getSchemes({ page: 0, size: 3 });
+        if (mounted && schemesRes) {
+          // service returns { data, total } or an array depending on implementation
+          if (Array.isArray(schemesRes)) setRecentSchemesList(schemesRes.slice(0, 3));
+          else if (schemesRes.data) setRecentSchemesList(schemesRes.data.slice(0, 3));
+        }
+      } catch (e) {
+        console.warn("Fetching recent schemes failed", e);
+      }
+
+      try {
+        const apps = await applicationService.getApplications();
+        if (mounted && Array.isArray(apps)) {
+          setRecentApplicationsList(apps.slice(0, 5));
+          // Merge application events into recent activities list (non-destructive)
+          const appActs = apps.slice(0, 5).map((a) => ({
+            id: a.id,
+            title: "Application Status Update",
+            description: `${a.schemeName} — ${a.status}`,
+            timestamp: a.updatedAt || a.submittedAt || new Date().toISOString(),
+          }));
+          setRecentActivities((prev) => {
+            const merged = [...appActs, ...prev];
+            // keep only latest 10
+            return merged.slice(0, 10);
+          });
+        }
+      } catch (e) {
+        console.warn("Fetching recent applications failed", e);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
   }, [evalProfile]);
 
   const avgSavedReadiness = useMemo(() => {
@@ -122,6 +245,19 @@ export default function Dashboard() {
     setAiChatOpen(true);
   };
 
+  const handleRetryDashboard = async () => {
+    setDashboardLoading(true);
+    setDashboardError(null);
+    try {
+      const summary = await dashboardService.getSummary();
+      setDashboardSummary(summary);
+    } catch (err) {
+      setDashboardError(err);
+    } finally {
+      setDashboardLoading(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -137,6 +273,14 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div className="h-2 bg-gradient-to-r from-saffron via-white-official to-india-green rounded-lg" />
+
+      {/* First-Time Welcome Card */}
+      {showWelcomeCard && (
+        <FirstTimeWelcomeCard
+          userName={evalProfile.name}
+          onClose={handleDismissWelcomeCard}
+        />
+      )}
 
       <div className="bg-gradient-to-br from-government-blue via-government-blue-light to-government-blue text-white p-6 md:p-8 rounded-xl shadow-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -173,10 +317,21 @@ export default function Dashboard() {
         </div>
 
         <div className="space-y-3 text-sm">
+          {dashboardError && (
+            <div className="mb-3 p-3 rounded bg-red-50 border border-red-100 text-red-700 flex items-center justify-between">
+              <div>
+                <strong>Failed to load dashboard summary.</strong>
+                <div className="text-xs text-red-600">{dashboardError?.message || String(dashboardError)}</div>
+              </div>
+              <div>
+                <button onClick={handleRetryDashboard} className="ml-3 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-xs">Retry</button>
+              </div>
+            </div>
+          )}
           <div className="flex items-start gap-2">
             <span className="text-government-blue font-bold mt-0.5">•</span>
             <p className="text-gray-700">
-              You qualify for {matchingCount} government welfare schemes.
+              You qualify for {displayedMatchingCount} government welfare schemes.
               {unappliedMatches.length > 0 ? (
                 <span> You have {unappliedMatches.length} eligible schemes ready for application.</span>
               ) : (
@@ -207,8 +362,8 @@ export default function Dashboard() {
           <div className="flex items-start gap-2">
             <span className="text-government-blue font-bold mt-0.5">•</span>
             <p className="text-gray-700">
-              Your eligibility profile is {profileCompletionScore}% complete.
-              {profileCompletionScore < 100 ? " Complete remaining parameters to maximize match accuracy." : " Your profile details are fully updated."}
+              Your eligibility profile is {displayedProfileCompletion}% complete.
+              {displayedProfileCompletion < 100 ? " Complete remaining parameters to maximize match accuracy." : " Your profile details are fully updated."}
             </p>
           </div>
         </div>
@@ -235,7 +390,7 @@ export default function Dashboard() {
         {[
           {
             label: "Eligible Schemes",
-            value: matchingCount,
+            value: displayedMatchingCount,
             sub: "Matching profile",
             icon: Sparkles,
             color: "text-government-blue",
@@ -243,7 +398,7 @@ export default function Dashboard() {
           },
           {
             label: "Active Applications",
-            value: appliedCount,
+            value: displayedAppliedCount,
             sub: "Tracked submissions",
             icon: ClipboardList,
             color: "text-india-green",
@@ -259,7 +414,7 @@ export default function Dashboard() {
           },
           {
             label: "Document Readiness",
-            value: `${avgSavedReadiness}%`,
+            value: `${displayedDocumentReadiness}%`,
             sub: "Saved schemes average",
             icon: Target,
             color: "text-saffron-dark",
@@ -288,7 +443,7 @@ export default function Dashboard() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {MOCK_QUICK_ACTIONS.map((action, index) => {
+              {quickActions.map((action, index) => {
                 let label = "Find Schemes";
                 let desc = "Browse eligible government schemes";
                 const IconComponent = [Sparkles, FileText, User, ClipboardList][index % 4];
@@ -334,7 +489,7 @@ export default function Dashboard() {
             </div>
 
             <div className="relative pl-4 border-l border-gray-200 space-y-4">
-              {MOCK_RECENT_ACTIVITIES.map((activity) => {
+              {recentActivities.map((activity) => {
                 const titleMap = {
                   "Application Status Update": "Application Status Updated",
                   "Document Verified": "Document Verified",
@@ -389,7 +544,7 @@ export default function Dashboard() {
                 </Link>
                 <button
                   onClick={() => handleAskAI(`Tell me why I should apply for ${topActionScheme.name}`)}
-                  className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 p-2 rounded-lg transition shadow-sm"
+                  className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 p-2 rounded-lg transition shadow-sm cursor-pointer"
                   title="Ask AI about this recommendation"
                 >
                   <Bot className="h-3.5 w-3.5" />
@@ -467,7 +622,7 @@ export default function Dashboard() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className={`h-4 w-4 shrink-0 ${appliedCount > 0 ? "text-india-green" : "text-gray-300"}`} />
-                <span className={appliedCount > 0 ? "text-gray-700 font-medium" : "text-gray-400"}>Applications Submitted</span>
+                <span className={displayedAppliedCount > 0 ? "text-gray-700 font-medium" : "text-gray-400"}>Applications Submitted</span>
               </div>
             </div>
           </div>
@@ -486,7 +641,7 @@ export default function Dashboard() {
 
       <button
         onClick={() => handleAskAI("Show me summary check")}
-        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 shadow-xl transition-all bg-government-blue hover:bg-government-blue-dark hover:scale-105 px-4 py-3 rounded-xl"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 shadow-xl transition-all bg-government-blue hover:bg-government-blue-dark hover:scale-105 px-4 py-3 rounded-xl cursor-pointer"
         title="Ask AI Assistant"
       >
         <MessageSquare className="h-5 w-5 text-white" />

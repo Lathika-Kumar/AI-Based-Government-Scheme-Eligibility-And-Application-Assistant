@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:8080
+
+### Health check
+GET {{baseUrl}}/actuator/health
+
+### Register citizen
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "testuser@example.com",
+  "password": "test123",
+  "phone": "9876543210"
+}
+
+### Login citizen
+# @name loginCitizen
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "citizen@demo.com",
+  "password": "demo123"
+}
+
+### Login admin
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@schemebridge.gov.in",
+  "password": "Admin@123"
+}
+
+### Get profile
+GET {{baseUrl}}/api/v1/profile
+Authorization: Bearer {{loginCitizen.response.body.data.token}}
+
+### List schemes (public)
+GET {{baseUrl}}/api/v1/schemes?page=0&size=12
+
+### Scheme detail
+GET {{baseUrl}}/api/v1/schemes/pm-kisan
+
+### Notifications
+GET {{baseUrl}}/api/v1/notifications
+Authorization: Bearer {{loginCitizen.response.body.data.token}}

@@ -1,27 +1,21 @@
 package com.schemebridge.dto;
 
-import com.schemebridge.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-/**
- * DTO returned upon successful login or registration containing JWT token and basic user details.
- */
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AuthResponse {
-
-    private String token;
-
+    private String accessToken;
+    private String refreshToken;
     @Builder.Default
-    private String type = "Bearer";
-
-    private String userId;
-    private String name;
-    private String email;
-    private Role role;
+    private String tokenType = "Bearer";
+    private Long expiresInMs;
+    private UserDto user;
 }

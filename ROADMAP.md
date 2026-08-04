@@ -1,130 +1,94 @@
-# SchemeBridge Completion Roadmap
+# SchemeBridge Master Development Roadmap
 
-## Project Goal
-Finish the SchemeBridge project end-to-end by moving from UI/mock-based flow to a working backend-integrated product.
+## 🎯 Executive Summary
+SchemeBridge is an AI-based Government Scheme Eligibility and Application Assistant. The system connects Citizens with personalized government welfare schemes, automates eligibility checks, manages document vaults, and provides administrative oversight.
 
-## Current Status
-- Frontend public, citizen, and admin flows are largely completed.
-- Service layer and API structure are already prepared.
-- Backend integration is the main remaining milestone.
+---
 
-- AI/OCR and deployment are secondary improvements after core functionality works.
+## 📊 Current Phase Progress
 
-## Priority 1 — Backend Core APIs
-Implement the essential REST APIs first.
+```
+Phase 1: Authentication & OTP Security        [██████████] 100% (DONE)
+Phase 2: Citizen Profile & Audit Engine       [██████████] 100% (DONE)
+Phase 3: Scheme Catalog & Eligibility Engine  [░░░░░░░░░░]   0% (UP NEXT)
+Phase 4: Document Vault & Storage Service     [░░░░░░░░░░]   0% (UPCOMING)
+Phase 5: Application Processing & Tracking    [░░░░░░░░░░]   0% (UPCOMING)
+Phase 6: Admin Consoles & Grievances          [░░░░░░░░░░]   0% (UPCOMING)
+Phase 7: Live AI (Gemini) & DigiLocker OAuth  [████░░░░░░]  40% (IN PROGRESS)
+Phase 8: Production Deployment & CI/CD        [░░░░░░░░░░]   0% (UPCOMING)
+```
 
-### Authentication
-- POST /api/v1/auth/login
-- POST /api/v1/auth/register
-- POST /api/v1/auth/logout
-- POST /api/v1/auth/refresh
-- POST /api/v1/auth/forgot-password
-- POST /api/v1/auth/reset-password
+---
 
-### Profile
-- GET /api/v1/profile
-- PUT /api/v1/profile
-- GET /api/v1/profile/completion
-- PATCH /api/v1/profile/preferences
+## 📦 Phase Details & Completed Endpoints
 
-### Schemes
-- GET /api/v1/schemes
-- GET /api/v1/schemes/:id
-- POST /api/v1/schemes/recommendations
-- GET /api/v1/schemes/categories
-- GET /api/v1/schemes/search
-- POST /api/v1/schemes/:id/eligibility
+### ✅ Priority 1 — Authentication & Security (Phase 1 Completed)
+- [x] `POST /api/v1/auth/login` (JWT token generation, BCrypt authentication)
+- [x] `POST /api/v1/auth/register` (User registration with role CITIZEN)
+- [x] `POST /api/v1/auth/send-email-otp` (Email OTP dispatch)
+- [x] `POST /api/v1/auth/send-phone-otp` (Mobile OTP dispatch)
+- [x] `POST /api/v1/auth/verify-otp` (OTP verification & status transition to `ACTIVE`)
 
-### Documents
-- GET /api/v1/documents
-- POST /api/v1/documents
-- DELETE /api/v1/documents/:id
-- POST /api/v1/documents/:id/verify
-- POST /api/v1/documents/digilocker/sync
-- GET /api/v1/documents/:id/download
-- GET /api/v1/documents/vault-score
+---
 
-### Applications
-- GET /api/v1/applications
-- POST /api/v1/applications
-- GET /api/v1/applications/:id
-- POST /api/v1/applications/:id/withdraw
-- GET /api/v1/applications/saved
-- POST /api/v1/applications/saved/:schemeId
-- DELETE /api/v1/applications/saved/:schemeId
-- GET /api/v1/applications/:id/timeline
+### ✅ Priority 2 — Citizen Profile & Audit Engine (Phase 2 Completed)
+- [x] `GET /api/v1/profile` (Retrieve authenticated citizen profile with masked PII)
+- [x] `PUT /api/v1/profile` (Update citizen profile, increment `profileVersion`, log audit events to `profile_audit_logs`)
+- [x] `GET /api/v1/profile/completion` (5-section weighted scoring breakdown & status classification)
+- [x] `GET /api/v1/profile/summary` (Lightweight dashboard summary payload)
 
-### Notifications
-- GET /api/v1/notifications
-- GET /api/v1/notifications/unread-count
-- POST /api/v1/notifications/:id/read
-- POST /api/v1/notifications/read-all
-- DELETE /api/v1/notifications/:id
-- DELETE /api/v1/notifications
-- PUT /api/v1/notifications/preferences
+---
 
-## Priority 2 — Frontend Integration
-Connect the existing frontend services to the backend.
+### ⏳ Priority 3 — Schemes & Dynamic Eligibility Engine (Phase 3 — UP NEXT)
+- [ ] `GET /api/v1/schemes` (Paginated list of active schemes with filters)
+- [ ] `GET /api/v1/schemes/:id` (Detailed scheme view & eligibility criteria)
+- [ ] `POST /api/v1/schemes/recommendations` (Dynamic match engine pairing citizen profile with schemes)
+- [ ] `GET /api/v1/schemes/categories` (Category taxomomy list)
+- [ ] `GET /api/v1/schemes/search` (Full-text search across titles, tags, benefits)
+- [ ] `POST /api/v1/schemes/:id/eligibility` (Individual scheme eligibility evaluation)
 
-### Tasks
-- Replace mock fallback usage with real API calls
-- Configure environment variables for API base URL
-- Test login, signup, profile, schemes, documents, and applications end-to-end
-- Fix CORS and authentication issues
+---
 
-## Priority 3 — Admin Features
-Complete admin workflows.
+### ⏳ Priority 4 — Document Vault & Verification Service (Phase 4)
+- [ ] `GET /api/v1/documents` (List citizen's uploaded documents)
+- [ ] `POST /api/v1/documents` (Upload document with file storage)
+- [ ] `DELETE /api/v1/documents/:id` (Delete stored document)
+- [ ] `POST /api/v1/documents/:id/verify` (Verify document fields against profile)
+- [ ] `POST /api/v1/documents/digilocker/sync` (DigiLocker sync integration)
+- [ ] `GET /api/v1/documents/:id/download` (Secure file download link)
+- [ ] `GET /api/v1/documents/vault-score` (Document readiness score)
 
-### Tasks
-- GET /api/v1/admin/stats
-- GET /api/v1/admin/users
-- PUT /api/v1/admin/users/:id
-- GET /api/v1/admin/grievances
-- POST /api/v1/admin/grievances/:id/resolve
-- POST /api/v1/admin/schemes
-- PUT /api/v1/admin/schemes/:id
-- DELETE /api/v1/admin/schemes/:id
-- POST /api/v1/admin/schemes/:id/publish
-- POST /api/v1/admin/applications/:id/review
+---
 
-## Priority 4 — AI and OCR
-Add real intelligence features after core flows are working.
+### ⏳ Priority 5 — Application Engine & Tracking (Phase 5)
+- [ ] `GET /api/v1/applications` (List citizen's applications)
+- [ ] `POST /api/v1/applications` (Submit scheme application)
+- [ ] `GET /api/v1/applications/:id` (Application details view)
+- [ ] `POST /api/v1/applications/:id/withdraw` (Withdraw active application)
+- [ ] `GET /api/v1/applications/saved` (List bookmarked schemes)
+- [ ] `POST /api/v1/applications/saved/:schemeId` (Bookmark scheme)
+- [ ] `DELETE /api/v1/applications/saved/:schemeId` (Remove scheme bookmark)
+- [ ] `GET /api/v1/applications/:id/timeline` (Status transition history log)
 
-### Tasks
-- Integrate AI chat service
-- Connect document suggestions
-- Add OCR-based document extraction
-- Connect DigiLocker OAuth flow
+---
 
-## Priority 5 — Deployment
-Prepare the project for production.
+### ⏳ Priority 6 — Admin Management & Grievance Workflows (Phase 6)
+- [ ] `GET /api/v1/admin/stats` (Executive dashboard counters)
+- [ ] `GET /api/v1/admin/users` & `PUT /api/v1/admin/users/:id` (User management)
+- [ ] `GET /api/v1/admin/grievances` & `POST /api/v1/admin/grievances/:id/resolve` (Grievances center)
+- [ ] `POST /api/v1/admin/schemes`, `PUT /api/v1/admin/schemes/:id`, `DELETE /api/v1/admin/schemes/:id`, `POST /api/v1/admin/schemes/:id/publish` (Scheme CRUD)
+- [ ] `POST /api/v1/admin/applications/:id/review` (Application review & decision log)
 
-### Tasks
-- Set up backend hosting
-- Set up database
-- Configure environment variables securely
-- Deploy frontend and backend
-- Add CI/CD pipeline
-- Configure domain and HTTPS
+---
 
-## Suggested Execution Order
-1. Build backend skeleton
-2. Implement auth and profile APIs
-3. Implement schemes and documents APIs
-4. Implement applications and notifications APIs
-5. Connect frontend to backend
-6. Implement admin APIs
-7. Add AI/OCR integration
-8. Deploy and test
+### 🤖 Priority 7 — AI & External Integrations (Phase 7)
+- [ ] Connect `SchemeAIChatWidget` to real Gemini API.
+- [ ] DigiLocker OAuth 2.0 Flow integration.
+- [ ] OCR Document Data Extraction pipeline.
 
-## Completion Checklist
-- [ ] Backend server runs locally
-- [ ] Auth flow works
-- [ ] User profile works
-- [ ] Scheme browsing works
-- [ ] Document upload and verify works
-- [ ] Application submission works
-- [ ] Notifications work
-- [ ] Admin console works
-- [ ] Frontend is connected to live API
-- [ ] App is deployed successfully
+---
+
+### 🚀 Priority 8 — Cloud Deployment & CI/CD (Phase 8)
+- [ ] GitHub Actions workflow.
+- [ ] Cloud deployment (Render/AWS/GCP + Vercel).
+- [ ] HTTPS & Custom Domain.

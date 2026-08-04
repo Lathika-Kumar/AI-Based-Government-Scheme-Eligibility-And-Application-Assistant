@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Brain, CheckCircle2, Circle } from "lucide-react";
+import { Brain, CheckCircle2, Circle, ArrowRight, Sparkles } from "lucide-react";
 
 export default function AIAnalysisLoading({ onFinished }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [progress, setProgress] = useState(0);
+  const [complete, setComplete] = useState(false);
 
   const SIMULATOR_STEPS = [
     { id: 1, text: "Reading profile demographic parameters..." },
@@ -14,7 +15,6 @@ export default function AIAnalysisLoading({ onFinished }) {
   ];
 
   useEffect(() => {
-    // Increment progress bar smoothly
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -23,22 +23,22 @@ export default function AIAnalysisLoading({ onFinished }) {
         }
         return prev + 1;
       });
-    }, 35); // Takes ~3.5 seconds to reach 100%
+    }, 30);
 
     return () => clearInterval(progressInterval);
   }, []);
 
   useEffect(() => {
-    // Advance simulation steps
-    const stepDuration = 700; // 700ms per step
+    const stepDuration = 600;
     const timer = setInterval(() => {
       setCurrentStep((prev) => {
         if (prev >= SIMULATOR_STEPS.length) {
           clearInterval(timer);
-          // Wait slightly before calling onFinished to show complete state
+          setComplete(true);
+          // Auto-redirect after 2 seconds
           setTimeout(() => {
             onFinished();
-          }, 400);
+          }, 2000);
           return SIMULATOR_STEPS.length;
         }
         return prev + 1;
@@ -48,15 +48,62 @@ export default function AIAnalysisLoading({ onFinished }) {
     return () => clearInterval(timer);
   }, [onFinished]);
 
+  if (complete) {
+    return (
+      <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 p-8 max-w-md w-full mx-auto text-center space-y-6 animate-fadeIn">
+        <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm animate-bounce">
+          <CheckCircle2 className="w-10 h-10" />
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            🎉 Congratulations!
+          </h2>
+          <p className="text-sm font-semibold text-emerald-700">
+            Your SchemeBridge profile is now complete.
+          </p>
+        </div>
+
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left space-y-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            You can now:
+          </h4>
+          <ul className="space-y-2 text-xs text-slate-700 font-medium">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>Discover government schemes matching your profile</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>Track applications in real-time</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>Manage secure documents in your vault</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>Receive personalized AI recommendations</span>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          onClick={onFinished}
+          className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 text-base cursor-pointer"
+        >
+          <span>Go to Dashboard</span>
+          <ArrowRight className="w-5 h-5" />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 p-8 max-w-md w-full mx-auto text-center space-y-6">
-      {/* AI animation container */}
       <div className="relative flex justify-center py-4">
-        {/* Animated outer pulsing rings */}
         <div className="absolute w-24 h-24 bg-indigo-500/10 rounded-full animate-ping"></div>
-        <div className="absolute w-20 h-20 bg-indigo-650/15 bg-indigo-600/10 rounded-full blur-md"></div>
-
-        {/* Central brain icon */}
+        <div className="absolute w-20 h-20 bg-indigo-600/10 rounded-full blur-md"></div>
         <div className="relative bg-indigo-600 text-white p-5 rounded-2xl shadow-xl z-10 animate-pulse">
           <Brain className="h-10 w-10 text-white" />
         </div>
@@ -71,7 +118,6 @@ export default function AIAnalysisLoading({ onFinished }) {
         </p>
       </div>
 
-      {/* Progress Bar */}
       <div className="space-y-1.5 text-left">
         <div className="flex justify-between text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
           <span>Simulation Matching Progress</span>
@@ -85,7 +131,6 @@ export default function AIAnalysisLoading({ onFinished }) {
         </div>
       </div>
 
-      {/* Simulation Steps logs list */}
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-3">
         {SIMULATOR_STEPS.map((s) => {
           const isDone = currentStep > s.id;
@@ -114,11 +159,6 @@ export default function AIAnalysisLoading({ onFinished }) {
           );
         })}
       </div>
-
-      {/* Advisory Footer */}
-      <p className="text-[10px] text-slate-400 tracking-wide uppercase font-medium">
-        ⚡ Evaluation Gateway · sandboxed local thread
-      </p>
     </div>
   );
 }
