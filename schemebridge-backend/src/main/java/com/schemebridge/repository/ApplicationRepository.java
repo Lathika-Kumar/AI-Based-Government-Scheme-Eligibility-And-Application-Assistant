@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ApplicationRepository extends MongoRepository<Application, String> {
@@ -17,4 +18,8 @@ public interface ApplicationRepository extends MongoRepository<Application, Stri
     Page<Application> findByUserId(String userId, Pageable pageable);
 
     Page<Application> findByUserIdAndStatus(String userId, ApplicationStatus status, Pageable pageable);
+
+    Optional<Application> findByUserIdAndSchemeId(String userId, String schemeId);
+
+    Optional<Application> findByReferenceNumber(String referenceNumber);
 }

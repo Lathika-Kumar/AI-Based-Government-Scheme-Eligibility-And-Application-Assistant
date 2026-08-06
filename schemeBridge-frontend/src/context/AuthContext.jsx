@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import authService from "@services/authService";
-import { hashPassword, verifyPassword, isValidEmail, checkPasswordStrength, loginRateLimiter, signupRateLimiter } from "../utils/security";
+import { hashPassword, isValidEmail, checkPasswordStrength, loginRateLimiter, signupRateLimiter } from "../utils/security";
 
 const AuthContext = createContext(null);
 
@@ -19,50 +19,21 @@ export const AuthProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : null;
   });
 
-  const ADMIN_EMAILS = [
+  const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === "true";
+
+  const ADMIN_EMAILS = new Set([
     "admin@schemebridge.gov.in",
     "verify@schemebridge.gov.in",
     "schemes@schemebridge.gov.in",
-  ];
+  ]);
 
-  const MOCK_USERS = {
-    "citizen@demo.com": {
-      id: "CIT-1001",
-      name: "Rajesh Patel",
-      fullName: "Rajesh Patel",
-      email: "citizen@demo.com",
-      password: hashPassword("demo123"),
-      role: "citizen",
-      status: "ACTIVE",
-      onboardingComplete: true,
-      onboardingStep: 3,
-      age: 32,
-      gender: "Male",
-      occupation: "Farmer",
-      annualIncome: 180000,
-      caste: "OBC",
-      state: "Gujarat",
-    },
-    "admin@schemebridge.gov.in": {
-      id: "ADM-1001",
-      name: "Sanjay Kumar",
-      fullName: "Sanjay Kumar",
-      email: "admin@schemebridge.gov.in",
-      password: hashPassword("Admin@123"),
-      role: "super_admin",
-      status: "ACTIVE",
-      onboardingComplete: true,
-      department: "Govt. Scheme Evaluation Board",
-    },
-  };
-
-  const ADMIN_ROLES = ["super_admin", "verification_officer", "scheme_manager"];
+  const ADMIN_ROLES = new Set(["super_admin", "verification_officer", "scheme_manager"]);
 
   const isAuthenticated = !!user;
-  const role = user?.role || (user?.roles && user?.roles[0]) || "citizen";
+  const role = user?.role || user?.roles?.[0] || "citizen";
   const status = user?.status || "PENDING_VERIFICATION";
   const onboardingComplete = user?.onboardingComplete === true || user?.onboardingCompleted === true;
-  const isAdmin = !!user && (ADMIN_ROLES.includes(role) || ADMIN_ROLES.includes(role?.toLowerCase()));
+  const isAdmin = !!user && (ADMIN_ROLES.has(role) || ADMIN_ROLES.has(role?.toLowerCase()));
 
   const _persist = (userObj) => {
     setUser(userObj);
@@ -83,20 +54,18 @@ export const AuthProvider = ({ children }) => {
     // Use centralized auth service (falls back to sandbox when configured)
     try {
       const res = await authService.login({ email: targetEmail, password });
-      // authService may return { user, token, refreshToken } (mock) or { accessToken, user, refreshToken } (api)
+      // authService may return { user, token, accessToken, refreshToken } (mock/api)
+      console.log("Login response from AuthContext.login:", res);
       const token = res?.accessToken || res?.token || null;
+      const refreshToken = res?.refreshToken || res?.refresh_token || res?.refreshTokenString || null;
       const apiUser = res?.user || res;
       if (token) {
         try {
           localStorage.setItem("schemebridge_token", token);
-          // Persist refresh token if provided
-          const refresh = res?.refreshToken || res?.refresh_token || res?.refreshTokenString || null;
-          if (refresh) {
-            try {
-              localStorage.setItem("schemebridge_refresh_token", refresh);
-            } catch (e) {
-              console.warn("Failed to persist refresh token:", e);
-            }
+          console.log("AuthContext persisted schemebridge_token:", localStorage.getItem("schemebridge_token"));
+          if (refreshToken) {
+            localStorage.setItem("schemebridge_refresh_token", refreshToken);
+            console.log("AuthContext persisted schemebridge_refresh_token:", localStorage.getItem("schemebridge_refresh_token"));
           }
         } catch (e) {
           console.warn("Failed to persist auth token:", e);
@@ -122,48 +91,22 @@ export const AuthProvider = ({ children }) => {
         }
 
         _persist(safeUser);
-        return { user: safeUser };
+        return { user: safeUser, accessToken: token, refreshToken };
       }
     } catch (err) {
-      console.warn("authService failed, falling back to local sandbox:", err?.message || err);
-    }
-
-    // Fallback Mock authentication
-    if (MOCK_USERS[targetEmail]) {
-      const mockUser = MOCK_USERS[targetEmail];
-      if (!verifyPassword(password, mockUser.password)) {
-        return { error: "Invalid email or password." };
+      console.warn("authService failed during login:", err?.message || err);
+      if (!USE_MOCK) {
+        return { error: "Login failed. Please try again." };
       }
-      const { password: _, ...safeUser } = mockUser;
-      _persist(safeUser);
-      return { user: safeUser };
     }
 
-    const saved = localStorage.getItem(`schemebridge_user_${targetEmail}`);
-    if (!saved) {
-      return { error: "Account not found. Please create a new account." };
-    }
-    const parsedUser = JSON.parse(saved);
-    if (parsedUser.password && !verifyPassword(password, parsedUser.password)) {
-      return { error: "Invalid email or password." };
+    if (!USE_MOCK) {
+      return { error: "Unable to authenticate. Mock auth is disabled." };
     }
 
-    if (parsedUser.status === "SUSPENDED") {
-      return { error: "Your account has been suspended. Please contact support." };
-    }
-
-    const { password: _, ...safeUser } = parsedUser;
-    _persist(safeUser);
-    return { user: safeUser };
+    return { error: "Account not found. Please create a new account." };
   };
 
-  const quickLogin = (roleType) => {
-    const email = roleType === "admin" ? "admin@schemebridge.gov.in" : "citizen@demo.com";
-    const mockUser = MOCK_USERS[email];
-    const { password: _, ...safeUser } = mockUser;
-    _persist(safeUser);
-    return safeUser;
-  };
 
   const signup = async (name, email, password) => {
     const targetEmail = email.trim().toLowerCase();
@@ -186,45 +129,44 @@ export const AuthProvider = ({ children }) => {
       return { error: strengthCheck.feedback[0] || "Please choose a stronger password (min 8 characters, uppercase, lowercase, and a number)." };
     }
 
-    // Try backend REST API first
     try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: name.trim(),
-          email: targetEmail,
-          password: password,
-          role: "CITIZEN",
-        }),
-      });
+      const res = await authService.register({ name: name.trim(), email: targetEmail, phone: user?.phoneNumber || "", password });
+      const accessToken = res?.token || res?.accessToken || null;
+      const refreshToken = res?.refreshToken || null;
+      const apiUser = res?.user || res;
 
-      if (response.ok) {
-        const json = await response.json();
-        if (json.success && json.data) {
-          const apiUser = json.data;
-          const safeUser = {
-            id: apiUser.id,
-            name: apiUser.fullName,
-            fullName: apiUser.fullName,
-            email: apiUser.email,
-            phoneNumber: apiUser.phoneNumber,
-            role: "citizen",
-            status: apiUser.status || "PENDING_VERIFICATION",
-            verificationMethod: null,
-            onboardingComplete: false,
-            onboardingStep: 1,
-          };
-          _persist(safeUser);
-          return { user: safeUser };
+      if (accessToken) {
+        localStorage.setItem("schemebridge_token", accessToken);
+        if (refreshToken) {
+          try {
+            localStorage.setItem("schemebridge_refresh_token", refreshToken);
+          } catch (e) {
+            console.warn("Failed to persist refresh token:", e);
+          }
         }
       }
+
+      if (apiUser) {
+        const safeUser = {
+          id: apiUser.id,
+          name: apiUser.fullName || apiUser.name,
+          fullName: apiUser.fullName || apiUser.name,
+          email: apiUser.email,
+          phoneNumber: apiUser.phoneNumber,
+          role: apiUser.roles ? apiUser.roles[0]?.toLowerCase() : apiUser.role || "citizen",
+          status: apiUser.status || "PENDING_VERIFICATION",
+          verificationMethod: apiUser.verificationMethod,
+          onboardingComplete: apiUser.onboardingCompleted === true || apiUser.onboardingComplete === true,
+          token: accessToken,
+        };
+        _persist(safeUser);
+        return { user: safeUser };
+      }
     } catch (err) {
-      console.warn("Backend API offline, using local client signup sandbox:", err.message);
+      console.warn("authService.register failed, falling back to local signup sandbox:", err?.message || err);
     }
 
-    // Fallback Mock Signup
-    const citizenCount = Object.keys(localStorage).filter(k => k.startsWith("schemebridge_user_")).length + 2;
+    const citizenCount = Object.keys(localStorage).filter((k) => k.startsWith("schemebridge_user_")).length + 2;
     const citizenId = `CIT-${String(citizenCount).padStart(5, "0")}`;
 
     const newUser = {
@@ -240,98 +182,11 @@ export const AuthProvider = ({ children }) => {
       onboardingStep: 1,
     };
 
+    const safeUser = { ...newUser };
+    delete safeUser.password;
     localStorage.setItem(`schemebridge_user_${targetEmail}`, JSON.stringify(newUser));
-    const { password: _, ...safeUser } = newUser;
     _persist(safeUser);
     return { user: safeUser };
-  };
-
-  const sendEmailOtp = async (email) => {
-    const targetEmail = (email || user?.email)?.trim().toLowerCase();
-    try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/send-email-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: targetEmail }),
-      });
-      const json = await response.json();
-      if (!response.ok || !json.success) {
-        return { error: json.message || "Failed to send Email OTP." };
-      }
-      updateUser({ verificationMethod: "EMAIL" });
-      return json.data || { message: "OTP sent successfully" };
-    } catch (err) {
-      console.warn("Backend API offline, simulating Email OTP:", err.message);
-      updateUser({ verificationMethod: "EMAIL" });
-      return { message: "Simulated Email OTP sent to " + targetEmail, simulatedOtp: "123456" };
-    }
-  };
-
-  const sendPhoneOtp = async (email, phoneNumber) => {
-    const targetEmail = (email || user?.email)?.trim().toLowerCase();
-    try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/send-phone-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: targetEmail, phoneNumber }),
-      });
-      const json = await response.json();
-      if (!response.ok || !json.success) {
-        return { error: json.message || "Failed to send Mobile OTP." };
-      }
-      updateUser({ verificationMethod: "MOBILE", phoneNumber });
-      return json.data || { message: "OTP sent successfully" };
-    } catch (err) {
-      console.warn("Backend API offline, simulating Mobile OTP:", err.message);
-      updateUser({ verificationMethod: "MOBILE", phoneNumber });
-      return { message: "Simulated Mobile OTP sent to " + phoneNumber, simulatedOtp: "123456" };
-    }
-  };
-
-  const verifyOtp = async (email, otp, verificationMethod) => {
-    const targetEmail = (email || user?.email)?.trim().toLowerCase();
-    try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: targetEmail, otp, verificationMethod }),
-      });
-      const json = await response.json();
-      if (!response.ok || !json.success) {
-        return { error: json.message || "Invalid OTP code." };
-      }
-      const apiUser = json.data;
-      updateUser({
-        status: "ACTIVE",
-        emailVerified: apiUser.emailVerified === true,
-        phoneVerified: apiUser.phoneVerified === true,
-        verificationMethod,
-      });
-      return { user: apiUser };
-    } catch (err) {
-      console.warn("Backend API offline, simulating OTP verification:", err.message);
-      if (otp === "123456" || otp === "654321") {
-        updateUser({
-          status: "ACTIVE",
-          emailVerified: verificationMethod === "EMAIL",
-          phoneVerified: verificationMethod === "MOBILE",
-          verificationMethod,
-        });
-        return { user: { ...user, status: "ACTIVE" } };
-      }
-      return { error: "Invalid OTP code. Sandbox code is 123456." };
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("schemebridge_user");
-    try {
-      localStorage.removeItem("schemebridge_token");
-      localStorage.removeItem("schemebridge_refresh_token");
-    } catch (e) {
-      // ignore
-    }
   };
 
   const updateUser = (updates) => {
@@ -346,25 +201,111 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const sendEmailOtp = async (email) => {
+    const targetEmail = (email || user?.email || "lathikakumar798@gmail.com").trim().toLowerCase();
+    try {
+      const response = await authService.sendEmailOtp(targetEmail);
+      updateUser({ verificationMethod: "EMAIL" });
+      return response;
+    } catch (err) {
+      if (USE_MOCK) {
+        console.warn("authService.sendEmailOtp failed, falling back to local simulation:", err?.message || err);
+        updateUser({ verificationMethod: "EMAIL" });
+        return { message: "Simulated Email OTP sent to " + targetEmail, simulatedOtp: "123456" };
+      }
+      throw err;
+    }
+  };
+
+
+  const verifyOtp = async (email, otp, verificationMethod) => {
+    const targetEmail = (email || user?.email || "lathikakumar798@gmail.com").trim().toLowerCase();
+    try {
+      const response = await authService.verifyOtp(targetEmail, otp, verificationMethod);
+      if (response?.error) {
+        return response;
+      }
+
+      const apiUser = response?.user || response;
+      if (!apiUser?.email) {
+        return { error: "Invalid verification response from server." };
+      }
+
+      const accessToken = response?.accessToken || response?.token || localStorage.getItem("schemebridge_token");
+      const refreshToken = response?.refreshToken || response?.refresh_token || localStorage.getItem("schemebridge_refresh_token");
+      if (accessToken) {
+        try {
+          localStorage.setItem("schemebridge_token", accessToken);
+        } catch (e) {
+          console.warn("Failed to persist auth token after OTP verification:", e);
+        }
+      }
+      if (refreshToken) {
+        try {
+          localStorage.setItem("schemebridge_refresh_token", refreshToken);
+        } catch (e) {
+          console.warn("Failed to persist refresh token after OTP verification:", e);
+        }
+      }
+
+      updateUser({
+        ...apiUser,
+        status: apiUser.status || "ACTIVE",
+        emailVerified: apiUser.emailVerified === true || user?.emailVerified === true,
+        verificationMethod,
+        onboardingComplete: apiUser.onboardingCompleted === true || apiUser.onboardingComplete === true || user?.onboardingComplete === true,
+        token: accessToken,
+      });
+
+      return { user: apiUser };
+    } catch (err) {
+      if (USE_MOCK) {
+        console.warn("authService.verifyOtp failed, falling back to local simulation:", err?.message || err);
+        if (otp === "123456" || otp === "654321") {
+          updateUser({
+            status: "ACTIVE",
+            emailVerified: verificationMethod === "EMAIL",
+            verificationMethod,
+          });
+          return { user: { ...user, status: "ACTIVE" } };
+        }
+        return { error: "Invalid OTP code. Sandbox code is 123456." };
+      }
+      throw err;
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("schemebridge_user");
+    try {
+      localStorage.removeItem("schemebridge_token");
+      localStorage.removeItem("schemebridge_refresh_token");
+    } catch (e) {
+      console.warn("Failed to remove auth tokens from localStorage:", e);
+    }
+  };
+
+  const authValue = useMemo(
+    () => ({
+      user,
+      isAuthenticated,
+      role,
+      status,
+      onboardingComplete,
+      isAdmin,
+      login,
+      signup,
+      sendEmailOtp,
+      verifyOtp,
+      logout,
+      updateUser,
+    }),
+    [user, isAuthenticated, role, status, onboardingComplete, isAdmin]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated,
-        role,
-        status,
-        onboardingComplete,
-        isAdmin,
-        login,
-        quickLogin,
-        signup,
-        sendEmailOtp,
-        sendPhoneOtp,
-        verifyOtp,
-        logout,
-        updateUser,
-      }}
-    >
+    <AuthContext.Provider value={authValue}>
       {children}
     </AuthContext.Provider>
   );

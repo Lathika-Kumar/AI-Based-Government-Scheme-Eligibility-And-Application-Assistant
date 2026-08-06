@@ -82,12 +82,6 @@ export default function Dashboard() {
   const appliedCount = applications.length;
   const verifiedDocCount = documents.filter(d => d.status === "verified").length;
 
-  // Prefer backend-provided summary values when available
-  const displayedMatchingCount = dashboardSummary?.eligibleSchemesCount ?? matchingCount;
-  const displayedAppliedCount = (dashboardSummary?.completedApplicationsCount ?? 0) + (dashboardSummary?.pendingApplicationsCount ?? 0) || appliedCount;
-  const displayedDocumentReadiness = dashboardSummary?.documentCompletionPercentage ?? avgSavedReadiness;
-  const displayedProfileCompletion = dashboardSummary?.profileCompletionPercentage ?? profileCompletionScore;
-
   const [profileCompletionScore, setProfileCompletionScore] = useState(() => {
     const fields = ["name", "age", "annualIncome", "occupation", "caste", "gender", "state"];
     const present = fields.filter((f) => !!evalProfile?.[f]).length;
@@ -110,6 +104,24 @@ export default function Dashboard() {
     { id: "qa-profile", path: "/profile" },
     { id: "qa-tracker", path: "/tracker" },
   ];
+
+  // Prefer backend-provided summary values when available
+  const displayedMatchingCount = dashboardSummary?.eligibleSchemesCount ?? matchingCount;
+  const displayedAppliedCount = (dashboardSummary?.completedApplicationsCount ?? 0) + (dashboardSummary?.pendingApplicationsCount ?? 0) || appliedCount;
+
+  const avgSavedReadiness = useMemo(() => {
+    const list = savedSchemes.map(s => {
+      const schemeObj = schemes.find(sc => sc.id === s.schemeId);
+      if (!schemeObj) {
+        return 0;
+      }
+      return getDocReadinessForScheme(schemeObj.requiredDocuments, documents).readinessScore;
+    });
+    return list.length > 0 ? Math.round(list.reduce((a, b) => a + b, 0) / list.length) : 0;
+  }, [savedSchemes, schemes, documents]);
+
+  const displayedDocumentReadiness = dashboardSummary?.documentCompletionPercentage ?? avgSavedReadiness;
+  const displayedProfileCompletion = dashboardSummary?.profileCompletionPercentage ?? profileCompletionScore;
 
   useEffect(() => {
     let mounted = true;
@@ -193,17 +205,6 @@ export default function Dashboard() {
       mounted = false;
     };
   }, [evalProfile]);
-
-  const avgSavedReadiness = useMemo(() => {
-    const list = savedSchemes.map(s => {
-      const schemeObj = schemes.find(sc => sc.id === s.schemeId);
-      if (!schemeObj) {
-        return 0;
-      }
-      return getDocReadinessForScheme(schemeObj.requiredDocuments, documents).readinessScore;
-    });
-    return list.length > 0 ? Math.round(list.reduce((a, b) => a + b, 0) / list.length) : 0;
-  }, [savedSchemes, schemes, documents]);
 
   const unappliedMatches = useMemo(() =>
     eligibleSchemes.filter(s => !applications.some(a => a.schemeId === s.id)),

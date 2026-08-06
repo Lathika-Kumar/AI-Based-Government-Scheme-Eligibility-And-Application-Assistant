@@ -17,7 +17,7 @@ import com.schemebridge.repository.CitizenProfileRepository;
 import com.schemebridge.repository.OtpTokenRepository;
 import com.schemebridge.repository.UserRepository;
 import com.schemebridge.service.OtpService;
-import com.schemebridge.service.otp.OtpSender;
+import com.schemebridge.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,15 +40,18 @@ public class OtpServiceImpl implements OtpService {
     private final UserRepository userRepository;
     private final OtpTokenRepository otpTokenRepository;
     private final CitizenProfileRepository citizenProfileRepository;
-    private final OtpSender otpSender;
+    private final NotificationService notificationService;
+    private final com.schemebridge.service.email.EmailProvider emailProvider;
     private final UserMapper userMapper;
     private final SecureRandom secureRandom = new SecureRandom();
 
     @Override
     public OtpResponse sendEmailOtp(SendOtpRequest request) {
-        log.info("Initiating Email OTP generation for email: {}", request.getEmail());
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + request.getEmail()));
+        String normalizedEmail = request.getEmail() == null ? null : request.getEmail().trim();
+        log.info("Initiating Email OTP generation for email: {}", normalizedEmail);
+        User user = userRepository.findByEmail(normalizedEmail)
+            .or(() -> userRepository.findByEmailIgnoreCase(normalizedEmail))
+            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + normalizedEmail));
 
         user.setVerificationMethod(VerificationMethod.EMAIL);
         userRepository.save(user);
@@ -56,31 +59,15 @@ public class OtpServiceImpl implements OtpService {
         return generateAndSendOtp(user, VerificationMethod.EMAIL, user.getEmail());
     }
 
-    @Override
-    public OtpResponse sendPhoneOtp(SendOtpRequest request) {
-        log.info("Initiating Mobile OTP generation for email: {}", request.getEmail());
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + request.getEmail()));
-
-        if (request.getPhoneNumber() != null && !request.getPhoneNumber().isBlank()) {
-            user.setPhoneNumber(request.getPhoneNumber().trim());
-        }
-
-        if (user.getPhoneNumber() == null || user.getPhoneNumber().isBlank()) {
-            throw new BadRequestException("Phone number is required for Mobile OTP verification");
-        }
-
-        user.setVerificationMethod(VerificationMethod.MOBILE);
-        userRepository.save(user);
-
-        return generateAndSendOtp(user, VerificationMethod.MOBILE, user.getPhoneNumber());
-    }
+    // Mobile/SMS OTP flow removed.
 
     @Override
     public UserDto verifyOtp(VerifyOtpRequest request) {
-        log.info("Processing OTP verification for user email: {} via {}", request.getEmail(), request.getVerificationMethod());
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + request.getEmail()));
+        String normalizedEmail = request.getEmail() == null ? null : request.getEmail().trim();
+        log.info("Processing OTP verification for user email: {} via {}", normalizedEmail, request.getVerificationMethod());
+        User user = userRepository.findByEmail(normalizedEmail)
+            .or(() -> userRepository.findByEmailIgnoreCase(normalizedEmail))
+            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + normalizedEmail));
 
         Optional<OtpToken> tokenOpt = otpTokenRepository.findTopByUserIdAndTypeAndUsedFalseOrderByLastSentAtDesc(
                 user.getId(), request.getVerificationMethod()
@@ -130,15 +117,14 @@ public class OtpServiceImpl implements OtpService {
         token.setUsed(true);
         otpTokenRepository.save(token);
 
-        // Update User account state to ACTIVE
-        user.setStatus(AccountStatus.ACTIVE);
-        user.setVerificationMethod(request.getVerificationMethod());
-
-        if (request.getVerificationMethod() == VerificationMethod.EMAIL) {
-            user.setEmailVerified(true);
-        } else {
-            user.setPhoneVerified(true);
+        // Update User account state to ACTIVE (Email-only verification supported)
+        if (request.getVerificationMethod() != VerificationMethod.EMAIL) {
+            throw new BadRequestException("Mobile/SMS verification has been removed. Only EMAIL verification is supported.");
         }
+
+        user.setStatus(AccountStatus.ACTIVE);
+        user.setVerificationMethod(VerificationMethod.EMAIL);
+        user.setEmailVerified(true);
 
         User savedUser = userRepository.save(user);
 
@@ -204,17 +190,24 @@ public class OtpServiceImpl implements OtpService {
 
         otpTokenRepository.save(newToken);
 
-        // Dispatch via Strategy Sender
-        otpSender.sendOtp(recipient, otpCode, method);
+        // Only Email OTP is supported now.
+        notificationService.sendEmailOtp(recipient, otpCode);
 
-        return OtpResponse.builder()
+        OtpResponse.OtpResponseBuilder responseBuilder = OtpResponse.builder()
                 .message("OTP sent successfully to " + recipient)
                 .method(method)
                 .recipient(recipient)
                 .expirySeconds(OTP_EXPIRY_SECONDS)
                 .remainingVerificationAttempts(MAX_VERIFICATION_ATTEMPTS)
-                .resendCount(currentResendCount)
-                .simulatedOtp(otpCode)
-                .build();
+                .resendCount(currentResendCount);
+
+        // Include simulatedOtp only when the active provider for the requested method is simulated.
+        if (method == VerificationMethod.EMAIL) {
+            if (emailProvider instanceof com.schemebridge.service.email.SimulatedEmailProvider) {
+                responseBuilder.simulatedOtp(otpCode);
+            }
+        }
+
+        return responseBuilder.build();
     }
 }

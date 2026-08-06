@@ -4,12 +4,12 @@ import { useAuth } from "@context/AuthContext";
 import { useToast } from "@components/ui/ToastNotification";
 import JourneyHeader from "@components/ui/JourneyHeader";
 import JourneySidebar from "@components/ui/JourneySidebar";
-import { KeyRound, Timer, RefreshCw, Loader2, CheckCircle2, ArrowRight, ArrowLeft, ShieldAlert } from "lucide-react";
+import { KeyRound, Timer, RefreshCw, Loader2, CheckCircle2, ArrowRight, ShieldAlert } from "lucide-react";
 
 export default function OtpVerification() {
   const navigate = useNavigate();
-  const { user, verifyOtp, sendEmailOtp, sendPhoneOtp } = useAuth();
-  const showToast = useToast();
+  const { user, verifyOtp, sendEmailOtp } = useAuth();
+  const { showToast } = useToast();
 
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,8 +21,8 @@ export default function OtpVerification() {
   const [resendCooldown, setResendCooldown] = useState(30); // 30 seconds
   const [attemptsRemaining, setAttemptsRemaining] = useState(5);
 
-  const method = user?.verificationMethod || "EMAIL";
-  const recipient = method === "EMAIL" ? user?.email : user?.phoneNumber || user?.email;
+  const method = "EMAIL";
+  const recipient = user?.email;
   const userName = user?.fullName || user?.name || "Citizen";
 
   // 5-Minute Overall Expiry Countdown
@@ -87,12 +87,7 @@ export default function OtpVerification() {
 
     setResending(true);
     try {
-      let res;
-      if (method === "EMAIL") {
-        res = await sendEmailOtp(user?.email);
-      } else {
-        res = await sendPhoneOtp(user?.email, user?.phoneNumber);
-      }
+      const res = await sendEmailOtp(user?.email);
 
       if (res.error) {
         showToast(res.error, "error");
@@ -108,10 +103,6 @@ export default function OtpVerification() {
     } finally {
       setResending(false);
     }
-  };
-
-  const handleChangeMethod = () => {
-    navigate("/verification-method");
   };
 
   return (
@@ -160,14 +151,6 @@ export default function OtpVerification() {
                       OTP sent to <strong className="text-slate-800">{recipient}</strong>
                     </p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleChangeMethod}
-                    className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 cursor-pointer"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Change {method === "EMAIL" ? "Email" : "Mobile"}</span>
-                  </button>
                 </div>
 
                 {/* Expiry & Attempt Counters */}

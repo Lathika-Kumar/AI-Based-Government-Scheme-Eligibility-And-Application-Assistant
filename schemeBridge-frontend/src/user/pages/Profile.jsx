@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useApp } from "@context/AppContext";
+import profileService from "@services/profileService";
 import {
   EDUCATION_OPTIONS,
   OCCUPATION_OPTIONS,
@@ -34,6 +35,7 @@ export default function Profile() {
     age: profile?.age || user?.age || "32",
     gender: profile?.gender || user?.gender || "Male",
     state: profile?.state || user?.state || "Gujarat",
+    district: profile?.district || user?.district || "",
     education: profile?.education || "Graduate / Bachelor's Degree",
     occupation: profile?.occupation || user?.occupation || "Farmer",
     income: profile?.annualIncome || user?.income || "180000",
@@ -49,6 +51,7 @@ export default function Profile() {
 
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState({});
 
   // Simulate async profile data fetch
@@ -133,7 +136,7 @@ export default function Profile() {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
 
     // ── Inline validation ───────────────────────────────────────────────────
@@ -148,6 +151,10 @@ export default function Profile() {
       newErrors.age = "Enter a valid age (1–120)";
     }
 
+    if (!formData.district.trim()) {
+      newErrors.district = "District is required";
+    }
+
     const incomeNum = Number(formData.income);
     if (formData.income === "" || isNaN(incomeNum) || incomeNum < 0) {
       newErrors.income = "Income must be a non-negative number";
@@ -159,49 +166,71 @@ export default function Profile() {
     }
 
     setErrors({});
+    setIsSaving(true);
 
-    const formattedProfile = {
-      name: formData.name,
+    const profilePayload = {
+      fullName: formData.name,
       age: Number(formData.age),
       gender: formData.gender,
       state: formData.state,
-      education: formData.education,
-      occupation: formData.occupation,
+      district: formData.district,
       annualIncome: Number(formData.income),
-      caste: formData.caste,
-      fontSize: formData.fontSize,
-      highContrast: formData.highContrast,
-      audioGuidance: formData.audioGuidance,
-      isComplete: true
+      category: formData.caste,
+      occupation: formData.occupation,
+      qualification: formData.education,
     };
 
-    // Update global app state (persists to localStorage)
-    updateProfile(formattedProfile);
+    try {
+      const updatedProfile = await profileService.updateProfile(profilePayload);
 
-    // Sync Auth session
-    updateUser({
-      name: formData.name,
-      age: Number(formData.age),
-      gender: formData.gender,
-      occupation: formData.occupation,
-      income: Number(formData.income),
-      caste: formData.caste,
-      state: formData.state
-    });
+      const authUpdates = {
+        name: updatedProfile.fullName ?? formData.name,
+        fullName: updatedProfile.fullName ?? formData.name,
+        age: updatedProfile.age ?? Number(formData.age),
+        gender: updatedProfile.gender ?? formData.gender,
+        occupation: updatedProfile.occupation ?? formData.occupation,
+        annualIncome: updatedProfile.annualIncome ?? Number(formData.income),
+        income: updatedProfile.annualIncome ?? Number(formData.income),
+        caste: updatedProfile.category ?? formData.caste,
+        state: updatedProfile.state ?? formData.state,
+        district: updatedProfile.district ?? formData.district,
+        onboardingComplete: updatedProfile.onboardingCompleted === true || updatedProfile.onboardingComplete === true || user?.onboardingComplete,
+      };
 
-    addAuditLog(
-      "Profile Update",
-      "Profile",
-      formData.name || "Citizen",
-      `Socio-economic criteria updated. New Match readiness sync triggered.`,
-      formData.name || "Citizen"
-    );
+      updateProfile({
+        name: updatedProfile.fullName ?? formData.name,
+        age: updatedProfile.age ?? Number(formData.age),
+        gender: updatedProfile.gender ?? formData.gender,
+        state: updatedProfile.state ?? formData.state,
+        district: updatedProfile.district ?? formData.district,
+        education: updatedProfile.qualification ?? formData.education,
+        occupation: updatedProfile.occupation ?? formData.occupation,
+        annualIncome: updatedProfile.annualIncome ?? Number(formData.income),
+        caste: updatedProfile.category ?? formData.caste,
+        isComplete: true,
+      });
 
-    setSavedSuccess(true);
-    setTimeout(() => {
-      setSavedSuccess(false);
-      navigate("/dashboard");
-    }, 1200);
+      updateUser(authUpdates);
+
+      addAuditLog(
+        "Profile Update",
+        "Profile",
+        formData.name || "Citizen",
+        `Socio-economic criteria updated. New Match readiness sync triggered.`,
+        formData.name || "Citizen"
+      );
+
+      setSavedSuccess(true);
+      setIsSaving(false);
+      setTimeout(() => {
+        setSavedSuccess(false);
+        navigate("/dashboard");
+      }, 1200);
+    } catch (err) {
+      console.error("Profile update failed:", err);
+      setErrors({ form: err.message || "Unable to save profile. Please try again." });
+      setIsSaving(false);
+    }
   };
 
   const toggleMfa = () => {
@@ -232,7 +261,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleSave} className="space-y-6">
 
       {/* Page Header */}
       <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-xs space-y-4">
@@ -269,12 +298,14 @@ export default function Profile() {
           <span>Profile configuration successfully saved! Redirecting to Dashboard...</span>
         </div>
       )}
+      {errors.form && (
+        <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs p-4 rounded-xl shadow-xs">
+          {errors.form}
+        </div>
+      )}
 
-      {/* Main Two-Column Content Grid */}
-      <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-
-        {/* Left Columns: Form Fields */}
-        <div className="lg:col-span-2 space-y-6 bg-white border border-gray-200 p-6 rounded-2xl shadow-xs">
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2 space-y-6">
 
           {/* Section 1: Personal Information */}
           <div className="space-y-4">
@@ -363,6 +394,22 @@ export default function Profile() {
                     <option key={st} value={st}>{st}</option>
                   ))}
                 </select>
+              </div>
+
+              <div>
+                <label htmlFor="profile-district" className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                  District
+                </label>
+                <input
+                  id="profile-district"
+                  type="text"
+                  name="district"
+                  value={formData.district}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Ahmedabad"
+                  className={`w-full text-xs px-3.5 py-2.5 border rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 transition ${errors.district ? "border-red-400 focus:ring-red-400 ring-2 ring-red-400" : "border-gray-200 focus:ring-government-blue"}`}
+                />
+                {errors.district && <p className="text-red-500 text-[10px] mt-1">{errors.district}</p>}
               </div>
             </div>
           </div>
@@ -530,12 +577,14 @@ export default function Profile() {
           <div className="flex justify-end pt-4 border-t border-gray-100">
             <button
               type="submit"
-              className="inline-flex items-center gap-2 bg-government-blue hover:bg-government-blue-dark text-white text-xs font-bold px-5 py-3 rounded-xl shadow-xs transition active:scale-95"
+              disabled={isSaving}
+              className={`inline-flex items-center gap-2 text-white text-xs font-bold px-5 py-3 rounded-xl shadow-xs transition active:scale-95 ${isSaving ? "bg-gray-400 cursor-not-allowed" : "bg-government-blue hover:bg-government-blue-dark"}`}
             >
               <Save className="h-4.5 w-4.5" />
-              Save Profile Attributes
+              {isSaving ? "Saving..." : "Save Profile Attributes"}
             </button>
           </div>
+
         </div>
 
         {/* Right Side Column: Documents List & Security */}
@@ -637,11 +686,8 @@ export default function Profile() {
               </div>
             </div>
           </div>
-
         </div>
-
+      </div>
       </form>
-
-    </div>
   );
 }

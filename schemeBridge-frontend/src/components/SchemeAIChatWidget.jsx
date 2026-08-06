@@ -59,16 +59,6 @@ export default function SchemeAIChatWidget({ isOpen, onClose, initialQuery = "",
   }, [messages, isTyping]);
 
   // Handle prefilled/initial query trigger
-  useEffect(() => {
-    if (isOpen && initialQuery) {
-      // Small timeout to let opening animation finish
-      const timer = setTimeout(() => {
-        handleSend(initialQuery);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, initialQuery]);
-
   const getResponse = (query) => {
     const q = query.toLowerCase();
     const age = profile?.age || 32;
@@ -138,14 +128,14 @@ export default function SchemeAIChatWidget({ isOpen, onClose, initialQuery = "",
       return `For ${contextData.schemeName}, your readiness is ${contextData.readinessScore}%. ${contextData.readinessScore === 100 ? "You are ready to apply!" : "Upload the missing documents to qualify fully."}`;
     }
     if (pageContext.includes("/documents")) {
-return AI_RESPONSES.contextDocuments;
-}
+      return AI_RESPONSES.contextDocuments;
+    }
     if (pageContext.includes("/tracker")) {
-return AI_RESPONSES.contextTracker;
-}
+      return AI_RESPONSES.contextTracker;
+    }
     if (pageContext.includes("/recommendations")) {
-return AI_RESPONSES.contextRecommendations;
-}
+      return AI_RESPONSES.contextRecommendations;
+    }
 
     return AI_RESPONSES.default;
   };
@@ -199,9 +189,19 @@ return AI_RESPONSES.contextRecommendations;
     }
   };
 
+  useEffect(() => {
+    if (isOpen && initialQuery) {
+      // Small timeout to let opening animation finish
+      const timer = setTimeout(() => {
+        handleSend(initialQuery);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, initialQuery]);
+
   if (!isOpen) {
-return null;
-}
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-50 w-full sm:w-[380px] h-[100dvh] sm:h-[480px] bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-slate-200 overflow-hidden flex flex-col transition-all duration-300 transform scale-100" aria-label="AI Assistant Chat">

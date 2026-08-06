@@ -247,6 +247,9 @@ apiClient.addRequestInterceptor(async (config) => {
       Authorization: `Bearer ${token}`,
     };
   }
+  if (import.meta.env.DEV) {
+    console.log("API request:", config.method, config.url, "Authorization:", config.headers.Authorization);
+  }
   return config;
 });
 

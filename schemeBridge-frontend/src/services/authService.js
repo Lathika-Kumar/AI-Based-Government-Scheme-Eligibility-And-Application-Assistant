@@ -13,6 +13,30 @@ import { ENDPOINTS } from "@config/api";
 
 const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === "true";
 
+export function normalizeAuthResponse(payload) {
+  const apiUser = payload?.user || payload;
+  const normalizedUser = {
+    id: apiUser?.id || payload?.id,
+    name: apiUser?.fullName || apiUser?.name || "Citizen",
+    fullName: apiUser?.fullName || apiUser?.name || "Citizen",
+    email: apiUser?.email || payload?.email,
+    phoneNumber: apiUser?.phoneNumber || apiUser?.phone,
+    role: (apiUser?.roles?.[0] || apiUser?.role || "citizen").toString().toLowerCase(),
+    status: apiUser?.status || "ACTIVE",
+    verificationMethod: apiUser?.verificationMethod || null,
+    onboardingComplete: apiUser?.onboardingCompleted === true || apiUser?.onboardingComplete === true,
+    onboardingCompleted: apiUser?.onboardingCompleted === true || apiUser?.onboardingComplete === true,
+  };
+
+  const accessToken = payload?.accessToken || payload?.token || null;
+  return {
+    user: normalizedUser,
+    accessToken,
+    token: accessToken,
+    refreshToken: payload?.refreshToken || payload?.refresh_token || null,
+  };
+}
+
 /** Simulate network latency */
 const delay = (ms = MOCK_LOADING_DELAY_MS) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -72,10 +96,14 @@ export async function login({ email, password }) {
 
   if (USE_MOCK) return fallbackMock();
   try {
-    return await apiClient.post(ENDPOINTS.AUTH.LOGIN, { email, password });
+    const response = await apiClient.post(ENDPOINTS.AUTH.LOGIN, { email, password });
+    return normalizeAuthResponse(response);
   } catch (error) {
-    console.warn("login API failed, falling back to mock:", error);
-    return fallbackMock();
+    if (USE_MOCK) {
+      console.warn("login API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
   }
 }
 
@@ -100,10 +128,73 @@ export async function register({ name, email, phone, password }) {
 
   if (USE_MOCK) return fallbackMock();
   try {
-    return await apiClient.post(ENDPOINTS.AUTH.REGISTER, { name, email, phone, password });
+    const response = await apiClient.post(ENDPOINTS.AUTH.REGISTER, { fullName: name, email, phoneNumber: phone, password });
+    return normalizeAuthResponse(response);
   } catch (error) {
-    console.warn("register API failed, falling back to mock:", error);
-    return fallbackMock();
+    if (USE_MOCK) {
+      console.warn("register API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
+  }
+}
+
+/**
+ * Send a verification OTP to the user's email address.
+ * Backend integration: POST /api/v1/auth/send-email-otp
+ *
+ * @param {string} email
+ * @returns {Promise<object>}
+ */
+export async function sendEmailOtp(email) {
+  const fallbackMock = async () => {
+    await delay(400);
+    if (!email) throw new Error("Email is required to send OTP.");
+    return { message: `OTP sent to ${email}.`, otpReference: "mock-email-otp-123456" };
+  };
+
+  if (USE_MOCK) return fallbackMock();
+  try {
+    return await apiClient.post(ENDPOINTS.AUTH.SEND_EMAIL_OTP, { email });
+  } catch (error) {
+    if (USE_MOCK) {
+      console.warn("sendEmailOtp API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
+  }
+}
+
+/**
+ * Verify an OTP code.
+ * Backend integration: POST /api/v1/auth/verify-otp
+ *
+ * @param {string} email
+ * @param {string} otp
+ * @param {string} verificationMethod
+ * @returns {Promise<{ user: object }>}
+ */
+export async function verifyOtp(email, otp, verificationMethod) {
+  const fallbackMock = async () => {
+    await delay(400);
+    if (!email || !otp) throw new Error("Email and OTP code are required.");
+    if (otp !== "123456" && otp !== "654321") {
+      throw new Error("Invalid OTP code.");
+    }
+    const user = email.includes("admin") ? MOCK_ADMIN : MOCK_CITIZEN;
+    return normalizeAuthResponse({ user });
+  };
+
+  if (USE_MOCK) return fallbackMock();
+  try {
+    const response = await apiClient.post(ENDPOINTS.AUTH.VERIFY_OTP, { email, otp, verificationMethod });
+    return normalizeAuthResponse(response);
+  } catch (error) {
+    if (USE_MOCK) {
+      console.warn("verifyOtp API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
   }
 }
 
@@ -123,8 +214,11 @@ export async function logout() {
   try {
     return await apiClient.post(ENDPOINTS.AUTH.LOGOUT);
   } catch (error) {
-    console.warn("logout API failed, falling back to mock:", error);
-    return fallbackMock();
+    if (USE_MOCK) {
+      console.warn("logout API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
   }
 }
 
@@ -150,8 +244,11 @@ export async function verifyToken(token) {
     const user = await apiClient.get(ENDPOINTS.PROFILE.GET);
     return { user, valid: true };
   } catch (error) {
-    console.warn("verifyToken API failed, falling back to mock:", error);
-    return fallbackMock();
+    if (USE_MOCK) {
+      console.warn("verifyToken API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
   }
 }
 
@@ -175,8 +272,11 @@ export async function refreshToken(refreshToken) {
   try {
     return await apiClient.post(ENDPOINTS.AUTH.REFRESH_TOKEN, { refreshToken });
   } catch (error) {
-    console.warn("refreshToken API failed, falling back to mock:", error);
-    return fallbackMock();
+    if (USE_MOCK) {
+      console.warn("refreshToken API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
   }
 }
 
@@ -197,8 +297,11 @@ export async function forgotPassword({ email }) {
   try {
     return await apiClient.post(ENDPOINTS.AUTH.FORGOT_PASSWORD, { email });
   } catch (error) {
-    console.warn("forgotPassword API failed, falling back to mock:", error);
-    return fallbackMock();
+    if (USE_MOCK) {
+      console.warn("forgotPassword API failed, falling back to mock:", error);
+      return fallbackMock();
+    }
+    throw error;
   }
 }
 
@@ -209,6 +312,8 @@ const authService = {
   verifyToken,
   refreshToken,
   forgotPassword,
+  sendEmailOtp,
+  verifyOtp,
 };
 
 export default authService;

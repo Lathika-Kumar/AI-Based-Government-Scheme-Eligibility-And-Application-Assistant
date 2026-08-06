@@ -541,6 +541,15 @@ return JSON.parse(savedDocs);
     setAuditLogs((prev) => [newLog, ...prev]);
   };
 
+  const addRecentActivity = (activity) => {
+    const newActivity = {
+      id: `act-${Date.now()}`,
+      timestamp: "Just Now",
+      ...activity
+    };
+    setRecentActivities((prev) => [newActivity, ...prev].slice(0, 20));
+  };
+
   // ── Profile Actions ───────────────────────────────────────────────────────
   const updateProfile = (updates) => {
     setProfile((prev) => ({ ...prev, ...updates }));
@@ -1051,15 +1060,6 @@ return JSON.parse(savedDocs);
       })
     );
     addAuditLog("Status Change", "Grievance", category, `Grievance ${id} status updated to '${newStatus}' for ${relatedScheme}.`, "Sanjay Kumar (Admin)");
-  };
-
-  const addRecentActivity = (activity) => {
-    const newActivity = {
-      id: `act-${Date.now()}`,
-      timestamp: "Just Now",
-      ...activity
-    };
-    setRecentActivities((prev) => [newActivity, ...prev].slice(0, 20));
   };
 
   const toggleRegistryUserStatus = (roleKey, email) => {

@@ -8,7 +8,9 @@ import com.schemebridge.entity.ApplicationTimelineEntry;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -56,11 +58,19 @@ public class ApplicationMapper {
     }
 
     private String generateReferenceNumber(String schemeId) {
-        String prefix = schemeId != null ? schemeId.toUpperCase().replaceAll("[^A-Z0-9]", "").substring(0, Math.min(6, schemeId.length())) : "APP";
-        return String.format("%s/%s/%s", prefix, java.time.LocalDate.now().getYear(), java.time.temporal.ChronoField.DAY_OF_YEAR.getFrom(java.time.LocalDate.now()));
+        String prefix = schemeId != null
+                ? schemeId.toUpperCase().replaceAll("[^A-Z0-9]", "")
+                : "APP";
+        prefix = prefix.length() > 6 ? prefix.substring(0, 6) : prefix;
+        String datePart = String.format("%s%02d%02d",
+                LocalDate.now().getYear(),
+                LocalDate.now().getMonthValue(),
+                LocalDate.now().getDayOfMonth());
+        String randomPart = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        return String.format("%s-%s-%s", prefix.isBlank() ? "APP" : prefix, datePart, randomPart);
     }
 
-    private List<ApplicationTimelineEntryResponse> toTimelineResponse(List<ApplicationTimelineEntry> timeline) {
+    public List<ApplicationTimelineEntryResponse> toTimelineResponse(List<ApplicationTimelineEntry> timeline) {
         if (timeline == null) return null;
         return timeline.stream()
                 .map(entry -> ApplicationTimelineEntryResponse.builder()

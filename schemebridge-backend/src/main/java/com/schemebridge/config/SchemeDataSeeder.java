@@ -23,11 +23,6 @@ public class SchemeDataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (schemeRepository.count() > 0) {
-            log.info("Schemes collection is already populated (count: {}). Skipping seeder.", schemeRepository.count());
-            return;
-        }
-
         log.info("Seeding realistic Government Schemes into MongoDB...");
 
         List<Scheme> seedSchemes = List.of(
@@ -461,7 +456,19 @@ public class SchemeDataSeeder implements CommandLineRunner {
                         .build()
         );
 
-        schemeRepository.saveAll(seedSchemes);
-        log.info("Successfully seeded {} realistic Government Schemes into MongoDB!", seedSchemes.size());
+        List<Scheme> missingSchemes = new java.util.ArrayList<>();
+        for (Scheme seedScheme : seedSchemes) {
+            if (schemeRepository.findBySchemeCode(seedScheme.getSchemeCode()).isEmpty()) {
+                missingSchemes.add(seedScheme);
+            }
+        }
+
+        if (missingSchemes.isEmpty()) {
+            log.info("All seed schemes are already present in MongoDB. No changes applied.");
+            return;
+        }
+
+        schemeRepository.saveAll(missingSchemes);
+        log.info("Successfully seeded {} realistic Government Schemes into MongoDB!", missingSchemes.size());
     }
 }

@@ -13,16 +13,30 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${schemebridge.cors.allowed-origins:http://localhost:5173,http://localhost:3000}")
-    private List<String> allowedOrigins;
+    @Value("${schemebridge.cors.allowed-origins:http://localhost:5173,http://localhost:5174,http://localhost:3000}")
+    private String allowedOriginsProp;
 
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(allowedOrigins);
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        List<String> origins = Arrays.stream(allowedOriginsProp.split(","))
+            .map(String::trim)
+            .toList();
+        config.setAllowedOrigins(origins);
+        // Allow origin patterns (useful for localhost dev on varying ports)
+        config.setAllowedOriginPatterns(Arrays.asList("*"));
+        config.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "Accept",
+                "Origin",
+                "X-Requested-With",
+                "X-Request-ID",
+                "x-request-id"
+        ));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.setExposedHeaders(Arrays.asList("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

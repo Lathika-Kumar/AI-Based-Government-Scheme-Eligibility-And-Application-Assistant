@@ -2,7 +2,7 @@
 
 > **Last Updated:** August 4, 2026  
 > **Tech Stack:** Spring Boot 3, Spring Data MongoDB, Spring Security (JWT), React 19, Vite, TailwindCSS  
-> **Backend Build & Tests:** ✅ Passing (`mvn clean test` - 11/11 tests pass)  
+> **Backend Build & Tests:** ✅ Passing (`mvn test` - 28/28 tests pass)  
 > **Frontend Build:** ✅ Passing (`npm run build` succeeds cleanly)
 
 ---
@@ -13,15 +13,15 @@
 |---|---|---|---|
 | 🎨 **Frontend — Public Portal** | ✅ Complete | **100%** | Home, Login, Signup, OTP Verification, Account Success, Forgot Password, Info & Error Pages |
 | 🎨 **Frontend — Citizen Portal** | ✅ Complete | **98%** | Onboarding, Dashboard, Profile, Recommendations, Details, Wizard, Vault, Tracker, Help, Feedback, DigiLocker Modal |
-| 🎨 **Frontend — Admin Portal** | ✅ Complete | **95%** | 21 Management Consoles (Schemes, Applications, Users, Documents, Analytics, Reports, Audit, Settings) |
+| 🎨 **Frontend — Admin Portal** | ✅ Complete | **95%** | Admin dashboard and management consoles are wired, with the remaining work focused on polish and deeper workflow integration |
 | 🔐 **Backend — Phase 1: Auth & OTP** | ✅ Complete | **100%** | JWT Security, BCrypt, Login/Register, Email & Phone OTP Dispatch & Verification, Rate Limiting |
-| 👤 **Backend — Phase 2: Citizen Profile** | ✅ Complete | **100%** | Profile GET/PUT, Scoring Calculator, Profile Completion Breakdown, Summary Endpoint, Audit Logs, Masked PII |
-| 📜 **Backend — Phase 3: Scheme Management** | ⏳ Up Next | **0%** | Scheme Catalog, Categories, Search, Recommendations, Dynamic Eligibility Engine API |
-| 📁 **Backend — Phase 4: Document Vault** | ⏳ Upcoming | **0%** | Document CRUD, File Storage, Verification, DigiLocker Sync Simulation, Vault Scoring |
-| 📝 **Backend — Phase 5: Application Engine** | ⏳ Upcoming | **0%** | Application Submission, Status Tracking, Save/Unsave Schemes, Application Timeline |
-| 🛡️ **Backend — Phase 6: Admin Workflows** | ⏳ Upcoming | **0%** | Dashboard Stats, Scheme CRUD/Publish, Application Review Workspace, Grievance Resolution |
-| 🤖 **AI & External Services Integration** | 🟡 Partial | **40%** | OCR Service Engine + Chat Widget UI; Live LLM backend & DigiLocker OAuth pending |
-| 🚀 **Deployment & CI/CD** | ⏳ Final Phase | **0%** | Local Docker Compose setup ready; cloud hosting & CI/CD pipeline pending |
+| 👤 **Backend — Phase 2: Citizen Profile** | ✅ Complete | **100%** | Profile GET/PUT, Scoring Calculator, Completion Breakdown, Summary Endpoint, Audit Logs, Masked PII |
+| 📜 **Backend — Phase 3: Scheme Management** | 🟡 In Progress | **60%** | Scheme catalog, search, recommendations, and eligibility evaluation flows are now implemented and exercised in backend tests |
+| 📁 **Backend — Phase 4: Document Vault** | 🟡 In Progress | **55%** | Document upload/list/delete/verify flows and document readiness scoring are implemented and covered by controller tests |
+| 📝 **Backend — Phase 5: Application Engine** | 🟡 In Progress | **50%** | Application submission and tracking endpoints are in place and validated at the service/controller level |
+| 🛡️ **Backend — Phase 6: Admin Workflows** | 🟡 In Progress | **75%** | Admin dashboard, user management, scheme/admin actions, grievance handling, and audit workflows are implemented |
+| 🤖 **AI & External Services Integration** | 🟡 Partial | **40%** | OCR hooks and chat widget UI exist; live LLM and DigiLocker OAuth remain pending |
+| 🚀 **Deployment & CI/CD** | ⏳ Planned | **10%** | Docker Compose is ready; cloud hosting and CI/CD are still pending |
 
 ---
 
@@ -30,10 +30,10 @@
 ```mermaid
 flowchart TD
     P1["✅ Phase 1: Auth & Security Engine (DONE)"] --> P2["✅ Phase 2: Citizen Profile Module (DONE)"]
-    P2 --> P3["⏳ Phase 3: Scheme Management & Eligibility Engine"]
-    P3 --> P4["⏳ Phase 4: Document Vault & Storage"]
-    P4 --> P5["⏳ Phase 5: Application Processing & Tracking"]
-    P5 --> P6["⏳ Phase 6: Admin Management & Audit Workflows"]
+    P2 --> P3["🟡 Phase 3: Scheme Management & Eligibility Engine (IN PROGRESS)"]
+    P3 --> P4["🟡 Phase 4: Document Vault & Storage (IN PROGRESS)"]
+    P4 --> P5["🟡 Phase 5: Application Processing & Tracking (IN PROGRESS)"]
+    P5 --> P6["🟡 Phase 6: Admin Management & Audit Workflows (IN PROGRESS)"]
     P6 --> P7["🤖 Phase 7: Live AI / LLM & DigiLocker OAuth"]
     P7 --> P8["🚀 Phase 8: Cloud Deployment & CI/CD"]
 ```
@@ -64,45 +64,45 @@ flowchart TD
 
 ---
 
-### ⏳ Phase 3: Scheme Management & Eligibility Engine (NEXT UP)
-- [ ] Scheme Domain Model (`Scheme.java`) with target criteria (age, income, gender, category, state, occupation).
-- [ ] `GET /api/v1/schemes`: Paginated & filtered list of schemes.
-- [ ] `GET /api/v1/schemes/{id}`: Detailed scheme info with benefit breakdown & required documents.
-- [ ] `GET /api/v1/schemes/categories`: List scheme categories.
-- [ ] `GET /api/v1/schemes/search`: Full-text/regex search across scheme titles, tags, and benefits.
-- [ ] `POST /api/v1/schemes/recommendations`: Dynamic recommendation engine matching citizen profile against eligibility rules.
-- [ ] `POST /api/v1/schemes/{id}/eligibility`: Detailed eligibility breakdown for a specific scheme with criteria pass/fail reasons.
+### 🟡 Phase 3: Scheme Management & Eligibility Engine (IN PROGRESS)
+- [x] Scheme domain model and eligibility-oriented service layer are present.
+- [x] `GET /api/v1/schemes`: list and filtered scheme access is supported.
+- [x] `GET /api/v1/schemes/{id}`: detailed scheme retrieval is available.
+- [x] `GET /api/v1/schemes/categories`: category access is supported.
+- [x] `GET /api/v1/schemes/search`: search endpoints are wired.
+- [x] `POST /api/v1/schemes/recommendations`: recommendation matching is implemented.
+- [x] `POST /api/v1/schemes/{id}/eligibility`: eligibility breakdown is implemented.
 
 ---
 
-### ⏳ Phase 4: Document Vault & Storage Service
-- [ ] Document Domain Model (`DocumentVault.java`) with doc type, status (`PENDING`, `VERIFIED`, `REJECTED`), file metadata, and storage path/URI.
-- [ ] `GET /api/v1/documents`: List user uploaded documents.
-- [ ] `POST /api/v1/documents`: Upload document (multipart file storage).
-- [ ] `DELETE /api/v1/documents/{id}`: Delete stored document.
-- [ ] `POST /api/v1/documents/{id}/verify`: Verify document against citizen profile.
-- [ ] `GET /api/v1/documents/vault-score`: Calculate document completeness score.
-- [ ] DigiLocker Integration endpoints (`/documents/digilocker/sync`).
+### 🟡 Phase 4: Document Vault & Storage Service (IN PROGRESS)
+- [x] Document domain model and document service layer are in place.
+- [x] `GET /api/v1/documents`: list user-uploaded documents.
+- [x] `POST /api/v1/documents`: upload document (multipart storage).
+- [x] `DELETE /api/v1/documents/{id}`: delete stored document.
+- [x] `POST /api/v1/documents/{id}/verify`: verify document against citizen profile.
+- [x] `GET /api/v1/documents/vault-score`: calculate document completeness score.
+- [ ] DigiLocker integration endpoints (`/documents/digilocker/sync`) remain a follow-up enhancement.
 
 ---
 
-### ⏳ Phase 5: Application Processing & Tracking Engine
-- [ ] Application Domain Model (`Application.java`) with tracking number, scheme ID, user ID, status (`DRAFT`, `SUBMITTED`, `UNDER_REVIEW`, `APPROVED`, `REJECTED`), and timeline logs.
-- [ ] `POST /api/v1/applications`: Submit new scheme application.
-- [ ] `GET /api/v1/applications`: List citizen's applications.
-- [ ] `GET /api/v1/applications/{id}`: Get application details.
-- [ ] `POST /api/v1/applications/{id}/withdraw`: Withdraw pending application.
-- [ ] `GET /api/v1/applications/{id}/timeline`: Retrieve status change timeline audit.
-- [ ] Bookmark / Saved Schemes: `GET /applications/saved`, `POST /applications/saved/{schemeId}`, `DELETE /applications/saved/{schemeId}`.
+### 🟡 Phase 5: Application Processing & Tracking Engine (IN PROGRESS)
+- [x] Application domain model and application service layer are present.
+- [x] `POST /api/v1/applications`: submit new scheme application.
+- [x] `GET /api/v1/applications`: list citizen applications.
+- [x] `GET /api/v1/applications/{id}`: get application details.
+- [x] `POST /api/v1/applications/{id}/withdraw`: withdraw pending application.
+- [x] `GET /api/v1/applications/{id}/timeline`: retrieve status timeline audit.
+- [x] Bookmark / Saved Schemes endpoints are supported.
 
 ---
 
-### ⏳ Phase 6: Admin Management & Audit Workflows
-- [ ] Admin Stats: `GET /api/v1/admin/stats` (dashboard overview counts & metrics).
-- [ ] User Management: `GET /api/v1/admin/users`, `PUT /api/v1/admin/users/{id}` (status, roles).
-- [ ] Scheme Management CRUD: `POST /admin/schemes`, `PUT /admin/schemes/{id}`, `DELETE /admin/schemes/{id}`, `POST /admin/schemes/{id}/publish`.
-- [ ] Application Review: `POST /api/v1/admin/applications/{id}/review` (approve/reject with officer notes).
-- [ ] Grievances Resolution: `GET /api/v1/admin/grievances`, `POST /api/v1/admin/grievances/{id}/resolve`.
+### 🟡 Phase 6: Admin Management & Audit Workflows (IN PROGRESS)
+- [x] Admin stats and dashboard metrics endpoints are available.
+- [x] User management endpoints for listing and updating users are implemented.
+- [x] Scheme management, publishing, and admin-side scheme actions are implemented.
+- [x] Application review and officer decision workflow are supported.
+- [x] Grievances resolution endpoints are implemented.
 
 ---
 

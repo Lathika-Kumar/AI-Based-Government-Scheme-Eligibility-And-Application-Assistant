@@ -7,6 +7,5 @@ import com.schemebridge.dto.VerifyOtpRequest;
 
 public interface OtpService {
     OtpResponse sendEmailOtp(SendOtpRequest request);
-    OtpResponse sendPhoneOtp(SendOtpRequest request);
     UserDto verifyOtp(VerifyOtpRequest request);
 }

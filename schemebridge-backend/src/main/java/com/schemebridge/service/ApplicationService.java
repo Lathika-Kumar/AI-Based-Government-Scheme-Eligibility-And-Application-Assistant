@@ -2,6 +2,7 @@ package com.schemebridge.service;
 
 import com.schemebridge.dto.ApplicationRequest;
 import com.schemebridge.dto.ApplicationResponse;
+import com.schemebridge.dto.ApplicationTimelineEntryResponse;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public interface ApplicationService {
     ApplicationResponse getApplicationById(String id, String userEmail);
 
     ApplicationResponse submitApplication(String userEmail, ApplicationRequest request);
+
+    List<ApplicationTimelineEntryResponse> getApplicationTimeline(String id, String userEmail);
 
     void withdrawApplication(String id, String userEmail);
 

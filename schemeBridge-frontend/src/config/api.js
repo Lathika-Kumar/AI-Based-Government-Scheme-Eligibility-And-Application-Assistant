@@ -31,7 +31,6 @@ export const ENDPOINTS = Object.freeze({
     REFRESH_TOKEN: "/auth/refresh",
     VERIFY_OTP: "/auth/verify-otp",
     SEND_EMAIL_OTP: "/auth/send-email-otp",
-    SEND_PHONE_OTP: "/auth/send-phone-otp",
     FORGOT_PASSWORD: "/auth/forgot-password",
     RESET_PASSWORD: "/auth/reset-password",
   },

@@ -56,12 +56,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("Email OTP sent successfully", response));
     }
 
-    @PostMapping("/send-phone-otp")
-    @Operation(summary = "Send Phone OTP", description = "Stores phone number and generates a 6-digit Mobile OTP valid for 5 minutes.")
-    public ResponseEntity<ApiResponse<OtpResponse>> sendPhoneOtp(@Valid @RequestBody SendOtpRequest request) {
-        OtpResponse response = otpService.sendPhoneOtp(request);
-        return ResponseEntity.ok(ApiResponse.success("Mobile OTP sent successfully", response));
-    }
+    // Mobile OTP endpoint removed; email OTP remains at /send-email-otp
 
     @PostMapping("/verify-otp")
     @Operation(summary = "Verify OTP code", description = "Validates 6-digit OTP, updates user status to ACTIVE, and instantiates CitizenProfile.")

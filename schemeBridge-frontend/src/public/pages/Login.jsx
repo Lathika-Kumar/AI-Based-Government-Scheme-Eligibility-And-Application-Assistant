@@ -4,13 +4,19 @@ import { useAuth } from "@context/AuthContext";
 import { useToast } from "@components/ui/ToastNotification";
 import { validateSchema, loginSchema } from "@utils/validation";
 import {
-  Building2, Mail, Lock, ArrowRight, AlertCircle, UserCheck, ShieldCheck
+  Building2,
+  Mail,
+  Lock,
+  ArrowRight,
+  AlertCircle,
+  ShieldCheck,
+  UserCheck
 } from "lucide-react";
 
 export default function Login() {
-  const { login, quickLogin } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const showToast = useToast();
+  const { showToast } = useToast();
 
   const [email, setEmail]             = useState("");
   const [password, setPassword]       = useState("");
@@ -50,18 +56,6 @@ export default function Login() {
     navigate("/dashboard");
   };
 
-  const handleQuickLogin = async (roleType) => {
-    setError("");
-    setLoading(true);
-    setLoadingPhase("Signing In...");
-    await new Promise(r => setTimeout(r, 400));
-
-    const loggedUser = quickLogin(roleType);
-    setLoading(false);
-    setLoadingPhase("");
-    redirectAfterLogin(loggedUser);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -77,12 +71,27 @@ export default function Login() {
     setLoadingPhase("Signing In...");
 
     const result = await login(email, password);
+    console.log("Login Response:", result);
     if (result.error) {
       setError(result.error);
       setLoading(false);
       setLoadingPhase("");
       return;
     }
+
+    const accessToken = result?.accessToken || result?.token || result?.user?.token;
+    const refreshToken = result?.refreshToken || result?.user?.refreshToken || result?.user?.refresh_token;
+    console.log("Access Token:", accessToken);
+    if (accessToken) {
+      localStorage.setItem("schemebridge_token", accessToken);
+    }
+    if (refreshToken) {
+      localStorage.setItem("schemebridge_refresh_token", refreshToken);
+    }
+    if (result?.user) {
+      localStorage.setItem("schemebridge_user", JSON.stringify(result.user));
+    }
+    console.log("Stored Token:", localStorage.getItem("schemebridge_token"));
 
     setLoading(false);
     setLoadingPhase("");
@@ -120,33 +129,6 @@ export default function Login() {
                 <span className="font-medium text-xs leading-normal">{error}</span>
               </div>
             )}
-
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block text-center">
-                Quick Demo Profiles
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("citizen")}
-                  disabled={loading}
-                  className="bg-white hover:bg-government-blue/5 hover:border-government-blue/30 border border-gray-200 rounded-lg py-3 px-3 text-left transition text-xs flex flex-col justify-between cursor-pointer"
-                >
-                  <span className="font-bold text-gray-800">Citizen Profile</span>
-                  <span className="text-[11px] text-gray-500 font-medium">Rajesh Patel (Verified)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("admin")}
-                  disabled={loading}
-                  className="bg-white hover:bg-government-blue/5 hover:border-government-blue/30 border border-gray-200 rounded-lg py-3 px-3 text-left transition text-xs flex flex-col justify-between cursor-pointer"
-                >
-                  <span className="font-bold text-gray-800">Admin Evaluator</span>
-                  <span className="text-[11px] text-gray-500 font-medium">Verification Officer</span>
-                </button>
-              </div>
-            </div>
-
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-1.5">

@@ -3,6 +3,7 @@ package com.schemebridge.controller;
 import com.schemebridge.common.ApiResponse;
 import com.schemebridge.dto.ApplicationRequest;
 import com.schemebridge.dto.ApplicationResponse;
+import com.schemebridge.dto.ApplicationTimelineEntryResponse;
 import com.schemebridge.service.ApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,6 +54,15 @@ public class ApplicationController {
             @Valid @RequestBody ApplicationRequest request) {
         ApplicationResponse response = applicationService.submitApplication(userDetails.getUsername(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Application submitted successfully", response));
+    }
+
+    @GetMapping("/{id}/timeline")
+    @Operation(summary = "Get application timeline", description = "Returns the status-change timeline for a specific application belonging to the authenticated citizen")
+    public ResponseEntity<ApiResponse<List<ApplicationTimelineEntryResponse>>> getApplicationTimeline(
+            @PathVariable String id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        List<ApplicationTimelineEntryResponse> timeline = applicationService.getApplicationTimeline(id, userDetails.getUsername());
+        return ResponseEntity.ok(ApiResponse.success("Application timeline retrieved successfully", timeline));
     }
 
     @PostMapping("/{id}/withdraw")

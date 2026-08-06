@@ -1,5 +1,6 @@
 package com.schemebridge.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.schemebridge.enums.VerificationMethod;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OtpResponse {
     private String message;
     private VerificationMethod method;

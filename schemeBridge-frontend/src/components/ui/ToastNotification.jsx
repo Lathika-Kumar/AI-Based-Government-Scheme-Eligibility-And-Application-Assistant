@@ -79,6 +79,11 @@ function Toast({ id, type = "info", title, message, onDismiss }) {
     return () => cancelAnimationFrame(t);
   }, []);
 
+  const handleDismiss = useCallback(() => {
+    setVisible(false);
+    setTimeout(() => onDismiss(id), FADE_DURATION_MS);
+  }, [id, onDismiss]);
+
   // Progress bar countdown + auto-dismiss
   useEffect(() => {
     startTimeRef.current = Date.now();
@@ -95,11 +100,6 @@ function Toast({ id, type = "info", title, message, onDismiss }) {
     return () => clearInterval(intervalRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleDismiss = useCallback(() => {
-    setVisible(false);
-    setTimeout(() => onDismiss(id), FADE_DURATION_MS);
-  }, [id, onDismiss]);
 
   return (
     <div

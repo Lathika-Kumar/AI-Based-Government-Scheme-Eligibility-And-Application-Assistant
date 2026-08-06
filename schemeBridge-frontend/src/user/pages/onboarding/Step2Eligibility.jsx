@@ -33,59 +33,40 @@ const STATES = [
   "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
 ];
 
+const getPrefillValue = (field, initialValue) => {
+  if (initialValue !== undefined && initialValue !== null && initialValue !== "") {
+    return initialValue;
+  }
+
+  const prefill = localStorage.getItem("schemebridge_prefill_profile");
+  if (!prefill) {
+    return "";
+  }
+
+  try {
+    const parsed = JSON.parse(prefill);
+    return parsed?.[field] ?? "";
+  } catch (error) {
+    console.error("Unable to parse profile prefill data", error);
+    return "";
+  }
+};
+
 export default function Step2Eligibility({ initialData, onNext, onBack }) {
   const [occupation, setOccupation] = useState(initialData?.occupation || "");
-
-  // Prefill logic
-  const [annualIncome, setAnnualIncome] = useState(() => {
-    if (initialData?.annualIncome) {
-return initialData.annualIncome;
-}
-    const prefill = localStorage.getItem("schemebridge_prefill_profile");
-    if (prefill) {
-      try {
-        const parsed = JSON.parse(prefill);
-        if (parsed.annualIncome) {
-return parsed.annualIncome;
-}
-      } catch (e) {}
-    }
-    return "";
-  });
-
-  const [caste, setCaste] = useState(() => {
-    if (initialData?.caste) {
-return initialData.caste;
-}
-    const prefill = localStorage.getItem("schemebridge_prefill_profile");
-    if (prefill) {
-      try {
-        const parsed = JSON.parse(prefill);
-        if (parsed.caste) {
-return parsed.caste;
-}
-      } catch (e) {}
-    }
-    return "";
-  });
-
-  const [state, setState] = useState(() => {
-    if (initialData?.state) {
-return initialData.state;
-}
-    const prefill = localStorage.getItem("schemebridge_prefill_profile");
-    if (prefill) {
-      try {
-        const parsed = JSON.parse(prefill);
-        if (parsed.state) {
-return parsed.state;
-}
-      } catch (e) {}
-    }
-    return "";
-  });
-
+  const [annualIncome, setAnnualIncome] = useState(() => getPrefillValue("annualIncome", initialData?.annualIncome));
+  const [caste, setCaste] = useState(() => getPrefillValue("caste", initialData?.caste));
+  const [state, setState] = useState(() => getPrefillValue("state", initialData?.state));
+  const [district, setDistrict] = useState(() => getPrefillValue("district", initialData?.district));
   const [error, setError] = useState("");
+
+  const hasPrefill = !!localStorage.getItem("schemebridge_prefill_profile");
+  const getCasteButtonClass = (value) =>
+    `py-2.5 px-3 rounded-xl border-2 text-xs font-bold text-left transition duration-150 ${
+      caste === value
+        ? "bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-600/10"
+        : "bg-white border-slate-200 text-slate-700 hover:border-indigo-300"
+    }`;
 
   const handleContinue = () => {
     if (!occupation) {
@@ -104,12 +85,17 @@ return parsed.state;
       setError("Please select your state of residence.");
       return;
     }
+    if (!district.trim()) {
+      setError("Please enter your district.");
+      return;
+    }
     setError("");
     onNext({
       occupation,
       annualIncome: Number(annualIncome),
       caste,
       state,
+      district: district.trim(),
     });
   };
 
@@ -139,7 +125,7 @@ return parsed.state;
         )}
 
         {/* Prefill helper */}
-        {localStorage.getItem("schemebridge_prefill_profile") && (
+        {hasPrefill && (
           <div className="flex items-center gap-2 bg-indigo-50 border border-indigo-200 text-indigo-700 p-3 rounded-xl text-xs font-semibold">
             <Sparkles className="h-3.5 w-3.5 text-indigo-600 shrink-0" />
             <span>Socio-demographics pre-loaded from calculator preview.</span>
@@ -215,11 +201,7 @@ return parsed.state;
                   setCaste(c.value);
                   setError("");
                 }}
-                className={`py-2.5 px-3 rounded-xl border-2 text-xs font-bold text-left transition duration-150
-                  ${caste === c.value
-                    ? "bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-600/10"
-                    : "bg-white border-slate-200 text-slate-700 hover:border-indigo-300"
-                  }`}
+                className={getCasteButtonClass(c.value)}
               >
                 {c.label}
               </button>
@@ -256,6 +238,25 @@ return parsed.state;
           </select>
         </div>
 
+        {/* District */}
+        <div>
+          <label htmlFor="ob-district" className="block text-[10px] font-extrabold text-slate-600 mb-1.5 uppercase tracking-wide">
+            <MapPin className="inline h-3.5 w-3.5 mr-1 text-slate-400 -mt-0.5" />
+            District <span className="text-rose-500">*</span>
+          </label>
+          <input
+            id="ob-district"
+            type="text"
+            placeholder="e.g. Ahmedabad"
+            value={district}
+            onChange={(e) => {
+              setDistrict(e.target.value);
+              setError("");
+            }}
+            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition"
+          />
+        </div>
+
         {/* Note */}
         <div className="bg-indigo-50/50 border border-indigo-100 rounded-xl px-4 py-3 text-[10px] leading-relaxed text-indigo-800">
           ℹ️ These criteria are evaluated in real-time by the matching engine. You can update these attributes later from the Profile configurations.
@@ -264,6 +265,7 @@ return parsed.state;
         {/* Navigation */}
         <div className="flex gap-3 pt-2">
           <button
+            type="button"
             id="ob-step2-back"
             onClick={onBack}
             className="flex items-center gap-2 px-5 py-2.5 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl text-xs font-bold transition duration-150"
@@ -271,6 +273,7 @@ return parsed.state;
             <ArrowLeft className="h-4 w-4" /> Back
           </button>
           <button
+            type="button"
             id="ob-step2-next"
             onClick={handleContinue}
             className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-150"

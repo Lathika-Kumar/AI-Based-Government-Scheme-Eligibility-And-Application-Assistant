@@ -10,12 +10,12 @@ SchemeBridge is an AI-based Government Scheme Eligibility and Application Assist
 ```
 Phase 1: Authentication & OTP Security        [██████████] 100% (DONE)
 Phase 2: Citizen Profile & Audit Engine       [██████████] 100% (DONE)
-Phase 3: Scheme Catalog & Eligibility Engine  [░░░░░░░░░░]   0% (UP NEXT)
-Phase 4: Document Vault & Storage Service     [░░░░░░░░░░]   0% (UPCOMING)
-Phase 5: Application Processing & Tracking    [░░░░░░░░░░]   0% (UPCOMING)
-Phase 6: Admin Consoles & Grievances          [░░░░░░░░░░]   0% (UPCOMING)
+Phase 3: Scheme Catalog & Eligibility Engine  [███████░░░]  60% (IN PROGRESS)
+Phase 4: Document Vault & Storage Service     [███████░░░]  55% (IN PROGRESS)
+Phase 5: Application Processing & Tracking    [███████░░░]  50% (IN PROGRESS)
+Phase 6: Admin Consoles & Grievances          [█████████░]  75% (IN PROGRESS)
 Phase 7: Live AI (Gemini) & DigiLocker OAuth  [████░░░░░░]  40% (IN PROGRESS)
-Phase 8: Production Deployment & CI/CD        [░░░░░░░░░░]   0% (UPCOMING)
+Phase 8: Production Deployment & CI/CD        [██░░░░░░░░]  10% (PLANNED)
 ```
 
 ---
@@ -39,45 +39,45 @@ Phase 8: Production Deployment & CI/CD        [░░░░░░░░░░]  
 
 ---
 
-### ⏳ Priority 3 — Schemes & Dynamic Eligibility Engine (Phase 3 — UP NEXT)
-- [ ] `GET /api/v1/schemes` (Paginated list of active schemes with filters)
-- [ ] `GET /api/v1/schemes/:id` (Detailed scheme view & eligibility criteria)
-- [ ] `POST /api/v1/schemes/recommendations` (Dynamic match engine pairing citizen profile with schemes)
-- [ ] `GET /api/v1/schemes/categories` (Category taxomomy list)
-- [ ] `GET /api/v1/schemes/search` (Full-text search across titles, tags, benefits)
-- [ ] `POST /api/v1/schemes/:id/eligibility` (Individual scheme eligibility evaluation)
+### 🟡 Priority 3 — Schemes & Dynamic Eligibility Engine (Phase 3 — IN PROGRESS)
+- [x] `GET /api/v1/schemes` (Paginated list of active schemes with filters)
+- [x] `GET /api/v1/schemes/:id` (Detailed scheme view & eligibility criteria)
+- [x] `POST /api/v1/schemes/recommendations` (Dynamic match engine pairing citizen profile with schemes)
+- [x] `GET /api/v1/schemes/categories` (Category taxonomy list)
+- [x] `GET /api/v1/schemes/search` (Search across titles, tags, benefits)
+- [x] `POST /api/v1/schemes/:id/eligibility` (Individual scheme eligibility evaluation)
 
 ---
 
-### ⏳ Priority 4 — Document Vault & Verification Service (Phase 4)
-- [ ] `GET /api/v1/documents` (List citizen's uploaded documents)
-- [ ] `POST /api/v1/documents` (Upload document with file storage)
-- [ ] `DELETE /api/v1/documents/:id` (Delete stored document)
-- [ ] `POST /api/v1/documents/:id/verify` (Verify document fields against profile)
-- [ ] `POST /api/v1/documents/digilocker/sync` (DigiLocker sync integration)
-- [ ] `GET /api/v1/documents/:id/download` (Secure file download link)
-- [ ] `GET /api/v1/documents/vault-score` (Document readiness score)
+### 🟡 Priority 4 — Document Vault & Verification Service (Phase 4 — IN PROGRESS)
+- [x] `GET /api/v1/documents` (List citizen's uploaded documents)
+- [x] `POST /api/v1/documents` (Upload document with file storage)
+- [x] `DELETE /api/v1/documents/:id` (Delete stored document)
+- [x] `POST /api/v1/documents/:id/verify` (Verify document fields against profile)
+- [ ] `POST /api/v1/documents/digilocker/sync` (DigiLocker sync integration) remains a follow-up enhancement
+- [x] `GET /api/v1/documents/:id/download` (Secure file download link)
+- [x] `GET /api/v1/documents/vault-score` (Document readiness score)
 
 ---
 
-### ⏳ Priority 5 — Application Engine & Tracking (Phase 5)
-- [ ] `GET /api/v1/applications` (List citizen's applications)
-- [ ] `POST /api/v1/applications` (Submit scheme application)
-- [ ] `GET /api/v1/applications/:id` (Application details view)
-- [ ] `POST /api/v1/applications/:id/withdraw` (Withdraw active application)
-- [ ] `GET /api/v1/applications/saved` (List bookmarked schemes)
-- [ ] `POST /api/v1/applications/saved/:schemeId` (Bookmark scheme)
-- [ ] `DELETE /api/v1/applications/saved/:schemeId` (Remove scheme bookmark)
-- [ ] `GET /api/v1/applications/:id/timeline` (Status transition history log)
+### 🟡 Priority 5 — Application Engine & Tracking (Phase 5 — IN PROGRESS)
+- [x] `GET /api/v1/applications` (List citizen's applications)
+- [x] `POST /api/v1/applications` (Submit scheme application)
+- [x] `GET /api/v1/applications/:id` (Application details view)
+- [x] `POST /api/v1/applications/:id/withdraw` (Withdraw active application)
+- [x] `GET /api/v1/applications/saved` (List bookmarked schemes)
+- [x] `POST /api/v1/applications/saved/:schemeId` (Bookmark scheme)
+- [x] `DELETE /api/v1/applications/saved/:schemeId` (Remove scheme bookmark)
+- [x] `GET /api/v1/applications/:id/timeline` (Status transition history log)
 
 ---
 
-### ⏳ Priority 6 — Admin Management & Grievance Workflows (Phase 6)
-- [ ] `GET /api/v1/admin/stats` (Executive dashboard counters)
-- [ ] `GET /api/v1/admin/users` & `PUT /api/v1/admin/users/:id` (User management)
-- [ ] `GET /api/v1/admin/grievances` & `POST /api/v1/admin/grievances/:id/resolve` (Grievances center)
-- [ ] `POST /api/v1/admin/schemes`, `PUT /api/v1/admin/schemes/:id`, `DELETE /api/v1/admin/schemes/:id`, `POST /api/v1/admin/schemes/:id/publish` (Scheme CRUD)
-- [ ] `POST /api/v1/admin/applications/:id/review` (Application review & decision log)
+### 🟡 Priority 6 — Admin Management & Grievance Workflows (Phase 6 — IN PROGRESS)
+- [x] `GET /api/v1/admin/stats` (Executive dashboard counters)
+- [x] `GET /api/v1/admin/users` & `PUT /api/v1/admin/users/:id` (User management)
+- [x] `GET /api/v1/admin/grievances` & `POST /api/v1/admin/grievances/:id/resolve` (Grievances center)
+- [x] `POST /api/v1/admin/schemes`, `PUT /api/v1/admin/schemes/:id`, `DELETE /api/v1/admin/schemes/:id`, `POST /api/v1/admin/schemes/:id/publish` (Scheme CRUD)
+- [x] `POST /api/v1/admin/applications/:id/review` (Application review & decision log)
 
 ---
 
