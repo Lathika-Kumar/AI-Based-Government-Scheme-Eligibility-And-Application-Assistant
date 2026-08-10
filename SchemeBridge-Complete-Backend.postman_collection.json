@@ -1,0 +1,820 @@
+{
+  "info": {
+    "_postman_id": "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
+    "name": "SchemeBridge Complete Backend API Collection",
+    "description": "Complete Postman API Collection for SchemeBridge Spring Boot 3 & MongoDB Backend (Port 8080).\nIncludes automatic JWT Bearer token script injection upon login.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "schemeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "applicationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "grievanceId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Authentication & Security Engine",
+      "item": [
+        {
+          "name": "1. Register Citizen User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"citizen.test@schemebridge.gov.in\",\n  \"password\": \"Password123!\",\n  \"fullName\": \"Rajesh Kumar\",\n  \"phoneNumber\": \"+919876543210\",\n  \"role\": \"CITIZEN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "2. Register Admin User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin.test@schemebridge.gov.in\",\n  \"password\": \"AdminPassword123!\",\n  \"fullName\": \"Super Admin User\",\n  \"phoneNumber\": \"+919999988888\",\n  \"role\": \"SUPER_ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "3. Login User (Auto-Saves JWT Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var res = pm.response.json();",
+                  "    if (res.data && res.data.token) {",
+                  "        pm.collectionVariables.set('accessToken', res.data.token);",
+                  "        if (res.data.refreshToken) {",
+                  "            pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "        }",
+                  "        console.log('JWT Token successfully set in collection variables!');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"citizen.test@schemebridge.gov.in\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "4. Dispatch Email OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"citizen.test@schemebridge.gov.in\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/send-email-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "send-email-otp"]
+            }
+          }
+        },
+        {
+          "name": "5. Dispatch Phone OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"+919876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/send-phone-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "send-phone-otp"]
+            }
+          }
+        },
+        {
+          "name": "6. Verify OTP Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"citizen.test@schemebridge.gov.in\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "verify-otp"]
+            }
+          }
+        },
+        {
+          "name": "7. Refresh Access Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "refresh-token"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Citizen Profile Management",
+      "item": [
+        {
+          "name": "1. Get Citizen Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile"]
+            }
+          }
+        },
+        {
+          "name": "2. Update Citizen Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateOfBirth\": \"1992-05-15\",\n  \"gender\": \"Male\",\n  \"maritalStatus\": \"MARRIED\",\n  \"state\": \"Maharashtra\",\n  \"district\": \"Pune\",\n  \"cityOrVillage\": \"Pune City\",\n  \"pincode\": \"411001\",\n  \"annualIncome\": 250000,\n  \"category\": \"OBC\",\n  \"occupation\": \"Farmer\",\n  \"employmentStatus\": \"SELF_EMPLOYED\",\n  \"disabilityStatus\": false,\n  \"qualification\": \"Graduate\",\n  \"aadhaarNumber\": \"123456789012\",\n  \"panNumber\": \"ABCDE1234F\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Profile Completion Score",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/completion",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile", "completion"]
+            }
+          }
+        },
+        {
+          "name": "4. Get Profile Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile", "summary"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Citizen Dashboard Overview",
+      "item": [
+        {
+          "name": "1. Get Dashboard Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard", "summary"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Scheme Management & Eligibility Engine",
+      "item": [
+        {
+          "name": "1. List All Published Schemes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/schemes?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "schemes"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Get Scheme Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/schemes/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "schemes", "categories"]
+            }
+          }
+        },
+        {
+          "name": "3. Search Schemes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/schemes/search?q=Kisan",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "schemes", "search"],
+              "query": [
+                { "key": "q", "value": "Kisan" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Get Scheme Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/schemes/{{schemeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "schemes", "{{schemeId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Get Personalised Scheme Recommendations",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/schemes/recommendations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "schemes", "recommendations"]
+            }
+          }
+        },
+        {
+          "name": "6. Evaluate Scheme Eligibility Breakdown",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/schemes/{{schemeId}}/eligibility",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "schemes", "{{schemeId}}", "eligibility"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Document Vault & Storage Service",
+      "item": [
+        {
+          "name": "1. Upload Document to Vault",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [] },
+                { "key": "type", "value": "AADHAAR_CARD", "type": "text" },
+                { "key": "issuer", "value": "UIDAI", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "documents"]
+            }
+          }
+        },
+        {
+          "name": "2. List Uploaded Documents",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "documents"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Document Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "documents", "{{documentId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Verify Uploaded Document against Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/documents/{{documentId}}/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "documents", "{{documentId}}", "verify"]
+            }
+          }
+        },
+        {
+          "name": "5. Get Document Vault Score",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/documents/vault-score",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "documents", "vault-score"]
+            }
+          }
+        },
+        {
+          "name": "6. Delete Document from Vault",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "documents", "{{documentId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Application Processing & Saved Schemes",
+      "item": [
+        {
+          "name": "1. Submit Scheme Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemeId\": \"{{schemeId}}\",\n  \"documents\": [\"doc_id_1\", \"doc_id_2\"],\n  \"remarks\": \"Submitting PM-KISAN application with verified Aadhaar and land records.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications"]
+            }
+          }
+        },
+        {
+          "name": "2. List Citizen Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Application Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/{{applicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications", "{{applicationId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Get Application Timeline Audit",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/{{applicationId}}/timeline",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications", "{{applicationId}}", "timeline"]
+            }
+          }
+        },
+        {
+          "name": "5. Withdraw Pending Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/{{applicationId}}/withdraw",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications", "{{applicationId}}", "withdraw"]
+            }
+          }
+        },
+        {
+          "name": "6. Bookmark / Save Scheme",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/saved-schemes/{{schemeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications", "saved-schemes", "{{schemeId}}"]
+            }
+          }
+        },
+        {
+          "name": "7. List Saved Schemes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/saved-schemes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications", "saved-schemes"]
+            }
+          }
+        },
+        {
+          "name": "8. Remove / Unsave Scheme",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/saved-schemes/{{schemeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "applications", "saved-schemes", "{{schemeId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07. Grievances & Support Service",
+      "item": [
+        {
+          "name": "1. Submit Grievance Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Delay in PM-KISAN installment credit\",\n  \"description\": \"My account was verified 2 weeks ago but the installment is not reflected in my bank.\",\n  \"category\": \"PAYMENT_ISSUE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/grievances",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "grievances"]
+            }
+          }
+        },
+        {
+          "name": "2. List Citizen Grievances",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/grievances",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "grievances"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Grievance Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/grievances/{{grievanceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "grievances", "{{grievanceId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "08. Admin Console & Management Workflows",
+      "item": [
+        {
+          "name": "1. Get Admin Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "dashboard", "stats"]
+            }
+          }
+        },
+        {
+          "name": "2. List All Users (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Get User Details (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Update User Status (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users", "{{userId}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "5. Update User Roles (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roles\": [\"SCHEME_ADMIN\", \"CITIZEN\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users", "{{userId}}", "roles"]
+            }
+          }
+        },
+        {
+          "name": "6. Create New Scheme (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemeName\": \"National Solar Rooftop Subsidy\",\n  \"schemeCode\": \"SOLAR-ROOFTOP-005\",\n  \"shortDescription\": \"Subsidy up to 40% for installing solar rooftop systems in residential houses.\",\n  \"description\": \"The Ministry of New and Renewable Energy provides direct financial assistance to promote solar rooftop adoption across urban and rural homes.\",\n  \"category\": \"Renewable Energy\",\n  \"subcategory\": \"Solar Energy\",\n  \"schemeType\": \"CENTRAL\",\n  \"applicableStates\": [\"All India\"],\n  \"minimumAge\": 18,\n  \"maximumAge\": 75,\n  \"maximumIncome\": 1200000,\n  \"allowedGenders\": [\"ALL\"],\n  \"allowedCategories\": [\"ALL\"],\n  \"allowedOccupations\": [\"ALL\"],\n  \"requiredDocuments\": [\"Aadhaar Card\", \"Electricity Bill\", \"Property Ownership Proof\"],\n  \"benefits\": [\"40% financial subsidy for solar units up to 3kW\", \"Reduced monthly electricity bills\"],\n  \"websiteUrl\": \"https://solarrooftop.gov.in\",\n  \"applicationMode\": \"ONLINE\",\n  \"status\": \"PUBLISHED\",\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/schemes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "schemes"]
+            }
+          }
+        },
+        {
+          "name": "7. Update Scheme (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemeName\": \"Updated National Solar Rooftop Subsidy\",\n  \"featured\": true,\n  \"priority\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/schemes/{{schemeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "schemes", "{{schemeId}}"]
+            }
+          }
+        },
+        {
+          "name": "8. Change Scheme Status (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PUBLISHED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/schemes/{{schemeId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "schemes", "{{schemeId}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "9. Delete Scheme (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/schemes/{{schemeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "schemes", "{{schemeId}}"]
+            }
+          }
+        },
+        {
+          "name": "10. Query System Audit Logs (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/audit-logs?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "audit-logs"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

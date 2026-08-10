@@ -1,0 +1,230 @@
+{
+  "info": {
+    "_postman_id": "9a4b382c-6d1a-4e2b-8c3f-5d6a7b8c9d0e",
+    "name": "SchemeBridge Citizen Service Microservice API Collection",
+    "description": "Postman Collection for SchemeBridge Citizen Service running on Port 8082 with MongoDB.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8082",
+      "type": "string"
+    },
+    {
+      "key": "gatewayUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "authUserId",
+      "value": "1fdf067e-db2a-429d-96bc-839d153c3bc8",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Get Service Info",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/service/info",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "service",
+            "info"
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. Upsert Citizen Profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-User-Id",
+            "value": "{{authUserId}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"personalDetails\": {\n    \"fullName\": \"Lathika Kumar\",\n    \"dateOfBirth\": \"1995-08-15\",\n    \"gender\": \"FEMALE\",\n    \"maritalStatus\": \"SINGLE\",\n    \"religion\": \"HINDU\",\n    \"category\": \"OBC\",\n    \"community\": \"YADAV\",\n    \"aadhaarMasked\": \"XXXX-XXXX-1234\",\n    \"panMasked\": \"ABCDE1234F\"\n  },\n  \"contactDetails\": {\n    \"email\": \"lathika.kumar@schemebridge.gov.in\",\n    \"phone\": \"+919876543210\",\n    \"altPhone\": \"+919876543211\"\n  },\n  \"addressDetails\": {\n    \"line1\": \"Flat 402, Green Avenue\",\n    \"line2\": \"MG Road\",\n    \"village\": \"Vasanthnagar\",\n    \"taluk\": \"Bengaluru North\",\n    \"district\": \"Bengaluru Urban\",\n    \"state\": \"KARNATAKA\",\n    \"pincode\": \"560001\"\n  },\n  \"familyDetails\": {\n    \"familyMembersCount\": 4,\n    \"dependentsCount\": 2,\n    \"rationCardType\": \"BPL\"\n  },\n  \"incomeDetails\": {\n    \"annualIncome\": 180000,\n    \"incomeSource\": \"AGRICULTURE\",\n    \"taxPayer\": false\n  },\n  \"educationDetails\": {\n    \"qualification\": \"BACHELORS\",\n    \"stream\": \"COMPUTER_SCIENCE\",\n    \"completionYear\": 2017\n  },\n  \"occupationDetails\": {\n    \"occupationType\": \"FARMER\",\n    \"employmentStatus\": \"SELF_EMPLOYED\",\n    \"employerType\": \"PRIVATE\"\n  },\n  \"specialCategoryDetails\": {\n    \"isFarmer\": true,\n    \"isDisabled\": false,\n    \"disabilityPercentage\": 0,\n    \"isMinority\": false,\n    \"isExService\": false\n  },\n  \"preferences\": {\n    \"preferredLanguage\": \"KANNADA\",\n    \"notificationPreference\": \"SMS\",\n    \"preferredSchemeCategories\": [\"AGRICULTURE\", \"EDUCATION\"],\n    \"voiceAssistantEnabled\": true,\n    \"darkMode\": true\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/citizen/profile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "citizen",
+            "profile"
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Get Current Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "{{authUserId}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/citizen/profile/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "citizen",
+            "profile",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Get Dashboard Summary",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "{{authUserId}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/citizen/dashboard",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "citizen",
+            "dashboard"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. Save Scheme to Vault",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "{{authUserId}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/citizen/saved-schemes/SCHEME_PM_KISAN_2026",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "citizen",
+            "saved-schemes",
+            "SCHEME_PM_KISAN_2026"
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Get Saved Scheme IDs",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "{{authUserId}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/citizen/saved-schemes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "citizen",
+            "saved-schemes"
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Remove Saved Scheme",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "{{authUserId}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/citizen/saved-schemes/SCHEME_PM_KISAN_2026",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "citizen",
+            "saved-schemes",
+            "SCHEME_PM_KISAN_2026"
+          ]
+        }
+      }
+    },
+    {
+      "name": "8. Search Citizens",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/citizen/search?state=KARNATAKA&category=OBC",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "citizen",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "state",
+              "value": "KARNATAKA"
+            },
+            {
+              "key": "category",
+              "value": "OBC"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

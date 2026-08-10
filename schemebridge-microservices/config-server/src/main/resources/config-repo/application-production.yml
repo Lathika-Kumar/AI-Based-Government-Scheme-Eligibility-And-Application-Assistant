@@ -1,0 +1,16 @@
+# Production Environment Profile Configuration
+schemebridge:
+  environment: production
+
+logging:
+  level:
+    root: WARN
+    com.schemebridge: INFO
+    org.springframework: WARN
+    org.hibernate: ERROR
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

@@ -1,0 +1,23 @@
+server:
+  port: 8082
+  shutdown: graceful
+
+spring:
+  application:
+    name: citizen-service
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/schemebridge_citizen_db}
+      auto-index-creation: true
+
+info:
+  app:
+    name: citizen-service
+    description: SchemeBridge Citizen Profile Microservice
+    version: 0.0.1-SNAPSHOT
+    java-version: 17
+    spring-boot-version: 3.2.3
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

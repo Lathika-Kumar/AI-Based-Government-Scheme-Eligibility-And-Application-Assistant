@@ -1,0 +1,28 @@
+server:
+  port: 8761
+  shutdown: graceful
+
+spring:
+  application:
+    name: service-registry
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enable-self-preservation: true
+    eviction-interval-timer-in-ms: 10000
+    renewal-percent-threshold: 0.85
+    wait-time-in-ms-when-sync-empty: 0
+
+logging:
+  level:
+    root: INFO
+    com.netflix.eureka: INFO
+    com.netflix.discovery: INFO

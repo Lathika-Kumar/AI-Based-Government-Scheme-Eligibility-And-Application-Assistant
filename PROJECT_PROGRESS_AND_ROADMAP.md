@@ -19,9 +19,12 @@
 | 📜 **Backend — Phase 3: Scheme Management** | 🟡 In Progress | **60%** | Scheme catalog, search, recommendations, and eligibility evaluation flows are now implemented and exercised in backend tests |
 | 📁 **Backend — Phase 4: Document Vault** | 🟡 In Progress | **55%** | Document upload/list/delete/verify flows and document readiness scoring are implemented and covered by controller tests |
 | 📝 **Backend — Phase 5: Application Engine** | 🟡 In Progress | **50%** | Application submission and tracking endpoints are in place and validated at the service/controller level |
-| 🛡️ **Backend — Phase 6: Admin Workflows** | 🟡 In Progress | **75%** | Admin dashboard, user management, scheme/admin actions, grievance handling, and audit workflows are implemented |
+| 🛠️ **Microservices — Module 12: Config Server** | ✅ Complete | **100%** | Spring Cloud Config Server (`config-server` Port 8888), centralized configuration, secret management, native/git profiles, fail-fast retry support across all 9 microservices |
+| 🔍 **Microservices — Module 11: Service Registry** | ✅ Complete | **100%** | Spring Cloud Netflix Eureka Server (`service-registry` Port 8761), Eureka Client integration across all microservices, `lb://` dynamic routing |
+| 🛡️ **Microservices — Module 10: Admin Service** | ✅ Complete | **100%** | Officer CRUD, Admin Dashboard KPIs, Report Engine (PDF/Excel/CSV), Announcements, Feedback, Audit Logs, Global Search (`admin-service` Port 8087, Oracle XE) |
+| 🔔 **Microservices — Module 9: Notification Service** | ✅ Complete | **100%** | Multi-channel Email/SMS/Push/In-App engine, Brevo integration, templates, user preferences, retries & scheduling (`notification-service` Port 8086) |
 | 🤖 **AI & External Services Integration** | 🟡 Partial | **40%** | OCR hooks and chat widget UI exist; live LLM and DigiLocker OAuth remain pending |
-| 🚀 **Deployment & CI/CD** | ⏳ Planned | **10%** | Docker Compose is ready; cloud hosting and CI/CD are still pending |
+| 🚀 **Deployment & CI/CD** | ⏳ Planned | **10%** | Config Server & Eureka ready; Docker Compose ready; Cloud hosting & CI/CD pending |
 
 ---
 

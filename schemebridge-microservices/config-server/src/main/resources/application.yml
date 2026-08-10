@@ -1,0 +1,46 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:native}
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config-repo
+        git:
+          uri: ${CONFIG_REPO_GIT_URI:https://github.com/schemebridge/schemebridge-config-repo.git}
+          clone-on-start: false
+          force-pull: true
+          default-label: main
+
+encrypt:
+  key: ${ENCRYPT_KEY:schemeBridgeEnterpriseSecretKey2026EncryptionPassphrase}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,configprops,metrics,refresh
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+    build:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.config: INFO
+    com.schemebridge.configserver: INFO
+

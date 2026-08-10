@@ -1,0 +1,31 @@
+server:
+  port: 8081
+  shutdown: graceful
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:oracle:thin:@localhost:1521/XEPDB1}
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: ${SPRING_DATASOURCE_USERNAME:system}
+    password: ${SPRING_DATASOURCE_PASSWORD:system}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      pool-name: SchemeBridgeAuthOracleHikariCP
+      connection-test-query: SELECT 1 FROM DUAL
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html

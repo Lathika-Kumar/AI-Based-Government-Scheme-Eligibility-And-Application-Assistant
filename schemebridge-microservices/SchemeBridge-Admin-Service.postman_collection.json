@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "SchemeBridge - Module 10 Admin Service",
+    "_postman_id": "schemebridge-admin-service-v1",
+    "description": "Postman Collection for SchemeBridge Module 10: Admin Service (Port 8087 / Gateway Port 8080)\n\nCovers Dashboard Summary, Officer CRUD, System Announcements, Citizen Feedback, Report Engine, Audit Logs, Global Search, and Service Info.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "directUrl",
+      "value": "http://localhost:8087",
+      "type": "string"
+    },
+    {
+      "key": "adminEmail",
+      "value": "admin@schemebridge.gov.in",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Admin Dashboard Summary",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/dashboard/summary",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "dashboard", "summary"]
+        }
+      }
+    },
+    {
+      "name": "2. Create Officer",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Priya Sundaram\",\n  \"email\": \"priya.officer@schemebridge.gov.in\",\n  \"phoneNumber\": \"+919876543299\",\n  \"role\": \"VERIFICATION_OFFICER\",\n  \"department\": \"Department of Revenue & Land Audit\",\n  \"jurisdictionState\": \"Karnataka\",\n  \"jurisdictionDistrict\": \"Bengaluru Urban\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/officers",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "officers"]
+        }
+      }
+    },
+    {
+      "name": "3. Get All Officers (Paginated)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/officers?page=0&size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "officers"],
+          "query": [
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Search Officers",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/officers/search?q=Priya",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "officers", "search"],
+          "query": [
+            { "key": "q", "value": "Priya" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. Create System Announcement",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Platform Maintenance Window\",\n  \"content\": \"SchemeBridge portal will undergo scheduled maintenance on Saturday 2:00 AM IST.\",\n  \"priority\": \"HIGH\",\n  \"targetAudience\": \"ALL_USERS\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/announcements",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "announcements"]
+        }
+      }
+    },
+    {
+      "name": "6. Get All Announcements",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/announcements?page=0&size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "announcements"],
+          "query": [
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Generate PDF Analytics Report",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reportType\": \"APPLICATION_ANALYTICS\",\n  \"reportFormat\": \"PDF\",\n  \"reportName\": \"Q3 State Application Performance Audit\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/reports/generate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "reports", "generate"]
+        }
+      }
+    },
+    {
+      "name": "8. Get Audit Logs",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/audit-logs?page=0&size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "audit-logs"],
+          "query": [
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. Global Cross-Module Search",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-User-Email", "value": "{{adminEmail}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/admin/search?q=Officer",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "admin", "search"],
+          "query": [
+            { "key": "q", "value": "Officer" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. Admin Service Health & Info",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{directUrl}}/api/v1/service/info",
+          "host": ["{{directUrl}}"],
+          "path": ["api", "v1", "service", "info"]
+        }
+      }
+    }
+  ]
+}

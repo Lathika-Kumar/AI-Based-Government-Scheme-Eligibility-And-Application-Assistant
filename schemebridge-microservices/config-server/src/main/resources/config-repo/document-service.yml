@@ -1,0 +1,47 @@
+server:
+  port: 8085
+  shutdown: graceful
+
+spring:
+  application:
+    name: document-service
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/schemebridge_document_db}
+      auto-index-creation: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 12MB
+
+document:
+  storage:
+    local:
+      base-path: ${DOCUMENT_STORAGE_BASE_PATH:d:/schemeBridge/uploads/documents}
+    allowed-mime-types: image/jpeg,image/png,image/gif,application/pdf
+    allowed-extensions: jpg,jpeg,png,pdf,doc,docx
+    blocked-extensions: exe,bat,sh,php,js,jar
+    max-file-size-mb: 10
+
+integration:
+  notification-service:
+    url: ${NOTIFICATION_SERVICE_URL:http://localhost:8086}
+  citizen-service:
+    url: ${CITIZEN_SERVICE_URL:http://localhost:8082}
+  application-service:
+    url: ${APPLICATION_SERVICE_URL:http://localhost:8084}
+
+info:
+  app:
+    name: document-service
+    version: 0.0.1-SNAPSHOT
+    description: SchemeBridge Document Upload and Verification Microservice
+    port: 8085
+    database: MongoDB (schemebridge_document_db)
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    try-it-out-enabled: true

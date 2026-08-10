@@ -1,0 +1,35 @@
+server:
+  port: 8084
+  shutdown: graceful
+
+spring:
+  application:
+    name: application-service
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/schemebridge_application_db}
+      auto-index-creation: true
+
+integration:
+  notification-service:
+    url: ${NOTIFICATION_SERVICE_URL:http://localhost:8086}
+  scheme-service:
+    url: ${SCHEME_SERVICE_URL:http://localhost:8083}
+  citizen-service:
+    url: ${CITIZEN_SERVICE_URL:http://localhost:8082}
+  document-service:
+    url: ${DOCUMENT_SERVICE_URL:http://localhost:8085}
+
+info:
+  app:
+    name: application-service
+    version: 0.0.1-SNAPSHOT
+    description: SchemeBridge Application Lifecycle Microservice
+    port: 8084
+    database: MongoDB (schemebridge_application_db)
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    try-it-out-enabled: true

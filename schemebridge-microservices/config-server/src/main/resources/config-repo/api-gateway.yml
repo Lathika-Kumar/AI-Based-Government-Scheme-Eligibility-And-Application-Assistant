@@ -1,0 +1,73 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "http://localhost:3000"
+              - "http://localhost:8080"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+      routes:
+        - id: auth-service-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: citizen-service-route
+          uri: lb://citizen-service
+          predicates:
+            - Path=/api/v1/citizen/**
+
+        - id: scheme-service-route
+          uri: lb://scheme-service
+          predicates:
+            - Path=/api/v1/schemes/**
+
+        - id: application-service-route
+          uri: lb://application-service
+          predicates:
+            - Path=/api/v1/applications/**
+
+        - id: document-service-route
+          uri: lb://document-service
+          predicates:
+            - Path=/api/v1/documents/**
+
+        - id: notification-service-route
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/notifications/**
+
+        - id: admin-service-route
+          uri: lb://admin-service
+          predicates:
+            - Path=/api/v1/admin/**
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: INFO
+    com.netflix.discovery: INFO

@@ -1,0 +1,372 @@
+{
+  "info": {
+    "_postman_id": "9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
+    "name": "SchemeBridge Notification Service Microservice API Collection",
+    "description": "Postman API Collection for SchemeBridge Notification Service running on Port 8086 with MongoDB (schemebridge_notification_db) & API Gateway routing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8086",
+      "type": "string"
+    },
+    {
+      "key": "gatewayUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "citizen-001",
+      "type": "string"
+    },
+    {
+      "key": "notificationId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Notification Dispatch APIs",
+      "item": [
+        {
+          "name": "1. Send Email Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authUserId\": \"{{userId}}\",\n  \"recipientEmail\": \"citizen.test@schemebridge.gov.in\",\n  \"subject\": \"Application Submitted Successfully\",\n  \"message\": \"Hello Rajesh, your application APP-9001 for PM-KISAN has been submitted.\",\n  \"htmlContent\": \"<h2>Application Submitted</h2><p>Your application <b>APP-9001</b> for <i>PM-KISAN</i> is under review.</p>\",\n  \"notificationType\": \"APPLICATION_STATUS\",\n  \"priority\": \"HIGH\",\n  \"referenceId\": \"APP-9001\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/email",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "email"]
+            }
+          }
+        },
+        {
+          "name": "2. Send SMS Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authUserId\": \"{{userId}}\",\n  \"recipientPhone\": \"+919876543210\",\n  \"message\": \"SchemeBridge OTP: Your verification code is 889900. Valid for 10 minutes.\",\n  \"notificationType\": \"OTP\",\n  \"priority\": \"CRITICAL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/sms",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "sms"]
+            }
+          }
+        },
+        {
+          "name": "3. Send Push Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authUserId\": \"{{userId}}\",\n  \"title\": \"New Scheme Recommended!\",\n  \"message\": \"You are eligible for PM Awas Yojana (PMAY). Apply now to receive up to ₹2.67 Lakhs subsidy.\",\n  \"notificationType\": \"SCHEME_MATCHED\",\n  \"priority\": \"NORMAL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/push",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "push"]
+            }
+          }
+        },
+        {
+          "name": "4. Send In-App Alert Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authUserId\": \"{{userId}}\",\n  \"notificationType\": \"DOCUMENT_VERIFIED\",\n  \"channel\": \"IN_APP\",\n  \"title\": \"Document Verified\",\n  \"message\": \"Your Aadhaar Card document has been verified by UIDAI verification service.\",\n  \"referenceId\": \"DOC-1002\",\n  \"referenceType\": \"DOCUMENT\",\n  \"priority\": \"NORMAL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/inapp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "inapp"]
+            }
+          }
+        },
+        {
+          "name": "5. Send Broadcast Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"System Maintenance Notice\",\n  \"message\": \"SchemeBridge portal will undergo scheduled maintenance tonight from 12 AM to 2 AM IST.\",\n  \"notificationType\": \"ACCOUNT_SECURITY\",\n  \"channel\": \"IN_APP\",\n  \"priority\": \"HIGH\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/broadcast",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "broadcast"]
+            }
+          }
+        },
+        {
+          "name": "6. Schedule Future Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notificationRequest\": {\n    \"authUserId\": \"{{userId}}\",\n    \"notificationType\": \"NEW_SCHEME\",\n    \"channel\": \"EMAIL\",\n    \"subject\": \"Upcoming Scheme Launch Reminder\",\n    \"message\": \"PM Solar Rooftop Subsidy scheme applications open tomorrow!\",\n    \"recipientEmail\": \"citizen.test@schemebridge.gov.in\"\n  },\n  \"scheduledTime\": \"2026-12-31T23:59:59Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/schedule",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "schedule"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Citizen Notification Inbox APIs",
+      "item": [
+        {
+          "name": "1. Get My Notifications (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/my?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "my"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Get Unread Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/unread",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "unread"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Unread Notification Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/count",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "count"]
+            }
+          }
+        },
+        {
+          "name": "4. Mark Notification as READ",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/{{notificationId}}/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "{{notificationId}}", "read"]
+            }
+          }
+        },
+        {
+          "name": "5. Mark Notification as UNREAD",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/{{notificationId}}/unread",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "{{notificationId}}", "unread"]
+            }
+          }
+        },
+        {
+          "name": "6. Mark All Notifications as READ",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/read-all",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "read-all"]
+            }
+          }
+        },
+        {
+          "name": "7. Search Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/search?q=Application",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "search"],
+              "query": [
+                { "key": "q", "value": "Application" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "8. Get Notification History",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/history?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "history"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "9. Get Dashboard Metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "dashboard"]
+            }
+          }
+        },
+        {
+          "name": "10. Delete Notification Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/{{notificationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "{{notificationId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Notification Preference APIs",
+      "item": [
+        {
+          "name": "1. Get User Notification Preferences",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/preferences",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "preferences"]
+            }
+          }
+        },
+        {
+          "name": "2. Update Notification Preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-User-Id", "value": "{{userId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emailEnabled\": true,\n  \"smsEnabled\": true,\n  \"pushEnabled\": false,\n  \"inAppEnabled\": true,\n  \"marketingNotifications\": false,\n  \"schemeAlerts\": true,\n  \"applicationUpdates\": true,\n  \"documentReminders\": true,\n  \"otpMessages\": true,\n  \"languagePreference\": \"hi\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/preferences",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", "preferences"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Gateway & Service Info APIs",
+      "item": [
+        {
+          "name": "1. Get Service Info (Direct Port 8086)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/service/info",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "service", "info"]
+            }
+          }
+        },
+        {
+          "name": "2. Get Service Info (Via API Gateway 8080)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/v1/notifications/my",
+              "host": ["{{gatewayUrl}}"],
+              "path": ["api", "v1", "notifications", "my"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

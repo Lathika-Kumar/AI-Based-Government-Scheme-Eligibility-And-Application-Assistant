@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.3</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.schemebridge</groupId>
+    <artifactId>schemebridge-microservices</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>schemebridge-microservices</name>
+    <description>SchemeBridge Microservices Architecture Parent Aggregator POM</description>
+
+    <!-- Active Microservice Reactor Modules -->
+    <modules>
+        <module>schemebridge-common</module>
+        <module>config-server</module>
+        <module>service-registry</module>
+        <module>api-gateway</module>
+        <module>auth-service</module>
+        <module>citizen-service</module>
+        <module>scheme-service</module>
+        <module>application-service</module>
+        <module>document-service</module>
+        <module>notification-service</module>
+        <module>admin-service</module>
+    </modules>
+
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <schemebridge-common.version>0.0.1-SNAPSHOT</schemebridge-common.version>
+        <jjwt.version>0.11.5</jjwt.version>
+        <springdoc.version>2.3.0</springdoc.version>
+        <spring-retry.version>2.0.5</spring-retry.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Cloud Dependencies BOM -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- SchemeBridge Common Library -->
+            <dependency>
+                <groupId>com.schemebridge</groupId>
+                <artifactId>schemebridge-common</artifactId>
+                <version>${schemebridge-common.version}</version>
+            </dependency>
+
+            <!-- Spring Retry & AspectJ AOP for Config Client Fail-Fast Retries -->
+            <dependency>
+                <groupId>org.springframework.retry</groupId>
+                <artifactId>spring-retry</artifactId>
+                <version>${spring-retry.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <source>17</source>
+                        <target>17</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

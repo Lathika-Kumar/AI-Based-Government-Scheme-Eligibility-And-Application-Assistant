@@ -240,7 +240,7 @@ const apiClient = new ApiClient();
 
 // Add authentication interceptor
 apiClient.addRequestInterceptor(async (config) => {
-  const token = localStorage.getItem("schemebridge_token");
+  const token = typeof localStorage !== "undefined" ? localStorage.getItem("schemebridge_token") : null;
   if (token) {
     config.headers = {
       ...config.headers,
@@ -277,7 +277,9 @@ apiClient.addErrorHandler(async (error) => {
   // Handle specific error codes
   if (error.status === 401) {
     // Unauthorized - clear token and redirect to login
-    localStorage.removeItem("schemebridge_token");
+    if (typeof localStorage !== "undefined") {
+      localStorage.removeItem("schemebridge_token");
+    }
     if (typeof window !== "undefined") {
       window.location.href = "/login";
     }

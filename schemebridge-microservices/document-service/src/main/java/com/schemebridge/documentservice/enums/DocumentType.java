@@ -1,0 +1,20 @@
+package com.schemebridge.documentservice.enums;
+
+public enum DocumentType {
+    AADHAAR,
+    PAN,
+    RATION_CARD,
+    INCOME_CERTIFICATE,
+    CASTE_CERTIFICATE,
+    COMMUNITY_CERTIFICATE,
+    DOMICILE_CERTIFICATE,
+    BIRTH_CERTIFICATE,
+    PASSPORT,
+    DRIVING_LICENSE,
+    MARKSHEET,
+    DEGREE_CERTIFICATE,
+    BANK_PASSBOOK,
+    PHOTO,
+    SIGNATURE,
+    OTHER
+}

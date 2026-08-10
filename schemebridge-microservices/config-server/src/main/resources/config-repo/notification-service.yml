@@ -1,0 +1,40 @@
+server:
+  port: 8086
+  shutdown: graceful
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: notification-service
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/schemebridge_notification_db}
+      auto-index-creation: true
+
+schemebridge:
+  notification:
+    email:
+      brevo:
+        api-key: ${BREVO_API_KEY:xkeysib-placeholder-test-key}
+        sender-email: ${BREVO_SENDER_EMAIL:no-reply@schemebridge.gov.in}
+        sender-name: ${BREVO_SENDER_NAME:SchemeBridge Notifications}
+    sms:
+      twilio:
+        account-sid: ${TWILIO_ACCOUNT_SID:AC_test_placeholder_sid}
+        auth-token: ${TWILIO_AUTH_TOKEN:auth_token_placeholder}
+        from-number: ${TWILIO_FROM_NUMBER:+18005550199}
+    push:
+      firebase:
+        credentials-path: ${FCM_CREDENTIALS_PATH:classpath:fcm-placeholder.json}
+    scheduler:
+      retry-cron: "0 */2 * * * *" # Every 2 minutes
+      archive-cron: "0 0 1 * * *" # Daily at 1 AM
+      stats-cron: "0 0 * * * *"   # Hourly
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+    operationsSorter: method
+    tagsSorter: alpha
+    display-request-duration: true
