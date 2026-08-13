@@ -1,0 +1,2345 @@
+{
+  "status": "Success",
+  "statusCode": 200,
+  "errorDescription": "",
+  "error": "null",
+  "data": {
+    "summary": {
+      "total": 4772,
+      "query": "",
+      "sortOptions": [
+        {
+          "id": "multiple_sort",
+          "label": "Relevance"
+        },
+        {
+          "id": "schemename-asc",
+          "label": "Scheme Name (A->Z)"
+        },
+        {
+          "id": "schemename-desc",
+          "label": "Scheme Name (Z->A)"
+        }
+      ],
+      "appliedFilters": [],
+      "disabledFilters": []
+    },
+    "facets": [
+      {
+        "identifier": "beneficiaryState",
+        "label": "State",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 693
+          },
+          {
+            "label": "Gujarat",
+            "count": 643
+          },
+          {
+            "label": "Uttarakhand",
+            "count": 447
+          },
+          {
+            "label": "Madhya Pradesh",
+            "count": 290
+          },
+          {
+            "label": "Goa",
+            "count": 272
+          },
+          {
+            "label": "Puducherry",
+            "count": 271
+          },
+          {
+            "label": "Haryana",
+            "count": 249
+          },
+          {
+            "label": "Tamil Nadu",
+            "count": 240
+          },
+          {
+            "label": "Rajasthan",
+            "count": 159
+          },
+          {
+            "label": "Bihar",
+            "count": 114
+          },
+          {
+            "label": "West Bengal",
+            "count": 110
+          },
+          {
+            "label": "Chhattisgarh",
+            "count": 108
+          },
+          {
+            "label": "Jharkhand",
+            "count": 97
+          },
+          {
+            "label": "Meghalaya",
+            "count": 89
+          },
+          {
+            "label": "Assam",
+            "count": 87
+          },
+          {
+            "label": "Kerala",
+            "count": 87
+          },
+          {
+            "label": "Maharashtra",
+            "count": 85
+          },
+          {
+            "label": "Odisha",
+            "count": 85
+          },
+          {
+            "label": "Himachal Pradesh",
+            "count": 75
+          },
+          {
+            "label": "Dadra & Nagar Haveli and Daman & Diu",
+            "count": 62
+          },
+          {
+            "label": "Karnataka",
+            "count": 60
+          },
+          {
+            "label": "Delhi",
+            "count": 54
+          },
+          {
+            "label": "Andhra Pradesh",
+            "count": 52
+          },
+          {
+            "label": "Jammu and Kashmir",
+            "count": 47
+          },
+          {
+            "label": "Uttar Pradesh",
+            "count": 47
+          },
+          {
+            "label": "Arunachal Pradesh",
+            "count": 45
+          },
+          {
+            "label": "Tripura",
+            "count": 44
+          },
+          {
+            "label": "Punjab",
+            "count": 41
+          },
+          {
+            "label": "Manipur",
+            "count": 34
+          },
+          {
+            "label": "Mizoram",
+            "count": 32
+          },
+          {
+            "label": "Sikkim",
+            "count": 29
+          },
+          {
+            "label": "Telangana",
+            "count": 23
+          },
+          {
+            "label": "Nagaland",
+            "count": 22
+          },
+          {
+            "label": "Chandigarh",
+            "count": 21
+          },
+          {
+            "label": "Andaman and Nicobar Islands",
+            "count": 19
+          },
+          {
+            "label": "Lakshadweep",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "identifier": "schemeCategory",
+        "label": "Scheme Category",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Social welfare & Empowerment",
+            "count": 1453
+          },
+          {
+            "label": "Education & Learning",
+            "count": 1110
+          },
+          {
+            "label": "Agriculture,Rural & Environment",
+            "count": 862
+          },
+          {
+            "label": "Business & Entrepreneurship",
+            "count": 772
+          },
+          {
+            "label": "Women and Child",
+            "count": 470
+          },
+          {
+            "label": "Skills & Employment",
+            "count": 401
+          },
+          {
+            "label": "Banking,Financial Services and Insurance",
+            "count": 336
+          },
+          {
+            "label": "Health & Wellness",
+            "count": 286
+          },
+          {
+            "label": "Sports & Culture",
+            "count": 280
+          },
+          {
+            "label": "Housing & Shelter",
+            "count": 136
+          },
+          {
+            "label": "Science, IT & Communications",
+            "count": 121
+          },
+          {
+            "label": "Transport & Infrastructure",
+            "count": 104
+          },
+          {
+            "label": "Travel & Tourism",
+            "count": 96
+          },
+          {
+            "label": "Utility & Sanitation",
+            "count": 58
+          },
+          {
+            "label": "Public Safety,Law & Justice",
+            "count": 34
+          }
+        ]
+      },
+      {
+        "identifier": "gender",
+        "label": "Gender",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3941
+          },
+          {
+            "label": "Female",
+            "count": 790
+          },
+          {
+            "label": "Male",
+            "count": 348
+          },
+          {
+            "label": "Transgender",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "identifier": "age-general",
+        "label": "Age",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 681
+          },
+          {
+            "label": 10,
+            "count": 3873
+          },
+          {
+            "label": 20,
+            "count": 3888
+          },
+          {
+            "label": 30,
+            "count": 3791
+          },
+          {
+            "label": 40,
+            "count": 3624
+          },
+          {
+            "label": 50,
+            "count": 3351
+          },
+          {
+            "label": 60,
+            "count": 3107
+          },
+          {
+            "label": 70,
+            "count": 2052
+          },
+          {
+            "label": 80,
+            "count": 1975
+          },
+          {
+            "label": 90,
+            "count": 1928
+          },
+          {
+            "label": 100,
+            "count": 1845
+          },
+          {
+            "label": 110,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "caste",
+        "label": "Caste",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4001
+          },
+          {
+            "label": "Scheduled Caste (SC)",
+            "count": 394
+          },
+          {
+            "label": "Scheduled Tribe (ST)",
+            "count": 341
+          },
+          {
+            "label": "Other Backward Class (OBC)",
+            "count": 189
+          },
+          {
+            "label": "General",
+            "count": 72
+          },
+          {
+            "label": "Particularly Vulnerable Tribal Group (PVTG)",
+            "count": 40
+          },
+          {
+            "label": "De-Notified, Nomadic, and Semi-Nomadic (DNT) communities",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "nodalMinistryName",
+        "label": "Ministry Name",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Ministry Of Social Justice and Empowerment",
+            "count": 85
+          },
+          {
+            "label": "Ministry of Education",
+            "count": 85
+          },
+          {
+            "label": "Ministry Of Science And Technology",
+            "count": 68
+          },
+          {
+            "label": "Ministry Of Commerce And Industry",
+            "count": 56
+          },
+          {
+            "label": "Ministry Of Agriculture and Farmers Welfare",
+            "count": 41
+          },
+          {
+            "label": "Ministry Of Micro, Small and Medium Enterprises",
+            "count": 31
+          },
+          {
+            "label": "Ministry Of Textiles",
+            "count": 24
+          },
+          {
+            "label": "Ministry Of Youth Affairs & Sports",
+            "count": 22
+          },
+          {
+            "label": "Ministry of Electronics and Information Technology",
+            "count": 22
+          },
+          {
+            "label": "Ministry Of Culture",
+            "count": 20
+          },
+          {
+            "label": "Ministry Of Finance",
+            "count": 19
+          },
+          {
+            "label": "Ministry Of Home Affairs",
+            "count": 18
+          },
+          {
+            "label": "Ministry Of Defence",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Health & Family Welfare",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Labour and Employment",
+            "count": 13
+          },
+          {
+            "label": "Ministry of Fisheries,Animal Husbandry and Dairying",
+            "count": 13
+          },
+          {
+            "label": "Ministry Of Minority Affairs",
+            "count": 12
+          },
+          {
+            "label": "Ministry Of Communication",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Skill Development And Entrepreneurship",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Ayush",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Chemicals And Fertilizers",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Rural Development",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Tribal Affairs",
+            "count": 10
+          },
+          {
+            "label": "Ministry of Women and Child Development",
+            "count": 8
+          },
+          {
+            "label": "Ministry Of New and Renewable Energy",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Tourism",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Jal Shakti",
+            "count": 6
+          },
+          {
+            "label": "Ministry Of External Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Housing & Urban Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Law and Justice",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Personnel, Public Grievances And Pensions",
+            "count": 5
+          },
+          {
+            "label": "Ministry of Ports,Shipping and Waterways",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Environment,forests and climate change",
+            "count": 4
+          },
+          {
+            "label": "Ministry of Heavy Industries",
+            "count": 4
+          },
+          {
+            "label": "Ministry Of Petroleum and Natural Gas",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Statistics and Programme Implementation",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Steel",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Corporate Affairs",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Food Processing Industries",
+            "count": 3
+          },
+          {
+            "label": "Comptroller And Auditor General Of India",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Panchayati Raj",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Road Transport & Highways",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Water Resources,River Development & Ganga Rejuvenation",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Consumer Affairs, Food And Public Distribution",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Development Of North Eastern Region",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Earth Sciences",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Information And Broadcasting",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Mines",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Power",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Railways",
+            "count": 1
+          },
+          {
+            "label": "NITI Aayog (National Institution for Transforming India)",
+            "count": 1
+          },
+          {
+            "label": "The Lokpal of India",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "level",
+        "label": "Level",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "State",
+            "count": 4058
+          },
+          {
+            "label": "Central",
+            "count": 714
+          }
+        ]
+      },
+      {
+        "identifier": "residence",
+        "label": "Residence",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Both",
+            "count": 4537
+          },
+          {
+            "label": "Rural",
+            "count": 203
+          },
+          {
+            "label": "Urban",
+            "count": 42
+          }
+        ]
+      },
+      {
+        "identifier": "minority",
+        "label": "Minority",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4704
+          },
+          {
+            "label": "Yes",
+            "count": 68
+          }
+        ]
+      },
+      {
+        "identifier": "disability",
+        "label": "Differently Abled",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4469
+          },
+          {
+            "label": "Yes",
+            "count": 303
+          }
+        ]
+      },
+      {
+        "identifier": "benefitTypes",
+        "label": "Benefit Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Cash",
+            "count": 3317
+          },
+          {
+            "label": "In Kind",
+            "count": 805
+          },
+          {
+            "label": "Composite",
+            "count": 650
+          }
+        ]
+      },
+      {
+        "identifier": "dbtScheme",
+        "label": "DBT Scheme",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4305
+          },
+          {
+            "label": "Yes",
+            "count": 467
+          }
+        ]
+      },
+      {
+        "identifier": "maritalStatus",
+        "label": "Marital Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4467
+          },
+          {
+            "label": "Never Married",
+            "count": 142
+          },
+          {
+            "label": "Widowed",
+            "count": 107
+          },
+          {
+            "label": "Married",
+            "count": 93
+          },
+          {
+            "label": "Divorced",
+            "count": 48
+          },
+          {
+            "label": "Separated",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "disabilityPercentage",
+        "label": "Disability Percentage",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 24
+          },
+          {
+            "label": 10,
+            "count": 27
+          },
+          {
+            "label": 20,
+            "count": 32
+          },
+          {
+            "label": 30,
+            "count": 32
+          },
+          {
+            "label": 40,
+            "count": 172
+          },
+          {
+            "label": 50,
+            "count": 176
+          },
+          {
+            "label": 60,
+            "count": 182
+          },
+          {
+            "label": 70,
+            "count": 187
+          },
+          {
+            "label": 80,
+            "count": 199
+          },
+          {
+            "label": 90,
+            "count": 199
+          },
+          {
+            "label": 100,
+            "count": 209
+          }
+        ]
+      },
+      {
+        "identifier": "isBpl",
+        "label": "Below Poverty Line",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4600
+          },
+          {
+            "label": "Yes",
+            "count": 172
+          }
+        ]
+      },
+      {
+        "identifier": "isEconomicDistress",
+        "label": "Economic Distress",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4725
+          },
+          {
+            "label": "Yes",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "isGovEmployee",
+        "label": "Government Employee",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4758
+          },
+          {
+            "label": "Yes",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "employmentStatus",
+        "label": "Employment Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3659
+          },
+          {
+            "label": "Employed",
+            "count": 519
+          },
+          {
+            "label": "Self-Employed/ Entrepreneur",
+            "count": 423
+          },
+          {
+            "label": "Unemployed",
+            "count": 171
+          }
+        ]
+      },
+      {
+        "identifier": "isStudent",
+        "label": "Student",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4414
+          },
+          {
+            "label": "Yes",
+            "count": 358
+          }
+        ]
+      },
+      {
+        "identifier": "occupation",
+        "label": "Occupation",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 390
+          },
+          {
+            "label": "Farmer",
+            "count": 357
+          },
+          {
+            "label": "Construction Worker",
+            "count": 270
+          },
+          {
+            "label": "Unorganized Worker",
+            "count": 192
+          },
+          {
+            "label": "Fishermen",
+            "count": 114
+          },
+          {
+            "label": "Artists",
+            "count": 83
+          },
+          {
+            "label": "Artisans, Spinners & Weavers",
+            "count": 80
+          },
+          {
+            "label": "Student",
+            "count": 66
+          },
+          {
+            "label": "Organized Worker",
+            "count": 40
+          },
+          {
+            "label": "Sportsperson",
+            "count": 35
+          },
+          {
+            "label": "Ex Servicemen",
+            "count": 28
+          },
+          {
+            "label": "Journalist",
+            "count": 22
+          },
+          {
+            "label": "Dairy Farmer",
+            "count": 21
+          },
+          {
+            "label": "Safai Karamchari",
+            "count": 18
+          },
+          {
+            "label": "Teacher / Faculty",
+            "count": 14
+          },
+          {
+            "label": "Coir Worker",
+            "count": 7
+          },
+          {
+            "label": "Street Vendor",
+            "count": 3
+          },
+          {
+            "label": "Health Worker",
+            "count": 2
+          },
+          {
+            "label": "Khadi Artisan",
+            "count": 2
+          },
+          {
+            "label": "Lawyer / Law Graduate / Advocate",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "identifier": "applicationMode",
+        "label": "Application Mode",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Offline",
+            "count": 2733
+          },
+          {
+            "label": "Online",
+            "count": 2350
+          },
+          {
+            "label": "Online - via CSC",
+            "count": 161
+          }
+        ]
+      },
+      {
+        "identifier": "schemeType",
+        "label": "Scheme Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Central Sector Scheme",
+            "count": 543
+          },
+          {
+            "label": "Centrally Sponsored Scheme",
+            "count": 146
+          }
+        ]
+      }
+    ],
+    "hits": {
+      "items": [
+        {
+          "id": "2KH9F5gBXu-iUKXqs3g2",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "Apsdap",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Assistance For Purchase Of Spectacles By A Differently Abled Person",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "apsdap",
+            "briefDescription": "The \"Assistance for Purchase of Spectacles by A Differently Abled Persons\" scheme in Tamil Nadu is a government initiative that aims to provide financial assistance to differently-abled individuals.",
+            "tags": [
+              "Differently Abled Persons",
+              "Spectacles",
+              "Tamil Nadu"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "5sb9F5gB0AGc0F0itTcU",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "Tcdapsotcb",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Transport & Infrastructure"
+            ],
+            "schemeName": "Travel Concession To The Differently Abled Persons In State Owned Transport Corporation Buses",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "tcdapsotcb",
+            "briefDescription": "The Government of Tamil Nadu introduced Differently Abled Persons In Stated Owned Tranportat Corporation buses. ",
+            "tags": [
+              "Travel",
+              "Differently Abled Persons",
+              "Transport Corporation Bus",
+              "Tamil Nadu"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "36H9F5gBXu-iUKXqvHhL",
+          "fields": {
+            "beneficiaryState": [
+              "Kerala"
+            ],
+            "schemeShortTitle": "MSPADSC",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Mandahasam Scheme To Provide Artificial Dentures To Senior Citizens",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mspadsc",
+            "briefDescription": "The scheme “Mandahasam Scheme to Provide Artificial Dentures to Senior Citizens” was launched by the Department of Social Justice, Government of Kerala.",
+            "tags": [
+              "Senior Citizen",
+              "Artificial Tooth",
+              "Financial Assistance",
+              "Dental",
+              "Teeth",
+              "Dentures"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "wBf9F5gB5uF80_MGspN5",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "MABAY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Housing & Shelter"
+            ],
+            "schemeName": "Mukhyamantri Aawasiye Bhu-Adhikaar Yojana",
+            "schemeCloseDate": "2023-05-31",
+            "priority": 1,
+            "slug": "mabay",
+            "briefDescription": "Revenue Department of Madhya Pradesh State started this scheme to provide residential plots. ",
+            "tags": [
+              "Housing",
+              "Shelter",
+              "Land",
+              "Plots"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "xxf9F5gB5uF80_MGu5Pa",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "LLS-G",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Laadli Laxmi Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "lls-g",
+            "briefDescription": "Laadli Laxmi Scheme was launched with the intention to address the undesirable tendency of female foeticides and with an aim towards erasing the general perception that the birth of a girl in the family is a burden on her parents/guardian during her marriage.",
+            "tags": [
+              "Girl",
+              "Marriage",
+              "Financial Assistance",
+              "Social Welfare"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "5qH9F5gBXu-iUKXqwHhQ",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "LLY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Ladli Laxmi Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "lly",
+            "briefDescription": "Ladli Lakshmi Yojana has been started in Madhya Pradesh for Girl Child in 2007.",
+            "tags": [
+              "Financial Assistance",
+              "Empowerment",
+              "Social Welfare",
+              "Girl Child"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "FaG1F5gBXu-iUKXqnnVG",
+          "fields": {
+            "beneficiaryState": [
+              "Kerala"
+            ],
+            "schemeShortTitle": "Mswr",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Mangalya Scheme For Widow Remarriage",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mswr",
+            "briefDescription": "The “Mangalya Scheme” was launched by the Department of Women and Child Development, Government of Kerala. Under the scheme, financial assistance is to be provided to eligible widows and divorced women for their remarriage.",
+            "tags": [
+              "Widow",
+              "Divorced Woman",
+              "Financial Assistance",
+              "Remarriage",
+              "Woman"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Msa1F5gB0AGc0F0inDS1",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "Gwpss",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Goa Welfare / Pension Scheme For Seafarers",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "gwpss",
+            "briefDescription": "The scheme \"Goa Welfare / Pension Scheme for Seafarers\" by the Home Department, Government of Goa, provides financial assistance in the form of a Gross Pension of ₹ 2,500/- per month to the beneficiaries. The applicant should be a retired seaman. The age of the applicant should be 60 years or above.",
+            "tags": [
+              "Pension",
+              "Seafarer",
+              "Seaman",
+              "Financial Assistance",
+              "Social Welfare",
+              "Retirement",
+              "Senior Citizen"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0he1F5gB5uF80_MGnI-7",
+          "fields": {
+            "beneficiaryState": [
+              "Punjab"
+            ],
+            "schemeShortTitle": "Dpps",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Disabled Person Pension Scheme - Punjab",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "dpps",
+            "briefDescription": "Punjab State Government started a pension for disable person of the state. ",
+            "tags": [
+              "Social Welfare",
+              "Differently Abled",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "naHTF5gBXu-iUKXqJnfy",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "Msme-stes",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Skills & Employment"
+            ],
+            "schemeName": "Msme Skill Training And Employment Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "msme-stes",
+            "briefDescription": "The scheme “MSME Skill Training and Employment Scheme” was launched by the Department of Micro, Small and Medium Enterprises, Government of Tamil Nadu during the years 2021-22.",
+            "tags": [
+              "MSME",
+              "Skill",
+              "Training",
+              "Employment",
+              "Stipend",
+              "Trainee"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "r6HTF5gBXu-iUKXqQ3d_",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "Aabcs",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Annal Ambedkar Business Champions Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "aabcs",
+            "briefDescription": "The scheme “Annal Ambedkar Business Champions Scheme (AABCS)” was launched by the Department of Micro, Small and Medium Enterprises, Government of Tamil Nadu. ",
+            "tags": [
+              "Ambedkar",
+              "AABCS",
+              "Scheduled Caste",
+              "Scheduled Tribe",
+              "Entrepreneur",
+              "Loan",
+              "Subsidy",
+              "MSME"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "26H9F5gBXu-iUKXqtXjL",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "Ksych",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Kisan Samriddhi Yojana - Chhattisgarh",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ksych",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"Kisan Samriddhi Yojana\" for farmer.",
+            "tags": [
+              "Financial Assistance",
+              "Farmers",
+              "Agriculture",
+              "Pump Installation"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "rhfTF5gB5uF80_MGLZLG",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "Ddmcs",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Health & Wellness",
+              "Women and Child"
+            ],
+            "schemeName": "Dai Didi Mobile Clinic Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ddmcs",
+            "briefDescription": "Government of Chhattisgarh state, started a scheme named \"Dai Didi Clinic Scheme\" in 2020.",
+            "tags": [
+              "Free Treatment",
+              "Medicine",
+              "Women Health"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "V6HiF5gBXu-iUKXqCHiL",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "Stls",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Short Term Loan Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "stls",
+            "briefDescription": "\"Short Term Loan Scheme\" provides financial assistance/ loan as a credit to individuals from the Scheduled Tribe Community to meet the immediate expenses towards Education, Medical and Business needs. The scheme aims to improve their standard of living.",
+            "tags": [
+              "Loan",
+              "Business",
+              "Scheduled Tribe",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "WKHiF5gBXu-iUKXqCHiZ",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "Ses-goa",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Self Employment Scheme - Goa",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ses-goa",
+            "briefDescription": "\"Self Employment Scheme\" provides financial support up to a maximum of ₹ 10,00,000 to any individual person belonging to Scheduled Tribes Community to undertake any self-employment activities.",
+            "tags": [
+              "Loan",
+              "Scheduled Tribe",
+              "Financial Assistance",
+              "Employment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "oaHTF5gBXu-iUKXqKndG",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "UAEUYS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Skills & Employment"
+            ],
+            "schemeName": "Unemployment Allowance for the Educated Unemployed Youth Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ueas",
+            "briefDescription": "The scheme was introduced on 01.11.1988 which provides monthly unemployment allowance to the educated unemployed youth registered with the Employment Exchanges in Haryana. ",
+            "tags": [
+              "Allowance",
+              "Unemployment",
+              "Educated Unemployed Youth",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Mca1F5gB0AGc0F0inDSa",
+          "fields": {
+            "beneficiaryState": [
+              "Kerala"
+            ],
+            "schemeShortTitle": "Ts-kerala",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Thalolam Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ts-kerala",
+            "briefDescription": "The Government of Kerala launched the “Thalolam Scheme” under Kerala Social Security Mission to provide free treatment to children affected with chronic diseases such as haemophilia, cerebral palsy, etc.",
+            "tags": [
+              "Free Treatment",
+              "Patient",
+              "Diseases",
+              "Children",
+              "Hospital",
+              "BPL"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Psa1F5gB0AGc0F0injRp",
+          "fields": {
+            "beneficiaryState": [
+              "Kerala"
+            ],
+            "schemeShortTitle": "YIPB",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Young Investigators Programme in Biotechnology",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "yipb",
+            "briefDescription": "The programme “Young Investigator’s Programme in Biotechnology (YIPB)” is a research support programme that aims to provide quick research support to young researchers to pursue their ideas in newly emerging and front-line areas of research in Biotechnology.",
+            "tags": [
+              "Young Investigator",
+              "Biotechnology",
+              "Young Scientist",
+              "Fellowship",
+              "Principal Investigator",
+              "Life Science"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "DqG1F5gBXu-iUKXqnXVe",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "KSS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Kala Samman Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "kss",
+            "briefDescription": "The scheme \"Kala Samman Scheme\" grants financial assistance to eminent artists who are in indigent circumstances as a token of respect for their contribution to the field of Art and culture.",
+            "tags": [
+              "Artist",
+              "Culture",
+              "Art",
+              "Financial Assistance",
+              "Award"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "5Re1F5gB5uF80_MGn48p",
+          "fields": {
+            "beneficiaryState": [
+              "Kerala"
+            ],
+            "schemeShortTitle": "KSYSA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Science, IT & Communications"
+            ],
+            "schemeName": "Kerala State Young Scientist Awards",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ksysa",
+            "briefDescription": "The “Kerala State Young Scientist Awards” by the KSCSTE are intended to honour talented young Scientists in recognition of their outstanding contributions in any branch of science and technology coming within the purview of the Council.",
+            "tags": [
+              "Young Scientist",
+              "Award",
+              "Research",
+              "Cash Prize",
+              "Science",
+              "Technology"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "7Re1F5gB5uF80_MGo4-p",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "VDRRY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Vishvakarma Durghatana Mrtyu par Antyeshti Evan Anugrah Raashi Bhugataan Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "vdrry",
+            "briefDescription": "Chhattisgarh state Government started a scheme \"Vishvakarma Durghatana Mrtyu Par Antyeshti Evan Anugrah Raashi Bhugataan Yojana\" for labor workers.\n",
+            "tags": [
+              "Death Benefits",
+              "Construction Worker",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "TMa1F5gB0AGc0F0ipDQA",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "DOH",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Skills & Employment"
+            ],
+            "schemeName": "DEVELOPMENT OF HANDICRAFTS",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "doh",
+            "briefDescription": "The government of Puducherry takes the initiative to revive the vanishing crafts and restore the significance of traditional crafts.",
+            "tags": [
+              "Handicraft",
+              "Puducherry",
+              "Training",
+              "Skills",
+              "Trades"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "3Be1F5gB5uF80_MGnY_A",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "SPFAPPBGA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Scheme to Provide Financial Assistance to the Publishers for Publishing Books of Goan Authors",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "spfappbga",
+            "briefDescription": "\"Scheme to Provide Financial Assistance to the Publishers for Publishing Books of Goan Authors\"  by the Directorate of Art and Culture, Government of Goa, has been designed to promote Goan publishers to provide them with financial support for the publication of books.",
+            "tags": [
+              "Book",
+              "Publish",
+              "Culture",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "QMa1F5gB0AGc0F0injT_",
+          "fields": {
+            "beneficiaryState": [
+              "Kerala"
+            ],
+            "schemeShortTitle": "BRG",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Barbershop Renovation Grant",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "brg",
+            "briefDescription": "The “Barbershop Renovation Grant” scheme is launched by the Backward Communities Development Department, Government of Kerala. Under the scheme, financial assistance will be provided to the traditional barber of rural areas to uplift the standard of the traditional barbershops.",
+            "tags": [
+              "Barber",
+              "Barbershop",
+              "Renovation",
+              "Grant",
+              "OBC"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ycbTF5gB0AGc0F0ipjYH",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "MAPS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Mukhyamantri Avivahita Pension Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "maps",
+            "briefDescription": "Madhya Pradesh State Government started the \"Mukhyamantri Avivahita Pension Yojana\" for unmarried women of the state. ",
+            "tags": [
+              "Financial Assistance",
+              "Unmarried",
+              "Empowerment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "B6G1F5gBXu-iUKXqnHXk",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "FSPPV",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Futkar Sabji, Phal-Phool Vikreta Hetu Taraju, Baat Evan Tokari Sahaayata Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fsppv",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"Futkar Sabji, Phal-Phool Vikreta Hetu Taraju, Baat Evan Tokari Sahaayata Yojana\" for unorganized worker on 15 June 2016.",
+            "tags": [
+              "Empowerment",
+              "Financial Assistance",
+              "Equipment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Khe3F5gB5uF80_MGNpBK",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "SSPSL",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Silicosis (Bimari) Se Pidit Shramiko Ke Liye Aarthik Evam Punarvas Sahayata Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sspsl",
+            "briefDescription": "Chhattisgarh state Government started a scheme \"Silicosis (Bimari) Se Pidit Shramiko Ke Liye Aarthik Evam Punarvas Sahayata Yojana\" for unorganized worker on 16 January 2018.",
+            "tags": [
+              "Financial Assistance",
+              "Silicosis Disease",
+              "Unorganized Worker"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "IaG1F5gBXu-iUKXqoHXg",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "ERSY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "E-Rikshaw Sahayta Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ersych",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"E-Rikshaw Sahayta Yojana\" for unorganized worker in 20 December 2016. ",
+            "tags": [
+              "Financial Assistance",
+              "Empowerment",
+              "Employment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "FBe3F5gB5uF80_MGMZCz",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NSAT",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Education",
+            "schemeCategory": [
+              "Education & Learning",
+              "Skills & Employment"
+            ],
+            "schemeName": "National Scheme of Apprenticeship Training",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "nsat",
+            "briefDescription": "The primary goal of this scheme is to bridge the gap in practical experience for fresh Graduate Engineers, Diploma holders, and 10+2 Vocational pass-outs in approximately 10,000 industrial establishments. The apprentices undergo a one-year training period, receiving a monthly stipend.",
+            "tags": [
+              "Skill",
+              "Training",
+              "Apprentice",
+              "Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "wca4F5gB0AGc0F0iLjTZ",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "MKKU",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Mahila Kamgar Kaushal Unnayan Evan Theka Shramik, Hamaal Tatha Ghareloo Mahila Kamgaar Parivar Sashaktikaran Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mkku",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"Mahila Kamgar Kaushal Unnayan Evan Theka Shramik, Hamaal Tatha Ghareloo Mahila Kamgaar Parivar Sashaktikaran Yojana\" for unorganized worker on 11 March 2015.",
+            "tags": [
+              "Training",
+              "Empowerment",
+              "Learning",
+              "Women"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0ca4F5gB0AGc0F0iMzTP",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "AOCPSCGS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Women and Child"
+            ],
+            "schemeName": "Award of Opportunity Cost to Parents of Scheduled Caste Girl Students",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "aocpscgs",
+            "briefDescription": "The objective of the scheme is to financially assist the SC parents for sending school their daughters who otherwise earn livelihood for the family engaging themselves in menial labour.",
+            "tags": [
+              "Opportunity Cost",
+              "Parents",
+              "Scheduled Cast",
+              "Girl",
+              "Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "YBe4F5gB5uF80_MGLpCN",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "SSCTTTI",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Stipend to Scheduled Caste Trainees in Technical Training Institutions",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sscttti",
+            "briefDescription": "The objective of the scheme is to provide financial support to Scheduled Tribe candidates/trainees who are undergoing training in the Government Technical Training Institutions of the Union Territory of Puducherry.",
+            "tags": [
+              "Stipend",
+              "Scheduled Caste",
+              "Trainee",
+              "ITI"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "uMa4F5gB0AGc0F0iLDT6",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FAFPFR(GN/RGNWA)",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Financial Assistance To Fishermen For Purchase of Fisheries Requisites (Gill Net/ River Gill Net with Accessories)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fafpfrgnrgnwa",
+            "briefDescription": "“Financial Assistance To Fishermen For Purchase of Fisheries Requisites” is a scheme by the Department of Fisheries, Government of Goa. Through this scheme, a 50% subsidy is provided to the fishermen of Goa for the purchase of fisheries requisites (gill nets with accessories).",
+            "tags": [
+              "Fishermen",
+              "Fish",
+              "Subsidy",
+              "Financial Assistance",
+              "Marine"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "r6G4F5gBXu-iUKXqNXUy",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FAFWAF",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Financial Assistance to Fresh Water Aquaculture Farms",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fafwaf",
+            "briefDescription": "“Financial Assistance to Fresh Water Aquaculture Farms” is a scheme by the Dept. of Fisheries, Govt. of Goa. Through this scheme, financial assistance is provided to eligible fishermen for the construction and renovation of the Farm, for the purchase of farming equipment, and the purchase of feed.",
+            "tags": [
+              "Fishermen",
+              "Fish",
+              "Aquaculture",
+              "Subsidy",
+              "Equipment",
+              "Shrimp"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "1ca4F5gB0AGc0F0iNDRG",
+          "fields": {
+            "beneficiaryState": [
+              "Himachal Pradesh"
+            ],
+            "schemeShortTitle": "MMSAGY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Skills & Employment"
+            ],
+            "schemeName": "Mukhya Mantri Shahri Ajeevika Guarantee Yojna",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mmsagy",
+            "briefDescription": "The “Mukhya Mantri Shahri Ajeevika Guarantee Yojna” was launched by the Department of Urban Development, Govt. of Himachal Pradesh. The objective of the scheme is to enhance livelihood security in urban areas by providing 120 days of guaranteed wage employment to every household in a financial year.",
+            "tags": [
+              "Livelihood",
+              "Urban",
+              "Urban Local Body",
+              "Employment",
+              "Job",
+              "Entrepreneurship Training"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Whe4F5gB5uF80_MGLZDR",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "TSHSBR",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Theka Shramik Evan Hamaal Shramik Baahy Rogi Chikitsa Sahaayata Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "tshsbr",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"Theka Shramik Evan Hamaal Shramik Baahy Rogi Chikitsa Sahaayata Yojana\" for unorganized worker on 11 March 2015.",
+            "tags": [
+              "Health",
+              "Financial Assistance",
+              "Treatment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "l6G4F5gBXu-iUKXqLnWz",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FATUVAS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Financial Assistance to Take up Value Addition to Seafood",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fatuvas",
+            "briefDescription": "Through this scheme, individuals who have been residents of Goa for the last 15 years, and are interested in setting up a unit for value-added fisheries products are provided financial assistance as a subsidy of 50% of the cost for the Construction or Renovation of the Unit/ Purchase of Equipment.",
+            "tags": [
+              "Subsidy",
+              "Financial Assistance",
+              "Fisheries",
+              "Construction",
+              "Equipment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "uca4F5gB0AGc0F0iLTRF",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "GVATBSHSDOCFVS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Goa Value Added Tax-Based Subsidy on H.S.D. Oil Consumed by Fishing Vessels Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "gvatbshsdocfvs",
+            "briefDescription": "“Goa Value Added Tax-Based Subsidy on H.S.D. Oil Consumed by Fishing Vessels Scheme” is a scheme by the Department of Fisheries, Govt. of Goa. Through this scheme, the amount equivalent to the actual VAT paid shall be reimbursed to the owner as a subsidy on H.S.D. Oil consumed by the fishing vessel.",
+            "tags": [
+              "Fish",
+              "Fishermen",
+              "Subsidy",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "qqG4F5gBXu-iUKXqM3XM",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "NCRFS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Natural Calamity Relief to Fishermen of State",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ncrfs",
+            "briefDescription": "“Natural Calamity Relief to Fishermen of State” is a scheme by the Dept of Fisheries, Govt of Goa. Through this scheme, financial assistance is provided to the active fishermen who contribute to the Fishermen Corpus Relief Fund, whose fishing vessels are damaged or lost due to natural calamities.",
+            "tags": [
+              "Fishermen",
+              "Disaster",
+              "Crisis",
+              "Financial Assistance",
+              "Relief"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "nKG4F5gBXu-iUKXqLnX7",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FAPBNIA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Financial Assistance for Purchase of Barrier Net and its Accessories",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fapbnia",
+            "briefDescription": "“Financial Assistance for Purchase of Barrier Net and its Accessories” is a scheme by Dept. of Fisheries, Govt. of Goa. Under this Scheme financial assistance is provided as a subsidy on the purchase of barrier nets and accessories for the fishermen. The applications are accepted offline.",
+            "tags": [
+              "Fishermen",
+              "Fish",
+              "Subsidy",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "cxe4F5gB5uF80_MGM5Dl",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "AI-RTF",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Science And Technology",
+            "schemeCategory": [
+              "Science, IT & Communications"
+            ],
+            "schemeName": "ASEAN-India Research Training Fellowship ",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ai-rtf",
+            "briefDescription": "The “ASEAN-India Research Training Fellowship (AI-RTF)” is a fellowship scheme initiated by the Department of Science & Technology, Government of India under ASEAN-India Science & Technology Development Fund to support young talented researchers/scientists of ASEAN member countries.",
+            "tags": [
+              "ASEAN",
+              "Research",
+              "Fellowship",
+              "FICCI",
+              "Science",
+              "Technology",
+              "Innovation"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ysa4F5gB0AGc0F0iLzRo",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "ISLAAA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Interest Subsidy on Loans for Agriculture and Allied Activities",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "islaaa",
+            "briefDescription": "“Interest Subsidy on Loans for Agriculture and Allied Activities” is a scheme by the Dept. of Fisheries, Govt. of Goa. The bonafide agriculturist, individual of the animal husbandry/fisheries sector from Goa are provided a loan of upto ₹ 5,00,000 for the purpose of Agriculture and Allied Activities.",
+            "tags": [
+              "Fisheries",
+              "Animal Husbandry",
+              "Loan",
+              "Agriculture",
+              "Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "3xfVF5gB5uF80_MGuJKy",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "CPFITP",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Skills & Employment"
+            ],
+            "schemeName": "Certification Program for Goan IT Professionals",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "cpfitp",
+            "briefDescription": "The scheme provides reimbursement of up to 50% of the expenditure incurred for obtaining certifications for improving their employability. The scheme has been framed as a part of Goa's IT Policy that envisages Goa as an aspirational geographical and human resource base for IT Units.",
+            "tags": [
+              "Certification",
+              "Information Technology",
+              "Professional",
+              "Training",
+              "Skill"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0cbVF5gB0AGc0F0iMDZ_",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "QIPFU",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Education",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "AICTE-QUALITY IMPROVEMENT (FOREIGN UNIVERSITY) PROGRAMME",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "qipfu",
+            "briefDescription": "The All India Council for Technical Education in its 55th Meeting of the Council held on 14th August 2018 approved the Quality Improvement Programme (Foreign University) (QIP-FU). The QIP(FU) is an extension of the QIP program launched by the Government of India in the year 1970. ",
+            "tags": [
+              "Scholarship",
+              "Financial Assistance",
+              "Doctoral Degree"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "w6HVF5gBXu-iUKXqMnf0",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "ATBWT",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Education",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "AICTE-Technical Book Writing & Translation Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "atbwt",
+            "briefDescription": "AICTE-Technical Book Writing & Translation scheme has been launched by the All India Council for Technical Education (AICTE) to promote the use of 'Scheduled Regional Language' in Technical Education for creating knowledge base in local language.",
+            "tags": [
+              "Technical Book Writing",
+              "Translation",
+              "Financial Support",
+              "Remuneration"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "2Rf-F5gB5uF80_MGRpPE",
+          "fields": {
+            "beneficiaryState": [
+              "Odisha"
+            ],
+            "schemeShortTitle": "MKSYODISHA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Mukhyamantri Kalakar Sahayata Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mksyodisha",
+            "briefDescription": "Mukhyamantri Kalakar Sahayata Yojana is a scheme under the Odia Language, Literature & Culture Department, Government of Odisha aims to offer sustenance and assistance to elderly artists who, despite facing financial hardship, have consistently devoted themselves to enriching culture of the state.",
+            "tags": [
+              "Kalakar",
+              "Literature",
+              "Culture",
+              "Pension",
+              "Artist"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "WqHkF5gBXu-iUKXqP3jv",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "GHFWWGS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Women and Child",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Government Hostel for Working Women/ Girl Students",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ghfwwgs",
+            "briefDescription": "The scheme aims to provide suitable, inexpensive, and safe accommodation to women employed in government offices, organizations, and firms, as well as girl students studying in colleges. Essential facilities include a cot with mattress, lockable cupboards, television, newspapers, magazines, etc.",
+            "tags": [
+              "Women",
+              "Girl",
+              "Student",
+              "Hostel",
+              "Accomodation"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "1Bf-F5gB5uF80_MGPpNN",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "K-PUDU",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Women and Child",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "KULAVILAKKU",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "k-pudu",
+            "briefDescription": "This scheme aims to enhance the nutritional status of Pregnant Women. ₹500/- assistance is provided to eligible beneficiaries during their pregnancies. The scheme is a crucial step towards ensuring the well-being of both mother and child. The benefit will be provided for upto two pregnancies only.",
+            "tags": [
+              "Pregnant",
+              "Woman",
+              "Hospital",
+              "Financial Assistance",
+              "Infant"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "8qH-F5gBXu-iUKXqQnjd",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "RSESTHSDO-FAASCDMF",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Reimbursement/ Spot Exemption of Sales Tax on High-Speed Diesel Oil",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "rsesthsdo-faascdmf",
+            "briefDescription": "The scheme \"Reimbursement/ Spot Exemption of Sales Tax on High-Speed Diesel Oil\" under \"Financial Assistance for Availing Subsidy Components for the Development of Marine Fisheries\" introduced to reimburse the sales tax on high-speed diesel oil used by the registered mechanized boat operators.",
+            "tags": [
+              "Reimbursement",
+              "Exemption",
+              "Tax",
+              "Diesel",
+              "Oil",
+              "Fisherman",
+              "Fish"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "-8b-F5gB0AGc0F0iSDcH",
+          "fields": {
+            "beneficiaryState": [
+              "Punjab"
+            ],
+            "schemeShortTitle": "BB/HS-P",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Travel & Tourism"
+            ],
+            "schemeName": "Bed & Breakfast/Homestay Scheme- Punjab",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "bbhs",
+            "briefDescription": "The scheme \"Bed & Breakfast/Homestay Scheme” is implemented by the Department of Tourism & Cultural Affairs, Government of Punjab with the aim of providing comfortable Bed & Breakfast (BnB)/Home Stay Facilities and supplementing the availability of accommodation across the State. ",
+            "tags": [
+              "Bed",
+              "Breakfast",
+              "Homestay",
+              "Tourism",
+              "Certificate"
+            ]
+          },
+          "highlight": {}
+        }
+      ],
+      "page": {
+        "total": 4772,
+        "totalPages": 96,
+        "pageNumber": 59,
+        "from": 2950,
+        "size": 50
+      }
+    },
+    "sortedBy": "multiple_sort"
+  }
+}

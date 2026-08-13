@@ -34,7 +34,12 @@ schemebridge:
     email:
       enabled: true
     ai:
-      enabled: false
+      enabled: true
+      provider: gemini
+      model: ${GEMINI_MODEL:gemini-1.5-flash}
+      api-version: ${GEMINI_API_VERSION:v1beta}
+      endpoint-url: https://generativelanguage.googleapis.com/${integration.ai.api-version:v1beta}/models/{model}:generateContent
+
     document:
       versioning:
         enabled: true
@@ -56,7 +61,7 @@ feature:
   email:
     enabled: true
   ai:
-    enabled: false
+    enabled: true
   document:
     versioning:
       enabled: true
@@ -74,8 +79,11 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: localhost
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 30
+
 
 # Common Actuator Management Endpoints
 management:

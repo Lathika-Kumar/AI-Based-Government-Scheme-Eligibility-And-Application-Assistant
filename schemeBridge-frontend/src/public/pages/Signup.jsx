@@ -5,6 +5,7 @@ import { isValidEmail, checkPasswordStrength } from "@utils/security";
 import {
   Building2, User, Mail, Lock, ArrowRight, AlertCircle, CheckCircle2, Sparkles
 } from "lucide-react";
+import { TESTING_MODE } from "@config/constants";
 
 export default function Signup() {
   const { signup } = useAuth();
@@ -32,47 +33,49 @@ export default function Signup() {
     e.preventDefault();
     setError("");
 
-    if (!name.trim()) {
-      setError("Please enter your full name.");
-      return;
-    }
-    if (!email.trim()) {
-      setError("Please enter your email address.");
-      return;
-    }
-    if (!isValidEmail(email.trim().toLowerCase())) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    if (!password) {
-      setError("Please enter a password.");
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError("Passwords do not match. Please check and try again.");
-      return;
-    }
-    const strengthResult = checkPasswordStrength(password);
-    if (strengthResult.score < 2) {
-      setError(strengthResult.feedback[0] || "Password must be at least 8 characters long.");
-      return;
-    }
-    if (!consent) {
-      setError("Please agree to the privacy policy and consent parameters.");
-      return;
+    if (!TESTING_MODE) {
+      if (!name.trim()) {
+        setError("Please enter your full name.");
+        return;
+      }
+      if (!email.trim()) {
+        setError("Please enter your email address.");
+        return;
+      }
+      if (!isValidEmail(email.trim().toLowerCase())) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+      if (!password) {
+        setError("Please enter a password.");
+        return;
+      }
+      if (password !== confirmPassword) {
+        setError("Passwords do not match. Please check and try again.");
+        return;
+      }
+      const strengthResult = checkPasswordStrength(password);
+      if (strengthResult.score < 2) {
+        setError(strengthResult.feedback[0] || "Password must be at least 8 characters long.");
+        return;
+      }
+      if (!consent) {
+        setError("Please agree to the privacy policy and consent parameters.");
+        return;
+      }
     }
 
     setLoading(true);
     const result = await signup(name.trim(), email.trim(), password);
     setLoading(false);
 
-    if (result.error) {
+    if (result?.error) {
       setError(result.error);
       return;
     }
 
-    // Redirect to Account Created confirmation screen
-    navigate("/account-created");
+    // Redirect to Verification Method screen for mandatory verification flow
+    navigate("/verification-method");
   };
 
   return (

@@ -17,6 +17,8 @@ public interface OfficerRepository extends JpaRepository<Officer, Long> {
 
     Optional<Officer> findByEmail(String email);
 
+    Boolean existsByOfficerId(String officerId);
+
     Boolean existsByEmail(String email);
 
     Page<Officer> findByActiveTrue(Pageable pageable);

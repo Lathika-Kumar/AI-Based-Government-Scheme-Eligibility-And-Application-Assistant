@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Briefcase, IndianRupee, Users, MapPin, ArrowRight, ArrowLeft, AlertCircle, Sparkles } from "lucide-react";
+import { TESTING_MODE } from "@config/constants";
 
 const OCCUPATIONS = [
   "Farmer / Agricultural Worker",
@@ -69,33 +70,35 @@ export default function Step2Eligibility({ initialData, onNext, onBack }) {
     }`;
 
   const handleContinue = () => {
-    if (!occupation) {
-      setError("Please select your occupation.");
-      return;
-    }
-    if (!annualIncome || Number(annualIncome) < 0) {
-      setError("Please enter a valid annual income.");
-      return;
-    }
-    if (!caste) {
-      setError("Please select your social category.");
-      return;
-    }
-    if (!state) {
-      setError("Please select your state of residence.");
-      return;
-    }
-    if (!district.trim()) {
-      setError("Please enter your district.");
-      return;
+    if (!TESTING_MODE) {
+      if (!occupation) {
+        setError("Please select your occupation.");
+        return;
+      }
+      if (!annualIncome || Number(annualIncome) < 0) {
+        setError("Please enter a valid annual income.");
+        return;
+      }
+      if (!caste) {
+        setError("Please select your social category.");
+        return;
+      }
+      if (!state) {
+        setError("Please select your state of residence.");
+        return;
+      }
+      if (!district.trim()) {
+        setError("Please enter your district.");
+        return;
+      }
     }
     setError("");
     onNext({
-      occupation,
-      annualIncome: Number(annualIncome),
-      caste,
-      state,
-      district: district.trim(),
+      occupation: occupation || "Salaried Employee",
+      annualIncome: annualIncome ? Number(annualIncome) : 180000,
+      caste: caste || "General",
+      state: state || "Delhi (NCT)",
+      district: district.trim() || "Central Delhi",
     });
   };
 

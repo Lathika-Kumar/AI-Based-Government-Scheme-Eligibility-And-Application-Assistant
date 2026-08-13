@@ -6,7 +6,7 @@
  * All functions fall back to mock logic if the API call throws.
  */
 
-import { MOCK_LOADING_DELAY_MS } from "../config/constants";
+import { MOCK_LOADING_DELAY_MS, TEST_OTP } from "../config/constants";
 import { ROLES } from "../constants/roles";
 import apiClient from "@utils/apiClient";
 import { ENDPOINTS } from "@config/api";
@@ -178,7 +178,7 @@ export async function verifyOtp(email, otp, verificationMethod) {
   const fallbackMock = async () => {
     await delay(400);
     if (!email || !otp) throw new Error("Email and OTP code are required.");
-    if (otp !== "123456" && otp !== "654321") {
+    if (otp !== TEST_OTP && otp !== "654321") {
       throw new Error("Invalid OTP code.");
     }
     const user = email.includes("admin") ? MOCK_ADMIN : MOCK_CITIZEN;

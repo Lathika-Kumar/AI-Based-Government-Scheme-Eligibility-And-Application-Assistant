@@ -1,0 +1,1587 @@
+{
+  "status": "Success",
+  "statusCode": 200,
+  "errorDescription": "",
+  "error": "null",
+  "data": {
+    "summary": {
+      "total": 4772,
+      "query": "",
+      "sortOptions": [
+        {
+          "id": "multiple_sort",
+          "label": "Relevance"
+        },
+        {
+          "id": "schemename-asc",
+          "label": "Scheme Name (A->Z)"
+        },
+        {
+          "id": "schemename-desc",
+          "label": "Scheme Name (Z->A)"
+        }
+      ],
+      "appliedFilters": [],
+      "disabledFilters": []
+    },
+    "facets": [
+      {
+        "identifier": "beneficiaryState",
+        "label": "State",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 693
+          },
+          {
+            "label": "Gujarat",
+            "count": 643
+          },
+          {
+            "label": "Uttarakhand",
+            "count": 447
+          },
+          {
+            "label": "Madhya Pradesh",
+            "count": 290
+          },
+          {
+            "label": "Goa",
+            "count": 272
+          },
+          {
+            "label": "Puducherry",
+            "count": 271
+          },
+          {
+            "label": "Haryana",
+            "count": 249
+          },
+          {
+            "label": "Tamil Nadu",
+            "count": 240
+          },
+          {
+            "label": "Rajasthan",
+            "count": 159
+          },
+          {
+            "label": "Bihar",
+            "count": 114
+          },
+          {
+            "label": "West Bengal",
+            "count": 110
+          },
+          {
+            "label": "Chhattisgarh",
+            "count": 108
+          },
+          {
+            "label": "Jharkhand",
+            "count": 97
+          },
+          {
+            "label": "Meghalaya",
+            "count": 89
+          },
+          {
+            "label": "Assam",
+            "count": 87
+          },
+          {
+            "label": "Kerala",
+            "count": 87
+          },
+          {
+            "label": "Maharashtra",
+            "count": 85
+          },
+          {
+            "label": "Odisha",
+            "count": 85
+          },
+          {
+            "label": "Himachal Pradesh",
+            "count": 75
+          },
+          {
+            "label": "Dadra & Nagar Haveli and Daman & Diu",
+            "count": 62
+          },
+          {
+            "label": "Karnataka",
+            "count": 60
+          },
+          {
+            "label": "Delhi",
+            "count": 54
+          },
+          {
+            "label": "Andhra Pradesh",
+            "count": 52
+          },
+          {
+            "label": "Jammu and Kashmir",
+            "count": 47
+          },
+          {
+            "label": "Uttar Pradesh",
+            "count": 47
+          },
+          {
+            "label": "Arunachal Pradesh",
+            "count": 45
+          },
+          {
+            "label": "Tripura",
+            "count": 44
+          },
+          {
+            "label": "Punjab",
+            "count": 41
+          },
+          {
+            "label": "Manipur",
+            "count": 34
+          },
+          {
+            "label": "Mizoram",
+            "count": 32
+          },
+          {
+            "label": "Sikkim",
+            "count": 29
+          },
+          {
+            "label": "Telangana",
+            "count": 23
+          },
+          {
+            "label": "Nagaland",
+            "count": 22
+          },
+          {
+            "label": "Chandigarh",
+            "count": 21
+          },
+          {
+            "label": "Andaman and Nicobar Islands",
+            "count": 19
+          },
+          {
+            "label": "Lakshadweep",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "identifier": "schemeCategory",
+        "label": "Scheme Category",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Social welfare & Empowerment",
+            "count": 1453
+          },
+          {
+            "label": "Education & Learning",
+            "count": 1110
+          },
+          {
+            "label": "Agriculture,Rural & Environment",
+            "count": 862
+          },
+          {
+            "label": "Business & Entrepreneurship",
+            "count": 772
+          },
+          {
+            "label": "Women and Child",
+            "count": 470
+          },
+          {
+            "label": "Skills & Employment",
+            "count": 401
+          },
+          {
+            "label": "Banking,Financial Services and Insurance",
+            "count": 336
+          },
+          {
+            "label": "Health & Wellness",
+            "count": 286
+          },
+          {
+            "label": "Sports & Culture",
+            "count": 280
+          },
+          {
+            "label": "Housing & Shelter",
+            "count": 136
+          },
+          {
+            "label": "Science, IT & Communications",
+            "count": 121
+          },
+          {
+            "label": "Transport & Infrastructure",
+            "count": 104
+          },
+          {
+            "label": "Travel & Tourism",
+            "count": 96
+          },
+          {
+            "label": "Utility & Sanitation",
+            "count": 58
+          },
+          {
+            "label": "Public Safety,Law & Justice",
+            "count": 34
+          }
+        ]
+      },
+      {
+        "identifier": "gender",
+        "label": "Gender",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3941
+          },
+          {
+            "label": "Female",
+            "count": 790
+          },
+          {
+            "label": "Male",
+            "count": 348
+          },
+          {
+            "label": "Transgender",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "identifier": "age-general",
+        "label": "Age",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 681
+          },
+          {
+            "label": 10,
+            "count": 3873
+          },
+          {
+            "label": 20,
+            "count": 3888
+          },
+          {
+            "label": 30,
+            "count": 3791
+          },
+          {
+            "label": 40,
+            "count": 3624
+          },
+          {
+            "label": 50,
+            "count": 3351
+          },
+          {
+            "label": 60,
+            "count": 3107
+          },
+          {
+            "label": 70,
+            "count": 2052
+          },
+          {
+            "label": 80,
+            "count": 1975
+          },
+          {
+            "label": 90,
+            "count": 1928
+          },
+          {
+            "label": 100,
+            "count": 1845
+          },
+          {
+            "label": 110,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "caste",
+        "label": "Caste",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4001
+          },
+          {
+            "label": "Scheduled Caste (SC)",
+            "count": 394
+          },
+          {
+            "label": "Scheduled Tribe (ST)",
+            "count": 341
+          },
+          {
+            "label": "Other Backward Class (OBC)",
+            "count": 189
+          },
+          {
+            "label": "General",
+            "count": 72
+          },
+          {
+            "label": "Particularly Vulnerable Tribal Group (PVTG)",
+            "count": 40
+          },
+          {
+            "label": "De-Notified, Nomadic, and Semi-Nomadic (DNT) communities",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "nodalMinistryName",
+        "label": "Ministry Name",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Ministry Of Social Justice and Empowerment",
+            "count": 85
+          },
+          {
+            "label": "Ministry of Education",
+            "count": 85
+          },
+          {
+            "label": "Ministry Of Science And Technology",
+            "count": 68
+          },
+          {
+            "label": "Ministry Of Commerce And Industry",
+            "count": 56
+          },
+          {
+            "label": "Ministry Of Agriculture and Farmers Welfare",
+            "count": 41
+          },
+          {
+            "label": "Ministry Of Micro, Small and Medium Enterprises",
+            "count": 31
+          },
+          {
+            "label": "Ministry Of Textiles",
+            "count": 24
+          },
+          {
+            "label": "Ministry Of Youth Affairs & Sports",
+            "count": 22
+          },
+          {
+            "label": "Ministry of Electronics and Information Technology",
+            "count": 22
+          },
+          {
+            "label": "Ministry Of Culture",
+            "count": 20
+          },
+          {
+            "label": "Ministry Of Finance",
+            "count": 19
+          },
+          {
+            "label": "Ministry Of Home Affairs",
+            "count": 18
+          },
+          {
+            "label": "Ministry Of Defence",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Health & Family Welfare",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Labour and Employment",
+            "count": 13
+          },
+          {
+            "label": "Ministry of Fisheries,Animal Husbandry and Dairying",
+            "count": 13
+          },
+          {
+            "label": "Ministry Of Minority Affairs",
+            "count": 12
+          },
+          {
+            "label": "Ministry Of Communication",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Skill Development And Entrepreneurship",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Ayush",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Chemicals And Fertilizers",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Rural Development",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Tribal Affairs",
+            "count": 10
+          },
+          {
+            "label": "Ministry of Women and Child Development",
+            "count": 8
+          },
+          {
+            "label": "Ministry Of New and Renewable Energy",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Tourism",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Jal Shakti",
+            "count": 6
+          },
+          {
+            "label": "Ministry Of External Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Housing & Urban Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Law and Justice",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Personnel, Public Grievances And Pensions",
+            "count": 5
+          },
+          {
+            "label": "Ministry of Ports,Shipping and Waterways",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Environment,forests and climate change",
+            "count": 4
+          },
+          {
+            "label": "Ministry of Heavy Industries",
+            "count": 4
+          },
+          {
+            "label": "Ministry Of Petroleum and Natural Gas",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Statistics and Programme Implementation",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Steel",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Corporate Affairs",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Food Processing Industries",
+            "count": 3
+          },
+          {
+            "label": "Comptroller And Auditor General Of India",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Panchayati Raj",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Road Transport & Highways",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Water Resources,River Development & Ganga Rejuvenation",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Consumer Affairs, Food And Public Distribution",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Development Of North Eastern Region",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Earth Sciences",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Information And Broadcasting",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Mines",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Power",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Railways",
+            "count": 1
+          },
+          {
+            "label": "NITI Aayog (National Institution for Transforming India)",
+            "count": 1
+          },
+          {
+            "label": "The Lokpal of India",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "level",
+        "label": "Level",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "State",
+            "count": 4058
+          },
+          {
+            "label": "Central",
+            "count": 714
+          }
+        ]
+      },
+      {
+        "identifier": "residence",
+        "label": "Residence",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Both",
+            "count": 4537
+          },
+          {
+            "label": "Rural",
+            "count": 203
+          },
+          {
+            "label": "Urban",
+            "count": 42
+          }
+        ]
+      },
+      {
+        "identifier": "minority",
+        "label": "Minority",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4704
+          },
+          {
+            "label": "Yes",
+            "count": 68
+          }
+        ]
+      },
+      {
+        "identifier": "disability",
+        "label": "Differently Abled",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4469
+          },
+          {
+            "label": "Yes",
+            "count": 303
+          }
+        ]
+      },
+      {
+        "identifier": "benefitTypes",
+        "label": "Benefit Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Cash",
+            "count": 3317
+          },
+          {
+            "label": "In Kind",
+            "count": 805
+          },
+          {
+            "label": "Composite",
+            "count": 650
+          }
+        ]
+      },
+      {
+        "identifier": "dbtScheme",
+        "label": "DBT Scheme",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4305
+          },
+          {
+            "label": "Yes",
+            "count": 467
+          }
+        ]
+      },
+      {
+        "identifier": "maritalStatus",
+        "label": "Marital Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4467
+          },
+          {
+            "label": "Never Married",
+            "count": 142
+          },
+          {
+            "label": "Widowed",
+            "count": 107
+          },
+          {
+            "label": "Married",
+            "count": 93
+          },
+          {
+            "label": "Divorced",
+            "count": 48
+          },
+          {
+            "label": "Separated",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "disabilityPercentage",
+        "label": "Disability Percentage",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 24
+          },
+          {
+            "label": 10,
+            "count": 27
+          },
+          {
+            "label": 20,
+            "count": 32
+          },
+          {
+            "label": 30,
+            "count": 32
+          },
+          {
+            "label": 40,
+            "count": 172
+          },
+          {
+            "label": 50,
+            "count": 176
+          },
+          {
+            "label": 60,
+            "count": 182
+          },
+          {
+            "label": 70,
+            "count": 187
+          },
+          {
+            "label": 80,
+            "count": 199
+          },
+          {
+            "label": 90,
+            "count": 199
+          },
+          {
+            "label": 100,
+            "count": 209
+          }
+        ]
+      },
+      {
+        "identifier": "isBpl",
+        "label": "Below Poverty Line",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4600
+          },
+          {
+            "label": "Yes",
+            "count": 172
+          }
+        ]
+      },
+      {
+        "identifier": "isEconomicDistress",
+        "label": "Economic Distress",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4725
+          },
+          {
+            "label": "Yes",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "isGovEmployee",
+        "label": "Government Employee",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4758
+          },
+          {
+            "label": "Yes",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "employmentStatus",
+        "label": "Employment Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3659
+          },
+          {
+            "label": "Employed",
+            "count": 519
+          },
+          {
+            "label": "Self-Employed/ Entrepreneur",
+            "count": 423
+          },
+          {
+            "label": "Unemployed",
+            "count": 171
+          }
+        ]
+      },
+      {
+        "identifier": "isStudent",
+        "label": "Student",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4414
+          },
+          {
+            "label": "Yes",
+            "count": 358
+          }
+        ]
+      },
+      {
+        "identifier": "occupation",
+        "label": "Occupation",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 390
+          },
+          {
+            "label": "Farmer",
+            "count": 357
+          },
+          {
+            "label": "Construction Worker",
+            "count": 270
+          },
+          {
+            "label": "Unorganized Worker",
+            "count": 192
+          },
+          {
+            "label": "Fishermen",
+            "count": 114
+          },
+          {
+            "label": "Artists",
+            "count": 83
+          },
+          {
+            "label": "Artisans, Spinners & Weavers",
+            "count": 80
+          },
+          {
+            "label": "Student",
+            "count": 66
+          },
+          {
+            "label": "Organized Worker",
+            "count": 40
+          },
+          {
+            "label": "Sportsperson",
+            "count": 35
+          },
+          {
+            "label": "Ex Servicemen",
+            "count": 28
+          },
+          {
+            "label": "Journalist",
+            "count": 22
+          },
+          {
+            "label": "Dairy Farmer",
+            "count": 21
+          },
+          {
+            "label": "Safai Karamchari",
+            "count": 18
+          },
+          {
+            "label": "Teacher / Faculty",
+            "count": 14
+          },
+          {
+            "label": "Coir Worker",
+            "count": 7
+          },
+          {
+            "label": "Street Vendor",
+            "count": 3
+          },
+          {
+            "label": "Health Worker",
+            "count": 2
+          },
+          {
+            "label": "Khadi Artisan",
+            "count": 2
+          },
+          {
+            "label": "Lawyer / Law Graduate / Advocate",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "identifier": "applicationMode",
+        "label": "Application Mode",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Offline",
+            "count": 2733
+          },
+          {
+            "label": "Online",
+            "count": 2350
+          },
+          {
+            "label": "Online - via CSC",
+            "count": 161
+          }
+        ]
+      },
+      {
+        "identifier": "schemeType",
+        "label": "Scheme Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Central Sector Scheme",
+            "count": 543
+          },
+          {
+            "label": "Centrally Sponsored Scheme",
+            "count": 146
+          }
+        ]
+      }
+    ],
+    "hits": {
+      "items": [
+        {
+          "id": "SReFMJgB5uF80_MGMJTV",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "MFGN",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Business & Entrepreneurship",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "MICRO FINANCE (Gopalak Nigam)",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "msggvn",
+            "briefDescription": "Micro-loan scheme for Rabari and Bharwad caste entrepreneurs in Gujarat. Provides up to ₹1.25 lakh loan at 5% interest with only 5% beneficiary contribution.",
+            "tags": [
+              "Microfinance",
+              "Rabari & Bharwad Caste",
+              "Small Businesses",
+              "Loan"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "SBeDMJgB5uF80_MGFpRE",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "FSLS",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Education & Learning",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Foreign Study Loan Scheme (GUEEDC)",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "fsls",
+            "briefDescription": "Loan scheme offering up to ₹15 lakh at 4% simple interest to unreserved category students for MBBS, PG, or equivalent courses abroad with flexible collateral and repayment conditions.",
+            "tags": [
+              "Unreserved Category",
+              "Higher Education Abroad",
+              "MBBS",
+              "Master",
+              "PG Diploma"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "gaHCF5gBXu-iUKXqCHdR",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "MMMSYH",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Women and Child"
+            ],
+            "schemeName": "Mukhya Mantri Matritva Sahayata Yojana",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "mmmsyh",
+            "briefDescription": "The scheme \"Mukhya Mantri Matritva Sahayata Yojana\" by the Women and Child Development Department, Haryana, aims to provide a cash incentive of ₹5,000/- during maternity to eligible pregnant and lactating women on the birth of a second child (boy).",
+            "tags": [
+              "Women",
+              "Maternity Benefit",
+              "Lactating Mothers",
+              "Pregnancy Care",
+              "Child"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "cxfBF5gB5uF80_MG_5IX",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "IFDPSCFWV",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Transport & Infrastructure"
+            ],
+            "schemeName": "Intensive Fisheries Development Programme - Subsidy on Commercial Four-Wheeler Vehicles",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "socfwv",
+            "briefDescription": "The scheme aims to strengthen the fisheries value chain by providing transportation support to fish farmers. Under this scheme, eligible fish farmers receive a subsidy of 25% of the actual cost on the purchase of a commercial four-wheeler vehicle used for fisheries-related activities.",
+            "tags": [
+              "Subsidy",
+              "Four-wheeler",
+              "Fishermen",
+              "Fish Transportation",
+              "Commercial Vehicle"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ZqHBF5gBXu-iUKXq_3ee",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "PMMSYRVHR",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Pradhan Mantri Matsya Sampada Yojana: Refrigerated Vehicles – Haryana",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "sfrv",
+            "briefDescription": "The scheme aims to enhance cold chain infrastructure & ensure hygienic and efficient fish transportation. Under this scheme, financial assistance is provided to fishers for purchasing refrigerated vehicles to maintain the freshness & quality of fish during post-harvest handling & transportation.",
+            "tags": [
+              "Financial Assistance",
+              "Refrigerated Vehicle",
+              "Fishermen",
+              "Fish",
+              "Fish Transport"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "eqHCF5gBXu-iUKXqB3dg",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SFATSW",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Scheme to Provide Financial Assistance for Translation of Scholarly Works",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "sfatsw",
+            "briefDescription": "The scheme aims to encourage cultural exchange and literary development by providing financial assistance for translating high-quality literary and research works between Gujarati and other Indian languages.",
+            "tags": [
+              "Book Translation Grant",
+              "Scholarly Works Support"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Qxd9MJgB5uF80_MGVZQ6",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "LBSFPAUCT",
+            "level": "Central",
+            "schemeFor": null,
+            "nodalMinistryName": "Ministry Of Social Justice and Empowerment",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance",
+              "Social welfare & Empowerment",
+              "Utility & Sanitation"
+            ],
+            "schemeName": "Loan based Scheme for Pay and Use Community Toilets",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "lbssk-spuct",
+            "briefDescription": "The “Pay and Use” Community Toilets Scheme under Swachhta Udyami Yojana by NSKFDC offers concessional loans to Safai Karamcharis and their dependents for setting up public toilet units, promoting sanitation, livelihood, and dignity.",
+            "tags": [
+              "Pay And Use Toilets",
+              "Toilet Construction Loan",
+              "Safai Karamchari"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "c8aGMZgB0AGc0F0iGDiy",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "GWS",
+            "level": "Central",
+            "schemeFor": null,
+            "nodalMinistryName": "Ministry Of Textiles",
+            "schemeCategory": [
+              "Business & Entrepreneurship",
+              "Transport & Infrastructure"
+            ],
+            "schemeName": "GROUP WORKSHED SCHEME ",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "gws",
+            "briefDescription": "The objective of the scheme is to facilitate the establishment of worksheds for shuttleless looms in an existing or new cluster, which will provide the required scale of economy for business operations.",
+            "tags": [
+              "New Cluster",
+              "Business Operations",
+              "Powerloom",
+              "Weaving"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "dcaIMZgB0AGc0F0i5ThF",
+          "fields": {
+            "beneficiaryState": [
+              "Andhra Pradesh"
+            ],
+            "schemeShortTitle": "SOLAP",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Education & Learning"
+            ],
+            "schemeName": "Sanction of Laptops - Andhra Pradesh",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "solap",
+            "briefDescription": "The \"Sanction of Laptops\" scheme aims to distribute laptops to visually challenged, hearing impairments, speech impairments, and orthopedic challenges students pursuing professional courses. The A.P. Differently Abled & Senior Citizens Assistance Corporation proposes to procure 200 laptops.",
+            "tags": [
+              "Empowerment",
+              "Student",
+              "Speech Impaired",
+              "Orthopedically"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "mheP1ZgB5uF80_MGjJQJ",
+          "fields": {
+            "beneficiaryState": [
+              "Bihar"
+            ],
+            "schemeShortTitle": "MKSYBS",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Mukhyamantri Kishori Swasthya Yojna",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "mksybs",
+            "briefDescription": "This initiative by the State Government aimed at reducing school dropout rates among adolescent girls by providing free sanitary napkins, promoting hygiene, and supporting their overall health.\n\n",
+            "tags": [
+              "Adolescent Girls",
+              "Menstrual Hygiene",
+              "Sanitary Napkins",
+              "Health And Wellness"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "eKF5MJgBXu-iUKXqeXn7",
+          "fields": {
+            "beneficiaryState": [
+              "Arunachal Pradesh"
+            ],
+            "schemeShortTitle": "APEPC",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Business & Entrepreneurship",
+              "Skills & Employment"
+            ],
+            "schemeName": "Arunachal Pradesh Entrepreneurship Challenge",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "apepc",
+            "briefDescription": "APEC will identify, promote, support, and nurture sustainable and locally relevant business ideas and entrepreneurs. The top 10 entrepreneurs selected for the Incubation & Pre-Incubation programmes facilitated by the IIM Calcutta Innovation Park will be awarded up to ₹5,00,000.",
+            "tags": [
+              "Entrepreneurship",
+              "Training",
+              "Self-employed",
+              "Business Venture",
+              "Arunachal Pradesh"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "TBeFMZgB5uF80_MGyJTq",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "BYDBTA",
+            "level": "Central",
+            "schemeFor": null,
+            "nodalMinistryName": "Ministry Of Textiles",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Bima Yojana - Direct Benefit to Artisan",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "bydbta",
+            "briefDescription": "Launched on 15th August 2022, the scheme \"Bima Yojana - Direct Benefit to Artisan (BYDBTA)\" is a Social Welfare Scheme by the Ministry of Textiles, Government of India.\n",
+            "tags": [
+              "Artisans",
+              "Insurance",
+              "Handicrafts",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "dMaGMZgB0AGc0F0i7ThA",
+          "fields": {
+            "beneficiaryState": [
+              "Rajasthan"
+            ],
+            "schemeShortTitle": "RKSYR",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Khadya Suraksha Yojana",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "rksyr",
+            "briefDescription": "The scheme \"Rashtriya Khadya Suraksha Yojana\" aims to ensure that every person in Rajasthan has access to an adequate quantity of food at affordable prices.",
+            "tags": [
+              "Food Security",
+              "BPL",
+              "Families",
+              "Development"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "cMaCMJgB0AGc0F0iBDiK",
+          "fields": {
+            "beneficiaryState": [
+              "Andhra Pradesh"
+            ],
+            "schemeShortTitle": "STPHCSI",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Sanctioning of Touch Phone to Hearing Challenged – Speech Impaired",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "stphcsi",
+            "briefDescription": "The \"Sanctioning of Touch Phone to Hearing Challenged – Speech Impaired\" aims to provide touch phones to hearing and speech-impaired individuals who know sign language as per the Action Plan 2017-18. The Assistant Directors, Department for the Welfare of Different, distribute the touch phones. ",
+            "tags": [
+              "Social Welfare",
+              "Empowerment",
+              "Hearing Challenged"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "scaP1ZgB0AGc0F0iYjjC",
+          "fields": {
+            "beneficiaryState": [
+              "Bihar"
+            ],
+            "schemeShortTitle": "MBCYB",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Mukhyamantri Balika Cycle Yojna",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "mbcyb",
+            "briefDescription": "The \"Mukhyamantri Balika Cycle Yojna\" is a government initiative aimed at reducing the gender gap in secondary school enrollment by providing financial assistance to girls for purchasing bicycles, ensuring improved access to education.",
+            "tags": [
+              "Education",
+              "Girls",
+              "Cycle",
+              "Social Empowerment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ssaP1ZgB0AGc0F0idThm",
+          "fields": {
+            "beneficiaryState": [
+              "Bihar"
+            ],
+            "schemeShortTitle": "MBPYIP",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Mukhyamantri Balika Protsahan Yojana (Intermediate Pass)",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "mbpyip",
+            "briefDescription": "The Mukhyamantri Balika (Intermediate Pass) Protsahan Yojana is a scheme by the Bihar government aimed at promoting girl child education, curbing child marriages, reducing fertility rates, and empowering girls to become self-reliant. ",
+            "tags": [
+              "Education",
+              "Girl",
+              "Social Empowerment",
+              "Intermediate"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "s8aP1ZgB0AGc0F0isDjy",
+          "fields": {
+            "beneficiaryState": [
+              "Bihar"
+            ],
+            "schemeShortTitle": "MBPYM",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Mukhyamantri Balika Protsahan Yojana (Matriculation)",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "mbpym",
+            "briefDescription": "The scheme provides a financial incentive to girls who achieve a first division in their matriculation examination.",
+            "tags": [
+              "Education",
+              "Girl",
+              "Incentives",
+              "Scholarship"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "LsZfd5kB0AGc0F0i8DkF",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "CYSKY",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Chhattisgarh Yuva Suchna Kranti Yojana",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "cysky",
+            "briefDescription": "The scheme aims to provide free laptops and tablets to eligible students in higher education institutions. The scheme intends to facilitate the use of new technologies among the state's youth, thereby fostering their economic and social development, and enhancing their knowledge and careers.",
+            "tags": [
+              "Tablet",
+              "Student",
+              "Laptop",
+              "Education",
+              "College"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "hqHCF5gBXu-iUKXqCXd4",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "DSPMDSY",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Dr. Syama Prasad Mookerjee Durghtana Sahayta Yojana",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "dspmdsy",
+            "briefDescription": "The scheme \"Dr. Syama Prasad Mookerjee Durghtana Sahayta Yojana\" by the Social Justice and Empowerment Department, Haryana , aims to provide financial assistance of ₹1,00,000 in case of accidental death or disability to residents of Haryana who are not enrolled under the PMSBY.",
+            "tags": [
+              "Accidental Assistance",
+              "Death Compensation",
+              "Disability",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "gKHCF5gBXu-iUKXqCHcX",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "NFBSBPL",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "National Family Benefit Scheme for BPL Families",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "nfbsbpl",
+            "briefDescription": "The scheme \"National Family Benefit Scheme for BPL Families\" by the Social Justice and Empowerment Department, Government of Haryana, aims to provide one-time financial assistance to economically vulnerable families after the death of the primary breadwinner.",
+            "tags": [
+              "Family Benefit",
+              "BPL",
+              "Death Compensation",
+              "Destitute"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "isbCF5gB0AGc0F0iCDYI",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "EOM",
+            "level": "State",
+            "schemeFor": null,
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "PMMSY: Establishment of Medium RAS / Biofloc culture system - Haryana",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "eom",
+            "briefDescription": "The scheme provides capital assistance to fish farmers and entrepreneurs for establishing medium-scale Recirculatory Aquaculture Systems (RAS) and Biofloc systems.",
+            "tags": [
+              "Aquaculture",
+              "RAS",
+              "Biofloc Systems",
+              "Fish",
+              "Farming"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "qBjKlJ0B5uF80_MGxWYq",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NCCSRA",
+            "level": "Central",
+            "schemeFor": "#N/A",
+            "nodalMinistryName": "Ministry Of Communication",
+            "schemeCategory": [
+              "Skills & Employment",
+              "Science, IT & Communications"
+            ],
+            "schemeName": "National Centre for Communication Security (NCCS) Research Associates Scheme",
+            "schemeCloseDate": null,
+            "priority": null,
+            "slug": "nccsra",
+            "briefDescription": "NCCS engages young scholars as Research Associates  to contribute in development of Telecom Security eco system with in India by providing an opportunity to them to work in areas like Telecom Security Standard development, Lab recognition and Security Certification of telecom products.",
+            "tags": [
+              "Cybersecurity",
+              "Research",
+              "Telecommunications",
+              "Bengaluru",
+              "ITSAR",
+              "DoT"
+            ]
+          },
+          "highlight": {}
+        }
+      ],
+      "page": {
+        "total": 4772,
+        "totalPages": 96,
+        "pageNumber": 95,
+        "from": 4750,
+        "size": 50
+      }
+    },
+    "sortedBy": "multiple_sort"
+  }
+}

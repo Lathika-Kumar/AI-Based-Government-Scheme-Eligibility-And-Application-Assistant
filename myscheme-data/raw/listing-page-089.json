@@ -1,0 +1,2373 @@
+{
+  "status": "Success",
+  "statusCode": 200,
+  "errorDescription": "",
+  "error": "null",
+  "data": {
+    "summary": {
+      "total": 4772,
+      "query": "",
+      "sortOptions": [
+        {
+          "id": "multiple_sort",
+          "label": "Relevance"
+        },
+        {
+          "id": "schemename-asc",
+          "label": "Scheme Name (A->Z)"
+        },
+        {
+          "id": "schemename-desc",
+          "label": "Scheme Name (Z->A)"
+        }
+      ],
+      "appliedFilters": [],
+      "disabledFilters": []
+    },
+    "facets": [
+      {
+        "identifier": "beneficiaryState",
+        "label": "State",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 693
+          },
+          {
+            "label": "Gujarat",
+            "count": 643
+          },
+          {
+            "label": "Uttarakhand",
+            "count": 447
+          },
+          {
+            "label": "Madhya Pradesh",
+            "count": 290
+          },
+          {
+            "label": "Goa",
+            "count": 272
+          },
+          {
+            "label": "Puducherry",
+            "count": 271
+          },
+          {
+            "label": "Haryana",
+            "count": 249
+          },
+          {
+            "label": "Tamil Nadu",
+            "count": 240
+          },
+          {
+            "label": "Rajasthan",
+            "count": 159
+          },
+          {
+            "label": "Bihar",
+            "count": 114
+          },
+          {
+            "label": "West Bengal",
+            "count": 110
+          },
+          {
+            "label": "Chhattisgarh",
+            "count": 108
+          },
+          {
+            "label": "Jharkhand",
+            "count": 97
+          },
+          {
+            "label": "Meghalaya",
+            "count": 89
+          },
+          {
+            "label": "Assam",
+            "count": 87
+          },
+          {
+            "label": "Kerala",
+            "count": 87
+          },
+          {
+            "label": "Maharashtra",
+            "count": 85
+          },
+          {
+            "label": "Odisha",
+            "count": 85
+          },
+          {
+            "label": "Himachal Pradesh",
+            "count": 75
+          },
+          {
+            "label": "Dadra & Nagar Haveli and Daman & Diu",
+            "count": 62
+          },
+          {
+            "label": "Karnataka",
+            "count": 60
+          },
+          {
+            "label": "Delhi",
+            "count": 54
+          },
+          {
+            "label": "Andhra Pradesh",
+            "count": 52
+          },
+          {
+            "label": "Jammu and Kashmir",
+            "count": 47
+          },
+          {
+            "label": "Uttar Pradesh",
+            "count": 47
+          },
+          {
+            "label": "Arunachal Pradesh",
+            "count": 45
+          },
+          {
+            "label": "Tripura",
+            "count": 44
+          },
+          {
+            "label": "Punjab",
+            "count": 41
+          },
+          {
+            "label": "Manipur",
+            "count": 34
+          },
+          {
+            "label": "Mizoram",
+            "count": 32
+          },
+          {
+            "label": "Sikkim",
+            "count": 29
+          },
+          {
+            "label": "Telangana",
+            "count": 23
+          },
+          {
+            "label": "Nagaland",
+            "count": 22
+          },
+          {
+            "label": "Chandigarh",
+            "count": 21
+          },
+          {
+            "label": "Andaman and Nicobar Islands",
+            "count": 19
+          },
+          {
+            "label": "Lakshadweep",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "identifier": "schemeCategory",
+        "label": "Scheme Category",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Social welfare & Empowerment",
+            "count": 1453
+          },
+          {
+            "label": "Education & Learning",
+            "count": 1110
+          },
+          {
+            "label": "Agriculture,Rural & Environment",
+            "count": 862
+          },
+          {
+            "label": "Business & Entrepreneurship",
+            "count": 772
+          },
+          {
+            "label": "Women and Child",
+            "count": 470
+          },
+          {
+            "label": "Skills & Employment",
+            "count": 401
+          },
+          {
+            "label": "Banking,Financial Services and Insurance",
+            "count": 336
+          },
+          {
+            "label": "Health & Wellness",
+            "count": 286
+          },
+          {
+            "label": "Sports & Culture",
+            "count": 280
+          },
+          {
+            "label": "Housing & Shelter",
+            "count": 136
+          },
+          {
+            "label": "Science, IT & Communications",
+            "count": 121
+          },
+          {
+            "label": "Transport & Infrastructure",
+            "count": 104
+          },
+          {
+            "label": "Travel & Tourism",
+            "count": 96
+          },
+          {
+            "label": "Utility & Sanitation",
+            "count": 58
+          },
+          {
+            "label": "Public Safety,Law & Justice",
+            "count": 34
+          }
+        ]
+      },
+      {
+        "identifier": "gender",
+        "label": "Gender",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3941
+          },
+          {
+            "label": "Female",
+            "count": 790
+          },
+          {
+            "label": "Male",
+            "count": 348
+          },
+          {
+            "label": "Transgender",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "identifier": "age-general",
+        "label": "Age",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 681
+          },
+          {
+            "label": 10,
+            "count": 3873
+          },
+          {
+            "label": 20,
+            "count": 3888
+          },
+          {
+            "label": 30,
+            "count": 3791
+          },
+          {
+            "label": 40,
+            "count": 3624
+          },
+          {
+            "label": 50,
+            "count": 3351
+          },
+          {
+            "label": 60,
+            "count": 3107
+          },
+          {
+            "label": 70,
+            "count": 2052
+          },
+          {
+            "label": 80,
+            "count": 1975
+          },
+          {
+            "label": 90,
+            "count": 1928
+          },
+          {
+            "label": 100,
+            "count": 1845
+          },
+          {
+            "label": 110,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "caste",
+        "label": "Caste",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4001
+          },
+          {
+            "label": "Scheduled Caste (SC)",
+            "count": 394
+          },
+          {
+            "label": "Scheduled Tribe (ST)",
+            "count": 341
+          },
+          {
+            "label": "Other Backward Class (OBC)",
+            "count": 189
+          },
+          {
+            "label": "General",
+            "count": 72
+          },
+          {
+            "label": "Particularly Vulnerable Tribal Group (PVTG)",
+            "count": 40
+          },
+          {
+            "label": "De-Notified, Nomadic, and Semi-Nomadic (DNT) communities",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "nodalMinistryName",
+        "label": "Ministry Name",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Ministry Of Social Justice and Empowerment",
+            "count": 85
+          },
+          {
+            "label": "Ministry of Education",
+            "count": 85
+          },
+          {
+            "label": "Ministry Of Science And Technology",
+            "count": 68
+          },
+          {
+            "label": "Ministry Of Commerce And Industry",
+            "count": 56
+          },
+          {
+            "label": "Ministry Of Agriculture and Farmers Welfare",
+            "count": 41
+          },
+          {
+            "label": "Ministry Of Micro, Small and Medium Enterprises",
+            "count": 31
+          },
+          {
+            "label": "Ministry Of Textiles",
+            "count": 24
+          },
+          {
+            "label": "Ministry Of Youth Affairs & Sports",
+            "count": 22
+          },
+          {
+            "label": "Ministry of Electronics and Information Technology",
+            "count": 22
+          },
+          {
+            "label": "Ministry Of Culture",
+            "count": 20
+          },
+          {
+            "label": "Ministry Of Finance",
+            "count": 19
+          },
+          {
+            "label": "Ministry Of Home Affairs",
+            "count": 18
+          },
+          {
+            "label": "Ministry Of Defence",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Health & Family Welfare",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Labour and Employment",
+            "count": 13
+          },
+          {
+            "label": "Ministry of Fisheries,Animal Husbandry and Dairying",
+            "count": 13
+          },
+          {
+            "label": "Ministry Of Minority Affairs",
+            "count": 12
+          },
+          {
+            "label": "Ministry Of Communication",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Skill Development And Entrepreneurship",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Ayush",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Chemicals And Fertilizers",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Rural Development",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Tribal Affairs",
+            "count": 10
+          },
+          {
+            "label": "Ministry of Women and Child Development",
+            "count": 8
+          },
+          {
+            "label": "Ministry Of New and Renewable Energy",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Tourism",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Jal Shakti",
+            "count": 6
+          },
+          {
+            "label": "Ministry Of External Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Housing & Urban Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Law and Justice",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Personnel, Public Grievances And Pensions",
+            "count": 5
+          },
+          {
+            "label": "Ministry of Ports,Shipping and Waterways",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Environment,forests and climate change",
+            "count": 4
+          },
+          {
+            "label": "Ministry of Heavy Industries",
+            "count": 4
+          },
+          {
+            "label": "Ministry Of Petroleum and Natural Gas",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Statistics and Programme Implementation",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Steel",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Corporate Affairs",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Food Processing Industries",
+            "count": 3
+          },
+          {
+            "label": "Comptroller And Auditor General Of India",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Panchayati Raj",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Road Transport & Highways",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Water Resources,River Development & Ganga Rejuvenation",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Consumer Affairs, Food And Public Distribution",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Development Of North Eastern Region",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Earth Sciences",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Information And Broadcasting",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Mines",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Power",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Railways",
+            "count": 1
+          },
+          {
+            "label": "NITI Aayog (National Institution for Transforming India)",
+            "count": 1
+          },
+          {
+            "label": "The Lokpal of India",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "level",
+        "label": "Level",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "State",
+            "count": 4058
+          },
+          {
+            "label": "Central",
+            "count": 714
+          }
+        ]
+      },
+      {
+        "identifier": "residence",
+        "label": "Residence",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Both",
+            "count": 4537
+          },
+          {
+            "label": "Rural",
+            "count": 203
+          },
+          {
+            "label": "Urban",
+            "count": 42
+          }
+        ]
+      },
+      {
+        "identifier": "minority",
+        "label": "Minority",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4704
+          },
+          {
+            "label": "Yes",
+            "count": 68
+          }
+        ]
+      },
+      {
+        "identifier": "disability",
+        "label": "Differently Abled",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4469
+          },
+          {
+            "label": "Yes",
+            "count": 303
+          }
+        ]
+      },
+      {
+        "identifier": "benefitTypes",
+        "label": "Benefit Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Cash",
+            "count": 3317
+          },
+          {
+            "label": "In Kind",
+            "count": 805
+          },
+          {
+            "label": "Composite",
+            "count": 650
+          }
+        ]
+      },
+      {
+        "identifier": "dbtScheme",
+        "label": "DBT Scheme",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4305
+          },
+          {
+            "label": "Yes",
+            "count": 467
+          }
+        ]
+      },
+      {
+        "identifier": "maritalStatus",
+        "label": "Marital Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4467
+          },
+          {
+            "label": "Never Married",
+            "count": 142
+          },
+          {
+            "label": "Widowed",
+            "count": 107
+          },
+          {
+            "label": "Married",
+            "count": 93
+          },
+          {
+            "label": "Divorced",
+            "count": 48
+          },
+          {
+            "label": "Separated",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "disabilityPercentage",
+        "label": "Disability Percentage",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 24
+          },
+          {
+            "label": 10,
+            "count": 27
+          },
+          {
+            "label": 20,
+            "count": 32
+          },
+          {
+            "label": 30,
+            "count": 32
+          },
+          {
+            "label": 40,
+            "count": 172
+          },
+          {
+            "label": 50,
+            "count": 176
+          },
+          {
+            "label": 60,
+            "count": 182
+          },
+          {
+            "label": 70,
+            "count": 187
+          },
+          {
+            "label": 80,
+            "count": 199
+          },
+          {
+            "label": 90,
+            "count": 199
+          },
+          {
+            "label": 100,
+            "count": 209
+          }
+        ]
+      },
+      {
+        "identifier": "isBpl",
+        "label": "Below Poverty Line",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4600
+          },
+          {
+            "label": "Yes",
+            "count": 172
+          }
+        ]
+      },
+      {
+        "identifier": "isEconomicDistress",
+        "label": "Economic Distress",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4725
+          },
+          {
+            "label": "Yes",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "isGovEmployee",
+        "label": "Government Employee",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4758
+          },
+          {
+            "label": "Yes",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "employmentStatus",
+        "label": "Employment Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3659
+          },
+          {
+            "label": "Employed",
+            "count": 519
+          },
+          {
+            "label": "Self-Employed/ Entrepreneur",
+            "count": 423
+          },
+          {
+            "label": "Unemployed",
+            "count": 171
+          }
+        ]
+      },
+      {
+        "identifier": "isStudent",
+        "label": "Student",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4414
+          },
+          {
+            "label": "Yes",
+            "count": 358
+          }
+        ]
+      },
+      {
+        "identifier": "occupation",
+        "label": "Occupation",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 390
+          },
+          {
+            "label": "Farmer",
+            "count": 357
+          },
+          {
+            "label": "Construction Worker",
+            "count": 270
+          },
+          {
+            "label": "Unorganized Worker",
+            "count": 192
+          },
+          {
+            "label": "Fishermen",
+            "count": 114
+          },
+          {
+            "label": "Artists",
+            "count": 83
+          },
+          {
+            "label": "Artisans, Spinners & Weavers",
+            "count": 80
+          },
+          {
+            "label": "Student",
+            "count": 66
+          },
+          {
+            "label": "Organized Worker",
+            "count": 40
+          },
+          {
+            "label": "Sportsperson",
+            "count": 35
+          },
+          {
+            "label": "Ex Servicemen",
+            "count": 28
+          },
+          {
+            "label": "Journalist",
+            "count": 22
+          },
+          {
+            "label": "Dairy Farmer",
+            "count": 21
+          },
+          {
+            "label": "Safai Karamchari",
+            "count": 18
+          },
+          {
+            "label": "Teacher / Faculty",
+            "count": 14
+          },
+          {
+            "label": "Coir Worker",
+            "count": 7
+          },
+          {
+            "label": "Street Vendor",
+            "count": 3
+          },
+          {
+            "label": "Health Worker",
+            "count": 2
+          },
+          {
+            "label": "Khadi Artisan",
+            "count": 2
+          },
+          {
+            "label": "Lawyer / Law Graduate / Advocate",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "identifier": "applicationMode",
+        "label": "Application Mode",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Offline",
+            "count": 2733
+          },
+          {
+            "label": "Online",
+            "count": 2350
+          },
+          {
+            "label": "Online - via CSC",
+            "count": 161
+          }
+        ]
+      },
+      {
+        "identifier": "schemeType",
+        "label": "Scheme Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Central Sector Scheme",
+            "count": 543
+          },
+          {
+            "label": "Centrally Sponsored Scheme",
+            "count": 146
+          }
+        ]
+      }
+    ],
+    "hits": {
+      "items": [
+        {
+          "id": "56G5F5gBXu-iUKXqw3WU",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "PRASHAD",
+            "level": "Central",
+            "schemeFor": "Infra",
+            "nodalMinistryName": "Ministry Of Tourism",
+            "schemeCategory": [
+              "Transport & Infrastructure",
+              "Travel & Tourism"
+            ],
+            "schemeName": "Pilgrimage Rejuvenation and Spiritual Augmentation Drive (PRASHAD)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "prashad",
+            "briefDescription": "Launched in 2014–2015, the scheme \"Pilgrimage Rejuvenation and Spiritual Augmentation Drive (PRASAD)\" is a Central Sector Scheme by the Ministry of Tourism, Government of India. The scheme focuses on developing and identifying pilgrimage sites across India to enrich the religious tourism experience.",
+            "tags": [
+              "Pilgrimage",
+              "Rejuvenation",
+              "Heritage",
+              "Infrastructure",
+              "Tourism"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "HaG7F5gBXu-iUKXqVXZU",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "BMSMEPS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Banglashree for Micro, Small and Medium Enterprises: Power Subsidy (PS)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "bmsmeps",
+            "briefDescription": "“Power Subsidy (PS)” incentives under “Banglashree for MSMEs” scheme implemented by the MSMEs Dept., Government of West Bengal, aims to provide power subsidy on the electricity consumed for the manufacturing activity to an eligible micro or small enterprise.\n",
+            "tags": [
+              "MSME",
+              "Incentives",
+              "Power Subsidy",
+              "Entrepreneurship",
+              "Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Vca7F5gB0AGc0F0iVzXt",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "BMSMEWCS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Banglashree for Micro, Small and Medium Enterprises: Subsidy for Water Conservation/Environment Compliance (WCS)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "bmsmewcs",
+            "briefDescription": "“Subsidy for Water Conservation/Environment Compliance” incentives  by the MSMEs Dept., Government of West Bengal, aims to provide reimbursement of expenditure incurred by it towards the cost of captive Effluent Water Treatment Plant for wastewater recycling and/ or other pollution control devices.",
+            "tags": [
+              "MSME",
+              "Incentives",
+              "Water Conservation",
+              "Environment Compliance",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement",
+              "WCS"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "W6G8F5gBXu-iUKXqT3ab",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "OTSNPA",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "West Bengal Handloom and Khadi Weavers Financial Benefit Scheme 2024: Support for One Time Settlement (OTS) of NPA Accounts of PWCS",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "otsnpa",
+            "briefDescription": "“Support for One Time Settlement (OTS) of NPA Accounts of PWCS\" is a sub-scheme under \"West Bengal Handloom and Khadi Weavers Financial Benefit Scheme 2024” by the MSME and Textiles Dept, Government of West Bengal aims to make PWCS debt free by providing financial support for OTS of NPA accounts.",
+            "tags": [
+              "Handloom",
+              "Khadi Weavers",
+              "NPA",
+              "PWCS",
+              "OTS"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "JqG7F5gBXu-iUKXqVnaX",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "WBISSQI",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": " The West Bengal Incentive Scheme: Subsidy for Quality Improvement",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "wbissqi",
+            "briefDescription": "“Subsidy for Quality Improvement” incentives under the “WBIS” scheme aims to provide a reimbursement for the fixed capital investment expenditure incurred for quality improvement, modernization and installation of pollution control devices and for obtaining ISI/BIS/ISO certification.",
+            "tags": [
+              "Tourism",
+              "Incentives",
+              "Quality Improvement",
+              "Tourism Units",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Yxe8F5gB5uF80_MGVJFP",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "WBTISPS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": " West Bengal Textile Incentive Scheme: Power Subsidy",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "wbisps",
+            "briefDescription": "“Power Subsidy” incentives under “West Bengal Textile Incentive Scheme” scheme implemented by the Dept. of MSME&T, Government of West Bengal, aims to provide power subsidy on electricity consumption for 5 years from the date of commencement of production.",
+            "tags": [
+              "Textile",
+              "Incentives",
+              "Waiver",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement",
+              "Power Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "TRe8F5gB5uF80_MGTpGw",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "ISMPSSSQC",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Incentive Scheme for MSMEs in Powerloom Sector: Subsidy for Standard Quality Compliance",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ismpsssqc",
+            "briefDescription": "“Subsidy for Standard Quality Compliance” incentive under the “Incentive Scheme for MSMEs in Powerloom Sector” scheme by the Dept. of MSME & T, Government of West Bengal, aims to provide reimbursement of the expenditure incurred for obtaining certification from approved Institutions/ Research Labs.",
+            "tags": [
+              "Powerloom",
+              "Waiver",
+              "Quality Compliance",
+              "Certification",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "IxfZF5gB5uF80_MG05O3",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "ISMPSSPR",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Incentive Scheme for MSMEs in Powerloom Sector: Subsidy for Patent Registration",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ismpsspr",
+            "briefDescription": "“Subsidy for Patent Registration” incentive under the “Incentive Scheme for MSMEs in Powerloom Sector” scheme implemented by the Dept. of MSME & T, Government of West Bengal,  aims to provide reimbursement of expenditure incurred by it for obtaining Patent Registration.\n",
+            "tags": [
+              "Powerloom",
+              "Waiver",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement",
+              "Patent Registration"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "j8a8F5gB0AGc0F0iVjUj",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "SFACOHCSSEFC",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Business & Entrepreneurship",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Scheme of Financial Assistance for Cultural Organization for Holding Conference, Seminar, Symposium, Exhibition, Festival, Competition etc.",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "sfacohcssefc",
+            "briefDescription": "The Arts and Culture Department launched the \"Scheme of Financial Assistance for Cultural Organization for Holding Conference, Seminar, Symposium, Exhibition, Festival, Competition etc.\" The scheme aims to provide annual grant to the institution/organization organizing a seminar, symposium. ",
+            "tags": [
+              "Financial Assistance",
+              "Organization",
+              "Culture",
+              "Institution"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ZBe8F5gB5uF80_MGVJFt",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "ISMPSSEE",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Incentive Scheme for MSMEs in Powerloom Sector: Subsidy for Energy Efficiency",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ismpssee",
+            "briefDescription": "“Subsidy for Energy Efficiency” incentives under the “Incentive Scheme for MSMEs in Powerloom Sector” scheme implemented by the Dept. of MSME & T, Government of West Bengal, aims to provide a reimbursement for the cost of energy audit and installations for energy conservation as per energy audit.",
+            "tags": [
+              "Powerloom",
+              "Energy Audit",
+              "Energy Efficiency",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement",
+              "Energy Conservation",
+              "Energy Installations"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "WRe8F5gB5uF80_MGUZGQ",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "IPSAEUSD",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Investment Promotion Scheme (IPS) for MSME Sector: Assistance For Entrepreneurship Under Skill Development",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ipsaeusd",
+            "briefDescription": "“Assistance For Entrepreneurship Under Skill Development” under the “Investment Promotion Scheme (IPS)” for MSME sector, implemented by the Dept. of Industries, DNH & DD, aims to provide assistance to budding entrepreneurs and their staffs to undergo Entrepreneurship /Management training.",
+            "tags": [
+              "Skill Development",
+              "Investment",
+              "MSMEs",
+              "Incentives",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement",
+              "Water"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "bhe8F5gB5uF80_MGV5Ga",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "IPSACESW",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Investment Promotion Scheme (IPS) for MSME Sector: Assistance For Saving In Consumption Of Energy And Water",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ipsacesw",
+            "briefDescription": "“Assistance For Saving In Consumption Of Energy And Water” under the “Investment Promotion Scheme (IPS)” for MSME sector, implemented by the Dept. of Industries, DNH & DD, aims to provide assistance to the existing/ new Enterprise for taking action for saving in consumption of Energy and Water.",
+            "tags": [
+              "Energy",
+              "Investment",
+              "MSMEs",
+              "Incentives",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement",
+              "Water"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "FqEyGJgBXu-iUKXqhXkg",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "MSYNSKFDC-H",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship",
+              "Women and Child"
+            ],
+            "schemeName": "Mahila Samridhi Yojana under NSKFDC- Haryana",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "msynskfdc-h",
+            "briefDescription": "This scheme offers loans up to ₹1,00,000/- to women Safai Karamcharis or their dependents for economic development through self-employment initiatives, such as establishing cloth shops, dairies, tea shops, bangle shops, beauty parlours, papad making, basketry, tailoring shops, etc. ",
+            "tags": [
+              "Mahila",
+              "Samridhi",
+              "NSKFDC",
+              "HSFDC",
+              "Safai Karamcharis",
+              "Loan",
+              "Self-employment",
+              "Woman"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "YRe8F5gB5uF80_MGVJE2",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "IPSTSAISTS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Investment Promotion Scheme (IPS) for Textile Sector: Assistance Of Interest Subsidy For Textile Sector",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ipstsaists",
+            "briefDescription": "“Assistance Of Interest Subsidy For Textile Sector” under the “Investment Promotion Scheme (IPS)” for Textile Sector, implemented by the Dept. of Industries, U.T. Administration Of DNH & DD, aims to provide credit linked interest subsidy for Textile and Technical Textile sector.",
+            "tags": [
+              "Textile Sector",
+              "Interest Subsidy",
+              "Incentives",
+              "Entrepreneurship",
+              "Reimbursement",
+              "IPS"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "eKHmF5gBXu-iUKXq2XjD",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "FAOCESM",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Assistance to Orphan Children of Ex-Servicemen",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "faocesm",
+            "briefDescription": "Under the scheme, financial assistance of ₹3,000/‐ per month shall be granted to those Orphan Children of Ex-Servicemen only who are bonafide resident of the Haryana State and are not in receipt of any kind of financial assistance from any Department of Haryana Government.",
+            "tags": [
+              "Financial Assistance",
+              "Orphan",
+              "Ex-Servicemen",
+              "ESM",
+              "Sainik"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "eMbmF5gB0AGc0F0i0Ddk",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "E-GGDDFP",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Ex-Gratia Grant for Disability to Defence Forces Personnel",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "e-ggddfp",
+            "briefDescription": "Under the scheme, the ex-gratia grant will be given to those personnel of the Defence Forces hailing from Haryana who get disabled for life and are boarded out of service due to disability declared as in war/operation, in operational area, terrorist activities & natural calamities, etc.",
+            "tags": [
+              "Ex-Gratia",
+              "Grant",
+              "Disability",
+              "Defence Forces Personnel",
+              "PwD",
+              "Sainik"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "E8YyGJgB0AGc0F0ihDhe",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "IPSHACIHH",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Investment Promotion Scheme (IPS) For Handicraft Artisans: Assistance For Capital Investment For The Handloom And Handicrafts Artisans Of The U.T. Requiring Financial Assistance For Purchase Of Machinery Or Raw Materials",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ipshacihh",
+            "briefDescription": "This is a sub-scheme under the “Investment Promotion Scheme (IPS)”, implemented by the Dept. of Industries, U.T. Administration Of DNH & DD, that aims to provide financial assistance for purchase of machinery or raw materials for development of their business.",
+            "tags": [
+              "Capital Investment",
+              "MSMEs",
+              "Incentives",
+              "Entrepreneurship",
+              "Subsidy",
+              "Reimbursement",
+              "IPS",
+              "Handicraft Artisans",
+              "Handloom",
+              "Purchase Of Machinery"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "MKHZF5gBXu-iUKXq1Xg9",
+          "fields": {
+            "beneficiaryState": [
+              "Andhra Pradesh"
+            ],
+            "schemeShortTitle": "SMCRCSC",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Sanctioning of M.C.R. Chappals to Senior Citizens",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "smcrcsc",
+            "briefDescription": "The \"Sanctioning of M.C.R. Chappals to Senior Citizens\" scheme aims to provide M.C.R. (Micro Cellular Rubber) chappals to senior citizens. This initiative ensures that eligible senior citizens receive the necessary support to improve their comfort and mobility. ",
+            "tags": [
+              "Empowerment",
+              "Social Welfare"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "DhfZF5gB5uF80_MGUZMe",
+          "fields": {
+            "beneficiaryState": [
+              "Bihar"
+            ],
+            "schemeShortTitle": "TMVSY-AJJAP",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Skills & Employment"
+            ],
+            "schemeName": "Talab Matsyiki Vishesh Sahayata Yojana (Anusuchit Jaati/Janajati/Ati Pichhada)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "tmvsy-ajjap",
+            "briefDescription": "The Bihar Government's Animal and Fisheries Resources Department has introduced the \"Talab Matsyiki Vishesh Sahayata Yojana (Anusuchit Jaati/Janajati/Ati Pichhada)\" aims to support fish farmers by providing financial and technical assistance for pond construction, installation of necessary equipment",
+            "tags": [
+              "Scheduled Caste",
+              "Tribe",
+              "Most Backward",
+              "Farmers"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "KcbZF5gB0AGc0F0iWTcq",
+          "fields": {
+            "beneficiaryState": [
+              "Bihar"
+            ],
+            "schemeShortTitle": "PKTNAMPY",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Pathari Kshetr Talab Nirman Aadharit Matsya Paalan ki Yojana",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "pktnampy",
+            "briefDescription": "The \"Pathari Kshetr Talab Nirman Aadharit Matsya Paalan ki Yojana\" aims to promote fisheries by constructing ponds and setting up related supporting units in plateau-dominated districts. The initiative is designed to create new employment opportunities and provide a means of livelihood for farmers.",
+            "tags": [
+              "Fish Farmer",
+              "Financial Assistance",
+              "Ponds",
+              "Opportunities"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "n8a9F5gB0AGc0F0iYzUm",
+          "fields": {
+            "beneficiaryState": [
+              "Bihar"
+            ],
+            "schemeShortTitle": "MMACY",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Mukhyamantri Alpsankhyak Chhatravas Yojana",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "mmacy",
+            "briefDescription": "Under this scheme, students belonging to minority communities who are studying in a recognized institution, school, college, university, or technical institution in their respective districts and residing in minority hostels are provided a monthly stipend of ₹1,000/-. ",
+            "tags": [
+              "Stipend",
+              "Student",
+              "Minority Community",
+              "Hostel"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "jBe9F5gB5uF80_MGbJGD",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "FIG",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Farmers Interest Group (FIG)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "fig",
+            "briefDescription": "The “Farmers Interest Group (FIG)” scheme supports every group of 15 farmers with grants for agricultural development. The scheme offers assistance for office equipment, training, ID cards, and district-level meetings.\n",
+            "tags": [
+              "Agriculture",
+              "Farmer",
+              "Farmers Interest Group",
+              "FIG"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "NqG7F5gBXu-iUKXq0HYy",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "DSLAS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Disabled State Level Award Scheme",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "dslas",
+            "briefDescription": "The objective of the scheme is to encourage persons with disabilities and organizations working for the interests of persons with disabilities and to motivate the community for overall rehabilitation of persons with disabilities.",
+            "tags": [
+              "Employee",
+              "Award",
+              "PwD",
+              "Employer",
+              "Organization"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "yqG-F5gBXu-iUKXqYnZ5",
+          "fields": {
+            "beneficiaryState": [
+              "Maharashtra"
+            ],
+            "schemeShortTitle": "PMTAISPTTSHGOSC",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship",
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Providing Mini Tractor and its Sub Parts to the Self Help Group of Scheduled Castes",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "pmtaispttshgosc",
+            "briefDescription": "The \"Providing Mini tractor and its sub parts to the Self Help Group of Scheduled Castes\" is a scheme by the Govt. of Maharashtra. This scheme aims to improve the financial condition of the scheduled castes and Nav-Buddhists Self Help Group.",
+            "tags": [
+              "Scheduled Caste",
+              "SHG",
+              "Social Welfare",
+              "Self Help Group",
+              "Subsidy",
+              "SC",
+              "Tractor"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "_hc7GJgB5uF80_MGJ5PT",
+          "fields": {
+            "beneficiaryState": [
+              "Rajasthan"
+            ],
+            "schemeShortTitle": "VSBGKS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Housing & Shelter"
+            ],
+            "schemeName": "Vadh Se Bachaye Govansh Ko Sahayata Yojana",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "vsbgks",
+            "briefDescription": "The \"Vadh Se Bachaye Govansh Ko Sahayata Yojana\" scheme, initiated by the Directorate of Gopalan on 02/07/2015, provides financial assistance for the care and maintenance of cattle rescued from illegal slaughter or smuggling.\n\n",
+            "tags": [
+              "Animal Shelter",
+              "Cattle Welfare Scheme",
+              "Cow Protection",
+              "Animal Husbandry"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "taG9F5gBXu-iUKXq4na1",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "AGMSMECISMS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Aatmanirbhar Gujarat Scheme for assistance to MSMEs: Assistance for Interest Subsidy to Micro, Small and Medium Enterprise (Manufacturing Sector)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "agmsmecisms",
+            "briefDescription": "The \"Aatmanirbhar Gujarat Scheme for assistance to MSMEs\" aims to empower the state's dynamic MSME sector, which significantly contributes to employment, GDP, and exports.\n\n",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Interest Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0Ma9F5gB0AGc0F0i4jUh",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "AGMSMESAPC",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Aatmanirbhar Gujarat Scheme for assistance to MSMEs: Assistance for Power Connection Charges",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "agmsmesapc",
+            "briefDescription": "The \"Aatmanirbhar Gujarat Scheme for assistance to MSMEs\" aims to empower the state's dynamic MSME sector, which significantly contributes to employment, GDP, and exports.\n",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "Subsidy",
+              "Power Connection"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "rRe9F5gB5uF80_MG4pFB",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "AGMSMEARMSE",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Aatmanirbhar Gujarat Scheme for assistance to MSMEs: Assistance in Rent to MSEs",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "agmsmearmse",
+            "briefDescription": "The \"Aatmanirbhar Gujarat Scheme for assistance to MSMEs\" aims to empower the state's dynamic MSME sector, which significantly contributes to employment, GDP, and exports.\n",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "Subsidy",
+              "Rent Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "qBe9F5gB5uF80_MG4ZE4",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "AGSLITSIS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Aatmanirbhar Gujarat Scheme for assistance to Large Industries and Thrust Sector: Assistance of Interest Subsidy",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "agslitsis",
+            "briefDescription": "The \"Aatmanirbhar Gujarat Scheme for assistance to Large Industries and Thrust Sector\"  aims to provide incentives to attract increased investments in the manufacturing sector to create more employment opportunities in Gujarat.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "Large Industries",
+              "Thrust Sector",
+              "Interest Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "txe9F5gB5uF80_MG45HU",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SFAILFCS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Scheme for Financial Assistance to Integrated Logistics Facilities: Capital Subsidy",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "sfailfcs",
+            "briefDescription": "The \"Scheme for Financial Assistance to Integrated Logistics Facilities\" under the Gujarat Integrated Logistics and Logistics Park Policy, provides financial support to private developers for creating logistics facilities and parks with the necessary infrastructure and services.",
+            "tags": [
+              "Logistics Facilities",
+              "Capital Subsidy",
+              "Business"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "yMa9F5gB0AGc0F0i4TUG",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SFALP",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Scheme for Assistance to Logistic Park",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "sfalp",
+            "briefDescription": "The \"Scheme for Financial Assistance to Logistic Parks\" aims to promote the development of logistic parks to enhance infrastructure and streamline the supply chain across the state. ",
+            "tags": [
+              "Logistic Park",
+              "Entrepreneurship"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "8aG_F5gBXu-iUKXqiHaJ",
+          "fields": {
+            "beneficiaryState": [
+              "Jharkhand"
+            ],
+            "schemeShortTitle": "IFS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Integrated Fisheries Scheme",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ifs",
+            "briefDescription": "The \"Integrated Fisheries Scheme\" by the Fisheries Division, Government of Jharkhand, aims to promote fish-duck farming and increase fish farmers' income. The scheme provides financial assistance of up to 80% for eligible SC/ST/women beneficiaries and 70% for others.",
+            "tags": [
+              "Financial Assistance",
+              "Fish Farmer",
+              "Scheduled Tribes",
+              "Scheduled Castes",
+              "Women"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "6Re_F5gB5uF80_MGiJFl",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "BAUUYCIS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Dr.Babasaheb Ambedkar Udyog Uday Yojana: Assistance of Capital Investment Subsidy",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "bauuycis",
+            "briefDescription": "The scheme \"Dr.Babasaheb Ambedkar Udyog Uday Yojana\" aims to support SC/ST entrepreneurs and strengthen MSMEs, making them globally competitive.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up",
+              "Scheduled Caste",
+              "Scheduled Tribe"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Cca_F5gB0AGc0F0ihDbx",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "GTBPSS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Goa Traditional Bakers (Poders) Subsidy Scheme",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "gtbpss",
+            "briefDescription": "\"Goa Traditional Bakers (Poders) Subsidy Scheme\" aims to provide financial assistance to traditional bakers (poders) in Goa to ensure the protection and growth of this traditional occupation. Subsidies for the purchase of flour are provided to traditional bakers who produce essential Goan breads.",
+            "tags": [
+              "Baker",
+              "Tradition",
+              "Subsidy",
+              "Financial Assistance",
+              "Bread"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Esa_F5gB0AGc0F0iiDaM",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "BAUUYZED",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Dr.Babasaheb Ambedkar Udyog Uday Yojana: Financial Support to MSMEs in ZED Certification",
+            "schemeCloseDate": "2025-08-06",
+            "priority": 3,
+            "slug": "bauuyzed",
+            "briefDescription": "The scheme \"Dr.Babasaheb Ambedkar Udyog Uday Yojana\" aims to support SC/ST entrepreneurs and strengthen MSMEs, making them globally competitive.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up",
+              "Scheduled Caste",
+              "Scheduled Tribe",
+              "ZED Certification"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "7KG_F5gBXu-iUKXqhnbx",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SACEIASRE",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship",
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Scheme of Assistance for Common Environment Infrastructure: Scheme of Assistance for Strengthening the Regulation and Environmental Compliance",
+            "schemeCloseDate": "2025-08-06",
+            "priority": 3,
+            "slug": "saceiasre",
+            "briefDescription": "The scheme \"Scheme of Assistance for Common Environment Infrastructure\" under the Gujarat Industrial Policy aims to provide incentives for environmental compliance to ensure long-term economic and ecological balance.\n\n",
+            "tags": [
+              "Entrepreneurship",
+              "Environment Infrastructure",
+              "Environmental Compliance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "F8a_F5gB0AGc0F0iiDa-",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "BAUUYISMS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Dr.Babasaheb Ambedkar Udyog Uday Yojana: Assistance for Interest Subsidy (Manufacturing Sector)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "bauuyisms",
+            "briefDescription": "The scheme \"Dr.Babasaheb Ambedkar Udyog Uday Yojana\" aims to support SC/ST entrepreneurs and strengthen MSMEs, making them globally competitive.\n\n",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up",
+              "Scheduled Caste",
+              "Scheduled Tribe"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "6Be_F5gB5uF80_MGiJFB",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "PPIMSES",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Preferential Purchase Incentives for Micro and Small Enterprises Scheme",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ppimses",
+            "briefDescription": "\"Preferential Purchase Incentives for Micro and Small Enterprises Scheme\" aims to encourage and boost the Micro and Small Scale Enterprise Sector. Benefits such as price matching, reduced tender document costs, and priority in payments are provided to Micro and Small Enterprises.",
+            "tags": [
+              "Tax",
+              "Incentive",
+              "Purchase",
+              "Business",
+              "Entrepreneur",
+              "MSME",
+              "Industry",
+              "Commerce"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "7qG_F5gBXu-iUKXqh3aU",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "BAUUYSME",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Dr.Babasaheb Ambedkar Udyog Uday Yojana: Assistance for Raising Capital through SME Exchange",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "bauuysme",
+            "briefDescription": "The scheme \"Dr.Babasaheb Ambedkar Udyog Uday Yojana\" aims to support SC/ST entrepreneurs and strengthen MSMEs, making them globally competitive.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up",
+              "Scheduled Caste",
+              "Scheduled Tribe"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "8he_F5gB5uF80_MGiZG_",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FRANCIS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Transport & Infrastructure",
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Fair Recreational Activity and Non-Competitive Involvement in Sports Urban Connect Scheme (F.R.A.N.C.I.S Urban Connect Scheme)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "francis",
+            "briefDescription": "\"Fair Recreational Activity and Non-Competitive Involvement in Sports Urban Connect Scheme (F.R.A.N.C.I.S Urban Connect Scheme)\" aims to provide safe play areas for healthy recreation and sports to urban communities. Assistance is provided to develop safe play areas in urban spaces.",
+            "tags": [
+              "Recreation",
+              "Urban",
+              "Sports",
+              "Playground"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "HhfAF5gB5uF80_MGbZJG",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "GSEMDS",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Goa State Export Market Development Scheme, 2008",
+            "schemeCloseDate": "2011-03-31",
+            "priority": 3,
+            "slug": "gsemds",
+            "briefDescription": "The scheme \"Goa State Export Market Development Scheme\" encouraged Goan industries to improve export markets and support them in establishing their goods firmly in the export market. It provided interest-free loans up to ₹5,00,000/- for participating in exhibitions and market study tours abroad.",
+            "tags": [
+              "Export",
+              "Market",
+              "Exhibition",
+              "MSME",
+              "Tour"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "TMbAF5gB0AGc0F0icDYl",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SAMSMESME",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Scheme for Assistance to Micro, Small and Medium Enterprises (MSME): Assistance for Raising Capital through SME Exchange ",
+            "schemeCloseDate": "2025-08-06",
+            "priority": 3,
+            "slug": "samsmesme",
+            "briefDescription": "The \"Scheme for Assistance to Micro, Small and Medium Enterprises (MSME)\" launched by the Industries and Mines Department aims to position Gujarat as a global business hub, promoting sustainable manufacturing, MSME growth, and export competitiveness.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "RcbAF5gB0AGc0F0ibjbm",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SAMSMECGT",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Scheme for Assistance to Micro, Small and Medium Enterprises (MSME):  Assistance for Reimbursement of CGTMSE Fees",
+            "schemeCloseDate": "2025-08-06",
+            "priority": 3,
+            "slug": "samsmecgt",
+            "briefDescription": "The \"Scheme for Assistance to Micro, Small and Medium Enterprises (MSME)\" launched by the Industries and Mines Department aims to position Gujarat as a global business hub, promoting sustainable manufacturing, MSME growth, and export competitiveness.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "5xe_F5gB5uF80_MGiJEM",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SAMSMEICT",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Scheme for Assistance to Micro, Small and Medium Enterprises (MSME): Assistance in Implementation of Information and Communication Technology (ICT)",
+            "schemeCloseDate": "2025-08-06",
+            "priority": 3,
+            "slug": "samsmeict",
+            "briefDescription": "The \"Scheme for Assistance to Micro, Small and Medium Enterprises (MSME)\" launched by the Industries and Mines Department aims to position Gujarat as a global business hub, promoting sustainable manufacturing, MSME growth, and export competitiveness.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Dsa_F5gB0AGc0F0ihzaV",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SAMSMEZED",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Scheme for Assistance to Micro, Small and Medium Enterprises (MSME): Financial Support to MSMEs in ZED Certification",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "samsmezed",
+            "briefDescription": "The scheme \"Scheme for Assistance to Micro, Small and Medium Enterprises (MSME)\" launched by the Industries and Mines Department aims to position Gujarat as a global business hub, promoting sustainable manufacturing, MSME growth, and export competitiveness.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "ZED Certification"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "HMa_F5gB0AGc0F0iijbN",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "BAUUYAMMPE",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Dr.Babasaheb Ambedkar Udyog Uday Yojana: Assistance to MSME Manufacturing Sector Participation in the Exhibition (National and International)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "bauuyammpe",
+            "briefDescription": "The scheme \"Dr.Babasaheb Ambedkar Udyog Uday Yojana\" aims to support SC/ST entrepreneurs and strengthen MSMEs, making them globally competitive.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up",
+              "Scheduled Caste",
+              "Scheduled Tribe",
+              "Exhibition"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "UMbAF5gB0AGc0F0icTaR",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "GTCCSLIU",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Gujarat Textile Policy: Capital Subsidy (Fiscal Incentives to Labour Intensive Unit)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "gtccsliu",
+            "briefDescription": "The \"Gujarat Textile Policy\" introduced by the Industries and Mines Department aims to create a vibrant Textile Sector ecosystem and generate enormous employment opportunities in the State.\n\n",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Textile Industry",
+              "Labour Intensive Unit"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "SMbAF5gB0AGc0F0ibzZH",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NLMPPE",
+            "level": "Central",
+            "schemeFor": "Infra",
+            "nodalMinistryName": "Ministry of Fisheries,Animal Husbandry and Dairying",
+            "schemeCategory": [
+              "Business & Entrepreneurship",
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "National Livestock Mission: Promotion of Piggery Entrepreneur",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "ppe",
+            "briefDescription": "The scheme aims to promote entrepreneurship in pig farming by providing a one-time capital subsidy of up to ₹30 lakh to eligible entrepreneurs and organizations to establish breeder farms.",
+            "tags": [
+              "Enterpreneurship",
+              "Subsidy",
+              "Genetic Upgradation",
+              "Pork Export",
+              "Pork Production",
+              "Piggery",
+              "Entrepreneur"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "NxfAF5gB5uF80_MGcJLh",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "GTPASJLIU",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Gujarat Textile Policy: Assistance to SHG for Job Work (Fiscal Incentives to Labour Intensive Unit)",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "gtpasjliu",
+            "briefDescription": "The \"Gujarat Textile Policy\" introduced by the Industries and Mines Department aims to create a vibrant Textile Sector ecosystem and generate enormous employment opportunities in the State.\n\n",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Textile Industry",
+              "Labour Intensive Unit"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "MRfAF5gB5uF80_MGb5J3",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SAMSMEARM",
+            "level": "State",
+            "schemeFor": "Infra",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Scheme for Assistance to Micro, Small and Medium Enterprises (MSME): Assistance in Rent to MSEs",
+            "schemeCloseDate": null,
+            "priority": 3,
+            "slug": "samsmearm",
+            "briefDescription": "The \"Scheme for Assistance to Micro, Small and Medium Enterprises (MSME)\" launched by the Industries and Mines Department aims to position Gujarat as a global business hub, promoting sustainable manufacturing, MSME growth, and export competitiveness.",
+            "tags": [
+              "Business",
+              "Entrepreneurship",
+              "MSMEs",
+              "Start Up"
+            ]
+          },
+          "highlight": {}
+        }
+      ],
+      "page": {
+        "total": 4772,
+        "totalPages": 96,
+        "pageNumber": 89,
+        "from": 4450,
+        "size": 50
+      }
+    },
+    "sortedBy": "multiple_sort"
+  }
+}

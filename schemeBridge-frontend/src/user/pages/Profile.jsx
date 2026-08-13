@@ -11,6 +11,7 @@ import {
   calculateCompletion
 } from "@data/mockProfile";
 import { FormSectionSkeleton } from "@components/ui/LoadingSkeleton";
+import BackButton from "@components/ui/BackButton";
 import { usePageMeta } from "@utils/usePageMeta";
 import {
   User,
@@ -265,6 +266,7 @@ export default function Profile() {
 
       {/* Page Header */}
       <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-xs space-y-4">
+        <BackButton fallbackPath="/dashboard" variant="ghost" label="Back to Dashboard" />
         <div>
           <h1 className="text-xl font-black text-gray-900 tracking-tight">Eligibility Profile</h1>
           <p className="text-xs text-gray-500 mt-0.5">

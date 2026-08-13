@@ -30,7 +30,9 @@ import java.util.List;
 public class GlobalErrorWebExceptionHandler implements ErrorWebExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalErrorWebExceptionHandler.class);
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule())
+            .disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {

@@ -32,11 +32,16 @@ public class DataSeeder implements CommandLineRunner {
         log.info("Seeding default Admin Service data into Database...");
 
         // 1. Seed Super Admin
-        if (!adminRepository.existsByEmail("admin@schemebridge.gov.in")) {
+        String defaultAdminId = "ADMIN-001";
+        String defaultAdminEmail = "admin@schemebridge.gov.in";
+
+        if (adminRepository.existsByAdminId(defaultAdminId) || adminRepository.existsByEmail(defaultAdminEmail)) {
+            log.info("Default Super Admin already exists (adminId: {}, email: {}). Skipping seeding.", defaultAdminId, defaultAdminEmail);
+        } else {
             Admin admin = Admin.builder()
-                    .adminId("ADMIN-001")
+                    .adminId(defaultAdminId)
                     .fullName("Principal System Administrator")
-                    .email("admin@schemebridge.gov.in")
+                    .email(defaultAdminEmail)
                     .phoneNumber("+919999900000")
                     .role(OfficerRole.SUPER_ADMIN)
                     .status(OfficerStatus.ACTIVE)
@@ -47,11 +52,16 @@ public class DataSeeder implements CommandLineRunner {
         }
 
         // 2. Seed Sample Officers
-        if (!officerRepository.existsByEmail("verification.officer@schemebridge.gov.in")) {
+        String defaultOfficerId = "OFFICER-101";
+        String defaultOfficerEmail = "verification.officer@schemebridge.gov.in";
+
+        if (officerRepository.existsByOfficerId(defaultOfficerId) || officerRepository.existsByEmail(defaultOfficerEmail)) {
+            log.info("Default sample Officer already exists (officerId: {}, email: {}). Skipping seeding.", defaultOfficerId, defaultOfficerEmail);
+        } else {
             Officer officer = Officer.builder()
-                    .officerId("OFFICER-101")
+                    .officerId(defaultOfficerId)
                     .fullName("Ramesh Sharma")
-                    .email("verification.officer@schemebridge.gov.in")
+                    .email(defaultOfficerEmail)
                     .phoneNumber("+919876543211")
                     .role(OfficerRole.VERIFICATION_OFFICER)
                     .status(OfficerStatus.ACTIVE)

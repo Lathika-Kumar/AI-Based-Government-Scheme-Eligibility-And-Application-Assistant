@@ -1,34 +1,167 @@
 version: '3.8'
 
 services:
+  # ── Infrastructure: MongoDB ────────────────────────────────────────────────
   mongodb:
     image: mongo:7.0
     container_name: schemebridge-mongodb
     restart: always
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: schemebridge
     volumes:
       - mongo_data:/data/db
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 5
 
-  backend:
+  # ── Step 1: Config Server ──────────────────────────────────────────────────
+  config-server:
     build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: schemebridge-backend
+      context: ./config-server
+    container_name: schemebridge-config-server
+    restart: always
+    ports:
+      - "8888:8888"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-native}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ── Step 2: Eureka Service Registry ─────────────────────────────────────────
+  service-registry:
+    build:
+      context: ./service-registry
+    container_name: schemebridge-service-registry
+    restart: always
+    ports:
+      - "8761:8761"
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: service-registry
+    depends_on:
+      config-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ── Step 3: API Gateway ────────────────────────────────────────────────────
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: schemebridge-api-gateway
     restart: always
     ports:
       - "8080:8080"
     environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka/
+      JWT_SECRET: ${JWT_SECRET:-SchemeBridgeSuperSecretKeyForJWTSigningMustBeAtLeast256BitsLongForSecurity2026}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost:80}
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ── Step 4: Auth Service ───────────────────────────────────────────────────
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: schemebridge-auth-service
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka/
       SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/schemebridge
       JWT_SECRET: ${JWT_SECRET:-SchemeBridgeSuperSecretKeyForJWTSigningMustBeAtLeast256BitsLongForSecurity2026}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000}
     depends_on:
+      api-gateway:
+        condition: service_healthy
       mongodb:
+        condition: service_healthy
+
+  # ── Step 5: Core Service ───────────────────────────────────────────────────
+  core-service:
+    build:
+      context: ./core-service
+    container_name: schemebridge-core-service
+    restart: always
+    ports:
+      - "8082:8082"
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka/
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/schemebridge
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      FEATURE_AI_ENABLED: ${FEATURE_AI_ENABLED:-true}
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  # ── Step 6: Notification Service ──────────────────────────────────────────
+  notification-service:
+    build:
+      context: ./notification-service
+    container_name: schemebridge-notification-service
+    restart: always
+    ports:
+      - "8083:8083"
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka/
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/schemebridge
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  # ── Step 7: Admin Service ──────────────────────────────────────────────────
+  admin-service:
+    build:
+      context: ./admin-service
+    container_name: schemebridge-admin-service
+    restart: always
+    ports:
+      - "8084:8084"
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka/
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/schemebridge
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  # ── Step 8: Frontend (Nginx Production Container) ─────────────────────────
+  frontend:
+    build:
+      context: ../schemeBridge-frontend
+    container_name: schemebridge-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      api-gateway:
         condition: service_healthy
 
 volumes:

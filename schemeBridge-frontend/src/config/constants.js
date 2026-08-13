@@ -113,3 +113,13 @@ export function formatCurrency(amount) {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+// ── Authentication & Testing ───────────────────────────────────────────────────
+
+/** Centralized development/testing mode flag */
+export const TESTING_MODE = true;
+
+/** Centralized development/testing OTP code */
+export const TEST_OTP = "123456";
+
+

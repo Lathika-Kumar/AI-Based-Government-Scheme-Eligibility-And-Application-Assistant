@@ -2,6 +2,13 @@ server:
   port: 8080
   shutdown: graceful
 
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: localhost
+
+
 spring:
   main:
     web-application-type: reactive
@@ -36,23 +43,23 @@ spring:
           predicates:
             - Path=/api/v1/auth/**
 
-        - id: citizen-service-route
-          uri: lb://citizen-service
+        - id: core-citizen-route
+          uri: lb://core-service
           predicates:
             - Path=/api/v1/citizen/**
 
-        - id: scheme-service-route
-          uri: lb://scheme-service
+        - id: core-scheme-route
+          uri: lb://core-service
           predicates:
             - Path=/api/v1/schemes/**
 
-        - id: application-service-route
-          uri: lb://application-service
+        - id: core-application-route
+          uri: lb://core-service
           predicates:
             - Path=/api/v1/applications/**
 
-        - id: document-service-route
-          uri: lb://document-service
+        - id: core-document-route
+          uri: lb://core-service
           predicates:
             - Path=/api/v1/documents/**
 
@@ -61,10 +68,16 @@ spring:
           predicates:
             - Path=/api/v1/notifications/**
 
+        - id: core-ai-route
+          uri: lb://core-service
+          predicates:
+            - Path=/api/v1/ai/**
+
         - id: admin-service-route
           uri: lb://admin-service
           predicates:
             - Path=/api/v1/admin/**
+
 
 logging:
   level:

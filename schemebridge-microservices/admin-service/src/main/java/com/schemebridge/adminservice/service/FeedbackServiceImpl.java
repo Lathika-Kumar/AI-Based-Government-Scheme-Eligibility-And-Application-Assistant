@@ -7,6 +7,8 @@ import com.schemebridge.adminservice.entity.SystemFeedback;
 import com.schemebridge.adminservice.enums.AdminActionType;
 import com.schemebridge.adminservice.enums.FeedbackStatus;
 import com.schemebridge.adminservice.repository.SystemFeedbackRepository;
+import com.schemebridge.common.event.BusinessEvents;
+import com.schemebridge.common.event.DomainEventPublisher;
 import com.schemebridge.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final SystemFeedbackRepository feedbackRepository;
     private final AuditLogService auditLogService;
+    private final DomainEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -43,6 +46,16 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         auditLogService.logActivity(actorEmail, AdminActionType.FEEDBACK_RESOLVED, "Feedback", feedbackId,
                 "Resolved feedback with status: " + request.getStatus());
+
+        // Publish GrievanceStatusUpdatedEvent
+        try {
+            String uid = saved.getUserId() != null ? saved.getUserId() : "citizen-001";
+            String resNotes = saved.getResolutionNotes() != null ? saved.getResolutionNotes() : "Resolved by Officer";
+            eventPublisher.publishEvent(BusinessEvents.createGrievanceStatusUpdatedEvent(
+                    uid, saved.getFeedbackId(), saved.getStatus().name(), resNotes));
+        } catch (Exception e) {
+            log.warn("[FeedbackService] Failed to publish GrievanceStatusUpdatedEvent: {}", e.getMessage());
+        }
 
         return mapToResponse(saved);
     }

@@ -1,0 +1,2366 @@
+{
+  "status": "Success",
+  "statusCode": 200,
+  "errorDescription": "",
+  "error": "null",
+  "data": {
+    "summary": {
+      "total": 4772,
+      "query": "",
+      "sortOptions": [
+        {
+          "id": "multiple_sort",
+          "label": "Relevance"
+        },
+        {
+          "id": "schemename-asc",
+          "label": "Scheme Name (A->Z)"
+        },
+        {
+          "id": "schemename-desc",
+          "label": "Scheme Name (Z->A)"
+        }
+      ],
+      "appliedFilters": [],
+      "disabledFilters": []
+    },
+    "facets": [
+      {
+        "identifier": "beneficiaryState",
+        "label": "State",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 693
+          },
+          {
+            "label": "Gujarat",
+            "count": 643
+          },
+          {
+            "label": "Uttarakhand",
+            "count": 447
+          },
+          {
+            "label": "Madhya Pradesh",
+            "count": 290
+          },
+          {
+            "label": "Goa",
+            "count": 272
+          },
+          {
+            "label": "Puducherry",
+            "count": 271
+          },
+          {
+            "label": "Haryana",
+            "count": 249
+          },
+          {
+            "label": "Tamil Nadu",
+            "count": 240
+          },
+          {
+            "label": "Rajasthan",
+            "count": 159
+          },
+          {
+            "label": "Bihar",
+            "count": 114
+          },
+          {
+            "label": "West Bengal",
+            "count": 110
+          },
+          {
+            "label": "Chhattisgarh",
+            "count": 108
+          },
+          {
+            "label": "Jharkhand",
+            "count": 97
+          },
+          {
+            "label": "Meghalaya",
+            "count": 89
+          },
+          {
+            "label": "Assam",
+            "count": 87
+          },
+          {
+            "label": "Kerala",
+            "count": 87
+          },
+          {
+            "label": "Maharashtra",
+            "count": 85
+          },
+          {
+            "label": "Odisha",
+            "count": 85
+          },
+          {
+            "label": "Himachal Pradesh",
+            "count": 75
+          },
+          {
+            "label": "Dadra & Nagar Haveli and Daman & Diu",
+            "count": 62
+          },
+          {
+            "label": "Karnataka",
+            "count": 60
+          },
+          {
+            "label": "Delhi",
+            "count": 54
+          },
+          {
+            "label": "Andhra Pradesh",
+            "count": 52
+          },
+          {
+            "label": "Jammu and Kashmir",
+            "count": 47
+          },
+          {
+            "label": "Uttar Pradesh",
+            "count": 47
+          },
+          {
+            "label": "Arunachal Pradesh",
+            "count": 45
+          },
+          {
+            "label": "Tripura",
+            "count": 44
+          },
+          {
+            "label": "Punjab",
+            "count": 41
+          },
+          {
+            "label": "Manipur",
+            "count": 34
+          },
+          {
+            "label": "Mizoram",
+            "count": 32
+          },
+          {
+            "label": "Sikkim",
+            "count": 29
+          },
+          {
+            "label": "Telangana",
+            "count": 23
+          },
+          {
+            "label": "Nagaland",
+            "count": 22
+          },
+          {
+            "label": "Chandigarh",
+            "count": 21
+          },
+          {
+            "label": "Andaman and Nicobar Islands",
+            "count": 19
+          },
+          {
+            "label": "Lakshadweep",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "identifier": "schemeCategory",
+        "label": "Scheme Category",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Social welfare & Empowerment",
+            "count": 1453
+          },
+          {
+            "label": "Education & Learning",
+            "count": 1110
+          },
+          {
+            "label": "Agriculture,Rural & Environment",
+            "count": 862
+          },
+          {
+            "label": "Business & Entrepreneurship",
+            "count": 772
+          },
+          {
+            "label": "Women and Child",
+            "count": 470
+          },
+          {
+            "label": "Skills & Employment",
+            "count": 401
+          },
+          {
+            "label": "Banking,Financial Services and Insurance",
+            "count": 336
+          },
+          {
+            "label": "Health & Wellness",
+            "count": 286
+          },
+          {
+            "label": "Sports & Culture",
+            "count": 280
+          },
+          {
+            "label": "Housing & Shelter",
+            "count": 136
+          },
+          {
+            "label": "Science, IT & Communications",
+            "count": 121
+          },
+          {
+            "label": "Transport & Infrastructure",
+            "count": 104
+          },
+          {
+            "label": "Travel & Tourism",
+            "count": 96
+          },
+          {
+            "label": "Utility & Sanitation",
+            "count": 58
+          },
+          {
+            "label": "Public Safety,Law & Justice",
+            "count": 34
+          }
+        ]
+      },
+      {
+        "identifier": "gender",
+        "label": "Gender",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3941
+          },
+          {
+            "label": "Female",
+            "count": 790
+          },
+          {
+            "label": "Male",
+            "count": 348
+          },
+          {
+            "label": "Transgender",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "identifier": "age-general",
+        "label": "Age",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 681
+          },
+          {
+            "label": 10,
+            "count": 3873
+          },
+          {
+            "label": 20,
+            "count": 3888
+          },
+          {
+            "label": 30,
+            "count": 3791
+          },
+          {
+            "label": 40,
+            "count": 3624
+          },
+          {
+            "label": 50,
+            "count": 3351
+          },
+          {
+            "label": 60,
+            "count": 3107
+          },
+          {
+            "label": 70,
+            "count": 2052
+          },
+          {
+            "label": 80,
+            "count": 1975
+          },
+          {
+            "label": 90,
+            "count": 1928
+          },
+          {
+            "label": 100,
+            "count": 1845
+          },
+          {
+            "label": 110,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "caste",
+        "label": "Caste",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4001
+          },
+          {
+            "label": "Scheduled Caste (SC)",
+            "count": 394
+          },
+          {
+            "label": "Scheduled Tribe (ST)",
+            "count": 341
+          },
+          {
+            "label": "Other Backward Class (OBC)",
+            "count": 189
+          },
+          {
+            "label": "General",
+            "count": 72
+          },
+          {
+            "label": "Particularly Vulnerable Tribal Group (PVTG)",
+            "count": 40
+          },
+          {
+            "label": "De-Notified, Nomadic, and Semi-Nomadic (DNT) communities",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "nodalMinistryName",
+        "label": "Ministry Name",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Ministry Of Social Justice and Empowerment",
+            "count": 85
+          },
+          {
+            "label": "Ministry of Education",
+            "count": 85
+          },
+          {
+            "label": "Ministry Of Science And Technology",
+            "count": 68
+          },
+          {
+            "label": "Ministry Of Commerce And Industry",
+            "count": 56
+          },
+          {
+            "label": "Ministry Of Agriculture and Farmers Welfare",
+            "count": 41
+          },
+          {
+            "label": "Ministry Of Micro, Small and Medium Enterprises",
+            "count": 31
+          },
+          {
+            "label": "Ministry Of Textiles",
+            "count": 24
+          },
+          {
+            "label": "Ministry Of Youth Affairs & Sports",
+            "count": 22
+          },
+          {
+            "label": "Ministry of Electronics and Information Technology",
+            "count": 22
+          },
+          {
+            "label": "Ministry Of Culture",
+            "count": 20
+          },
+          {
+            "label": "Ministry Of Finance",
+            "count": 19
+          },
+          {
+            "label": "Ministry Of Home Affairs",
+            "count": 18
+          },
+          {
+            "label": "Ministry Of Defence",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Health & Family Welfare",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Labour and Employment",
+            "count": 13
+          },
+          {
+            "label": "Ministry of Fisheries,Animal Husbandry and Dairying",
+            "count": 13
+          },
+          {
+            "label": "Ministry Of Minority Affairs",
+            "count": 12
+          },
+          {
+            "label": "Ministry Of Communication",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Skill Development And Entrepreneurship",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Ayush",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Chemicals And Fertilizers",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Rural Development",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Tribal Affairs",
+            "count": 10
+          },
+          {
+            "label": "Ministry of Women and Child Development",
+            "count": 8
+          },
+          {
+            "label": "Ministry Of New and Renewable Energy",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Tourism",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Jal Shakti",
+            "count": 6
+          },
+          {
+            "label": "Ministry Of External Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Housing & Urban Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Law and Justice",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Personnel, Public Grievances And Pensions",
+            "count": 5
+          },
+          {
+            "label": "Ministry of Ports,Shipping and Waterways",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Environment,forests and climate change",
+            "count": 4
+          },
+          {
+            "label": "Ministry of Heavy Industries",
+            "count": 4
+          },
+          {
+            "label": "Ministry Of Petroleum and Natural Gas",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Statistics and Programme Implementation",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Steel",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Corporate Affairs",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Food Processing Industries",
+            "count": 3
+          },
+          {
+            "label": "Comptroller And Auditor General Of India",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Panchayati Raj",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Road Transport & Highways",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Water Resources,River Development & Ganga Rejuvenation",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Consumer Affairs, Food And Public Distribution",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Development Of North Eastern Region",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Earth Sciences",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Information And Broadcasting",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Mines",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Power",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Railways",
+            "count": 1
+          },
+          {
+            "label": "NITI Aayog (National Institution for Transforming India)",
+            "count": 1
+          },
+          {
+            "label": "The Lokpal of India",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "level",
+        "label": "Level",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "State",
+            "count": 4058
+          },
+          {
+            "label": "Central",
+            "count": 714
+          }
+        ]
+      },
+      {
+        "identifier": "residence",
+        "label": "Residence",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Both",
+            "count": 4537
+          },
+          {
+            "label": "Rural",
+            "count": 203
+          },
+          {
+            "label": "Urban",
+            "count": 42
+          }
+        ]
+      },
+      {
+        "identifier": "minority",
+        "label": "Minority",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4704
+          },
+          {
+            "label": "Yes",
+            "count": 68
+          }
+        ]
+      },
+      {
+        "identifier": "disability",
+        "label": "Differently Abled",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4469
+          },
+          {
+            "label": "Yes",
+            "count": 303
+          }
+        ]
+      },
+      {
+        "identifier": "benefitTypes",
+        "label": "Benefit Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Cash",
+            "count": 3317
+          },
+          {
+            "label": "In Kind",
+            "count": 805
+          },
+          {
+            "label": "Composite",
+            "count": 650
+          }
+        ]
+      },
+      {
+        "identifier": "dbtScheme",
+        "label": "DBT Scheme",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4305
+          },
+          {
+            "label": "Yes",
+            "count": 467
+          }
+        ]
+      },
+      {
+        "identifier": "maritalStatus",
+        "label": "Marital Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4467
+          },
+          {
+            "label": "Never Married",
+            "count": 142
+          },
+          {
+            "label": "Widowed",
+            "count": 107
+          },
+          {
+            "label": "Married",
+            "count": 93
+          },
+          {
+            "label": "Divorced",
+            "count": 48
+          },
+          {
+            "label": "Separated",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "disabilityPercentage",
+        "label": "Disability Percentage",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 24
+          },
+          {
+            "label": 10,
+            "count": 27
+          },
+          {
+            "label": 20,
+            "count": 32
+          },
+          {
+            "label": 30,
+            "count": 32
+          },
+          {
+            "label": 40,
+            "count": 172
+          },
+          {
+            "label": 50,
+            "count": 176
+          },
+          {
+            "label": 60,
+            "count": 182
+          },
+          {
+            "label": 70,
+            "count": 187
+          },
+          {
+            "label": 80,
+            "count": 199
+          },
+          {
+            "label": 90,
+            "count": 199
+          },
+          {
+            "label": 100,
+            "count": 209
+          }
+        ]
+      },
+      {
+        "identifier": "isBpl",
+        "label": "Below Poverty Line",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4600
+          },
+          {
+            "label": "Yes",
+            "count": 172
+          }
+        ]
+      },
+      {
+        "identifier": "isEconomicDistress",
+        "label": "Economic Distress",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4725
+          },
+          {
+            "label": "Yes",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "isGovEmployee",
+        "label": "Government Employee",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4758
+          },
+          {
+            "label": "Yes",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "employmentStatus",
+        "label": "Employment Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3659
+          },
+          {
+            "label": "Employed",
+            "count": 519
+          },
+          {
+            "label": "Self-Employed/ Entrepreneur",
+            "count": 423
+          },
+          {
+            "label": "Unemployed",
+            "count": 171
+          }
+        ]
+      },
+      {
+        "identifier": "isStudent",
+        "label": "Student",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4414
+          },
+          {
+            "label": "Yes",
+            "count": 358
+          }
+        ]
+      },
+      {
+        "identifier": "occupation",
+        "label": "Occupation",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 390
+          },
+          {
+            "label": "Farmer",
+            "count": 357
+          },
+          {
+            "label": "Construction Worker",
+            "count": 270
+          },
+          {
+            "label": "Unorganized Worker",
+            "count": 192
+          },
+          {
+            "label": "Fishermen",
+            "count": 114
+          },
+          {
+            "label": "Artists",
+            "count": 83
+          },
+          {
+            "label": "Artisans, Spinners & Weavers",
+            "count": 80
+          },
+          {
+            "label": "Student",
+            "count": 66
+          },
+          {
+            "label": "Organized Worker",
+            "count": 40
+          },
+          {
+            "label": "Sportsperson",
+            "count": 35
+          },
+          {
+            "label": "Ex Servicemen",
+            "count": 28
+          },
+          {
+            "label": "Journalist",
+            "count": 22
+          },
+          {
+            "label": "Dairy Farmer",
+            "count": 21
+          },
+          {
+            "label": "Safai Karamchari",
+            "count": 18
+          },
+          {
+            "label": "Teacher / Faculty",
+            "count": 14
+          },
+          {
+            "label": "Coir Worker",
+            "count": 7
+          },
+          {
+            "label": "Street Vendor",
+            "count": 3
+          },
+          {
+            "label": "Health Worker",
+            "count": 2
+          },
+          {
+            "label": "Khadi Artisan",
+            "count": 2
+          },
+          {
+            "label": "Lawyer / Law Graduate / Advocate",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "identifier": "applicationMode",
+        "label": "Application Mode",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Offline",
+            "count": 2733
+          },
+          {
+            "label": "Online",
+            "count": 2350
+          },
+          {
+            "label": "Online - via CSC",
+            "count": 161
+          }
+        ]
+      },
+      {
+        "identifier": "schemeType",
+        "label": "Scheme Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Central Sector Scheme",
+            "count": 543
+          },
+          {
+            "label": "Centrally Sponsored Scheme",
+            "count": 146
+          }
+        ]
+      }
+    ],
+    "hits": {
+      "items": [
+        {
+          "id": "rhcO9ZgB5uF80_MGcZQU",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "PMMSYC2GUJ",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "PMMSY: Construction of  Plant/Storage of Minimum 20 Tonne Capacity - Gujarat",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmmsyc2guj",
+            "briefDescription": "The scheme aims to provide financial support for the construction of 20-tonne capacity ice plant/storage units, ensuring hygienic fish storage and improving the income of beneficiaries.",
+            "tags": [
+              "Construction Of Plant",
+              "Storage",
+              "Fish",
+              "Fishermen",
+              "Fish Sellers",
+              "20 Tonne"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "rxcS9ZgB5uF80_MGm5Rd",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "PMMSYCP3GUJ",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "PMMSY: Construction of  Plant/Storage of Minimum 30 Tonne Capacity - Gujarat ",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmmsycp3guj",
+            "briefDescription": "The scheme aims to strengthen fish storage infrastructure for hygienic preservation. Through this scheme, beneficiaries receive financial assistance for constructing 30-tonne capacity plants or storage units.",
+            "tags": [
+              "Construction Of Plant",
+              "Storage",
+              "Fishermen",
+              "Fish Sellers"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0KHf9JgBXu-iUKXqmnmR",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "DSMPHSFCCLOMUK",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Distribution of Seeds of more productions varieties/ Hybrids varieties Seeds and fertilizer at subsidies etc. to Adivasi farmers in Tribal Area: Castor cake/Neem cake/ Liquid Fermented Organic Manure / Green manure seed (For mix in the soil) Gujarat",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "dsmphsfcclomuk",
+            "briefDescription": "The scheme aims to help tribal farmers improve their livelihood by increasing agricultural crop production. Through this scheme, subsidies are provided on high-yield and hybrid seeds, fertilizers, and other agricultural inputs to Scheduled Tribe farmers.",
+            "tags": [
+              "Adivasi Farmers",
+              "Crop Production",
+              "Livelihood",
+              "Castor Cake",
+              "Fertilizer",
+              "Subsidies"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "txdt_pgB5uF80_MGl5TD",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "DSPVSFWCPLGUJ",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Distribution of Seeds of more productions varieties/ Hybrids varieties Seeds and fertilizer at subsidies etc. to Adivasi farmers in Tribal Area: Water Carrying Pipe Line (TASP & OTASP) Gujarat",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "dspvsfwcplguj",
+            "briefDescription": "The scheme aims to improve the agricultural productivity of Scheduled Tribe farmers through subsidized seeds, fertilizers, and equipment. It provides direct support to tribal farmers for enhancing crop production and livelihood.",
+            "tags": [
+              "Adivasi Farmers",
+              "Crop Production",
+              "Livelihood",
+              "Fertilizer",
+              "Subsidies",
+              "Water Carrying Pipeline"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "16Ft_pgBXu-iUKXqY3k0",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "DSMPVHVSTGUJ",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Distribution of Seeds of more productions varieties/ Hybrids varieties Seeds and fertilizer at subsidies etc. to Adivasi farmers in Tribal Area: Tarpaulin Gujarat",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "dsmpvhvstguj",
+            "briefDescription": "The scheme aims to enhance crop production and livelihood. It provides subsidies on seeds, fertilizers, tarpaulins, and other agricultural inputs to Scheduled Tribe farmers.",
+            "tags": [
+              "Adivasi Farmers",
+              "Crop Production",
+              "Livelihood",
+              "Seeds",
+              "Fertilizer",
+              "Subsidies",
+              "Tarpaulin"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "GhdxlJkB5uF80_MGjZV_",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "SS-UK",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Saksham Scholarship",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ssduk",
+            "briefDescription": "The scheme aims to support meritorious differently-abled students pursuing graduate-level studies in the state by providing them with financial assistance in the form of scholarships.",
+            "tags": [
+              "Scholarship",
+              "Technical Education",
+              "Differently Abled Student",
+              "PwD",
+              "Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "FKGqW5kBXu-iUKXq3HrA",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "SSSMS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Shridev Suman State Merit Scholarship",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sssms",
+            "briefDescription": "The scheme provides monthly scholarship of ₹1,000/- to meritorious students who qualify in eligibility test conducted by SCERT Uttarakhand. The scholarship is awarded to the next 5 students from each development block of Uttarakhand who are not selected for the Dr. Shivanand Nautiyal Scholarship.",
+            "tags": [
+              "Scholarship",
+              "Secondary Education",
+              "Student",
+              "Sridev Suman"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "-catLpkB0AGc0F0ihzjj",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "PMMSYFVGUJ",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "PMMSY: Three wheeler with Ice Box including e-rickshaws for fish vending - Gujarat ",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmmsyfvguj",
+            "briefDescription": "The scheme aims to strengthen fish storage infrastructure for hygienic preservation. Through this scheme, beneficiaries receive financial assistance for a three-wheeler with an Ice Box, including e-rickshaws for fish vending.",
+            "tags": [
+              "Construction Of Plant",
+              "Storage",
+              "Fishermen",
+              "Fish Sellers"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "PKFYmpkBXu-iUKXqB3pL",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "PMMSYSADSVTGUJ",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "PMMSY: Support for Acquisition of Deep Sea Fishing Vessels for Traditional Fishermen - Gujarat ",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmmsysadsvtguj",
+            "briefDescription": "The scheme aims to strengthen fish storage infrastructure for hygienic preservation. Through this scheme, beneficiaries receive financial assistance for the support for acquisition of deep-sea fishing vessels for traditional fishermen.",
+            "tags": [
+              "Construction Of Plant",
+              "Storage",
+              "Traditional Fishermen",
+              "Fish Sellers",
+              "Support For Acquisition Of Deep Sea Fishing Vessels"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "-sauLpkB0AGc0F0iozjh",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "PMMSYICEBOXGUJ",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "PMMSY: Motorcycle with Ice Box - Gujarat",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmmsyiceboxguj",
+            "briefDescription": "The scheme aims to provide financial assistance for the purchase of motorcycles with ice boxes. Through this scheme, eligible beneficiaries receive subsidies to enhance their livelihood opportunities.",
+            "tags": [
+              "Construction Of Plant",
+              "Storage",
+              "Fishermen",
+              "Fish Sellers"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "QBeYBpoB5uF80_MGBZW8",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "VSYG",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Vidhya Sadhana Yojana Gujarat",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "vsyg",
+            "briefDescription": "Under this scheme, free bicycles are gifted to girl students across Gujarat to reduce school dropouts among scheduled tribe girls after class 8.",
+            "tags": [
+              "Free Bicycles",
+              "Girl",
+              "Scheduled Tribe",
+              "Cycle",
+              "Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "vRchCpkB5uF80_MG2pQy",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "SRJSSYSS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Travel & Tourism"
+            ],
+            "schemeName": "Sri Ram Janmabhoomi Shabari Smriti Yatra Sahay Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "srjssyss",
+            "briefDescription": "The scheme aims to provide financial assistance to scheduled tribes and tribal communities for pilgrimage to Sri Ram Janmabhoomi in Ayodhya in memory of Maa Shabari. The scheme offers ₹5,000/- financial assistance per pilgrim to enable darshan of Lord Sri Ram for eligible tribal beneficiaries.",
+            "tags": [
+              "Pilgrimage",
+              "Financial Assistance",
+              "Tourism",
+              "Travel",
+              "Scheduled Tribe"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "csYobJoB0AGc0F0i3Dus",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "AHWC",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "AYUSH Health and Wellness Centre - Ayushman Bharat Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ahwc",
+            "briefDescription": "The scheme aims to provide accessible, affordable, and holistic healthcare services based on Ayurveda, Yoga, Unani and Homeopathy systems to people of all age groups.",
+            "tags": [
+              "AYUSH",
+              "Health And Wellness",
+              "Yoga",
+              "Medicinal Plants",
+              "Ayurvedic",
+              "Unani",
+              "Homeopathy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "V8Zmw5kB0AGc0F0icTkH",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "KPCY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Khiladi Protsahan Chhatravriti Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "piss",
+            "briefDescription": "The scheme aims to promote sports among talented youth sportspersons aged 14 to 23 years from Uttarakhand by providing a scholarship of ₹2,000/- per month and financial assistance of ₹10,000/- once a year for sports equipment.",
+            "tags": [
+              "Sports",
+              "Sportsperson",
+              "Scholarship",
+              "Player"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "sRdF9ZgB5uF80_MGoJQM",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "FASUW-ECW",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Funeral Assistance Scheme for Unorganized Workers (Except Construction Workers)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fasuw-ecw",
+            "briefDescription": "The scheme aims to provide financial assistance to heirs of deceased unorganized sector workers for funeral expenses. It offers ₹10,000/- to eligible heirs of e-Shram card holders.",
+            "tags": [
+              "Funeral",
+              "Unorganized",
+              "Worker",
+              "Death",
+              "Financial",
+              "Support"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "1BchKZkB5uF80_MG_ZSB",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "SS90CF",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Sponsorship Scheme (90% Centrally Funded)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ss90cf",
+            "briefDescription": "The scheme aims to provide financial assistance to children upto age of 18 years, including those who have lost both parents, those whose main earning parent has died, & children who have suffered due to violation of laws, child labor, child trafficking, child marriage & similar circumstances.",
+            "tags": [
+              "Sponsorship",
+              "Child Labour",
+              "Orphan Child",
+              "Child Victims",
+              "Child Marriage",
+              "POCSO Victims"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "2sZG_5gB0AGc0F0iyzgw",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "HEAS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Education & Learning"
+            ],
+            "schemeName": "Higher Education Assistance Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "heas",
+            "briefDescription": "The scheme aims to encourage children of workers and reduce financial burden of education through higher educational assistance. It provides ₹20,000/- for Bachelor of Medicine Bachelor of Surgery admission and ₹10,000/- for other graduate courses to merit students.",
+            "tags": [
+              "Education",
+              "Labour",
+              "Financial Assistance",
+              "Student",
+              "Welfare",
+              "Merit"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "4sZcEpkB0AGc0F0iGzhL",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "DARIS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Documentation And Research Assistantship Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "daris",
+            "briefDescription": "The scheme aims to encourage documentation and digitisation of valuable Tiatr-related materials to prevent their loss to posterity. It provides assistance and incentives to holders of such materials and pays honorarium to documentation assistants.",
+            "tags": [
+              "Documentation",
+              "Digitisation",
+              "Assistantship",
+              "Artist",
+              "Culture",
+              "Honorarium",
+              "Manuscript"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ZBdKbJoB5uF80_MGlZdP",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "NLMLIS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "National Livestock Mission: Livestock Insurance Scheme - Uttarakhand Livestock Development Board",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "lisulm",
+            "briefDescription": " The scheme aims to provide insurance coverage to livestock in order to protect cattle rearers against the loss of their animals due to death, thereby encouraging them to adopt better animal husbandry practices.",
+            "tags": [
+              "Livestock",
+              "Animal Husbandry",
+              "Insurance",
+              "Cattle"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "mMZObJoB0AGc0F0isTsi",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "MPKULDB",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Maitri Prashikshan Karyakram - Uttarakhand Livestock Development Board",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mtp",
+            "briefDescription": "The scheme aims to enhance livestock productivity and improve  artificial insemination services across the state through the training and capacity building of local youth.",
+            "tags": [
+              "Artificial Insemination",
+              "Livestock Development",
+              "Animal Husbandry",
+              "Training",
+              "Livestock"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "s8awTpoB0AGc0F0iajmh",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "MPUK",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Machhali Palan",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fishfarminguk",
+            "briefDescription": "The scheme aims to provide financial support to fishermen for repairing, reconstructing, and replacing damaged boats and nets due to disasters. ",
+            "tags": [
+              "Fish Farming",
+              "Fishermen",
+              "Boat",
+              "Net",
+              "Fish Seed Farm"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "9aE0LZkBXu-iUKXqFXni",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FADTPKAATC",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Assistance to Dramatic Troupes participating in Kala Academy’s Annual Tiatr Competition",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fadtpkaatc",
+            "briefDescription": "The scheme aims to encourage non-commercial dramatic troupes participating in Kala Academy’s Annual Tiatr Competition to produce higher quality Tiatrs. It provides financial support for various production aspects, video recording, and expert workshops, benefiting dramatic troupes.",
+            "tags": [
+              "Culture",
+              "Artist",
+              "Drama",
+              "Workshop",
+              "Financial Assistance",
+              "Music"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "9qFoLZkBXu-iUKXqu3m8",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FAEPTKT",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Assistance for encouraging production of Traditional Khell-Tiatr",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "faeptkt",
+            "briefDescription": "The scheme aims to encourage and preserve the traditional Khell-Tiatr folk musical drama of Goa by promoting quality productions. It offers financial assistance and infrastructure support for staging shows, including video documentation, benefiting dramatic troupes and individuals.",
+            "tags": [
+              "Culture",
+              "Artist",
+              "Stage",
+              "Performance",
+              "Drama",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0BduJ5kB5uF80_MGVJQw",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "POTM",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Skills & Employment"
+            ],
+            "schemeName": "Promotion of Tiatr Music",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "potm",
+            "briefDescription": "The scheme aims to encourage individuals to learn blowing instruments crucial for Tiatr music, such as Trumpet & Saxophone, addressing a decline in musicians. It provides financial assistance for tuition and instrument purchase, benefiting youth and other interested persons to preserve Tiatr music.",
+            "tags": [
+              "Music",
+              "Training",
+              "Subsidy",
+              "Artist",
+              "Culture"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "kcaJKZoB0AGc0F0iuTnD",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "LAGC",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Travel & Tourism",
+              "Skills & Employment"
+            ],
+            "schemeName": "Low Altitude Guide Course",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "lowaltitudeuk",
+            "briefDescription": "The scheme aims to train and certify youth from Uttarakhand as professional low altitude guides and provide them with skill development opportunities to strengthen their role in the state’s tourism sector.",
+            "tags": [
+              "Low Altitude",
+              "Guide",
+              "Training",
+              "Youth"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "I8a3W5kB0AGc0F0ifjm_",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "ESEP",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Enhancement of Spoken English Programme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "esep",
+            "briefDescription": "The scheme aims to enhance the spoken English skills of students of Classes 9 to 12 studying in all government schools across the districts of the state of Uttarakhand.",
+            "tags": [
+              "Spoken English",
+              "Student",
+              "Samagra Shiksha"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "A8YkPJkB0AGc0F0i4zlp",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "PATSC",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Promotion of Acting in Tiatr for School Children",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "patsc",
+            "briefDescription": "The scheme aims to encourage school children to improve their acting abilities in Goan tiatr through organized competitions. It provides cash prizes and certificates to winners in comedy and non-comedy acting categories.",
+            "tags": [
+              "Acting",
+              "School",
+              "Children",
+              "Artist",
+              "Culture",
+              "Comedy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "F8ZMU5kB0AGc0F0i3Tnv",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "6ISLBSA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "6% Interest Subsidy on Loans taken through Banks for Study Abroad",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "6islbsa",
+            "briefDescription": "The scheme aims to reduce financial stress for ST students pursuing foreign education by providing up to ₹1,50,000 subsidy on interest for 3 years.",
+            "tags": [
+              "Student",
+              "Higher Education",
+              "Scheduled Tribe",
+              "Loan",
+              "Foreign Study"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "gsZXJJoB0AGc0F0i1jkO",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "AGMS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Amit Gautam Memorial Scholarship (B.Tech in Electronics Engineering – 4th Year)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "agmsbtechuk",
+            "briefDescription": "The scheme aims to support meritorious students pursuing a B.Tech in Electronics Engineering who are in their 4th year of study by providing a one-year scholarship amounting to ₹7,000/-.",
+            "tags": [
+              "Student",
+              "Scholarship",
+              "Amit Gautam",
+              "Electronics Engineering"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Rxc5JJoB5uF80_MGJJVO",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "HTEVEL",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Science, IT & Communications"
+            ],
+            "schemeName": "Hands-on Training and Exposure Visits under Experiential Learning",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "htevel",
+            "briefDescription": "The scheme aims to provide free one-week residential hands-on certificate training programs to undergraduate, postgraduate students, researchers, and faculty members, including accommodation and meals.",
+            "tags": [
+              "Researcher",
+              "Hands-on Training",
+              "Exposure Visit",
+              "Experiential Learning",
+              "Professor",
+              "Training",
+              "Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "R8Z3m5kB0AGc0F0ioTm1",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "SPASSEOGFAC",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Sports & Culture"
+            ],
+            "schemeName": "Scheme To Provide Assistance To Students Seeking Education Outside Goa In Any Field Of Art And Culture",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "spasseogfac",
+            "briefDescription": "The scheme aims to encourage young talents in Goa to achieve the highest possible standard in fields of Art and Culture by providing financial support for training outside the State. Assistance is provided to eligible students for basic or advanced education in art.",
+            "tags": [
+              "Student",
+              "Art",
+              "Culture",
+              "Education",
+              "Scholarship",
+              "Training"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ERdle5kB5uF80_MGXpVQ",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "ODSVM",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "One-day Seminar on Vedic Mathematics",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "odsvm",
+            "briefDescription": "The scheme aims to provide a common platform for officers, teachers, and students from universities, colleges, schools, and other departments to actively participate and gain knowledge about the simplified curriculum of Vedic Mathematics and its easy-to-apply methods.",
+            "tags": [
+              "Sanskrit",
+              "Vedic Mathematics",
+              "Symposium",
+              "One-day Seminar"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "JKG0cJkBXu-iUKXqTnrX",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "EBTSM",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Exhibition of Books on Tiatr, Its Song and Music",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ebtsm",
+            "briefDescription": "The scheme aims to help Roman Script Konkani writers and publishers who face difficulties in marketing their books related to Tiatr, its song and music, while promoting Tiatr culture among enthusiasts. The scheme provides bulk purchase of books at 80% of the fixed rate and organizes book exhibition.",
+            "tags": [
+              "Exhibition",
+              "Book",
+              "Song",
+              "Music",
+              "Culture"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "SMZ0qZkB0AGc0F0i2Tm5",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "AGIA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Ashramshalas (Grant in Aid)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "agia",
+            "briefDescription": "The scheme aims to provide schooling, boarding and lodging to Scheduled Tribe students at a single location, enabling better employment opportunities and competitive equality with other sections of society. The scheme offers residential education with complete support including free education.",
+            "tags": [
+              "Student",
+              "Education",
+              "Tribal",
+              "Grant",
+              "School",
+              "Scholarship",
+              "Accommodation"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "YqE7JJoBXu-iUKXqMHpX",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "EOSTEML",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Science, IT & Communications"
+            ],
+            "schemeName": "Establishment and Operation of STEM (Science, Technology, Engineering, Mathematics) Laboratories",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "eosteml",
+            "briefDescription": "The scheme aims to establish STEM laboratories in schools across Uttarakhand to provide students of classes 6 to 12 with hands-on science, technology, engineering, and mathematics learning opportunities and strengthen their practical understanding of scientific concepts.",
+            "tags": [
+              "Student",
+              "Science",
+              "Laboratories",
+              "Technology",
+              "Engineering",
+              "Mathematics",
+              "STEM"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "L6HYhpkBXu-iUKXqkHrR",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "ESTSCCICTT",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Skills & Employment"
+            ],
+            "schemeName": "Empowering Schedule Tribe/Schedule Caste Communities Using Information And Communication Technology Tools",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "estsccictt",
+            "briefDescription": "The scheme aims to provide Information Technology related trainings free of cost to the Schedule Tribe (ST) and Schedule Caste (SC) communities. Benefits include basic computer skills and job-oriented Information Technology training courses, intended for citizens, students, local youth, etc.",
+            "tags": [
+              "Technology",
+              "Training",
+              "Schedule Tribe",
+              "Schedule Caste",
+              "Student",
+              "Youth",
+              "Skill"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "PaGPm5kBXu-iUKXq-Hoq",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "SPGIILTPFAC",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Scheme To Provide Grant To The Institution(s)/Individual(s) For Long Term Project In The Field Of Art And Culture",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "spgiiltpfac",
+            "briefDescription": "The scheme aims to give financial support to institution(s)/individual(s) involved in long term projects in the field of Art and Culture. It provides a maximum grant of ₹5,00,000/- per annum to eligible organizations and individuals, while also encouraging young talent and offering scholarships.",
+            "tags": [
+              "Institution",
+              "Art",
+              "Culture",
+              "Grant",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "TMZpvpkB0AGc0F0i_jnW",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "FUFS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Free Uniforms for Students",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "fufs",
+            "briefDescription": "This scheme Launched on 1 July 2004 with the aims to ensure regular attendance and continuity in education by offering uniform assistance to both boys and girls enrolled in Classes 1 to 8. ",
+            "tags": [
+              "Education",
+              "Student Welfare",
+              "Free Uniform"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "OBeh65kB5uF80_MGq5Xo",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "GSLWIS-STAIRPL",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Goa State Logistics and Warehousing Incentives Scheme: Subsidy Towards Annual Interest Rate Payable On Loans",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "gslwis-stairpl",
+            "briefDescription": "The subsidy aims to support the logistics and warehousing sector by reimbursing 50% of the annual interest paid on construction loans. The benefit is capped at ₹25,00,000/- (Indian Rupees Twenty-five Lakhs) annually per project and is available for up to 05 consecutive years for eligible entities.",
+            "tags": [
+              "Subsidy",
+              "Interest",
+              "Loan",
+              "Finance",
+              "Entrepreneur"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ZMaY4ZkB0AGc0F0iMzmi",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "COPY OF DMF-ACIVCU",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Development of Manures & Fertilizers: Assistance for Construction/Installation of Vermi-Compost Units",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "copy-of-dmf-acivcu",
+            "briefDescription": "The \"Vermi-compost Units\" component of the scheme aims to convert available on-field and farm waste material into chemical-free farm resources as farm input for organic farming through vermicomposting processes. The payment of the sanctioned subsidy is through Electronic Clearance System (ECS).",
+            "tags": [
+              "Agriculture",
+              "Farmer",
+              "Crop",
+              "Soil",
+              "Plant"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ShdAJJoB5uF80_MGi5VZ",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "TCBPRWRSGISA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Science, IT & Communications"
+            ],
+            "schemeName": "Training/Capacity Building Programmes/Research work on Remote Sensing and GIS Applications",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "tcbprwrsgisa",
+            "briefDescription": "The scheme aims to strengthen scientific and technical capacity of researchers, students, and government personnel in the field of Remote Sensing and Geographic Information System (GIS) applications by providing training, conducting capacity-building programmes, and supporting research initiatives.",
+            "tags": [
+              "Training",
+              "Capacity Building",
+              "Remote Sensing",
+              "GIS Application",
+              "Student",
+              "Researcher",
+              "Government Personnel"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "UqGk45kBXu-iUKXqXnqI",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "CDCWRFV",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Compensation for Crop Damage Caused by Wildlife (in Revenue and Forest Villages)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "rccdcwrfv",
+            "briefDescription": "The scheme aims to provide timely financial assistance to farmers for crop damage caused by wildlife, assessed and compensated within 30 working days as per revenue book circular guidelines.",
+            "tags": [
+              "Farmer",
+              "Financial Relief",
+              "Wild Animal",
+              "Crops"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "S6HxzZkBXu-iUKXqz3rw",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "KKN-P",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Sports & Culture"
+            ],
+            "schemeName": "Kalakar Kritadnyata Nidhi: Pandemics",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "kkn-p",
+            "briefDescription": "The scheme aims to provide financial assistance to aged and needy Goan artists who have lost the source of income due to the pandemic. The scheme provides relief in the form of financial assistance amounting to a min. of ₹5,000/- (lumpsum) up to a max. of ₹10,000/- (lumpsum) to eligible artists.",
+            "tags": [
+              "Artist",
+              "Pandemic",
+              "Relief",
+              "Financial Assistance",
+              "Culture"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "TqFp45kBXu-iUKXqBXoG",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "BBMLSY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Bhagwan Birsa Munda Lakshya Siddhi Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "bbmlsy",
+            "briefDescription": "The scheme provides financial assistance, in the form of a Scholarship, proportionate to the fees paid by Scheduled Tribe students at the Higher Secondary School Certificate (HSSC) level in order to take offline coaching assistance through reputed institutions for preparation for NEET & JEE.",
+            "tags": [
+              "Scholarship",
+              "Scheduled Tribe",
+              "Examination",
+              "Student",
+              "Education"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ZcaE55kB0AGc0F0iKTm9",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "MBHUY",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Mukhyamantri Bal Hridaya Upchar Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mbhuy",
+            "briefDescription": "The scheme provides financial assistance ranging from ₹25,000/- to ₹1,00,000/- for treatment, covering 07 identified heart diseases in children. Key features include covering costs for treatment at recognized government or private hospitals.",
+            "tags": [
+              "Child",
+              "Surgery",
+              "Financial Aid",
+              "Disease",
+              "Treatment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "asZp8pkB0AGc0F0iyDnq",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "MSKS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Mukhyamantri Sudharit Kamdhenu Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "msks",
+            "briefDescription": "The scheme aims to help the farmers to get financial assistance for the purchase of cross bred cows, improved she buffaloes and cows of indigenous breeds namely Sahiwal, Gir, Red Sindhi, Rathi and Tharparkar for their Dairy Unit, to promote self employment in the Dairy Sector.",
+            "tags": [
+              "Farmer",
+              "Youth",
+              "Dairy",
+              "Subsidy",
+              "Cattle"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "RBeoC5oB5uF80_MG35Va",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "STGCA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "ST Girl Child Literacy Incentive Amount - Class 11th",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "stgca",
+            "briefDescription": "The scheme provides financial assistance to Scheduled Tribe girl students of Madhya Pradesh enrolled in Class 11 to encourage them to continue their education and prevent dropouts.",
+            "tags": [
+              "Education",
+              "Girl Student",
+              "Scholarship"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "4hgVoJoB5uF80_MGBwNx",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "SBBS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Utility & Sanitation"
+            ],
+            "schemeName": "Saral Bijli Bill Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sbbs",
+            "briefDescription": "The scheme offers free domestic connections and a fixed monthly charge to ensure easy electricity access for eligible beneficiaries.",
+            "tags": [
+              "Electricity",
+              "Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "RRfcEJoB5uF80_MGP5XU",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "SPWBDRHS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Scheme for Persons with Benchmark Disability Requiring High Support",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "spwbdrhs",
+            "briefDescription": "The scheme aims to promote economic self-reliance and ensure the well-being of persons with benchmark disabilities requiring high support. It provides a one-time financial assistance of ₹40,000/- to eligible applicants who are bonafide residents of Goa and belong to the EWS Category.",
+            "tags": [
+              "Disability",
+              "PwD",
+              "Grant",
+              "Financial Assistance",
+              "Rehabilitation",
+              "Education"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "bMZ7B5oB0AGc0F0iPTlp",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "RFCP",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Registration for Crop Procurement",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "rfcp",
+            "briefDescription": "The scheme aims to ensure fair crop prices for farmers by facilitating government procurement and provides easy online registration for landholding farmers to sell their crops at minimum support price. ",
+            "tags": [
+              "Farmer",
+              "Financial Assistance",
+              "Crop",
+              "Procurement",
+              "Grain"
+            ]
+          },
+          "highlight": {}
+        }
+      ],
+      "page": {
+        "total": 4772,
+        "totalPages": 96,
+        "pageNumber": 9,
+        "from": 450,
+        "size": 50
+      }
+    },
+    "sortedBy": "multiple_sort"
+  }
+}

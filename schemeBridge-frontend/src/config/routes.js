@@ -42,6 +42,7 @@ export const CITIZEN_ROUTES = Object.freeze({
 /** All admin panel route paths */
 export const ADMIN_ROUTES = Object.freeze({
   ROOT: "/admin",
+  LOGIN: "/admin/login",
   DASHBOARD: "/admin/dashboard",
   SCHEMES: "/admin/schemes",
   APPLICATIONS: "/admin/applications",

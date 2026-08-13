@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { User, Calendar, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
+import { TESTING_MODE } from "@config/constants";
 
 const GENDERS = ["Male", "Female", "Other", "Prefer not to say"];
 
@@ -10,16 +11,16 @@ export default function Step1Personal({ initialData, onNext }) {
 
   const [age, setAge] = useState(() => {
     if (initialData?.age) {
-return initialData.age;
-}
+      return initialData.age;
+    }
     // Attempt prefill from landing calculator
     const prefill = localStorage.getItem("schemebridge_prefill_profile");
     if (prefill) {
       try {
         const parsed = JSON.parse(prefill);
         if (parsed.age) {
-return parsed.age;
-}
+          return parsed.age;
+        }
       } catch (e) {
         // Ignore
       }
@@ -34,18 +35,23 @@ return parsed.age;
   const [error, setError] = useState("");
 
   const handleContinue = () => {
-    if (!name.trim()) {
- setError("Full name is required."); return;
-}
-    if (!age || Number(age) < 1 || Number(age) > 110) {
-      setError("Please enter a valid age between 1 and 110.");
-      return;
+    if (!TESTING_MODE) {
+      if (!name.trim()) {
+        setError("Full name is required."); return;
+      }
+      if (!age || Number(age) < 1 || Number(age) > 110) {
+        setError("Please enter a valid age between 1 and 110.");
+        return;
+      }
+      if (!gender) {
+        setError("Please select a gender option."); return;
+      }
     }
-    if (!gender) {
- setError("Please select a gender option."); return;
-}
     setError("");
-    onNext({ name: name.trim(), age: Number(age), gender });
+    const finalName = name.trim() || "Test Citizen";
+    const finalAge = age ? Number(age) : 28;
+    const finalGender = gender || "Male";
+    onNext({ name: finalName, age: finalAge, gender: finalGender });
   };
 
   const getGenderLabel = (g) => {

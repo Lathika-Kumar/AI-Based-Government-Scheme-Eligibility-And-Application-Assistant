@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useToast } from "@components/ui/ToastNotification";
-import { validateSchema, loginSchema } from "@utils/validation";
+import { TESTING_MODE } from "@config/constants";
 import {
   Building2,
   Mail,
@@ -10,115 +10,78 @@ import {
   ArrowRight,
   AlertCircle,
   ShieldCheck,
-  UserCheck
+  UserCheck,
 } from "lucide-react";
 
+/**
+ * Login page — Email + Password sign-in flow.
+ * Immediate redirect to /dashboard (or /admin/dashboard for admin credentials).
+ */
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const [email, setEmail]             = useState("");
-  const [password, setPassword]       = useState("");
-  const [error, setError]             = useState("");
-  const [fieldErrors, setFieldErrors] = useState({});
-  const [loading, setLoading]         = useState(false);
-  const [loadingPhase, setLoadingPhase] = useState("");
-
-  const ADMIN_DOMAIN_PATTERN = /^.+@schemebridge\.gov\.in$/i;
-  const isAdminEmail = ADMIN_DOMAIN_PATTERN.test(email);
-
-  const redirectAfterLogin = (loggedInUser) => {
-    const adminRoles = ["super_admin", "verification_officer", "scheme_manager"];
-    const isUserAdmin = adminRoles.includes(loggedInUser.role);
-
-    if (isUserAdmin) {
-      navigate("/admin/dashboard");
-      return;
-    }
-
-    // Draft Registration Resume Logic
-    if (loggedInUser.status === "PENDING_VERIFICATION") {
-      showToast("Welcome back! Your account is almost ready. Please complete verification to continue.", "info");
-      if (loggedInUser.verificationMethod) {
-        navigate("/otp-verification");
-      } else {
-        navigate("/verification-method");
-      }
-      return;
-    }
-
-    if (!loggedInUser.onboardingComplete) {
-      navigate("/onboarding");
-      return;
-    }
-
-    navigate("/dashboard");
-  };
+  const [email, setEmail]       = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setFieldErrors({});
 
-    const validationResult = validateSchema(loginSchema, { email, password });
-    if (!validationResult.success) {
-      setFieldErrors(validationResult.errors);
+    const trimmedEmail = email.trim();
+    if (!TESTING_MODE && !trimmedEmail) {
+      setError("Please enter your email address.");
       return;
     }
 
     setLoading(true);
-    setLoadingPhase("Signing In...");
 
-    const result = await login(email, password);
-    console.log("Login Response:", result);
-    if (result.error) {
+    const result = await login(trimmedEmail, password);
+
+    setLoading(false);
+
+    if (result?.error) {
       setError(result.error);
-      setLoading(false);
-      setLoadingPhase("");
       return;
     }
 
-    const accessToken = result?.accessToken || result?.token || result?.user?.token;
-    const refreshToken = result?.refreshToken || result?.user?.refreshToken || result?.user?.refresh_token;
-    console.log("Access Token:", accessToken);
-    if (accessToken) {
-      localStorage.setItem("schemebridge_token", accessToken);
-    }
-    if (refreshToken) {
-      localStorage.setItem("schemebridge_refresh_token", refreshToken);
-    }
-    if (result?.user) {
-      localStorage.setItem("schemebridge_user", JSON.stringify(result.user));
-    }
-    console.log("Stored Token:", localStorage.getItem("schemebridge_token"));
+    const isUserAdmin = result?.user?.role === "super_admin" || result?.user?.role === "admin" || trimmedEmail.toLowerCase() === "admin@gmail.com";
 
-    setLoading(false);
-    setLoadingPhase("");
-    redirectAfterLogin(result.user);
+    if (isUserAdmin) {
+      showToast("Welcome Administrator!", "success");
+      navigate("/admin/dashboard");
+    } else {
+      showToast("Signed in successfully!", "success");
+      navigate("/dashboard");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-government-blue via-government-blue-light to-government-blue flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-saffron/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-india-green/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-saffron/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-india-green/10 rounded-full blur-3xl" />
 
       <div className="w-full max-w-md relative z-10 space-y-6">
-        <div className="h-2 bg-gradient-to-r from-saffron via-white-official to-india-green rounded-full"></div>
+        <div className="h-2 bg-gradient-to-r from-saffron via-white-official to-india-green rounded-full" />
 
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center bg-white p-3 rounded-xl shadow-lg">
             <Building2 className="h-8 w-8 text-government-blue" />
           </div>
           <h1 className="text-3xl font-bold text-white tracking-tight">SchemeBridge</h1>
-          <p className="text-white/80 text-sm font-medium">National Public Welfare & Scheme Eligibility Platform</p>
+          <p className="text-white/80 text-sm font-medium">
+            National Public Welfare &amp; Scheme Eligibility Platform
+          </p>
         </div>
 
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-200">
           <div className="bg-gray-50 px-8 py-6 text-center border-b border-gray-200">
             <h2 className="text-xl font-bold text-gray-900">Sign In</h2>
             <p className="text-gray-600 text-sm mt-1 leading-relaxed">
-              Access your eligibility dashboard or administrative portal
+              Enter your registered credentials to access your dashboard.
             </p>
           </div>
 
@@ -129,6 +92,7 @@ export default function Login() {
                 <span className="font-medium text-xs leading-normal">{error}</span>
               </div>
             )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -139,40 +103,23 @@ export default function Login() {
                   <input
                     id="login-email"
                     type="email"
-                    placeholder="citizen@schemebridge.in"
+                    placeholder="citizen@example.in"
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
                       setError("");
-                      setFieldErrors({});
                     }}
                     disabled={loading}
-                    className={`w-full pl-10 pr-4 py-3 bg-gray-50 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:bg-white transition ${
-                      fieldErrors.email ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:ring-government-blue'
-                    }`}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-government-blue focus:bg-white transition"
                     autoComplete="email"
                   />
                 </div>
-                {fieldErrors.email && (
-                  <p id="email-error" className="mt-1.5 text-xs text-red-600 font-medium flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    {fieldErrors.email}
-                  </p>
-                )}
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="login-password" className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-xs font-medium text-government-blue hover:underline"
-                  >
-                    Forgot Password?
-                  </Link>
-                </div>
+                <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Password
+                </label>
                 <div className="relative">
                   <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
@@ -183,21 +130,12 @@ export default function Login() {
                     onChange={(e) => {
                       setPassword(e.target.value);
                       setError("");
-                      setFieldErrors({});
                     }}
                     disabled={loading}
-                    className={`w-full pl-10 pr-4 py-3 bg-gray-50 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:bg-white transition ${
-                      fieldErrors.password ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:ring-government-blue'
-                    }`}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-government-blue focus:bg-white transition"
                     autoComplete="current-password"
                   />
                 </div>
-                {fieldErrors.password && (
-                  <p id="password-error" className="mt-1.5 text-xs text-red-600 font-medium flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    {fieldErrors.password}
-                  </p>
-                )}
               </div>
 
               <button
@@ -209,10 +147,10 @@ export default function Login() {
                 {loading ? (
                   <span className="flex items-center gap-2.5">
                     <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                     </svg>
-                    <span className="font-semibold text-xs animate-pulse">{loadingPhase}</span>
+                    <span className="font-semibold text-xs animate-pulse">Signing In…</span>
                   </span>
                 ) : (
                   <>Sign In <ArrowRight className="h-4 w-4" /></>
@@ -220,14 +158,12 @@ export default function Login() {
               </button>
             </form>
 
-            {!isAdminEmail && (
-              <div className="text-center text-sm text-gray-600 pt-3 border-t border-gray-100">
-                New to SchemeBridge? {" "}
-                <Link to="/signup" className="text-government-blue hover:text-government-blue-dark font-bold hover:underline ml-1">
-                  Create an Account
-                </Link>
-              </div>
-            )}
+            <div className="text-center text-sm text-gray-600 pt-3 border-t border-gray-100">
+              New to SchemeBridge?{" "}
+              <Link to="/signup" className="text-government-blue hover:text-government-blue-dark font-bold hover:underline ml-1">
+                Create an Account
+              </Link>
+            </div>
           </div>
         </div>
 

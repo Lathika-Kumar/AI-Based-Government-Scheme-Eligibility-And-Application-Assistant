@@ -1,0 +1,2359 @@
+{
+  "status": "Success",
+  "statusCode": 200,
+  "errorDescription": "",
+  "error": "null",
+  "data": {
+    "summary": {
+      "total": 4772,
+      "query": "",
+      "sortOptions": [
+        {
+          "id": "multiple_sort",
+          "label": "Relevance"
+        },
+        {
+          "id": "schemename-asc",
+          "label": "Scheme Name (A->Z)"
+        },
+        {
+          "id": "schemename-desc",
+          "label": "Scheme Name (Z->A)"
+        }
+      ],
+      "appliedFilters": [],
+      "disabledFilters": []
+    },
+    "facets": [
+      {
+        "identifier": "beneficiaryState",
+        "label": "State",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 693
+          },
+          {
+            "label": "Gujarat",
+            "count": 643
+          },
+          {
+            "label": "Uttarakhand",
+            "count": 447
+          },
+          {
+            "label": "Madhya Pradesh",
+            "count": 290
+          },
+          {
+            "label": "Goa",
+            "count": 272
+          },
+          {
+            "label": "Puducherry",
+            "count": 271
+          },
+          {
+            "label": "Haryana",
+            "count": 249
+          },
+          {
+            "label": "Tamil Nadu",
+            "count": 240
+          },
+          {
+            "label": "Rajasthan",
+            "count": 159
+          },
+          {
+            "label": "Bihar",
+            "count": 114
+          },
+          {
+            "label": "West Bengal",
+            "count": 110
+          },
+          {
+            "label": "Chhattisgarh",
+            "count": 108
+          },
+          {
+            "label": "Jharkhand",
+            "count": 97
+          },
+          {
+            "label": "Meghalaya",
+            "count": 89
+          },
+          {
+            "label": "Assam",
+            "count": 87
+          },
+          {
+            "label": "Kerala",
+            "count": 87
+          },
+          {
+            "label": "Maharashtra",
+            "count": 85
+          },
+          {
+            "label": "Odisha",
+            "count": 85
+          },
+          {
+            "label": "Himachal Pradesh",
+            "count": 75
+          },
+          {
+            "label": "Dadra & Nagar Haveli and Daman & Diu",
+            "count": 62
+          },
+          {
+            "label": "Karnataka",
+            "count": 60
+          },
+          {
+            "label": "Delhi",
+            "count": 54
+          },
+          {
+            "label": "Andhra Pradesh",
+            "count": 52
+          },
+          {
+            "label": "Jammu and Kashmir",
+            "count": 47
+          },
+          {
+            "label": "Uttar Pradesh",
+            "count": 47
+          },
+          {
+            "label": "Arunachal Pradesh",
+            "count": 45
+          },
+          {
+            "label": "Tripura",
+            "count": 44
+          },
+          {
+            "label": "Punjab",
+            "count": 41
+          },
+          {
+            "label": "Manipur",
+            "count": 34
+          },
+          {
+            "label": "Mizoram",
+            "count": 32
+          },
+          {
+            "label": "Sikkim",
+            "count": 29
+          },
+          {
+            "label": "Telangana",
+            "count": 23
+          },
+          {
+            "label": "Nagaland",
+            "count": 22
+          },
+          {
+            "label": "Chandigarh",
+            "count": 21
+          },
+          {
+            "label": "Andaman and Nicobar Islands",
+            "count": 19
+          },
+          {
+            "label": "Lakshadweep",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "identifier": "schemeCategory",
+        "label": "Scheme Category",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Social welfare & Empowerment",
+            "count": 1453
+          },
+          {
+            "label": "Education & Learning",
+            "count": 1110
+          },
+          {
+            "label": "Agriculture,Rural & Environment",
+            "count": 862
+          },
+          {
+            "label": "Business & Entrepreneurship",
+            "count": 772
+          },
+          {
+            "label": "Women and Child",
+            "count": 470
+          },
+          {
+            "label": "Skills & Employment",
+            "count": 401
+          },
+          {
+            "label": "Banking,Financial Services and Insurance",
+            "count": 336
+          },
+          {
+            "label": "Health & Wellness",
+            "count": 286
+          },
+          {
+            "label": "Sports & Culture",
+            "count": 280
+          },
+          {
+            "label": "Housing & Shelter",
+            "count": 136
+          },
+          {
+            "label": "Science, IT & Communications",
+            "count": 121
+          },
+          {
+            "label": "Transport & Infrastructure",
+            "count": 104
+          },
+          {
+            "label": "Travel & Tourism",
+            "count": 96
+          },
+          {
+            "label": "Utility & Sanitation",
+            "count": 58
+          },
+          {
+            "label": "Public Safety,Law & Justice",
+            "count": 34
+          }
+        ]
+      },
+      {
+        "identifier": "gender",
+        "label": "Gender",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3941
+          },
+          {
+            "label": "Female",
+            "count": 790
+          },
+          {
+            "label": "Male",
+            "count": 348
+          },
+          {
+            "label": "Transgender",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "identifier": "age-general",
+        "label": "Age",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 681
+          },
+          {
+            "label": 10,
+            "count": 3873
+          },
+          {
+            "label": 20,
+            "count": 3888
+          },
+          {
+            "label": 30,
+            "count": 3791
+          },
+          {
+            "label": 40,
+            "count": 3624
+          },
+          {
+            "label": 50,
+            "count": 3351
+          },
+          {
+            "label": 60,
+            "count": 3107
+          },
+          {
+            "label": 70,
+            "count": 2052
+          },
+          {
+            "label": 80,
+            "count": 1975
+          },
+          {
+            "label": 90,
+            "count": 1928
+          },
+          {
+            "label": 100,
+            "count": 1845
+          },
+          {
+            "label": 110,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "caste",
+        "label": "Caste",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4001
+          },
+          {
+            "label": "Scheduled Caste (SC)",
+            "count": 394
+          },
+          {
+            "label": "Scheduled Tribe (ST)",
+            "count": 341
+          },
+          {
+            "label": "Other Backward Class (OBC)",
+            "count": 189
+          },
+          {
+            "label": "General",
+            "count": 72
+          },
+          {
+            "label": "Particularly Vulnerable Tribal Group (PVTG)",
+            "count": 40
+          },
+          {
+            "label": "De-Notified, Nomadic, and Semi-Nomadic (DNT) communities",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "nodalMinistryName",
+        "label": "Ministry Name",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Ministry Of Social Justice and Empowerment",
+            "count": 85
+          },
+          {
+            "label": "Ministry of Education",
+            "count": 85
+          },
+          {
+            "label": "Ministry Of Science And Technology",
+            "count": 68
+          },
+          {
+            "label": "Ministry Of Commerce And Industry",
+            "count": 56
+          },
+          {
+            "label": "Ministry Of Agriculture and Farmers Welfare",
+            "count": 41
+          },
+          {
+            "label": "Ministry Of Micro, Small and Medium Enterprises",
+            "count": 31
+          },
+          {
+            "label": "Ministry Of Textiles",
+            "count": 24
+          },
+          {
+            "label": "Ministry Of Youth Affairs & Sports",
+            "count": 22
+          },
+          {
+            "label": "Ministry of Electronics and Information Technology",
+            "count": 22
+          },
+          {
+            "label": "Ministry Of Culture",
+            "count": 20
+          },
+          {
+            "label": "Ministry Of Finance",
+            "count": 19
+          },
+          {
+            "label": "Ministry Of Home Affairs",
+            "count": 18
+          },
+          {
+            "label": "Ministry Of Defence",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Health & Family Welfare",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Labour and Employment",
+            "count": 13
+          },
+          {
+            "label": "Ministry of Fisheries,Animal Husbandry and Dairying",
+            "count": 13
+          },
+          {
+            "label": "Ministry Of Minority Affairs",
+            "count": 12
+          },
+          {
+            "label": "Ministry Of Communication",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Skill Development And Entrepreneurship",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Ayush",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Chemicals And Fertilizers",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Rural Development",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Tribal Affairs",
+            "count": 10
+          },
+          {
+            "label": "Ministry of Women and Child Development",
+            "count": 8
+          },
+          {
+            "label": "Ministry Of New and Renewable Energy",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Tourism",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Jal Shakti",
+            "count": 6
+          },
+          {
+            "label": "Ministry Of External Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Housing & Urban Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Law and Justice",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Personnel, Public Grievances And Pensions",
+            "count": 5
+          },
+          {
+            "label": "Ministry of Ports,Shipping and Waterways",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Environment,forests and climate change",
+            "count": 4
+          },
+          {
+            "label": "Ministry of Heavy Industries",
+            "count": 4
+          },
+          {
+            "label": "Ministry Of Petroleum and Natural Gas",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Statistics and Programme Implementation",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Steel",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Corporate Affairs",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Food Processing Industries",
+            "count": 3
+          },
+          {
+            "label": "Comptroller And Auditor General Of India",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Panchayati Raj",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Road Transport & Highways",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Water Resources,River Development & Ganga Rejuvenation",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Consumer Affairs, Food And Public Distribution",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Development Of North Eastern Region",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Earth Sciences",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Information And Broadcasting",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Mines",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Power",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Railways",
+            "count": 1
+          },
+          {
+            "label": "NITI Aayog (National Institution for Transforming India)",
+            "count": 1
+          },
+          {
+            "label": "The Lokpal of India",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "level",
+        "label": "Level",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "State",
+            "count": 4058
+          },
+          {
+            "label": "Central",
+            "count": 714
+          }
+        ]
+      },
+      {
+        "identifier": "residence",
+        "label": "Residence",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Both",
+            "count": 4537
+          },
+          {
+            "label": "Rural",
+            "count": 203
+          },
+          {
+            "label": "Urban",
+            "count": 42
+          }
+        ]
+      },
+      {
+        "identifier": "minority",
+        "label": "Minority",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4704
+          },
+          {
+            "label": "Yes",
+            "count": 68
+          }
+        ]
+      },
+      {
+        "identifier": "disability",
+        "label": "Differently Abled",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4469
+          },
+          {
+            "label": "Yes",
+            "count": 303
+          }
+        ]
+      },
+      {
+        "identifier": "benefitTypes",
+        "label": "Benefit Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Cash",
+            "count": 3317
+          },
+          {
+            "label": "In Kind",
+            "count": 805
+          },
+          {
+            "label": "Composite",
+            "count": 650
+          }
+        ]
+      },
+      {
+        "identifier": "dbtScheme",
+        "label": "DBT Scheme",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4305
+          },
+          {
+            "label": "Yes",
+            "count": 467
+          }
+        ]
+      },
+      {
+        "identifier": "maritalStatus",
+        "label": "Marital Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4467
+          },
+          {
+            "label": "Never Married",
+            "count": 142
+          },
+          {
+            "label": "Widowed",
+            "count": 107
+          },
+          {
+            "label": "Married",
+            "count": 93
+          },
+          {
+            "label": "Divorced",
+            "count": 48
+          },
+          {
+            "label": "Separated",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "disabilityPercentage",
+        "label": "Disability Percentage",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 24
+          },
+          {
+            "label": 10,
+            "count": 27
+          },
+          {
+            "label": 20,
+            "count": 32
+          },
+          {
+            "label": 30,
+            "count": 32
+          },
+          {
+            "label": 40,
+            "count": 172
+          },
+          {
+            "label": 50,
+            "count": 176
+          },
+          {
+            "label": 60,
+            "count": 182
+          },
+          {
+            "label": 70,
+            "count": 187
+          },
+          {
+            "label": 80,
+            "count": 199
+          },
+          {
+            "label": 90,
+            "count": 199
+          },
+          {
+            "label": 100,
+            "count": 209
+          }
+        ]
+      },
+      {
+        "identifier": "isBpl",
+        "label": "Below Poverty Line",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4600
+          },
+          {
+            "label": "Yes",
+            "count": 172
+          }
+        ]
+      },
+      {
+        "identifier": "isEconomicDistress",
+        "label": "Economic Distress",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4725
+          },
+          {
+            "label": "Yes",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "isGovEmployee",
+        "label": "Government Employee",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4758
+          },
+          {
+            "label": "Yes",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "employmentStatus",
+        "label": "Employment Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3659
+          },
+          {
+            "label": "Employed",
+            "count": 519
+          },
+          {
+            "label": "Self-Employed/ Entrepreneur",
+            "count": 423
+          },
+          {
+            "label": "Unemployed",
+            "count": 171
+          }
+        ]
+      },
+      {
+        "identifier": "isStudent",
+        "label": "Student",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4414
+          },
+          {
+            "label": "Yes",
+            "count": 358
+          }
+        ]
+      },
+      {
+        "identifier": "occupation",
+        "label": "Occupation",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 390
+          },
+          {
+            "label": "Farmer",
+            "count": 357
+          },
+          {
+            "label": "Construction Worker",
+            "count": 270
+          },
+          {
+            "label": "Unorganized Worker",
+            "count": 192
+          },
+          {
+            "label": "Fishermen",
+            "count": 114
+          },
+          {
+            "label": "Artists",
+            "count": 83
+          },
+          {
+            "label": "Artisans, Spinners & Weavers",
+            "count": 80
+          },
+          {
+            "label": "Student",
+            "count": 66
+          },
+          {
+            "label": "Organized Worker",
+            "count": 40
+          },
+          {
+            "label": "Sportsperson",
+            "count": 35
+          },
+          {
+            "label": "Ex Servicemen",
+            "count": 28
+          },
+          {
+            "label": "Journalist",
+            "count": 22
+          },
+          {
+            "label": "Dairy Farmer",
+            "count": 21
+          },
+          {
+            "label": "Safai Karamchari",
+            "count": 18
+          },
+          {
+            "label": "Teacher / Faculty",
+            "count": 14
+          },
+          {
+            "label": "Coir Worker",
+            "count": 7
+          },
+          {
+            "label": "Street Vendor",
+            "count": 3
+          },
+          {
+            "label": "Health Worker",
+            "count": 2
+          },
+          {
+            "label": "Khadi Artisan",
+            "count": 2
+          },
+          {
+            "label": "Lawyer / Law Graduate / Advocate",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "identifier": "applicationMode",
+        "label": "Application Mode",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Offline",
+            "count": 2733
+          },
+          {
+            "label": "Online",
+            "count": 2350
+          },
+          {
+            "label": "Online - via CSC",
+            "count": 161
+          }
+        ]
+      },
+      {
+        "identifier": "schemeType",
+        "label": "Scheme Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Central Sector Scheme",
+            "count": 543
+          },
+          {
+            "label": "Centrally Sponsored Scheme",
+            "count": 146
+          }
+        ]
+      }
+    ],
+    "hits": {
+      "items": [
+        {
+          "id": "58a-F5gB0AGc0F0iYjV0",
+          "fields": {
+            "beneficiaryState": [
+              "Jammu and Kashmir"
+            ],
+            "schemeShortTitle": "FAFEJKBOCWWB",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Assistance for Funeral Expenses (JKBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "fafejkbocwwb",
+            "briefDescription": "The “Financial Assistance for Funeral Expenses” scheme by the BOCW Welfare Board, Labour Department, Jammu and Kashmir, is a welfare scheme that provides financial assistance to the nominees of a deceased registered member for covering funeral expenses.",
+            "tags": [
+              "Building Worker",
+              "Construction Worker",
+              "Labour",
+              "Death",
+              "Funeral Expenses"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Ahc7GJgB5uF80_MGKJRr",
+          "fields": {
+            "beneficiaryState": [
+              "Jharkhand"
+            ],
+            "schemeShortTitle": "JRPSBYN2021",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Jharkhand Rajya Patrakar Swasth Bima Yojna Niyamawali 2021",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "jrpsbyn2021",
+            "briefDescription": "The Jharkhand Rajya Patrakar Swasth Bima Yojna Niyamawali 2021 is a health insurance scheme for accredited journalists in Jharkhand. It provides comprehensive health coverage to ensure financial security during medical emergencies.",
+            "tags": [
+              "Financial Assistance",
+              "Journalist",
+              "Insurance Scheme",
+              "Health"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "JsY7GJgB0AGc0F0iKTgC",
+          "fields": {
+            "beneficiaryState": [
+              "Himachal Pradesh"
+            ],
+            "schemeShortTitle": "PODBHPBOCWWB)",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Health & Wellness"
+            ],
+            "schemeName": "Payment of Death Benefit ( HPBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "podbhpbocwwb",
+            "briefDescription": "The scheme \"Payment of Death Benefit\" under the Labour and Employment Department, Himachal Pradesh, provides financial assistance to the nominees or dependents of registered members. In case of accidental death, ₹4,00,000 is given, while ₹2,00,000 is payable in case of natural death.",
+            "tags": [
+              "Construction",
+              "Building",
+              "Death",
+              "Labour",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "KaE7GJgBXu-iUKXqK3lj",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "MATBHPBOCWWB",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Health & Wellness"
+            ],
+            "schemeName": "Medical Assistance to Beneficiaries (HPBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "matbhpbocwwb",
+            "briefDescription": "The \"Medical Assistance to Beneficiaries\" scheme under the Labour and Employment Department HP, provides financial support for healthcare. It covers ₹50,000 for outdoor treatment, ₹1,00,000 for indoor treatment, and ₹5,00,000 for critical illnesses each year, upon submission of valid medical bills.",
+            "tags": [
+              "Building",
+              "Construction",
+              "Labour",
+              "Financial Assistance",
+              "Medical",
+              "Worker"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "-xe_F5gB5uF80_MGjZH7",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "SSGFF",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Stipend Scheme for Grandchildren of Freedom Fighters",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "ssgff",
+            "briefDescription": "\"Stipend Scheme for Grandchildren of Freedom Fighters\" aims to honour the third-generation descendants of freedom fighters by providing financial assistance for higher education. Eligible students receive a monthly stipend and an annual allowance for books to support their education.",
+            "tags": [
+              "Stipend",
+              "Education",
+              "Financial Assistance",
+              "Scholarship",
+              "Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "HRfAF5gB5uF80_MGbJLY",
+          "fields": {
+            "beneficiaryState": [
+              "Rajasthan"
+            ],
+            "schemeShortTitle": "VYPY",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Education & Learning"
+            ],
+            "schemeName": "Vishesh Yogyajan Palanhar Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "saps",
+            "briefDescription": "Under this scheme, children receive monthly financial support based on their age to ensure their well-being and education. To be eligible for assistance, the child must attend an Anganwadi/school between the ages of two to five years and study in school after the age of 6 years.",
+            "tags": [
+              "Financial Assistance",
+              "Differently Abled Person",
+              "Education",
+              "Children",
+              "PwD"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "OqHAF5gBXu-iUKXqcXft",
+          "fields": {
+            "beneficiaryState": [
+              "Rajasthan"
+            ],
+            "schemeShortTitle": "GLMPBNY",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Housing & Shelter"
+            ],
+            "schemeName": "Gadiya Lohar Maharana Pratap Bhawan Nirman Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "glbngs",
+            "briefDescription": "This scheme provides financial assistance of ₹1,20,000/- in three instalments to Gadiya Lohar families in Rajasthan for the construction of permanent houses and ensuring their settlement.",
+            "tags": [
+              "Financial Assistance",
+              "Bhawan Nirman",
+              "Maharana Pratap",
+              "Gadia Lohar",
+              "House Construction"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "CBc8GJgB5uF80_MG_pRi",
+          "fields": {
+            "beneficiaryState": [
+              "Rajasthan"
+            ],
+            "schemeShortTitle": "AYR",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Aastha Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "asr",
+            "briefDescription": "The scheme aims to provide BPL-equivalent benefits to families with two or more specially-abled members. Under this scheme, eligible families receive free medical treatment, ration supplies, and other welfare benefits. ",
+            "tags": [
+              "Persons With Disabilities",
+              "Medical Treatment",
+              "Ration",
+              "Welfare Benefits",
+              "PwD",
+              "Astha Card"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "GBc9GJgB5uF80_MGB5RO",
+          "fields": {
+            "beneficiaryState": [
+              "Rajasthan"
+            ],
+            "schemeShortTitle": "AFDM",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Assistance for Daughter's Marriage",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "afdm",
+            "briefDescription": "Under this scheme, financial assistance of ₹25,000/- per girl is provided for a maximum of two marriageable daughters of widows of ex-servicemen up to the rank of Havaldar, who are not receiving a Marriage Grant from the Kendriya Sainik Board.",
+            "tags": [
+              "Financial Assistance",
+              "Marriage",
+              "Widow",
+              "Daughter",
+              "Ex-servicemen",
+              "Sainik"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "C8bdPZkB0AGc0F0iYDnF",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "FPSUKBOCWWB",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Family Pension Scheme (UKBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "fpftcw",
+            "briefDescription": "The scheme provides financial assistance to the spouse of a registered construction worker in the event of the worker’s death, if the deceased was a pensioner. Under this scheme, the family pension will be ₹500/- per month or 50% of the pensioner's pension, whichever is higher.",
+            "tags": [
+              "Labour",
+              "Family Pension",
+              "Construction Worker",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "jRfCF5gB5uF80_MGCJJ7",
+          "fields": {
+            "beneficiaryState": [
+              "Haryana"
+            ],
+            "schemeShortTitle": "FAFOAHR",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Assistance for funeral and other activities in case of death of a worker's - Haryana Labour Welfare Board",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "fafoahr",
+            "briefDescription": "The scheme aims to provide financial support to the family or dependent of a deceased worker to cover funeral and related expenses. Under this scheme, an assistance amount of ₹15,000/- is provided to the dependent/family of the deceased worker.",
+            "tags": [
+              "Death",
+              "Worker",
+              "Labour",
+              "Funeral",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "CheydpkB5uF80_MGRJWu",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "FPIS",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Family Planning Indemnity Scheme",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "fpis",
+            "briefDescription": "The scheme provides compensation ranging from ₹60,000/- for sterilization failure to ₹4,00,000/- for death following sterilization, along with coverage for treatment costs up to ₹50,000/- for complications arising within 60 days post-operation.",
+            "tags": [
+              "Family",
+              "Sterilization",
+              "Compensation",
+              "Death",
+              "Indemnity",
+              "Healthcare",
+              "Medical",
+              "Insurance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "SKFNyJkBXu-iUKXqsnpz",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "KKN-FAFFOTA",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Sports & Culture"
+            ],
+            "schemeName": "Kalakar Kritadnyata Nidhi: Financial Assistance For Funeral of the Artist",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "kkn-faffota",
+            "briefDescription": "The scheme aims to provide financial relief to the families of deceased Goan artists by assisting them in meeting funeral expenses, thereby acknowledging the contributions of artists and supporting their families during difficult times. The component provides financial assistance of up to ₹10,000/-.",
+            "tags": [
+              "Death",
+              "Funeral",
+              "Artist",
+              "Relief",
+              "Family"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "SqGOzZkBXu-iUKXqY3qq",
+          "fields": {
+            "beneficiaryState": [
+              "Goa"
+            ],
+            "schemeShortTitle": "KKN-LG",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Kalakar Kritadnyata Nidhi: Lumpsum Grant",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "kkn-lg",
+            "briefDescription": "The scheme aims to provide a lumpsum grant (maximum ₹20,000/-) to the dependent family in case of death of the artist. The one-time financial assistance amount is disbursed to the eligible applicant in the form of Electronic Clearing Service (ECS) mode. The applications are accepted offline.",
+            "tags": [
+              "Artist",
+              "Family",
+              "Death",
+              "Financial Assistance",
+              "Dependent"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "pKG6T5oBXu-iUKXq0XrZ",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "HIPPRMPDDS",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Incentive Honorarium to Parents of Permanent Residents of Madhya Pradesh who enroll their Daughter in Defence Services",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "hipprmpdds",
+            "briefDescription": "The scheme provides financial assistance per year to parents whose daughters are employed in the Indian Armed Forces. ",
+            "tags": [
+              "Ex-servicemen",
+              "Daughter",
+              "Parents",
+              "Indian Armed Forces"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "5MZCE5kB0AGc0F0ifjhc",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "PEGADUPNLEDS",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Payment of Ex-Gratia Amount on Death of the UPNL Employee During Service",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "pegadeds",
+            "briefDescription": "The scheme aims to provide financial assistance of ₹1,00,000/- to the legal dependents of deceased UPNL employees in the event of the employee’s death during their service period.",
+            "tags": [
+              "Financial Assistance",
+              "Ex-gratia",
+              "Dependents",
+              "Death",
+              "UPNL"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "5cZDE5kB0AGc0F0ijTgV",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "UKSKA",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Uttarakhand Shaheed Kosh Anudan",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "uska",
+            "briefDescription": "The scheme aims to provide financial assistance to widows/dependents of soldiers & paramilitary personnel who were martyred in wars, border clashes, or internal security operations. Under this scheme, a one-time grant of ₹10 lakh is provided, subject to eligibility criteria.",
+            "tags": [
+              "Shaheed Kosh",
+              "Martyrs",
+              "Dependents",
+              "Sainik",
+              "Soldiers"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "CMZvPZkB0AGc0F0i8Dmp",
+          "fields": {
+            "beneficiaryState": [
+              "Uttarakhand"
+            ],
+            "schemeShortTitle": "FACT(UKBOCWWB)",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Assistance for Construction of Toilet (UKBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "sctukbocwwb",
+            "briefDescription": "The scheme provides financial assistance of up to ₹12,000/- to registered construction workers for building toilets. The assistance is disbursed in two installments: the first installment of ₹8,000/- and the second installment of ₹4,000/-.",
+            "tags": [
+              "Toilet",
+              "Construction Worker",
+              "Labour",
+              "Building Worker",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "QxhcDZwB5uF80_MG2VzQ",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "MVDCWS-S",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Education & Learning",
+              "Transport & Infrastructure"
+            ],
+            "schemeName": "Motor Vehicle Driver-Conductor Welfare Scheme- Scholarship",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "mvdcws-s",
+            "briefDescription": "The scheme aims to provide scholarship support for the education of registered drivers, conductors, and their dependents.",
+            "tags": [
+              "Scholarship",
+              "Driver",
+              "Conductor",
+              "Children",
+              "Education",
+              "Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "JsddDZwB0AGc0F0iBQJy",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "MVDCWS-M",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Women and Child",
+              "Transport & Infrastructure"
+            ],
+            "schemeName": "Motor Vehicle Driver-Conductor Welfare Scheme- Maternity Assistance",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "mvdcws-m",
+            "briefDescription": "This scheme provides financial assistance to eligible registered drivers and conductors to support their maternity-related needs during childbirth.",
+            "tags": [
+              "Maternity Assistance",
+              "Child Birth",
+              "Drivers",
+              "Conductors",
+              "Paternity"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "SBheDZwB5uF80_MGS1x5",
+          "fields": {
+            "beneficiaryState": [
+              "Madhya Pradesh"
+            ],
+            "schemeShortTitle": "MVDCWS-MA",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Transport & Infrastructure"
+            ],
+            "schemeName": "Motor Vehicle Driver-Conductor Welfare Scheme- Marriage Assistance",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "mvdcws-ma",
+            "briefDescription": "The scheme aims to provide monetary support for the marriage of daughters of registered drivers and conductors.",
+            "tags": [
+              "Financial Assistance",
+              "Marriage",
+              "Driver",
+              "Conductor",
+              "Daughter"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0Mcg0ZwB0AGc0F0iUgVG",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "KSYGSW",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Kaidi Sahay Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "ksygsw",
+            "briefDescription": "The \"Kaidi Sahay Yojana\" by the Social Justice and Empowerment Department, Gujarat, provides financial assistance of ₹25,000/- to the family of a prisoner who is the sole or main earner, to support them through self-employment.",
+            "tags": [
+              "Prisoner Family Aid",
+              "Social Welfare"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "-aJM0ZwBXu-iUKXqCkl6",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "PDUAYNTDNT",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Housing & Shelter"
+            ],
+            "schemeName": "Pandit Dindayal Upadhyay Awas Yojana (Developing Caste Welfare) (NT-DNT)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "pduayntdnt",
+            "briefDescription": "The \"Pandit Dindayal Upadhyay Awas Yojana (Developing Caste Welfare) (NT-DNT)\" provides financial assistance of up to ₹1,20,000/- to the people belonging to Nomadic Tribes and Denotified Tribes.\n",
+            "tags": [
+              "Housing",
+              "Nomadic And Denotified Tribe",
+              "Social Welfare"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Ice3hp0B0AGc0F0i9Ayf",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "SUMAN",
+            "level": "Central",
+            "schemeFor": "Family",
+            "nodalMinistryName": "Ministry Of Health & Family Welfare",
+            "schemeCategory": [
+              "Health & Wellness",
+              "Women and Child"
+            ],
+            "schemeName": "Surakshit Matritva Aashwasan Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "suman",
+            "briefDescription": "The scheme aims to provide assured, dignified, and completely free healthcare services to all pregnant women, mothers, and newborns at public health facilities. ",
+            "tags": [
+              "Pregnant",
+              "Health"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "RqJt1J4BXu-iUKXqYFmg",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "OTSDFPC",
+            "level": "Central",
+            "schemeFor": "Family",
+            "nodalMinistryName": "Ministry Of Home Affairs",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Banking,Financial Services and Insurance",
+              "Business & Entrepreneurship",
+              "Housing & Shelter",
+              "Skills & Employment",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Central Assistance For One Time Settlement Of Displaced Families From PoK And Chhamb Under Prime Minister's Development Package",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "otsdfpc",
+            "briefDescription": "The scheme aims to provide supplementary financial assistance to displaced families for assured and sustained earnings. Through this scheme, one-time financial assistance of ₹5,50,000/- per family is provided to eligible displaced families of PoK and Chhamb settled in Jammu & Kashmir.",
+            "tags": [
+              "Rehabilitation",
+              "Displaced",
+              "Business",
+              "Farming",
+              "Jammu",
+              "Kashmir",
+              "Family"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "J6FqepkBXu-iUKXqBHpr",
+          "fields": {
+            "beneficiaryState": [
+              "Assam"
+            ],
+            "schemeShortTitle": "ORUNODOI 3.0",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Women and Child",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Orunodoi 3.0",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "aos",
+            "briefDescription": "Orunodoi, described as 'foremost bead' among the Ashtadash Mukutar Unnoyonee Maala was announced by then HFM in his Budget Speech 20-21. It envisages women empowerment, poverty alleviation and socio-economic inclusion of financially vulnerable women of the state through sustained financial assistanc",
+            "tags": [
+              "Female",
+              "Financial Assistance",
+              "DBT",
+              "Women",
+              "Household",
+              "Divyangjan",
+              "Assam",
+              "Axom",
+              "Financial Inclusion"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "OhfgF5gB5uF80_MG6ZP3",
+          "fields": {
+            "beneficiaryState": [
+              "Assam"
+            ],
+            "schemeShortTitle": "SS-A",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Sneha Sparsha",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "ss-a",
+            "briefDescription": "\"Sneha Sparsha\" is a healthcare scheme by the Dept. of Health & Family Welfare, Govt. of Assam. In this scheme, financial assistance shall be provided for specialized treatment of children below 12 years of age affected with some serious ailments.",
+            "tags": [
+              "Disease",
+              "Child",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "vMb9F5gB0AGc0F0iWTfc",
+          "fields": {
+            "beneficiaryState": [
+              "Rajasthan"
+            ],
+            "schemeShortTitle": "FHDFH",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Help On Death Of Family Head",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "fhdfh",
+            "briefDescription": "Financial help on death of family head scheme was launched by Rajasthan state government under tribal area development on 20/08/2008. Under this scheme, ₹10,000/- to the wife of the deceased on the premature death of the head of the family of Saharia primitive tribe.",
+            "tags": [
+              "Sahariya Tribe",
+              "Financial Assistance",
+              "DBT",
+              "Rajasthan",
+              "Death Of Family Head"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "xaH9F5gBXu-iUKXqZXjA",
+          "fields": {
+            "beneficiaryState": [
+              "Karnataka"
+            ],
+            "schemeShortTitle": "Idcm",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Incentive For The Devadasi Children’s Marriage",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "idcm",
+            "briefDescription": "Under this scheme, the Social Welfare Department, Government of Karnataka will give incentives of ₹3.00 lakh for men,₹5.00 lakh for women to the Devadasi's Children who are Married Couples.",
+            "tags": [
+              "Devadasi",
+              "Marriage",
+              "Incentive",
+              "SC"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "sRf9F5gB5uF80_MGaJMn",
+          "fields": {
+            "beneficiaryState": [
+              "Arunachal Pradesh"
+            ],
+            "schemeShortTitle": "CMAAY",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Chief Minister Arogya Arunachal Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "cmaay",
+            "briefDescription": "The scheme aims to accord quality and cashless healthcare services to the indigenous people of the state and government employees and reduce out-of-pocket (OOP) expenses during major illness and hospitalization, thereby envisaging universal healthcare for all sections of society.",
+            "tags": [
+              "Health",
+              "Medical",
+              "Hospital",
+              "Surgery",
+              "Patient"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "w8b9F5gB0AGc0F0iYDeE",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "WBSISHUSATHI",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Sishu Saathi",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "wbsishusathi",
+            "briefDescription": "“Sishu Saathi”, a scheme of the Health and Family Welfare Department, Government of West Bengal as part of the Rastriya Bal Swasthya Karyakram (RBSK) under National Health Mission is meant to treat Indian children of 0-18 years age group with zero out of pocket expenditure.",
+            "tags": [
+              "Sishu Saathi",
+              "Social Welfare",
+              "Financial Assistance",
+              "Child Health"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ocbRF5gB0AGc0F0iiTay",
+          "fields": {
+            "beneficiaryState": [
+              "Sikkim"
+            ],
+            "schemeShortTitle": "SU-SWASTHA YOJANA",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Su-Swastha Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "su-swastha-yojana",
+            "briefDescription": "\"Su-Swastha Yojna\" provides comprehensive and affordable healthcare coverage to the employees of the Government of Sikkim and their families. Cashless hospitalization at top-tier hospitals across India is provided to eligible beneficiaries with the best-in-class healthcare.",
+            "tags": [
+              "Insurance",
+              "Medical",
+              "Premium",
+              "Health",
+              "Hospital",
+              "Family"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "uKH9F5gBXu-iUKXqYnjD",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "MAY",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Mukhyamantri Amrutum Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "ma",
+            "briefDescription": "The Mukhyamantri Amrutum Yojana, is a health insurance scheme launched by the Government of Gujarat on 4th September 2012. It was initially launched only to cater to people who fall under the lowest income groups of the state i.e. Below Poverty Line (BPL). ",
+            "tags": [
+              "Treatment",
+              "Amrutam",
+              "Health",
+              "Wellness",
+              "BPL"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "mxf9F5gB5uF80_MGYJOs",
+          "fields": {
+            "beneficiaryState": [
+              "Andhra Pradesh"
+            ],
+            "schemeShortTitle": "FSEG",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Farmer Suicide Ex-Gratia",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "fseg",
+            "briefDescription": "\"Farmer Suicide Ex-Gratia\" is a Financial Assistance Scheme by the Agriculture & Cooperation Dept. of the Govt. of Andhra Pradesh. The scheme provides financial assistance of ₹ 7,00,000 to the family members of the deceased farmers/tenant farmers, who commit suicide due to agrarian reasons.",
+            "tags": [
+              "Suicide",
+              "Farmer",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "3sb9F5gB0AGc0F0ibzdn",
+          "fields": {
+            "beneficiaryState": [
+              "Jharkhand"
+            ],
+            "schemeShortTitle": "APY-JBOCWWB",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Annath Pension Yojana (JBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "apy-jbocwwb",
+            "briefDescription": "\"Annath Pension Yojana (JBOCWWB)\" is a scheme by the Department of Labour, Employment, Training & Skill Development Govt of Jharkhand. In case of the death of the pensioner, the pension will be payable at the rate of the family pension and will be evenly divided among orphans below 18 years of age.",
+            "tags": [
+              "Pension",
+              "Orphan",
+              "Construction Worker",
+              "Social Welfare",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "raGzF5gBXu-iUKXqjHQM",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "RGGBKMNY",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Rajiv Gandhi Gramin Bhoomihin Krishi Majdoor Nyay Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "rggbkmny",
+            "briefDescription": "The state government has started the \"Rajiv Gandhi Landless Agricultural Laborer Justice Scheme\" with a view to providing strength to farmers. ",
+            "tags": [
+              "Financial Assistance",
+              "Agricultural",
+              "Landless",
+              "Laborer"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "qqGzF5gBXu-iUKXqi3TU",
+          "fields": {
+            "beneficiaryState": [
+              "Maharashtra"
+            ],
+            "schemeShortTitle": "SGNGS",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Sanjay Gandhi Niradhar Grant Scheme",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "sgngs",
+            "briefDescription": "The \"Sanjay Gandhi Niradhar Grant Scheme\" is a scheme by the Dept. of Social Justice & Special Assistance, Govt. of Maharashtra. Financial assistance of ₹600/- per month is given if there is only one beneficiary in the eligible family, and ₹900/- per month if there is one beneficiary in a family.",
+            "tags": [
+              "Financial Asisstance",
+              "Widow",
+              "Transgender",
+              "Person With Disability",
+              "Orphan",
+              "Below Poverty Line",
+              "Destitute"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "EMa1F5gB0AGc0F0iJTQv",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "KBS",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Krishak Bandhu Scheme",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "kbs",
+            "briefDescription": "The scheme aims to provide financial security to farmers through direct income support and death/disability benefits. It benefits small and marginal farmers with annual assistance of ₹5,000/- per acre and a one-time payout of ₹2,00,000/- in case of death.",
+            "tags": [
+              "Farmer",
+              "Financial Assistance",
+              "Agriculture",
+              "Income",
+              "Death",
+              "Disability"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "6he1F5gB5uF80_MGoY_m",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "MNSSY",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Mukhyamantri Noni Sashaktikaran Sahayata Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "mnssy",
+            "briefDescription": "Chhattisgarh State Government started \"Mukhyamantri Noni Sashaktikaran Sahayata Yojana\" for the girl child of the family.",
+            "tags": [
+              "Financial Assistance",
+              "Empowerment",
+              "Girl Education"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ahe4F5gB5uF80_MGMZBq",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "NSBHUK",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Nirmaan Shramik  ke Bachchon Hetu  Utkrasht Khel Protsaahan Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "nsbhuk",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"Nirmaan Shramik  Ke Bachchon Hetu Utkrasht Khel Protsaahan Yojana\" for Construction worker on 23 May 2017.",
+            "tags": [
+              "Sports",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "nqG4F5gBXu-iUKXqL3UR",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "NSKBGC",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Nirman Shramikon Ke Bacchon Hetu Nishulk Ganvesh Evam Pustak Copy Hetu Sahaayata Raashi Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "nskbgc",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"Nirman Shramikon Ke Bacchon Hetu Nishulk Ganvesh Evam Pustak Copy Hetu Sahaayata Raashi Yojana\" for construction worker on 09 December 2022. ",
+            "tags": [
+              "School Uniform",
+              "Education",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "TKG3F5gBXu-iUKXqMnXr",
+          "fields": {
+            "beneficiaryState": [
+              "Chhattisgarh"
+            ],
+            "schemeShortTitle": "TSHMCY",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Theka Shramik, Gharelu Mahila Kamgar Evan Hamaal Shramik Ke Bachcho Hetu Chhaatravrtti Yojana",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "tshmcy",
+            "briefDescription": "Chhattisgarh State Government started a scheme \"Theka Shramik, Gharelu Mahila Kamgar Evan Hamaal Shramik Ke Bachcho Hetu Chhaatravrtti Yojana\" for unorganized worker on 11 March 2015.",
+            "tags": [
+              "Education",
+              "Scholarship"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "98b-F5gB0AGc0F0iPjeF",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "WRFLSNCS-IDRA",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "\"Immediate Death Relief Assistance\" under \"Welfare and Relief for Fishermen During Lean Seasons and Natural Calamities Scheme\"",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "wrflsncs-idra",
+            "briefDescription": "The scheme \"Immediate Death Relief Assistance\" is introduced with the objective of extending financial assistance to the fishermen's families to compensate for the loss due to the sudden demise of the breadwinner and to support them financially to run their family. ",
+            "tags": [
+              "Death",
+              "Fisherman",
+              "Relief",
+              "Financial Assistance",
+              "Family"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "aMbkF5gB0AGc0F0iQzd1",
+          "fields": {
+            "beneficiaryState": [
+              "Puducherry"
+            ],
+            "schemeShortTitle": "GFAPPHOOGCWS81S",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Grant of Financial Assistance to the Poor Parents Having Only One Girl Child Who is Studying 8th to 10th Standard",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "gfapphoogcws81s",
+            "briefDescription": "This scheme was introduced to promote small family norms, uplift the welfare of girl children, and ease the financial burden on parents during their daughter's marriage. The scheme provides ₹25,000/- financial assistance for single girl children studying in 8th to 10th standard.",
+            "tags": [
+              "Girl Child",
+              "Family",
+              "Financial Assistance",
+              "Student",
+              "Parent"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "URe3F5gB5uF80_MGsZD1",
+          "fields": {
+            "beneficiaryState": [
+              "Assam"
+            ],
+            "schemeShortTitle": "FA(ABOCWWB)",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Funeral Assistance (A.B.O.C.W.W.B)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "faabocwwb",
+            "briefDescription": "Under this scheme, financial assistance shall be given to the nominees/dependents of a deceased registered worker, towards funeral expenses.",
+            "tags": [
+              "Funeral",
+              "Death",
+              "Financial Assistance",
+              "Construction Worker",
+              "Building Worker",
+              "Labour"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "nsa3F5gB0AGc0F0irzQR",
+          "fields": {
+            "beneficiaryState": [
+              "Assam"
+            ],
+            "schemeShortTitle": "DB(ABOCWWB)",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Death Benefit (A.B.O.C.W.W.B)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "dbabocwwb",
+            "briefDescription": "Under this scheme, financial assistance shall be given to the nominees/dependents of a registered worker towards death benefit, in case of normal death or due to an accident during the course of employment.",
+            "tags": [
+              "Death",
+              "Financial Assistance",
+              "Building Worker",
+              "Construction Worker",
+              "Labour"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Oxe3F5gB5uF80_MGrpD0",
+          "fields": {
+            "beneficiaryState": [
+              "Uttar Pradesh"
+            ],
+            "schemeShortTitle": "NKMDS",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Nirmaan Kamgar Mrtyu Va Divyangta Sahayta Yojana ",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "nkmds",
+            "briefDescription": "The \"Nirman Kamgar Mrtyu Va Divyangta Sahayta Yojana \" is a scheme by the government of Uttar Pradesh, to provide financial assistance to registered construction workers.",
+            "tags": [
+              "Financial Assistance",
+              "Social Welfare",
+              "Health & Wellness"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "8xe6F5gB5uF80_MGSZAO",
+          "fields": {
+            "beneficiaryState": [
+              "Meghalaya"
+            ],
+            "schemeShortTitle": "DB(MBOCWWB)",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Death Benefit (MBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "dbmbocwwb",
+            "briefDescription": "Under the scheme, financial assistance shall be provided to the nominees or dependents of registered construction workers in the event of their natural or accidental death during the course of employment.",
+            "tags": [
+              "Death",
+              "Building Worker",
+              "Construction Worker",
+              "Labour",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "BBfXF5gB5uF80_MG35P4",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "FAS(GBOCWWB)",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Funeral Assistance Scheme (GBOCWWB)",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "fasgbocwwb",
+            "briefDescription": "The objective of this scheme is to provide financial assistance to the heir of a deceased construction worker registered with the Gujarat Building and Other Construction Worker’s Welfare Board in case of death during the ongoing membership.",
+            "tags": [
+              "Funeral",
+              "Building Worker",
+              "Construction Worker",
+              "Labour",
+              "Financial Assistance",
+              "Death"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "_8bXF5gB0AGc0F0ixza_",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "DMRNICMASII",
+            "level": "State",
+            "schemeFor": "Family",
+            "schemeCategory": [
+              "Women and Child",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Dr. Muthulakshmi Reddy Ninaivu Inter-caste Marriage Assistance Scheme-II",
+            "schemeCloseDate": null,
+            "priority": 2,
+            "slug": "dmrnicmasii",
+            "briefDescription": "The 'Dr. Muthulakshmi Reddy Ninaivu Inter-caste Marriage Assistance Scheme' was launched by the Social Welfare & Women Empowerment Dept. Tamil Nadu. The aim is to abolish caste & community discrimination by encouraging inter-caste marriage by giving financial assistance to newly married couples.",
+            "tags": [
+              "Financial Assistance",
+              "Marriage",
+              "Inter-Caste",
+              "Backward Class"
+            ]
+          },
+          "highlight": {}
+        }
+      ],
+      "page": {
+        "total": 4772,
+        "totalPages": 96,
+        "pageNumber": 76,
+        "from": 3800,
+        "size": 50
+      }
+    },
+    "sortedBy": "multiple_sort"
+  }
+}

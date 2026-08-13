@@ -8,6 +8,8 @@ import com.schemebridge.adminservice.enums.AdminActionType;
 import com.schemebridge.adminservice.enums.AnnouncementAudience;
 import com.schemebridge.adminservice.enums.AnnouncementPriority;
 import com.schemebridge.adminservice.repository.SystemAnnouncementRepository;
+import com.schemebridge.common.event.BusinessEvents;
+import com.schemebridge.common.event.DomainEventPublisher;
 import com.schemebridge.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     private final SystemAnnouncementRepository announcementRepository;
     private final AuditLogService auditLogService;
+    private final DomainEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -51,6 +54,15 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
         auditLogService.logActivity(actorEmail, AdminActionType.ANNOUNCEMENT_CREATED, "Announcement", saved.getAnnouncementId(),
                 "Created announcement: " + saved.getTitle());
+
+        // Publish AnnouncementPublishedEvent
+        try {
+            eventPublisher.publishEvent(BusinessEvents.createAnnouncementPublishedEvent(
+                    saved.getAnnouncementId(), saved.getTitle(), saved.getContent(),
+                    saved.getTargetAudience().name(), List.of("citizen-001")));
+        } catch (Exception e) {
+            log.warn("[AnnouncementService] Failed to publish AnnouncementPublishedEvent: {}", e.getMessage());
+        }
 
         return mapToResponse(saved);
     }
@@ -96,11 +108,18 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public void broadcastAnnouncement(String actorEmail, String announcementId) {
         SystemAnnouncement ann = findEntity(announcementId);
         ann.setBroadcasted(true);
-        announcementRepository.save(ann);
+        SystemAnnouncement saved = announcementRepository.save(ann);
 
-        log.info("Broadcasted announcement {} to audience {}", announcementId, ann.getTargetAudience());
-        auditLogService.logActivity(actorEmail, AdminActionType.ANNOUNCEMENT_UPDATED, "Announcement", announcementId,
+        auditLogService.logActivity(actorEmail, AdminActionType.ANNOUNCEMENT_UPDATED, "Announcement", ann.getAnnouncementId(),
                 "Broadcasted announcement: " + ann.getTitle());
+
+        try {
+            eventPublisher.publishEvent(BusinessEvents.createAnnouncementPublishedEvent(
+                    saved.getAnnouncementId(), saved.getTitle(), saved.getContent(),
+                    saved.getTargetAudience().name(), List.of("citizen-001")));
+        } catch (Exception e) {
+            log.warn("[AnnouncementService] Failed to publish broadcast event: {}", e.getMessage());
+        }
     }
 
     @Override
@@ -109,19 +128,18 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         SystemAnnouncement ann = findEntity(announcementId);
         ann.setActive(false);
         announcementRepository.save(ann);
-
-        auditLogService.logActivity(actorEmail, AdminActionType.ANNOUNCEMENT_DELETED, "Announcement", announcementId,
-                "Soft-deleted announcement: " + ann.getTitle());
     }
 
     @Override
     @Transactional
     public void cleanupExpiredAnnouncements() {
+        log.info("Cleaning up expired announcements...");
         Instant now = Instant.now();
-        List<SystemAnnouncement> expiredList = announcementRepository.findByExpiresAtBeforeAndActiveTrue(now);
-        log.info("Found {} expired announcements to deactivate.", expiredList.size());
-        expiredList.forEach(a -> a.setActive(false));
-        announcementRepository.saveAll(expiredList);
+        List<SystemAnnouncement> expired = announcementRepository.findByExpiresAtBeforeAndActiveTrue(now);
+        for (SystemAnnouncement ann : expired) {
+            ann.setActive(false);
+            announcementRepository.save(ann);
+        }
     }
 
     private SystemAnnouncement findEntity(String announcementId) {

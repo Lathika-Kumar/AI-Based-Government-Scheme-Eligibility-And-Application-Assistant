@@ -123,6 +123,7 @@ function AppRoutes() {
         <Route element={<PublicLayout />}>
           <Route path="/"            element={<Home />} />
           <Route path="/login"       element={<PublicGuard><Login /></PublicGuard>} />
+          <Route path="/admin/login" element={<PublicGuard><Login /></PublicGuard>} />
           <Route path="/signup"      element={<PublicGuard><Signup /></PublicGuard>} />
           <Route path="/account-created" element={<CitizenGuard><VerificationGuard><AccountCreatedSuccess /></VerificationGuard></CitizenGuard>} />
           <Route path="/verification-method" element={<CitizenGuard><VerificationGuard><VerificationMethod /></VerificationGuard></CitizenGuard>} />

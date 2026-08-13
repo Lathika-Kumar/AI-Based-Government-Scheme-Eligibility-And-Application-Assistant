@@ -30,26 +30,21 @@ export default function VerificationMethod() {
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
-    console.log("Button clicked");
     setLoading(true);
     setErrorMessage("");
     setSuccessMessage("");
     try {
       const res = await sendEmailOtp(user?.email);
-      console.log("API response:", res);
-      if (res.error) {
+      if (res?.error) {
         showToast(res.error, "error");
         setErrorMessage(res.error);
       } else {
-        console.log("Setting otpSent=true");
         setOtpSent(true);
-        console.log("Current state before setOtpSent:", otpSent);
         setOtp("");
         setCountdown(60);
       }
     } catch (err) {
-      const errMsg = err.message || "Failed to send OTP. Please try again.";
-      console.log("Send OTP error:", err);
+      const errMsg = err?.message || err?.response?.data?.error || err?.data?.error || "Failed to send OTP. Please try again.";
       showToast(errMsg, "error");
       setErrorMessage(errMsg);
     } finally {
@@ -65,8 +60,8 @@ export default function VerificationMethod() {
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    if (otp.length !== 6) {
-      setErrorMessage("OTP must be exactly 6 digits");
+    if (!otp || (otp.length !== 6 && otp.length !== 5)) {
+      setErrorMessage("Please enter a valid OTP code (e.g. 123456 or 12345)");
       return;
     }
 
@@ -76,7 +71,7 @@ export default function VerificationMethod() {
     try {
       const response = await verifyOtp(user?.email, otp, "EMAIL");
       if (response?.error) {
-        const errMsg = response.error;
+        const errMsg = response?.error || response?.message || "Verification failed";
         setErrorMessage(errMsg);
         showToast(errMsg, "error");
         if (/expired/i.test(errMsg)) {
@@ -87,10 +82,10 @@ export default function VerificationMethod() {
         showToast("Email verified successfully!", "success");
         setTimeout(() => {
           navigate("/onboarding");
-        }, 1500);
+        }, 1200);
       }
     } catch (err) {
-      const errMsg = err?.message || "OTP verification failed. Please try again.";
+      const errMsg = err?.message || err?.response?.data?.error || err?.data?.error || "OTP verification failed. Please try again.";
       setErrorMessage(errMsg);
       showToast(errMsg, "error");
       if (/expired/i.test(errMsg)) {
@@ -109,7 +104,7 @@ export default function VerificationMethod() {
     setSuccessMessage("");
     try {
       const res = await sendEmailOtp(user?.email);
-      if (res.error) {
+      if (res?.error) {
         setErrorMessage(res.error);
         showToast(res.error, "error");
       } else {
@@ -119,7 +114,7 @@ export default function VerificationMethod() {
         showToast("OTP resent successfully", "success");
       }
     } catch (err) {
-      const errMsg = err?.message || "Failed to resend OTP. Please try again.";
+      const errMsg = err?.message || err?.response?.data?.error || err?.data?.error || "Failed to resend OTP. Please try again.";
       setErrorMessage(errMsg);
       showToast(errMsg, "error");
     } finally {

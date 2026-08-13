@@ -1,0 +1,66 @@
+server:
+  port: 8082
+  shutdown: graceful
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: localhost
+
+
+spring:
+  application:
+    name: core-service
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/schemebridge}
+      auto-index-creation: true
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:oracle:thin:@localhost:1521/XEPDB1}
+    username: ${SPRING_DATASOURCE_USERNAME:system}
+    password: ${SPRING_DATASOURCE_PASSWORD:system}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      pool-name: SchemeBridgeCoreOracleHikariCP
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1 FROM DUAL
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 12MB
+
+document:
+  storage:
+    local:
+      base-path: ${DOCUMENT_STORAGE_BASE_PATH:d:/schemeBridge/uploads/documents}
+    allowed-mime-types: image/jpeg,image/png,image/gif,application/pdf
+    allowed-extensions: jpg,jpeg,png,pdf,doc,docx
+    blocked-extensions: exe,bat,sh,php,js,jar
+    max-file-size-mb: 10
+
+integration:
+  notification-service:
+    url: ${NOTIFICATION_SERVICE_URL:http://localhost:8086}
+
+info:
+  app:
+    name: core-service
+    description: SchemeBridge Consolidated Business Core Microservice
+    version: 0.0.1-SNAPSHOT
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+    display-request-duration: true
+    try-it-out-enabled: true

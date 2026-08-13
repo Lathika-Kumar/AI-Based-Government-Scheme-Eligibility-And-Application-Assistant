@@ -30,22 +30,21 @@ echo [3/4] Starting Service Registry (Port 8761)...
 start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl service-registry"
 ping -n 10 127.0.0.1 >nul
 
-echo [4/4] Starting API Gateway, Core Microservices & React Frontend...
+echo [4/4] Starting API Gateway, Business Microservices & React Frontend...
 start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl api-gateway"
 ping -n 4 127.0.0.1 >nul
 
 start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl auth-service"
-start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl citizen-service"
-start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl scheme-service"
-start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl application-service"
-start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl document-service"
+start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl core-service"
 start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl notification-service"
 start /B "" /d "%~dp0schemebridge-microservices" cmd /c "mvn spring-boot:run -pl admin-service"
 
 start /B "" /d "%~dp0schemeBridge-frontend" cmd /c "npm run dev"
 
 echo.
-echo [+] All microservices and frontend started cleanly in background (no popup windows)!
+echo [+] All microservices and frontend started cleanly in background!
 echo [+] Service Registry: http://localhost:8761
-echo [+] React Frontend:  http://localhost:5173
+echo [+] API Gateway:       http://localhost:8080
+echo [+] Core Service:      http://localhost:8082
+echo [+] React Frontend:   http://localhost:5173
 echo.

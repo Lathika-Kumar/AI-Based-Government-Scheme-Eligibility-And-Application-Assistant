@@ -1,0 +1,2395 @@
+{
+  "status": "Success",
+  "statusCode": 200,
+  "errorDescription": "",
+  "error": "null",
+  "data": {
+    "summary": {
+      "total": 4772,
+      "query": "",
+      "sortOptions": [
+        {
+          "id": "multiple_sort",
+          "label": "Relevance"
+        },
+        {
+          "id": "schemename-asc",
+          "label": "Scheme Name (A->Z)"
+        },
+        {
+          "id": "schemename-desc",
+          "label": "Scheme Name (Z->A)"
+        }
+      ],
+      "appliedFilters": [],
+      "disabledFilters": []
+    },
+    "facets": [
+      {
+        "identifier": "beneficiaryState",
+        "label": "State",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 693
+          },
+          {
+            "label": "Gujarat",
+            "count": 643
+          },
+          {
+            "label": "Uttarakhand",
+            "count": 447
+          },
+          {
+            "label": "Madhya Pradesh",
+            "count": 290
+          },
+          {
+            "label": "Goa",
+            "count": 272
+          },
+          {
+            "label": "Puducherry",
+            "count": 271
+          },
+          {
+            "label": "Haryana",
+            "count": 249
+          },
+          {
+            "label": "Tamil Nadu",
+            "count": 240
+          },
+          {
+            "label": "Rajasthan",
+            "count": 159
+          },
+          {
+            "label": "Bihar",
+            "count": 114
+          },
+          {
+            "label": "West Bengal",
+            "count": 110
+          },
+          {
+            "label": "Chhattisgarh",
+            "count": 108
+          },
+          {
+            "label": "Jharkhand",
+            "count": 97
+          },
+          {
+            "label": "Meghalaya",
+            "count": 89
+          },
+          {
+            "label": "Assam",
+            "count": 87
+          },
+          {
+            "label": "Kerala",
+            "count": 87
+          },
+          {
+            "label": "Maharashtra",
+            "count": 85
+          },
+          {
+            "label": "Odisha",
+            "count": 85
+          },
+          {
+            "label": "Himachal Pradesh",
+            "count": 75
+          },
+          {
+            "label": "Dadra & Nagar Haveli and Daman & Diu",
+            "count": 62
+          },
+          {
+            "label": "Karnataka",
+            "count": 60
+          },
+          {
+            "label": "Delhi",
+            "count": 54
+          },
+          {
+            "label": "Andhra Pradesh",
+            "count": 52
+          },
+          {
+            "label": "Jammu and Kashmir",
+            "count": 47
+          },
+          {
+            "label": "Uttar Pradesh",
+            "count": 47
+          },
+          {
+            "label": "Arunachal Pradesh",
+            "count": 45
+          },
+          {
+            "label": "Tripura",
+            "count": 44
+          },
+          {
+            "label": "Punjab",
+            "count": 41
+          },
+          {
+            "label": "Manipur",
+            "count": 34
+          },
+          {
+            "label": "Mizoram",
+            "count": 32
+          },
+          {
+            "label": "Sikkim",
+            "count": 29
+          },
+          {
+            "label": "Telangana",
+            "count": 23
+          },
+          {
+            "label": "Nagaland",
+            "count": 22
+          },
+          {
+            "label": "Chandigarh",
+            "count": 21
+          },
+          {
+            "label": "Andaman and Nicobar Islands",
+            "count": 19
+          },
+          {
+            "label": "Lakshadweep",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "identifier": "schemeCategory",
+        "label": "Scheme Category",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Social welfare & Empowerment",
+            "count": 1453
+          },
+          {
+            "label": "Education & Learning",
+            "count": 1110
+          },
+          {
+            "label": "Agriculture,Rural & Environment",
+            "count": 862
+          },
+          {
+            "label": "Business & Entrepreneurship",
+            "count": 772
+          },
+          {
+            "label": "Women and Child",
+            "count": 470
+          },
+          {
+            "label": "Skills & Employment",
+            "count": 401
+          },
+          {
+            "label": "Banking,Financial Services and Insurance",
+            "count": 336
+          },
+          {
+            "label": "Health & Wellness",
+            "count": 286
+          },
+          {
+            "label": "Sports & Culture",
+            "count": 280
+          },
+          {
+            "label": "Housing & Shelter",
+            "count": 136
+          },
+          {
+            "label": "Science, IT & Communications",
+            "count": 121
+          },
+          {
+            "label": "Transport & Infrastructure",
+            "count": 104
+          },
+          {
+            "label": "Travel & Tourism",
+            "count": 96
+          },
+          {
+            "label": "Utility & Sanitation",
+            "count": 58
+          },
+          {
+            "label": "Public Safety,Law & Justice",
+            "count": 34
+          }
+        ]
+      },
+      {
+        "identifier": "gender",
+        "label": "Gender",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3941
+          },
+          {
+            "label": "Female",
+            "count": 790
+          },
+          {
+            "label": "Male",
+            "count": 348
+          },
+          {
+            "label": "Transgender",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "identifier": "age-general",
+        "label": "Age",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 681
+          },
+          {
+            "label": 10,
+            "count": 3873
+          },
+          {
+            "label": 20,
+            "count": 3888
+          },
+          {
+            "label": 30,
+            "count": 3791
+          },
+          {
+            "label": 40,
+            "count": 3624
+          },
+          {
+            "label": 50,
+            "count": 3351
+          },
+          {
+            "label": 60,
+            "count": 3107
+          },
+          {
+            "label": 70,
+            "count": 2052
+          },
+          {
+            "label": 80,
+            "count": 1975
+          },
+          {
+            "label": 90,
+            "count": 1928
+          },
+          {
+            "label": 100,
+            "count": 1845
+          },
+          {
+            "label": 110,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "caste",
+        "label": "Caste",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4001
+          },
+          {
+            "label": "Scheduled Caste (SC)",
+            "count": 394
+          },
+          {
+            "label": "Scheduled Tribe (ST)",
+            "count": 341
+          },
+          {
+            "label": "Other Backward Class (OBC)",
+            "count": 189
+          },
+          {
+            "label": "General",
+            "count": 72
+          },
+          {
+            "label": "Particularly Vulnerable Tribal Group (PVTG)",
+            "count": 40
+          },
+          {
+            "label": "De-Notified, Nomadic, and Semi-Nomadic (DNT) communities",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "nodalMinistryName",
+        "label": "Ministry Name",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Ministry Of Social Justice and Empowerment",
+            "count": 85
+          },
+          {
+            "label": "Ministry of Education",
+            "count": 85
+          },
+          {
+            "label": "Ministry Of Science And Technology",
+            "count": 68
+          },
+          {
+            "label": "Ministry Of Commerce And Industry",
+            "count": 56
+          },
+          {
+            "label": "Ministry Of Agriculture and Farmers Welfare",
+            "count": 41
+          },
+          {
+            "label": "Ministry Of Micro, Small and Medium Enterprises",
+            "count": 31
+          },
+          {
+            "label": "Ministry Of Textiles",
+            "count": 24
+          },
+          {
+            "label": "Ministry Of Youth Affairs & Sports",
+            "count": 22
+          },
+          {
+            "label": "Ministry of Electronics and Information Technology",
+            "count": 22
+          },
+          {
+            "label": "Ministry Of Culture",
+            "count": 20
+          },
+          {
+            "label": "Ministry Of Finance",
+            "count": 19
+          },
+          {
+            "label": "Ministry Of Home Affairs",
+            "count": 18
+          },
+          {
+            "label": "Ministry Of Defence",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Health & Family Welfare",
+            "count": 15
+          },
+          {
+            "label": "Ministry Of Labour and Employment",
+            "count": 13
+          },
+          {
+            "label": "Ministry of Fisheries,Animal Husbandry and Dairying",
+            "count": 13
+          },
+          {
+            "label": "Ministry Of Minority Affairs",
+            "count": 12
+          },
+          {
+            "label": "Ministry Of Communication",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Skill Development And Entrepreneurship",
+            "count": 11
+          },
+          {
+            "label": "Ministry Of Ayush",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Chemicals And Fertilizers",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Rural Development",
+            "count": 10
+          },
+          {
+            "label": "Ministry Of Tribal Affairs",
+            "count": 10
+          },
+          {
+            "label": "Ministry of Women and Child Development",
+            "count": 8
+          },
+          {
+            "label": "Ministry Of New and Renewable Energy",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Tourism",
+            "count": 7
+          },
+          {
+            "label": "Ministry Of Jal Shakti",
+            "count": 6
+          },
+          {
+            "label": "Ministry Of External Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Housing & Urban Affairs",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Law and Justice",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Personnel, Public Grievances And Pensions",
+            "count": 5
+          },
+          {
+            "label": "Ministry of Ports,Shipping and Waterways",
+            "count": 5
+          },
+          {
+            "label": "Ministry Of Environment,forests and climate change",
+            "count": 4
+          },
+          {
+            "label": "Ministry of Heavy Industries",
+            "count": 4
+          },
+          {
+            "label": "Ministry Of Petroleum and Natural Gas",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Statistics and Programme Implementation",
+            "count": 3
+          },
+          {
+            "label": "Ministry Of Steel",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Corporate Affairs",
+            "count": 3
+          },
+          {
+            "label": "Ministry of Food Processing Industries",
+            "count": 3
+          },
+          {
+            "label": "Comptroller And Auditor General Of India",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Panchayati Raj",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Road Transport & Highways",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Water Resources,River Development & Ganga Rejuvenation",
+            "count": 2
+          },
+          {
+            "label": "Ministry Of Consumer Affairs, Food And Public Distribution",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Development Of North Eastern Region",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Earth Sciences",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Information And Broadcasting",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Mines",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Power",
+            "count": 1
+          },
+          {
+            "label": "Ministry Of Railways",
+            "count": 1
+          },
+          {
+            "label": "NITI Aayog (National Institution for Transforming India)",
+            "count": 1
+          },
+          {
+            "label": "The Lokpal of India",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "identifier": "level",
+        "label": "Level",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "State",
+            "count": 4058
+          },
+          {
+            "label": "Central",
+            "count": 714
+          }
+        ]
+      },
+      {
+        "identifier": "residence",
+        "label": "Residence",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Both",
+            "count": 4537
+          },
+          {
+            "label": "Rural",
+            "count": 203
+          },
+          {
+            "label": "Urban",
+            "count": 42
+          }
+        ]
+      },
+      {
+        "identifier": "minority",
+        "label": "Minority",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4704
+          },
+          {
+            "label": "Yes",
+            "count": 68
+          }
+        ]
+      },
+      {
+        "identifier": "disability",
+        "label": "Differently Abled",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4469
+          },
+          {
+            "label": "Yes",
+            "count": 303
+          }
+        ]
+      },
+      {
+        "identifier": "benefitTypes",
+        "label": "Benefit Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Cash",
+            "count": 3317
+          },
+          {
+            "label": "In Kind",
+            "count": 805
+          },
+          {
+            "label": "Composite",
+            "count": 650
+          }
+        ]
+      },
+      {
+        "identifier": "dbtScheme",
+        "label": "DBT Scheme",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4305
+          },
+          {
+            "label": "Yes",
+            "count": 467
+          }
+        ]
+      },
+      {
+        "identifier": "maritalStatus",
+        "label": "Marital Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 4467
+          },
+          {
+            "label": "Never Married",
+            "count": 142
+          },
+          {
+            "label": "Widowed",
+            "count": 107
+          },
+          {
+            "label": "Married",
+            "count": 93
+          },
+          {
+            "label": "Divorced",
+            "count": 48
+          },
+          {
+            "label": "Separated",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "disabilityPercentage",
+        "label": "Disability Percentage",
+        "display": "ComboBoxFacet",
+        "type": "RangeFacet",
+        "entries": [
+          {
+            "label": 0,
+            "count": 24
+          },
+          {
+            "label": 10,
+            "count": 27
+          },
+          {
+            "label": 20,
+            "count": 32
+          },
+          {
+            "label": 30,
+            "count": 32
+          },
+          {
+            "label": 40,
+            "count": 172
+          },
+          {
+            "label": 50,
+            "count": 176
+          },
+          {
+            "label": 60,
+            "count": 182
+          },
+          {
+            "label": 70,
+            "count": 187
+          },
+          {
+            "label": 80,
+            "count": 199
+          },
+          {
+            "label": 90,
+            "count": 199
+          },
+          {
+            "label": 100,
+            "count": 209
+          }
+        ]
+      },
+      {
+        "identifier": "isBpl",
+        "label": "Below Poverty Line",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4600
+          },
+          {
+            "label": "Yes",
+            "count": 172
+          }
+        ]
+      },
+      {
+        "identifier": "isEconomicDistress",
+        "label": "Economic Distress",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4725
+          },
+          {
+            "label": "Yes",
+            "count": 47
+          }
+        ]
+      },
+      {
+        "identifier": "isGovEmployee",
+        "label": "Government Employee",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4758
+          },
+          {
+            "label": "Yes",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "identifier": "employmentStatus",
+        "label": "Employment Status",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 3659
+          },
+          {
+            "label": "Employed",
+            "count": 519
+          },
+          {
+            "label": "Self-Employed/ Entrepreneur",
+            "count": 423
+          },
+          {
+            "label": "Unemployed",
+            "count": 171
+          }
+        ]
+      },
+      {
+        "identifier": "isStudent",
+        "label": "Student",
+        "type": "CustomFacet",
+        "display": "SingleCheckBoxFacet",
+        "entries": [
+          {
+            "label": "No",
+            "count": 4414
+          },
+          {
+            "label": "Yes",
+            "count": 358
+          }
+        ]
+      },
+      {
+        "identifier": "occupation",
+        "label": "Occupation",
+        "display": "ComboBoxFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "All",
+            "count": 390
+          },
+          {
+            "label": "Farmer",
+            "count": 357
+          },
+          {
+            "label": "Construction Worker",
+            "count": 270
+          },
+          {
+            "label": "Unorganized Worker",
+            "count": 192
+          },
+          {
+            "label": "Fishermen",
+            "count": 114
+          },
+          {
+            "label": "Artists",
+            "count": 83
+          },
+          {
+            "label": "Artisans, Spinners & Weavers",
+            "count": 80
+          },
+          {
+            "label": "Student",
+            "count": 66
+          },
+          {
+            "label": "Organized Worker",
+            "count": 40
+          },
+          {
+            "label": "Sportsperson",
+            "count": 35
+          },
+          {
+            "label": "Ex Servicemen",
+            "count": 28
+          },
+          {
+            "label": "Journalist",
+            "count": 22
+          },
+          {
+            "label": "Dairy Farmer",
+            "count": 21
+          },
+          {
+            "label": "Safai Karamchari",
+            "count": 18
+          },
+          {
+            "label": "Teacher / Faculty",
+            "count": 14
+          },
+          {
+            "label": "Coir Worker",
+            "count": 7
+          },
+          {
+            "label": "Street Vendor",
+            "count": 3
+          },
+          {
+            "label": "Health Worker",
+            "count": 2
+          },
+          {
+            "label": "Khadi Artisan",
+            "count": 2
+          },
+          {
+            "label": "Lawyer / Law Graduate / Advocate",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "identifier": "applicationMode",
+        "label": "Application Mode",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Offline",
+            "count": 2733
+          },
+          {
+            "label": "Online",
+            "count": 2350
+          },
+          {
+            "label": "Online - via CSC",
+            "count": 161
+          }
+        ]
+      },
+      {
+        "identifier": "schemeType",
+        "label": "Scheme Type",
+        "display": "ListFacet",
+        "type": "RefinementSelectFacet",
+        "entries": [
+          {
+            "label": "Central Sector Scheme",
+            "count": 543
+          },
+          {
+            "label": "Centrally Sponsored Scheme",
+            "count": 146
+          }
+        ]
+      }
+    ],
+    "hits": {
+      "items": [
+        {
+          "id": "RRhqPp0B5uF80_MGYGSj",
+          "fields": {
+            "beneficiaryState": [
+              "Gujarat"
+            ],
+            "schemeShortTitle": "ITTA",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "IELTS & TOEFL Training Assistance",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "itta",
+            "briefDescription": "The scheme aims to help tribal students pursue higher studies abroad by offering professional IELTS/TOEFL training. It provides ₹3,10,000/- in training assistance and comprehensive guidance.",
+            "tags": [
+              "Abroad",
+              "Student",
+              "Financial Assistance",
+              "IELTS",
+              "TOEFL",
+              "Training",
+              "Higher Education"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "4cdnhZ0B0AGc0F0i5AtG",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "PMSMA",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Health & Family Welfare",
+            "schemeCategory": [
+              "Health & Wellness",
+              "Women and Child"
+            ],
+            "schemeName": "Pradhan Mantri Surakshit Matritva Abhiyan",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmsma",
+            "briefDescription": "The scheme aims to provide fixed-day assured, comprehensive and quality antenatal care universally to all pregnant women in 2nd and 3rd trimester on the 9th of every month. It offers free comprehensive antenatal care services at government health facilities.",
+            "tags": [
+              "Maternal",
+              "Health",
+              "Antenatal",
+              "Pregnancy",
+              "Government",
+              "Women",
+              "Medical"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "bBgHkJ0B5uF80_MGPGaH",
+          "fields": {
+            "beneficiaryState": [
+              "Nagaland"
+            ],
+            "schemeShortTitle": "NSMS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Nagaland State Merit Scholarship",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "nsms",
+            "briefDescription": "The Directorate of Higher Education has launched the Nagaland State Merit Scholarship for the students of classes from 11th to 12th and UG Degree to PG degree so that they will be able to secure their scholarship rights or seats after getting online registration under this scholarship. ",
+            "tags": [
+              "Nagaland State",
+              "Merit Scholarship",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "zccXd50B0AGc0F0ihAsf",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "PROWIS-II",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Science And Technology",
+            "schemeCategory": [
+              "Science, IT & Communications",
+              "Women and Child"
+            ],
+            "schemeName": "Indo-French Visiting/Mobility Programme for Women in Science",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "prowis-ii",
+            "briefDescription": "This programme will encourage women candidates to work with the Indian/French scientific communities with an aim to accelerate their talented instincts towards carrying out advanced studies and research in the frontier areas of Science & Technology.",
+            "tags": [
+              "French",
+              "Mobility",
+              "Woman",
+              "Science",
+              "France",
+              "Scientist",
+              "Researcher"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "BRiLhZ0B5uF80_MGkmYZ",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NSP-NAW",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Women and Child Development",
+            "schemeCategory": [
+              "Women and Child"
+            ],
+            "schemeName": "Nari Shakti Puraskar - National Award for Women",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "cnspnaw",
+            "briefDescription": "The award aims to acknowledge the achievements of women & recognize their contributions to society and the nation. The award is conferred annually on individuals in recognition of their exceptional service towards the cause of women’s empowerment, particularly for vulnerable and marginalized women.",
+            "tags": [
+              "Woman",
+              "Nari Shakti",
+              "Puraskar",
+              "Award",
+              "Women Empowerment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Nxhra50B5uF80_MGkGVv",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "CDPNER:WA",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Commerce And Industry",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Coffee Development Programme in North Eastern Region: Water Augmentation",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "cdpnerwa",
+            "briefDescription": "The scheme \"Coffee Development Programme in North Eastern Region: Water Augmentation\" aims to improve the productivity and quality of coffee by facilitating the creation of infrastructure for water augmentation for irrigation and wet processing of coffee.",
+            "tags": [
+              "Agriculture",
+              "Farmer",
+              "Subsidy",
+              "DBT"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "GxjZmp0B5uF80_MGKWfj",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "ICARPMSSCSTC",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Agriculture and Farmers Welfare",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "ICAR - Post Matric Scholarship for Scheduled Caste / Scheduled Tribes Candidates",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "icar-pms-scstc",
+            "briefDescription": "The scheme aims to provide Post-Matric Scholarship to Scheduled Castes/ Scheduled Tribes candidates for study at Bachelor Degree programme in various branches of Agriculture, viz. B.Sc. (Agri.), B.V.Sc., B.Sc. (Agril. Engg.), B.Sc. (Home Science), B.F.Sc., B.Sc. (Forestry) etc.",
+            "tags": [
+              "Post Matric",
+              "Scholarship",
+              "Agriculture",
+              "Scheduled Caste",
+              "Scheduled Tribe"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "zxg5lZ0B5uF80_MGlmaK",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "RMEWF-FAVTWESM",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Defence",
+            "schemeCategory": [
+              "Education & Learning",
+              "Women and Child",
+              "Skills & Employment"
+            ],
+            "schemeName": "RMEWF-Financial Assistance For Vocational Training Of Widows Of ESM",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "rmewf-vocational-training",
+            "briefDescription": "The scheme aims to provide financial assistance to widows of ex-servicemen to help them become self-reliant through vocational training.\n",
+            "tags": [
+              "Widows Of Ex-Servicemen",
+              "Vocational Training",
+              "Grant",
+              "Employment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "a8cukJ0B0AGc0F0iLQyJ",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "IWAI-INTERNSHIP",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Ports,Shipping and Waterways",
+            "schemeCategory": [
+              "Education & Learning",
+              "Skills & Employment"
+            ],
+            "schemeName": "The Inland Waterways Authority of India Internship Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ipiwai",
+            "briefDescription": "The purpose of this scheme is to provide with Selected Candidates” short term exposure to different verticals/ divisions/ units of IWAI as “Interns”. An intern may be required to work at Head Office or Project Office depending upon the requirement of the Authority.",
+            "tags": [
+              "Internship",
+              "Student",
+              "Stipend"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Fhh-mp0B5uF80_MGQme1",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "TGSCTVCCM",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Education",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Travel Grant Scheme for College Teachers/Vice Chancellors/Commission Members",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "tgsctclvccmuo",
+            "briefDescription": "This scheme is for providing financial assistance to permanent teachers of colleges & vice-chancellors of state universities, deemed to be universities & central universities, recognised under section 2(f) and 12 (B) of the UGC Act, to present research papers at international conferences abroad.",
+            "tags": [
+              "Travel",
+              "International Conference",
+              "Grant",
+              "Commission Member",
+              "Teacher",
+              "Vice-Chancellor"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "AMdzmp0B0AGc0F0itQ0K",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "SSTEEL",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Steel",
+            "schemeCategory": [
+              "Business & Entrepreneurship"
+            ],
+            "schemeName": "Production Linked Incentive (PLI) Scheme (PLI 1.2) for Specialty Steel",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ssteel",
+            "briefDescription": "under this scheme to promote domestic manufacturing of specialty steel by encouraging incremental investment, increasing production of value-added steel, enhancing technological capabilities, and reducing import dependence while generating employment.",
+            "tags": [
+              "Specialty Steel",
+              "Company",
+              "PLI",
+              "Business"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "uKIwlZ0BXu-iUKXq3FBp",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "PCARDFPD",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Primary Cooperative Agriculture and Rural Development Bank: For Poultry Development",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pcardfpd",
+            "briefDescription": "The scheme offers loans to farmers for poultry development and cattle development, with funding of up to ₹14,800/- for 200 birds or ₹17,000/- for 2 cows, with an interest rate of 14.5% to 16.5%.\n\n",
+            "tags": [
+              "Poultry Development",
+              "Cattle Development",
+              "Loan",
+              "Farmer",
+              "Agriculture And Rural Development Bank"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "m8cvlZ0B0AGc0F0iEAzx",
+          "fields": {
+            "beneficiaryState": [
+              "Tamil Nadu"
+            ],
+            "schemeShortTitle": "PCARDTP",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Primary Cooperative Agriculture and Rural Development Bank: For Plantation (Tea)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pcardtp",
+            "briefDescription": "The scheme offers financial assistance of up to ₹33,000/- per acre to farmers for tea plantations, with an interest rate of 11%-12.5%.\n",
+            "tags": [
+              "Tea Plantation",
+              "Loan",
+              "Farmer",
+              "Agriculture",
+              "Agriculture And Rural Development Bank"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "UqJ3rp0BXu-iUKXqc1Hm",
+          "fields": {
+            "beneficiaryState": [
+              "Sikkim",
+              "Tripura",
+              "Arunachal Pradesh",
+              "Manipur",
+              "Meghalaya",
+              "Mizoram"
+            ],
+            "schemeShortTitle": "ISFEPQIISARADOCEOPLCRNP",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Commerce And Industry",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Integrated Scheme for Export Promotion & Quality Improvement in Spices and Research and Development of Cardamom: Export Oriented Production:Large Cardamom Replanting/New planting (Ha)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "isfepqiisaradoceoplcrnp",
+            "briefDescription": "Under this scheme, growers are encouraged to adopt systematic replanting of large cardamom using high-yielding, disease-free planting materials. It aims to increase productivity, improve quality, and enhance export competitiveness under the Spices Board of India.",
+            "tags": [
+              "Agriculture",
+              "Farming",
+              "Farmer",
+              "Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Vxhwrp0B5uF80_MGJ2ew",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NSRDARD",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Communication",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "National Savings Recurring Deposit Account(RD)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "nsrdard",
+            "briefDescription": "The objective of the National Savings Recurring Deposit (RD) scheme is to encourage people to save small amounts regularly every month and build savings with safe returns at 6.7% per annum.",
+            "tags": [
+              "Banking",
+              "National Savings",
+              "Loan",
+              "Deposit Account"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "Vhhvrp0B5uF80_MG42fP",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "POSA",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Communication",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Post Office Savings Account(SB)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "posa",
+            "briefDescription": "The objective of the Post Office Savings Account (SB) scheme is to encourage people to save money safely with the government. It offers easy access, a low minimum balance of ₹500, and steady interest, helping individuals build regular saving habits.",
+            "tags": [
+              "Post Office",
+              "Savings Account",
+              "Interest Payable",
+              "Banking"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "nsfOtJ0B0AGc0F0i7A3r",
+          "fields": {
+            "beneficiaryState": [
+              "Meghalaya"
+            ],
+            "schemeShortTitle": "MARVS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Meghalaya Agriculture Response Vehicle Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "marvs",
+            "briefDescription": "The scheme “Meghalaya Agriculture Response Vehicle Scheme” was launched by the Department of Agriculture & Farmers’ Welfare, Government of Meghalaya to provide Small Commercial Vehicles and pickups at each CD Block across Meghalaya with 50% financial aid from the Government of Meghalaya.",
+            "tags": [
+              "Agriculture",
+              "Response Vehicle",
+              "Farmer",
+              "Financial Aid",
+              "Farmers Associations",
+              "Entrepreneur"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "baJVr50BXu-iUKXqm1Ed",
+          "fields": {
+            "beneficiaryState": [
+              "Himachal Pradesh"
+            ],
+            "schemeShortTitle": "WRMS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Widow Re-marriage Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "wrms",
+            "briefDescription": "The scheme aims to support the rehabilitation of widows by encouraging marriage through a monetary incentive. It provides a grant to bona fide Himachali men (above 21 years) and women (above 18 years) at the time of marriage.",
+            "tags": [
+              "Female Scheme",
+              "Widow",
+              "Remarriage",
+              "Grant",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "OBitzZ0B5uF80_MG3mhB",
+          "fields": {
+            "beneficiaryState": [
+              "Assam"
+            ],
+            "schemeShortTitle": "PMSSTSSCNT",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Pre-Matric Scholarship For Scheduled Tribe Students Studying In Classes 9th & 10th",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmsstsscnt",
+            "briefDescription": "The scheme aims to support Scheduled Tribe children in classes 9th and 10th to minimize drop-out rates and aid progression to higher education. The scheme provides a recurring monthly scholarship, an annual book grant, and disability allowances directly to the Scheduled Tribe student beneficiaries.",
+            "tags": [
+              "Student",
+              "Tribal",
+              "Scholarship",
+              "Allowance",
+              "Assistance",
+              "School",
+              "Education"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "yaLcuZ0BXu-iUKXqtFGV",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NIKSHAY",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Health & Family Welfare",
+            "schemeCategory": [
+              "Health & Wellness"
+            ],
+            "schemeName": "Nikshay Poshan Yojana",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "nikshay",
+            "briefDescription": "Ministry of Health and Family Welfare, Government of India has announced the scheme for incentives for nutritional support to TB patients. This scheme will be called “Nikshay Poshan Yojana”. ",
+            "tags": [
+              "Tuberculosis",
+              "Health",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "bRgt1J0B5uF80_MGKGh1",
+          "fields": {
+            "beneficiaryState": [
+              "Mizoram"
+            ],
+            "schemeShortTitle": "MSIAS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Sports & Culture"
+            ],
+            "schemeName": "Mizoram Sports Incentive Cash Award Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "msias",
+            "briefDescription": "The scheme aims to provide lump sum cash awards and recognition to outstanding sports persons winning medals in national and international competitions. ",
+            "tags": [
+              "Sports Incentive",
+              "Cash Award",
+              "Medal Winner",
+              "Sportsperson"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "38fJvZ0B0AGc0F0iQA1F",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "ASYADCF",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Culture",
+            "schemeCategory": [
+              "Sports & Culture",
+              "Education & Learning"
+            ],
+            "schemeName": "Award Of Scholarships To Young Artists In Different Cultural Fields",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "asyadcf",
+            "briefDescription": "This Scheme seeks to give assistance to young artistes of outstanding promise for advanced training within India in the field of Indian Classical Music, Indian Classical Dance, Theatre, Mime, Visual art, Folk, Traditional and Indigenous Arts and Light Classical Music.",
+            "tags": [
+              "Scholarship",
+              "Young Artists",
+              "Culture",
+              "Advanced Training",
+              "Music",
+              "Dance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "KhhH_J0B5uF80_MGtWmK",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "SAK-DEG",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Education",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "AICTE – Saksham Scholarship Scheme For Specially-Abled Student (Degree)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sak-deg",
+            "briefDescription": "Saksham is a Scholarship Scheme by the Ministry of Education, implemented by AICTE, aimed at providing encouragement and support to specially-abled children to pursue technical education. This is an attempt to give every young specially-abled student the opportunity to study further.",
+            "tags": [
+              "Scholarship",
+              "PwD",
+              "Technical Education",
+              "Young Student"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "F6Iy_J0BXu-iUKXqpFP7",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "ICROAIP",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Chemicals And Fertilizers",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Education & Learning",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "ICRO Amrit Internship Programme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "icroaip",
+            "briefDescription": "The IPL Centre for Rural Outreach (ICRO) has launched ICRO Amrit Internship Programme focused on youth productivity for prosperity. The interns will be placed at the headquarters and Regional Offices of NPC/ IPL. The duration of the internship will be 3 months initially, renewable up to four times.",
+            "tags": [
+              "Internship",
+              "Student",
+              "Youth Productivity",
+              "Stipend"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "h6L4150BXu-iUKXqwVJ0",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "ISFEPQIISAR",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Commerce And Industry",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Integrated Scheme for Export Promotion & Quality Improvement in Spices and Research and Development of Cardamom:Large cardamom Irrigation Land Development : Irrigation / water storage structures(nos)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "isfepqiisar",
+            "briefDescription": "The scheme aims to motivate the growers to bring more area under irrigation by constructing water storage structures, rain water harvesting structures and installation of irrigation equipments for increasing the productivity and improving quality of large cardamom.",
+            "tags": [
+              "Agriculture",
+              "Farmer",
+              "Farming",
+              "Water Storage Structures",
+              "Subsidy"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "LKLA_J0BXu-iUKXqD1ML",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "BHMNSP",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Minority Affairs",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Begum Hazrat Mahal National Scholarship Program",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "bhmnsp",
+            "briefDescription": "Begum Hazrat Mahal National scholarship is a scholarship scheme also known as Maulana Azad National scholarship scheme was first announced on 3rd May 2003. It is a national level scholarship started for the benefit of the girl’s student belonging to the minority communities. ",
+            "tags": [
+              "Scholarship",
+              "Student",
+              "Financial Assistance",
+              "Minority"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "HKI0_J0BXu-iUKXq3lN6",
+          "fields": {
+            "beneficiaryState": [
+              "Assam"
+            ],
+            "schemeShortTitle": "ICM",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Financial Incentive For Inter-Caste Marriages Under Protection Of Civil Rights Act 1955 And Scheduled Castes And Scheduled Tribes (Prevention Of Atrocities) Act 1989 In Assam",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "icm",
+            "briefDescription": "The scheme aims to encourage inter-caste marriages in Assam. It provides a one-time financial assistance of ₹2,50,000/- in a joint fixed deposit for eligible couples where one spouse belongs to a Scheduled Caste and the other to a General Caste Hindu.",
+            "tags": [
+              "Marriage",
+              "Social Welfare",
+              "Financial Assistance",
+              "Caste",
+              "Husband",
+              "Wife"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "XMe4AZ4B0AGc0F0itQ-X",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NOS-SC",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Social Justice and Empowerment",
+            "schemeCategory": [
+              "Education & Learning",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "National Overseas Scholarship For Scheduled Caste Etc. Candidates",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "nos-sc",
+            "briefDescription": "A scholarship scheme by MoSJE for regular, full-time students from Scheduled Castes, Denotified Nomadic and Semi Nomadic Tribes, Landless Agricultural Labourers and Traditional Artisans; to obtain higher education viz., Master degree or Ph.D courses by studying abroad",
+            "tags": [
+              "Student",
+              "Scholarship",
+              "Scheduled Caste",
+              "International Education",
+              "PhD",
+              "Degree",
+              "Post-Graduation",
+              "Tuition Fees"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "wqIPFp4BXu-iUKXq9FMq",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "DFFT SCHEME",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Personnel, Public Grievances And Pensions",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Domestic Funding Of Foreign Training",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "dfft-scheme",
+            "briefDescription": "The scheme \"Domestic Funding of Foreign Training (DFFT)\" is a scheme introduced by the Department of Personnel and Training, Government of India in the year 2001-02 with an objective to upgrade the knowledge & skills of Government officers.",
+            "tags": [
+              "Government Officers",
+              "Foreign",
+              "Training Programme",
+              "International"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "k8cZIJ4B0AGc0F0ioRBS",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "WISER",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Science And Technology",
+            "schemeCategory": [
+              "Women and Child",
+              "Education & Learning"
+            ],
+            "schemeName": "Women Involvement in Science and Engineering Research",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "wiser",
+            "briefDescription": "The scheme “Women Involvement in Science and Engineering Research (WISER)” aims to build scientific capacity, retain and promote women researchers in India & Germany by utilizing complementary expertise in science, technology, innovation and research partnerships. ",
+            "tags": [
+              "Woman",
+              "WISER",
+              "Germany",
+              "IGSTC",
+              "STEM"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "0MdDIZ4B0AGc0F0ivhAy",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "CTS-MSDE",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Skill Development And Entrepreneurship",
+            "schemeCategory": [
+              "Skills & Employment"
+            ],
+            "schemeName": "Craftsmen Training Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "cts-msde",
+            "briefDescription": "The scheme aims to ensure steady flow of skilled workers in different trades for domestic industry and reduce unemployment among educated youth. It provides systematic vocational training through Industrial Training Institutes and National Skill Training Institutes across India.",
+            "tags": [
+              "Craftsmen",
+              "Training",
+              "Skill",
+              "Employment",
+              "Youth"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "FMdgJZ4B0AGc0F0iHBHl",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "IS-DEA",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Finance",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Internship Scheme Of The Department Of Economic Affairs",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "is-dea",
+            "briefDescription": "The Internship Scheme aims to familiarise students with macro-economic policy formulation and economic research. Through this scheme, internship opportunities with token remuneration are provided to eligible Post Graduate and PhD students.",
+            "tags": [
+              "Internship",
+              "Student",
+              "Postgraduate",
+              "Education"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "SaITHJ4BXu-iUKXq8lT3",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "SSDU",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Establishment Of Small Scale Dairy Unit (SSDU)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ssdu",
+            "briefDescription": "The scheme aims to support the establishment of dairy units with 10 Gir cows. Through this scheme, capital subsidy and back-ended subsidy are provided to beneficiaries via bank finance and NABARD.",
+            "tags": [
+              "Dairy Development",
+              "Milch Cow",
+              "Insurance Coverage",
+              "Cattle Shed",
+              "Equipment",
+              "Procurement Of Feed"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "LaLlJZ4BXu-iUKXqE1Ug",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "MCIP",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Jal Shakti",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Mass Communication Internship Programme ",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "mcip",
+            "briefDescription": "The Mass Communication Internship Programme by the Department of Water Resources, River Development, and Ganga Rejuvenation. The intern program will offer work culture and environment knowledge about the functioning of the Government and its departments in information, education, and communication. ",
+            "tags": [
+              "Education",
+              "Honorarium",
+              "Student",
+              "Mass Communication",
+              "Intern"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "laJeOZ4BXu-iUKXqsFXX",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "POESOISINCOLTHA",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Commerce And Industry",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Promotion of Exportable surplus of identified spices in NE: Cultivation of Lakadong turmeric (Ha) ",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "poesoisincoltha",
+            "briefDescription": "To promote the cultivation of Lakadong turmeric for exports by providing 50% of the cost of planting material, subject to a maximum of ₹ 30,000 per Ha, to turmeric growers of the North East having land holding size of 0.10 Ha to 8 Ha.",
+            "tags": [
+              "Lakadong Turmeric",
+              "Farmer",
+              "Farming",
+              "Agriculture"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "jcf8Kp4B0AGc0F0ithE4",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "NMS",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Law and Justice",
+            "schemeCategory": [
+              "Public Safety,Law & Justice",
+              "Social welfare & Empowerment"
+            ],
+            "schemeName": "Nyaya Mitra Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "nms",
+            "briefDescription": "The scheme aims to facilitate the expeditious disposal of ten to fifteen years old pending court cases. It provides legal advice, case assistance, and Lok Adalat referrals to marginalized litigants by engaging retired officers.",
+            "tags": [
+              "Litigant",
+              "Justice",
+              "Court",
+              "Resolution",
+              "Judiciary"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "KxjpJZ4B5uF80_MGOmu7",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "PMSSWCAPFAR",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Home Affairs",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Prime Minister’s Scholarship Scheme for the Wards of Central Armed Police Forces & Assam Rifles",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "pmsswcapfar",
+            "briefDescription": "The scheme aims to encourage higher technical and professional education for dependent wards and widows of CAPFs/Assam Rifles personnel martyred during Terror/Naxal attacks. Through this scheme, Financial support per year for girls and boys is provided.",
+            "tags": [
+              "Scholarship",
+              "Student",
+              "Assam Rifles",
+              "CAPF",
+              "Ward",
+              "Widow"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "v6JFP54BXu-iUKXqGFUn",
+          "fields": {
+            "beneficiaryState": [
+              "Delhi"
+            ],
+            "schemeShortTitle": "VCIS",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Education",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Vice Chancellor Internship Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "vcis",
+            "briefDescription": "The Vice Chancellor Internship Scheme (VCIS) by the University of Delhi aims to provide students with experiential learning opportunities, integrating academic knowledge with practical work experience. This initiative aligns with the objectives of \"Samagra Shiksha\" (holistic education) as outlined..",
+            "tags": [
+              "Education",
+              "Honorarium",
+              "Student",
+              "Undergraduate",
+              "Postgraduate"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "BRhDT54B5uF80_MGqWyu",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "AC&ABC",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Agriculture and Farmers Welfare",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment",
+              "Business & Entrepreneurship",
+              "Skills & Employment"
+            ],
+            "schemeName": "Agri-Clinics And Agri-Business Centres Scheme",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "acandabc",
+            "briefDescription": "A welfare scheme by the Ministry of Agriculture and Farmers' Welfare was launched in 2002. AC&ABC aims at agricultural development, supplementing the efforts of public extension by providing extension and other services to farmers either on a payment basis or free of cost as per the business model.",
+            "tags": [
+              "Business",
+              "Entrepreneur",
+              "Student",
+              "Training",
+              "Agriculture",
+              "Employment"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "OqK9XZ4BXu-iUKXqn1bp",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "VLS-NMDFC",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Minority Affairs",
+            "schemeCategory": [
+              "Banking,Financial Services and Insurance"
+            ],
+            "schemeName": "Virasat Loan Scheme of NMDFC",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "vls-nmdfc",
+            "briefDescription": "Concessional credit of up to ₹10,00,000/- can be availed under Credit Line-1 & 2.  to meet Working Capital  and Fixed Capital for purchase of equipment/tools/machineries/raw material by the Minority Artisan.",
+            "tags": [
+              "Virasat Loan Scheme Of NMDFC"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "ohjGYp4B5uF80_MGeWzT",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "SPARSH2.0CONSTRUCTION",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Housing & Shelter"
+            ],
+            "schemeName": "Scheme for Promotion of Affordable Rental Smart Housing (SPARSH 2.0): Construction and Redevelopment Incentives",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sparsh20construction",
+            "briefDescription": "The scheme aims to encourage affordable rental housing development. Through this scheme, Floor Space Index benefits and regulatory relaxations are provided to eligible housing projects.",
+            "tags": [
+              "Rental Housing",
+              "Infrastructure",
+              "Floor Space Index",
+              "Regulatory Relaxations",
+              "Housing Project"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "oBjGYp4B5uF80_MGG2z1",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "SPARSH2.0RENT",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Housing & Shelter"
+            ],
+            "schemeName": "Scheme for Promotion of Affordable Rental Smart Housing (SPARSH 2.0): Rent Subsidy",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sparsh20rent",
+            "briefDescription": "The scheme aims to reduce the rental burden on workers and economically weaker section families residing in affordable rental housing complexes.",
+            "tags": [
+              "Rental Housing",
+              "Economically Weaker Section",
+              "Labour",
+              "Affordable Housing",
+              "Industrial Workers"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "r8fFYp4B0AGc0F0iFBKE",
+          "fields": {
+            "beneficiaryState": [
+              "West Bengal"
+            ],
+            "schemeShortTitle": "SVMCMS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Swami Vivekananda Merit-cum-Means Scholarship",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "svmcms",
+            "briefDescription": "\"Swami Vivekananda Merit-cum-Means Scholarship\" started by the Higher Education Department of West Bengal State for the financial assistance to the student.",
+            "tags": [
+              "Student",
+              "Financial Assistance",
+              "Education"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "5KL6Yp4BXu-iUKXq_FYy",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "SUPPLY OF UNIFORM, SHOES, SOCKS",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": " Supply of School Uniform , Shoes Socks to all Students for Std IX to XII",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "supply-of-uniform",
+            "briefDescription": "Supply of School Uniform, Shoes Socks to all Students for IX to XII studying in Govt Schools\n",
+            "tags": [
+              "Education",
+              "Free Stationery",
+              "Free Shoes Socks"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "JhhUcp4B5uF80_MGo22V",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "SIPPRL",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry Of Science And Technology",
+            "schemeCategory": [
+              "Education & Learning"
+            ],
+            "schemeName": "Summer Internship Programme (PRL)",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "sipprl",
+            "briefDescription": "The Physical Research Laboratory (PRL) Summer Internship Programme aims to provide a platform for highly motivated students & teachers to interact with PRL’s scientists, gaining exposure to the lab’s research areas and facilities. Participants will work on projects in fundamental science, technology",
+            "tags": [
+              "Internship",
+              "Students",
+              "Teachers",
+              "Research",
+              "Graduation",
+              "Post-Graduation"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "9BhraJ4B5uF80_MGN2zQ",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "SCHOLARSHIPTCESD",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Education & Learning",
+              "Social welfare & Empowerment",
+              "Women and Child"
+            ],
+            "schemeName": "Scholarships for Top Class Education for students with Disabilities, DNH & DD",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "scholarshiptcesd",
+            "briefDescription": "Scholarship for Students with Disabilities, DNH & DD offers tuition fee reimbursement up to ₹1.9 lakh, maintenance allowance, book grant, laptop support, assistive devices, and special disability allowances for eligible UG/PG students in notified institutes. Income limit: ₹8 lakh p.a.",
+            "tags": [
+              "Scholarships",
+              "Top Class Education",
+              "Students",
+              "Person With Disabilities",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "4Bg1Y54B5uF80_MGrWxr",
+          "fields": {
+            "beneficiaryState": [
+              "Delhi"
+            ],
+            "schemeShortTitle": "FAMTW",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Housing & Shelter"
+            ],
+            "schemeName": "Financial Assistance for Marriage for the Construction Workers",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "famtw",
+            "briefDescription": "The \"Financial Assistance for Marriage for the Construction Workers\" by the Delhi Building and Other Construction Workers Welfare Board, Labour Department, Delhi, is a welfare scheme  that provides financial assistance for marriage of self and for upto 2 children.",
+            "tags": [
+              "Labour",
+              "Marriage Assistance",
+              "Construction Workers",
+              "Wedding Support",
+              "Financial Assistance"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "BxjLaJ4B5uF80_MGem30",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "SS-DADRA AND NAGAR HAVELI AND DAMAN & DIU",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Social welfare & Empowerment",
+              "Women and Child",
+              "Education & Learning"
+            ],
+            "schemeName": "Mission Saksham Anganwadi & Poshan 2.0, DNH & DD",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ss-dadra-and-nagar-haveli-and-daman-and-diu",
+            "briefDescription": "The Union Territory of Dadra & Nagar Haveli and Daman & Diu has successfully launched the \"Mission Saksham Anganwadi & Poshan 2.0\" scheme to provide nutritional support for children below 6 years of age, Pregnant Women and Lactating Mothers (PW&LM), and Adolescent Girls (14-18 years).",
+            "tags": [
+              "Pregnant Women",
+              "Lactating Mothers",
+              "Children 0 To 6 Years",
+              "Early Childhood Care",
+              "Adolescent Girl",
+              "Supplementary Nutrition"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "58czY54B0AGc0F0iERLw",
+          "fields": {
+            "beneficiaryState": [
+              "Dadra & Nagar Haveli and Daman & Diu"
+            ],
+            "schemeShortTitle": "SLSMF",
+            "level": "State",
+            "schemeFor": "Individual",
+            "schemeCategory": [
+              "Agriculture,Rural & Environment"
+            ],
+            "schemeName": "Scheme for Loan and Subsidy for Manure and Fertilizer-DNH&DD",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "slsmf",
+            "briefDescription": "The scheme aims to promote fertiliser use for higher productivity. Subsidy-cum-loan assistance is provided in kind to small and marginal farmers.",
+            "tags": [
+              "Cultivator",
+              "Farmer",
+              "Subsidy",
+              "Loan",
+              "Small Farmers",
+              "Marginal Farmers",
+              "Scheduled Castes",
+              "Scheduled Tribes"
+            ]
+          },
+          "highlight": {}
+        },
+        {
+          "id": "pRgdiJ4B5uF80_MGHW3O",
+          "fields": {
+            "beneficiaryState": [
+              "All"
+            ],
+            "schemeShortTitle": "ITGSESECIA",
+            "level": "Central",
+            "schemeFor": "Individual",
+            "nodalMinistryName": "Ministry of Education",
+            "schemeCategory": [
+              "Education & Learning",
+              "Travel & Tourism"
+            ],
+            "schemeName": "INAE Travel Grant Scheme for Engineering Students from IITs/NITs/Govt. Approved Engineering Colleges/Institutions other than AICTE",
+            "schemeCloseDate": null,
+            "priority": 1,
+            "slug": "ai-tgses",
+            "briefDescription": "A Travel Grant Scheme by the All India Council for Technical Education (AICTE) and by the Indian National Academy of Engineering (INAE), for the students from AICTE approved Engineering College/institutions. The scheme aims at enhancing the quality of engineering education in the country.",
+            "tags": [
+              "Travel",
+              "Grant",
+              "Engineering Student",
+              "AICTE"
+            ]
+          },
+          "highlight": {}
+        }
+      ],
+      "page": {
+        "total": 4772,
+        "totalPages": 96,
+        "pageNumber": 28,
+        "from": 1400,
+        "size": 50
+      }
+    },
+    "sortedBy": "multiple_sort"
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useToast } from "@components/ui/ToastNotification";
 import JourneyHeader from "@components/ui/JourneyHeader";
@@ -8,8 +8,13 @@ import { KeyRound, Timer, RefreshCw, Loader2, CheckCircle2, ArrowRight, ShieldAl
 
 export default function OtpVerification() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, verifyOtp, sendEmailOtp } = useAuth();
   const { showToast } = useToast();
+
+  // flow: "signin" | "signup" — controls where we navigate after success
+  const flow = location.state?.flow || "signup";
+  const emailFromState = location.state?.email;
 
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,8 +27,11 @@ export default function OtpVerification() {
   const [attemptsRemaining, setAttemptsRemaining] = useState(5);
 
   const method = "EMAIL";
-  const recipient = user?.email;
+  const recipient = emailFromState || user?.email;
   const userName = user?.fullName || user?.name || "Citizen";
+
+  // Destination after successful OTP verification
+  const successDestination = flow === "signin" ? "/dashboard" : "/onboarding";
 
   // 5-Minute Overall Expiry Countdown
   useEffect(() => {
@@ -51,8 +59,9 @@ export default function OtpVerification() {
 
   const handleVerify = async (e) => {
     e.preventDefault();
-    if (!otp || otp.trim().length !== 6) {
-      showToast("Please enter a 6-digit OTP code.", "error");
+    const cleanOtp = otp ? otp.trim() : "";
+    if (!cleanOtp || (cleanOtp.length !== 6 && cleanOtp.length !== 5)) {
+      showToast("Please enter a valid OTP code (e.g. 123456 or 12345).", "error");
       return;
     }
 
@@ -63,20 +72,23 @@ export default function OtpVerification() {
 
     setLoading(true);
     try {
-      const res = await verifyOtp(user?.email, otp.trim(), method);
-      if (res.error) {
+      const res = await verifyOtp(recipient, cleanOtp, method);
+      if (res?.error) {
         showToast(res.error, "error");
         setAttemptsRemaining((prev) => Math.max(0, prev - 1));
       } else {
         setVerifiedSuccess(true);
-        showToast("🎉 Account Verified Successfully!", "success");
-        // Auto-redirect to /onboarding after 2 seconds
+        const successMsg = flow === "signin"
+          ? "✅ Signed in successfully!"
+          : "🎉 Account Verified Successfully!";
+        showToast(successMsg, "success");
+        // Auto-redirect after 1.5 seconds
         setTimeout(() => {
-          navigate("/onboarding");
-        }, 2000);
+          navigate(successDestination);
+        }, 1500);
       }
     } catch (err) {
-      showToast(err.message || "Invalid OTP code.", "error");
+      showToast(err?.message || "Invalid OTP code.", "error");
     } finally {
       setLoading(false);
     }
@@ -89,7 +101,7 @@ export default function OtpVerification() {
     try {
       const res = await sendEmailOtp(user?.email);
 
-      if (res.error) {
+      if (res?.error) {
         showToast(res.error, "error");
       } else {
         showToast("OTP sent successfully to " + recipient, "success");
@@ -99,7 +111,7 @@ export default function OtpVerification() {
         setAttemptsRemaining(5);
       }
     } catch (err) {
-      showToast(err.message || "Failed to resend OTP.", "error");
+      showToast(err?.message || "Failed to resend OTP.", "error");
     } finally {
       setResending(false);
     }
@@ -124,17 +136,19 @@ export default function OtpVerification() {
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <h3 className="text-2xl font-extrabold text-slate-900 mb-2">
-                  🎉 Account Verified Successfully!
+                  {flow === "signin" ? "✅ Signed In!" : "🎉 Account Verified!"}
                 </h3>
                 <p className="text-sm text-slate-600 max-w-md mx-auto mb-4 leading-relaxed">
-                  Welcome to SchemeBridge. Let's complete your profile to discover the government schemes you are eligible for. You are just one step away from accessing personalized government benefits.
+                  {flow === "signin"
+                    ? "Welcome back! Redirecting you to your dashboard…"
+                    : "Welcome to SchemeBridge. Let's complete your profile to discover the government schemes you are eligible for."}
                 </p>
                 <div className="pt-4">
                   <button
-                    onClick={() => navigate("/onboarding")}
+                    onClick={() => navigate(successDestination)}
                     className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 text-base cursor-pointer"
                   >
-                    <span>Continue to Profile Setup</span>
+                    <span>{flow === "signin" ? "Go to Dashboard" : "Continue to Profile Setup"}</span>
                     <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
@@ -169,7 +183,7 @@ export default function OtpVerification() {
                 <form onSubmit={handleVerify} className="space-y-6">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-2 uppercase tracking-wider">
-                      Enter 6-Digit OTP Code
+                      Enter OTP Code (Test OTP: 123456)
                     </label>
                     <div className="relative">
                       <KeyRound className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -187,7 +201,7 @@ export default function OtpVerification() {
                   <div className="space-y-3 pt-2">
                     <button
                       type="submit"
-                      disabled={loading || otp.length !== 6 || expirySeconds <= 0}
+                      disabled={loading || (otp.length !== 6 && otp.length !== 5) || expirySeconds <= 0}
                       className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base disabled:opacity-50 cursor-pointer"
                     >
                       {loading ? (

@@ -4,6 +4,13 @@ server:
   servlet:
     context-path: /
 
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: localhost
+
+
 spring:
   application:
     name: notification-service
