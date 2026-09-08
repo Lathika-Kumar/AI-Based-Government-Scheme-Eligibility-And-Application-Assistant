@@ -1,0 +1,60 @@
+{
+  "phase": 30,
+  "timestamp": "2026-09-05T15:41:32.314207",
+  "status": "VALIDATED",
+  "statutoryEligibility": {
+    "soleAuthority": "EligibilityEngine.evaluate()",
+    "violationRate": 0.0,
+    "passed": true
+  },
+  "privacyAndPii": {
+    "forbiddenKeysAudited": 16,
+    "piiViolations": 0,
+    "passed": true
+  },
+  "syntheticQuarantine": {
+    "historicalQuarantined": 29,
+    "syntheticContaminationInTraining": 0,
+    "passed": true
+  },
+  "targetLeakage": {
+    "targetLeakageViolations": 0,
+    "passed": true
+  },
+  "sessionSplitIsolation": {
+    "trainCount": 700,
+    "valCount": 147,
+    "testCount": 153,
+    "trainValOverlap": 0,
+    "trainTestOverlap": 0,
+    "valTestOverlap": 0,
+    "passed": true
+  },
+  "labelIntegrity": {
+    "allowedGrades": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "passed": true
+  },
+  "featureCompleteness": {
+    "schemaVersion": "1.0.0",
+    "passed": true
+  },
+  "trainingGate": {
+    "legitimateOutcomeSessions": 0,
+    "requiredThreshold": 100,
+    "trainingReadiness": "TRAINING_NOT_READY",
+    "modelTrainingAllowed": false,
+    "modelPromotionAllowed": false
+  },
+  "databaseMutationAudit": {
+    "INSERT": 0,
+    "UPDATE": 0,
+    "DELETE": 0,
+    "DROP": 0
+  },
+  "overallPassed": true
+}

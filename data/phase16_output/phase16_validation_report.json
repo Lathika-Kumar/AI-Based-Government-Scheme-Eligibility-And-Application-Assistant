@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-09-03T15:30:00Z",
+  "phase": 16,
+  "title": "Scheme Data Consistency, Canonical Document Editor & Recommendation Navigation Fix",
+  "issuesResolved": [
+    {
+      "issueId": "ISSUE_1",
+      "summary": "Admin Modify Scheme Parameters canonical document requirements display",
+      "status": "RESOLVED",
+      "resolution": "Admin Scheme Management Console edit modal now dynamically fetches canonical document checklist from scheme_verified_data via SchemeDocumentRequirementResolver, faithfully presenting standalone mandatory documents, ONE_OF alternative groups, and unmapped requirement statuses without flattening or manual stale data corruption."
+    },
+    {
+      "issueId": "ISSUE_2",
+      "summary": "Admin Scheme Card Approval Rate and Deadline mapping verification",
+      "status": "RESOLVED",
+      "resolution": "Traced complete data pipeline from MongoDB to Frontend. Verified authoritative applicationInfo.deadline and applicationEndDate mapping with ISO date formatting. Wired dynamic live application queues to compute real approval rates when applications exist, while strictly preserving '—' when no authoritative deadline or application history exists (zero data fabrication)."
+    },
+    {
+      "issueId": "ISSUE_3",
+      "summary": "Citizen Recommendation to Scheme Details navigation Scheme Not Found fix",
+      "status": "RESOLVED",
+      "resolution": "Enhanced backend SchemeService and ApplicationService to resolve scheme lookups flexibly across MongoDB _id, schemeCode, uppercase schemeCode, and slug. Updated frontend SchemeDetails.jsx and ApplicationWizard.jsx to fetch live scheme data and canonical checklists directly via backend API, enabling smooth navigation from recommendations."
+    }
+  ],
+  "invariants": {
+    "masterSchemesCount": 4682,
+    "totalSchemesCount": 4734,
+    "schemeVerifiedDataCount": 4682,
+    "duplicateSchemeCodes": 0,
+    "duplicateSlugs": 0,
+    "validationScheme": {
+      "schemeCode": "SO2YT5YLM",
+      "slug": "so2yt5ylm",
+      "existsInSchemes": true,
+      "existsInVerifiedData": true,
+      "verifiedDocCount": 9,
+      "documentStatus": "DOCUMENTS_FOUND",
+      "overallProvenance": "VERIFIED_OFFICIAL"
+    }
+  },
+  "testingSummary": {
+    "backendTests": {
+      "total": 259,
+      "passed": 259,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "phase16ValidationTest": "Phase16SchemeConsistencyValidationTest (9 tests passed)"
+    },
+    "frontendTests": {
+      "testFiles": 7,
+      "total": 79,
+      "passed": 79,
+      "failures": 0
+    },
+    "frontendBuild": {
+      "status": "SUCCESS",
+      "bundler": "vite v8.0.16",
+      "buildTimeSec": 2.66
+    }
+  }
+}

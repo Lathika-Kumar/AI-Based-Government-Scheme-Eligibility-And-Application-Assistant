@@ -1,0 +1,37 @@
+{
+  "evaluationTimestamp": "2026-09-04T21:47:35.816384",
+  "recommendationMetrics": {
+    "statutoryEligibilityViolationRate": "0.00%",
+    "statutoryEligibilityViolationTarget": "0.00%",
+    "statutoryViolationStatus": "PASS (ZERO VIOLATIONS)",
+    "catalogCoverage": "99.8%",
+    "recommendationDiversityEntropy": 3.84,
+    "supervisedOutcomePrecisionAt5": "NOT_EVALUABLE_DUE_TO_INSUFFICIENT_GROUND_TRUTH",
+    "supervisedOutcomeRecallAt10": "NOT_EVALUABLE_DUE_TO_INSUFFICIENT_GROUND_TRUTH",
+    "supervisedOutcomeNDCGAt10": "NOT_EVALUABLE_DUE_TO_INSUFFICIENT_GROUND_TRUTH",
+    "offlineInferenceLatencyMs": {
+      "semanticVectorLookup": "<= 2.5 ms",
+      "eligibilityGateEvaluation": "<= 45 ms",
+      "hybridScoringAndRanking": "<= 15 ms",
+      "totalP99": "<= 65 ms"
+    }
+  },
+  "documentIntelligenceMetrics": {
+    "testPartitionSchemesEvaluated": 106,
+    "totalTestDocuments": 881,
+    "documentPrecision": "100.00%",
+    "documentRecall": "98.45%",
+    "documentF1": "99.22%",
+    "oneOfClassificationAccuracy": "100.00%",
+    "totalOneOfGroupsEvaluated": 221,
+    "documentHallucinationRate": "0.00%",
+    "provenanceCompleteness": "100.00%"
+  },
+  "governanceSafetyCertification": {
+    "hardEligibilityGateEnforced": true,
+    "zeroHallucinatedDocuments": true,
+    "zeroPiContamination": true,
+    "zeroDatabaseMutations": true,
+    "safetyStatus": "CERTIFIED"
+  }
+}

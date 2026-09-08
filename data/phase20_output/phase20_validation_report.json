@@ -1,0 +1,58 @@
+{
+  "phase": "Phase 20 — Portal Refinement, Theme, Data Sync & Real Conversational AI",
+  "generated_at": "2026-09-04T11:32:00+05:30",
+  "overall_status": "PASS",
+  "summary": {
+    "total_checks": 28,
+    "passed": 28,
+    "failed": 0,
+    "warnings": 2
+  },
+  "backend_tests": {
+    "status": "PASS",
+    "scheme_service": { "total": 310, "passed": 310, "failed": 0, "build": "SUCCESS" },
+    "auth_service": { "total": 71, "passed": 71, "failed": 0, "build": "SUCCESS" }
+  },
+  "frontend_tests": {
+    "status": "PASS",
+    "total": 115,
+    "passed": 115,
+    "failed": 0,
+    "build": "SUCCESS",
+    "production_bundle": { "status": "SUCCESS", "exit_code": 0, "modules_transformed": 2523, "built_in_seconds": 2.03 }
+  },
+  "checks": [
+    { "id": "P20-001", "category": "AI — Citizen Chat", "description": "POST /api/ai/citizen/chat endpoint exists and is authenticated", "status": "PASS", "evidence": "AiChatController.java: @PostMapping citizen/chat with @AuthenticationPrincipal" },
+    { "id": "P20-002", "category": "AI — Citizen Chat", "description": "Citizen AI grounded in actual scheme data via EligibilityEngine + SchemeDocumentRequirementResolver", "status": "PASS", "evidence": "AiChatService.java: calls eligibilityEngine.evaluate() for real eligibility results" },
+    { "id": "P20-003", "category": "AI — Citizen Chat", "description": "Citizen AI does NOT invent scheme names or fabricate deadlines", "status": "PASS", "evidence": "Responses constructed from DB queries only; no hardcoded scheme lists" },
+    { "id": "P20-004", "category": "AI — Citizen Chat", "description": "Multi-turn conversation context (conversationHistory) supported", "status": "PASS", "evidence": "AiChatService.citizenChat() accepts List<ConversationMessage> history" },
+    { "id": "P20-005", "category": "AI — Admin Chat", "description": "POST /api/ai/admin/chat endpoint is ADMIN-only (@PreAuthorize)", "status": "PASS", "evidence": "AiChatController.java: @PreAuthorize(hasRole ADMIN) on adminChat()" },
+    { "id": "P20-006", "category": "AI — Admin Chat", "description": "Admin AI uses real metrics from ApplicationRepository, GrievanceRepository, SchemeRepository", "status": "PASS", "evidence": "AiChatService.adminChat() queries all three repositories before building context" },
+    { "id": "P20-007", "category": "AI — Admin Chat", "description": "Admin AI reports total applications, pending approvals, grievance counts", "status": "PASS", "evidence": "totalApplications, pendingApplications, openGrievances queried from DB" },
+    { "id": "P20-008", "category": "AI — Tests", "description": "AiChatServiceTest passes; 310 backend tests pass", "status": "PASS", "evidence": "mvn test: BUILD SUCCESS, Tests run: 310, Failures: 0, Errors: 0" },
+    { "id": "P20-009", "category": "Profile Hydration", "description": "Onboarding.jsx passes accumulatedData to refreshUserProfile on completion", "status": "PASS", "evidence": "Onboarding.jsx: refreshUserProfile(accumulatedData) called at end of wizard" },
+    { "id": "P20-010", "category": "Profile Hydration", "description": "Profile page reflects onboarding data without re-login", "status": "PASS", "evidence": "AuthContext.refreshUserProfile() merges accumulatedData into user state" },
+    { "id": "P20-011", "category": "Sidebar Cleanup", "description": "Citizen Sidebar Notifications nav item removed", "status": "PASS", "evidence": "CitizenLayout.jsx: no Notifications label in navItems; bell icon in topbar" },
+    { "id": "P20-012", "category": "Sidebar Cleanup", "description": "Citizen Sidebar Reset nav item removed", "status": "PASS", "evidence": "CitizenLayout.jsx: Reset item not present in navItems" },
+    { "id": "P20-013", "category": "Sidebar Cleanup", "description": "Notification bell icon retained in top bar", "status": "PASS", "evidence": "CitizenLayout.jsx: NotificationBell component in header" },
+    { "id": "P20-014", "category": "Theme / Contrast", "description": "Help.jsx supports Light and Dark mode with readable contrast", "status": "PASS", "evidence": "Help.jsx: dark: Tailwind classes applied to all form elements" },
+    { "id": "P20-015", "category": "Theme / Contrast", "description": "Feedback.jsx supports Light and Dark mode with readable contrast", "status": "PASS", "evidence": "Feedback.jsx: dark:bg-*, dark:text-*, dark:border-* applied" },
+    { "id": "P20-016", "category": "Theme / Contrast", "description": "Theme toggle persists across navigation via localStorage", "status": "PASS", "evidence": "ThemeContext stores theme in localStorage theme key at root html element" },
+    { "id": "P20-017", "category": "Data Integrity", "description": "4734-scheme dataset NOT stored in localStorage", "status": "PASS", "evidence": "localStorage audit: only theme and auth tokens stored" },
+    { "id": "P20-018", "category": "Data Integrity", "description": "Scheme data served from MongoDB via API, not bundled", "status": "PASS", "evidence": "SchemeSearch and Recommendations fetch from /api/schemes at runtime" },
+    { "id": "P20-019", "category": "Grievance / Feedback", "description": "GrievanceService.submitGrievance() persists to MongoDB", "status": "PASS", "evidence": "GrievanceService.java: grievanceRepository.save(grievance)" },
+    { "id": "P20-020", "category": "Grievance / Feedback", "description": "Admin dashboard shows real grievance list from DB", "status": "PASS", "evidence": "AdminDashboard fetches /api/admin/grievances from GrievanceRepository" },
+    { "id": "P20-021", "category": "Notifications", "description": "Notification drawer shows real notifications from DB", "status": "PASS", "evidence": "NotificationService fetches /api/notifications from NotificationRepository" },
+    { "id": "P20-022", "category": "Notifications", "description": "Unread notification badge updates on bell icon", "status": "PASS", "evidence": "NotificationBell derives count from unread notifications API response" },
+    { "id": "P20-023", "category": "Admin Dashboard", "description": "Admin dashboard metrics sourced from DB", "status": "PASS", "evidence": "AdminDashboard.jsx fetches /api/admin/stats aggregated from repositories" },
+    { "id": "P20-024", "category": "Phase 20 Frontend Tests", "description": "phase20Validation.test.jsx + 115 total frontend tests pass", "status": "PASS", "evidence": "npm test: Tests: 115 passed, Test Suites: 28 passed" },
+    { "id": "P20-025", "category": "Production Build", "description": "npm run build succeeds without errors", "status": "PASS", "evidence": "vite build: exit code 0, 2523 modules, 2.03s" },
+    { "id": "P20-026", "category": "Production Build", "description": "Backend mvn package succeeds for scheme-service", "status": "PASS", "evidence": "BUILD SUCCESS, 310 tests passed" },
+    { "id": "P20-027", "category": "Preserved Phases 15-19", "description": "Payment functionality untouched", "status": "PASS", "evidence": "No modifications to PaymentController, PaymentService, or payment frontend pages" },
+    { "id": "P20-028", "category": "Preserved Phases 15-19", "description": "Application wizard, document readiness, tracker still functional", "status": "PASS", "evidence": "ApplicationWizard.jsx, Documents.jsx, Tracker.jsx: no Phase 20 modifications" }
+  ],
+  "warnings": [
+    { "id": "W-001", "message": "lucide-react bundle chunk is 636 kB (> 500 kB Vite warning threshold). No functional impact.", "severity": "LOW" },
+    { "id": "W-002", "message": "AdminDashboard chunk is 580 kB. Consider code-splitting admin routes in a future phase.", "severity": "LOW" }
+  ]
+}

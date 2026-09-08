@@ -1,0 +1,39 @@
+{
+  "phase": "35",
+  "reportType": "PHASE_35_FINAL_VALIDATION_REPORT",
+  "verdict": "PASS",
+  "testExecutionSummary": {
+    "backendSuite": "Phase35CurrentCitizenRecommendationTest.java",
+    "backendTestsRun": 15,
+    "backendFailures": 0,
+    "backendErrors": 0,
+    "frontendSuite": "phase35CurrentCitizenRecommendation.test.js",
+    "frontendTestsRun": 9,
+    "frontendFailures": 0,
+    "fullFrontendSuiteTestsRun": 200,
+    "fullFrontendSuitePassed": 200,
+    "frontendProductionBuild": "SUCCESS (2.05s)"
+  },
+  "regressionSuiteSummary": {
+    "phase31TestsRun": 5,
+    "phase32TestsRun": 12,
+    "phase33TestsRun": 15,
+    "phase34TestsRun": 5,
+    "regressionFailures": 0
+  },
+  "integrityVerification": {
+    "statutoryAuthoritySoleAuthority": "EligibilityEngine.evaluate()",
+    "rankingStageGuarded": true,
+    "ineligibleSchemesLeaked": 0,
+    "piiExposed": 0,
+    "targetLeakagePresent": false,
+    "dbMutations": {
+      "INSERT": 0,
+      "UPDATE": 0,
+      "DELETE": 0,
+      "DROP": 0
+    },
+    "quarantinedFixtures": 29
+  },
+  "generatedAt": "2026-09-05T16:31:31.104652+00:00"
+}

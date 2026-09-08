@@ -1,0 +1,23 @@
+{
+  "phase": "37",
+  "reportType": "TELEMETRY_AND_SESSION_ATTRIBUTION_STATUS",
+  "telemetryRole": "OBSERVATION_LAYER (Non-blocking for recommendations)",
+  "sessionIdPersistence": "VERIFIED (Persists across Recommendations -> Details -> Wizard -> Completion)",
+  "piiProtection": "VERIFIED (Zero Aadhaar, PAN, phone, email, address in telemetry)",
+  "outcomeAttribution": {
+    "browsingCountsAsOutcome": false,
+    "qualifyingEvents": [
+      "SCHEME_APPLIED",
+      "APPLICATION_COMPLETED"
+    ],
+    "nonQualifyingEvents": [
+      "RECOMMENDATION_SHOWN",
+      "SCHEME_VIEWED",
+      "SCHEME_EXPANDED",
+      "SCHEME_SAVED",
+      "APPLICATION_STARTED"
+    ],
+    "currentLegitimateOutcomeCount": "0 / 100"
+  },
+  "generatedAt": "2026-09-05T16:41:02.982118+00:00"
+}

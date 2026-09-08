@@ -1,0 +1,87 @@
+{
+  "phase": "PHASE_17",
+  "auditTitle": "Final Scheme Data Consistency & Forensic Validation",
+  "status": "PASS",
+  "timestamp": "2026-09-04T09:45:30.000Z",
+  "databaseInvariants": {
+    "schemesCount": 4734,
+    "schemeVerifiedDataCount": 4682,
+    "difference": 52,
+    "duplicateSchemeCodes": 0,
+    "duplicateSlugs": 0,
+    "totalEmbeddedBenefits": 35612,
+    "totalEmbeddedTags": 22756,
+    "breakdown": {
+      "canonicalSchemesCount": 4682,
+      "canonicalEmbeddedBenefits": 35560,
+      "canonicalEmbeddedTags": 22500,
+      "seedOnlySchemesCount": 52,
+      "seedOnlyEmbeddedBenefits": 52,
+      "seedOnlyEmbeddedTags": 256
+    }
+  },
+  "rootCauseAnalysis": {
+    "benefitsDiff": 52,
+    "tagsDiff": 256,
+    "classification": "COUNTING_METHOD_DIFFERENCE_AND_LEGITIMATE_SEED_RECORDS",
+    "explanation": "The Phase 16A baseline (35,560 benefits, 22,500 tags) represented the subtotal across the 4,682 canonical records in the master collection. The 52 legitimate seed-only records in schemes contribute exactly 52 benefits (1 each) and 256 tags. Totaling across all 4,734 master schemes yields exactly 35,612 benefits and 22,756 tags with zero data corruption and zero mutation."
+  },
+  "validationSchemeSO2YT5YLM": {
+    "schemeCode": "SO2YT5YLM",
+    "slug": "so2yt5ylm",
+    "exists": true,
+    "documentStatus": "DOCUMENTS_FOUND",
+    "overallProvenance": "VERIFIED_OFFICIAL",
+    "reconciliationStatus": "MATCHED",
+    "totalDocuments": 9,
+    "oneOfAlternativeGroups": 2,
+    "standaloneMandatoryDocuments": 7,
+    "status": "PASS"
+  },
+  "testExecutionSummary": {
+    "backend": {
+      "framework": "JUnit 5 / Spring Boot Test / Mockito",
+      "testsRun": 279,
+      "passed": 279,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "buildStatus": "SUCCESS"
+    },
+    "frontend": {
+      "framework": "Vitest / Testing Library",
+      "testsRun": 79,
+      "passed": 79,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "buildStatus": "SUCCESS"
+    },
+    "productionBuild": {
+      "bundler": "Vite v8.0.16",
+      "buildStatus": "SUCCESS",
+      "modulesTransformed": 2518
+    }
+  },
+  "runtimeFlowValidation": {
+    "canonicalSchemeFlow": "PASS",
+    "seedOnlySchemeFlow": "PASS",
+    "canonicalDocumentChecklist": "PASS",
+    "adminReviewFlow": "PASS",
+    "oneOfAlternativeSatisfaction": "PASS",
+    "unmappedSchemeDeterministicFallback": "PASS"
+  },
+  "metricsIntegrity": {
+    "deadlineHandling": "AUTHORITATIVE_ONLY_ZERO_FABRICATION",
+    "approvalRateHandling": "RECORD_DERIVED_ONLY_ZERO_FABRICATION"
+  },
+  "recommendationArchitecture": {
+    "engineType": "DETERMINISTIC_RULE_BASED",
+    "evaluationMethod": "Abstract Syntax Tree AST & Weighted Multi-Factor Scoring",
+    "aiDependency": "NONE (Deterministic rule engine)"
+  },
+  "paymentModule": {
+    "status": "OUT_OF_SCOPE",
+    "mutation": "NONE"
+  }
+}

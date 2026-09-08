@@ -1,0 +1,27 @@
+{
+  "phase": "37",
+  "reportType": "CURRENT_CITIZEN_FLOW_SPECIFICATION",
+  "pipeline": "CURRENT_CITIZEN_LOGIN -> LOAD_PROFILE -> NORMALIZE -> ELIGIBILITY_ENGINE -> ELIGIBLE_ONLY -> RECOMMENDER_RANKING -> TOP_K",
+  "eligibilityAuthority": "EligibilityEngine.evaluate()",
+  "ineligibleExclusion": "GUARANTEED (NOT_ELIGIBLE & INSUFFICIENT_DATA discarded prior to ranking)",
+  "coldStartHandling": "DETERMINISTIC (Zero historical users required)",
+  "profilePersonalizationDivergence": "VERIFIED (Different demographics receive legitimately different recommendations)",
+  "testedDemographics": [
+    {
+      "persona": "Student (Nagpur, Maharashtra, Age 22)",
+      "coldStartPassed": true,
+      "recsReturned": 10
+    },
+    {
+      "persona": "Farmer (Satara, Maharashtra, Age 54)",
+      "coldStartPassed": true,
+      "recsReturned": 10
+    },
+    {
+      "persona": "Partial Profile (Bihar)",
+      "insufficientDataHandled": true,
+      "zeroFalsePositives": true
+    }
+  ],
+  "generatedAt": "2026-09-05T16:41:02.982118+00:00"
+}

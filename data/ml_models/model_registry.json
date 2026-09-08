@@ -1,0 +1,24 @@
+{
+  "modelName": "SchemeBridge-Recommender-MiniLM-L6",
+  "modelVersion": "2.2.0-hybrid-semantic-384d",
+  "baseArchitecture": "sentence-transformers/all-MiniLM-L6-v2",
+  "embeddingDimension": 384,
+  "totalSchemesEmbedded": 4734,
+  "indexSha256": "38b33e6a6961beb6c9dbc7d389a0ef4613236d2ce3cfd72c155ce4fa2d439801",
+  "status": "VALIDATED_SHADOW_READY",
+  "registeredAt": "2026-09-04T21:47:01.311448",
+  "featureWeights": {
+    "semantic": 0.2,
+    "benefit": 0.15,
+    "demographic": 0.2,
+    "geographic": 0.2,
+    "occupation": 0.15,
+    "economic": 0.1
+  },
+  "safetyConstraints": {
+    "hardEligibilityGate": "MANDATORY_BEFORE_RANKING",
+    "statutoryEligibilityViolationTarget": 0.0,
+    "documentHallucinationTarget": 0.0,
+    "piiContaminationTarget": 0.0
+  }
+}

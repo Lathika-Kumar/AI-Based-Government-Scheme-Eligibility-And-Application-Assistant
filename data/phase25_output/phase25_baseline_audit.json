@@ -1,0 +1,35 @@
+{
+  "auditTimestamp": "2026-09-04T23:42:00.000Z",
+  "environment": "SchemeBridge Production Local",
+  "database": "schemebridge_scheme_db",
+  "forensicCounts": {
+    "schemes": 4734,
+    "scheme_verified_data": 4682,
+    "difference_seed_only": 52,
+    "duplicate_scheme_codes": 0,
+    "duplicate_slugs": 0,
+    "embedded_benefits": 35612,
+    "embedded_tags": 22756,
+    "SO2YT5YLM_canonical_documents": 9,
+    "recommendation_events": 0,
+    "portal_feedback": 0,
+    "applications": 0,
+    "application_events_synthetic_fixtures": 29,
+    "application_reviews_synthetic_fixtures": 1,
+    "citizen_profiles": 14
+  },
+  "invariantsVerified": {
+    "statutoryEligibilityViolationTarget": 0.00,
+    "documentHallucinationTarget": 0.00,
+    "productionDatabaseMutations": 0,
+    "zeroFabricationObserved": true
+  },
+  "recommendationSystemState": {
+    "currentClassification": "Hybrid Eligibility-Gated Multi-Attribute Utility (MADM) + Unsupervised Semantic Vector Space Model",
+    "supervisedModelTrained": false,
+    "trainingStatus": "TRAINING_NOT_READY",
+    "activeModelVersion": "schemebridge-recommender-v2-hybrid-semantic",
+    "baseEmbeddingArchitecture": "sentence-transformers/all-MiniLM-L6-v2 (384-dimensional dense projection)",
+    "statutoryEligibilityGate": "Authoritative EligibilityEngine executing strictly before ranking"
+  }
+}

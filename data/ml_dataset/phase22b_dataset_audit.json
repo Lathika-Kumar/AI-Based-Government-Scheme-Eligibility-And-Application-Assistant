@@ -1,0 +1,165 @@
+{
+  "auditTimestamp": "2026-09-04T21:44:35.752598",
+  "targetDirectory": "E:/SCHEMEBRIDGE/data/ml_dataset",
+  "filesAudited": {
+    "training_dataset_master.jsonl": {
+      "file": "training_dataset_master.jsonl",
+      "sizeBytes": 37390657,
+      "sha256": "64f16774a744647522431ba0ba86ad2ba1e16740d31ccd362bf122fe4fcd8fea",
+      "totalRecords": 4682,
+      "validSyntaxRecords": 4682,
+      "syntaxErrors": 0,
+      "uniqueSchemeCodes": 4682,
+      "duplicateSchemeCodes": 0,
+      "uniqueSlugs": 0,
+      "duplicateSlugs": 0,
+      "missingIdentifiers": 0,
+      "schemesWithEligibility": 4682,
+      "schemesWithDocuments": 4682,
+      "totalDocumentsExtracted": 9364,
+      "schemesWithBenefits": 4682,
+      "totalBenefits": 4682,
+      "piiMatchesDetected": 903,
+      "piiFindings": [
+        {
+          "type": "email",
+          "sample": "secretaryapj@gmail.com",
+          "scheme": "AFS-SC"
+        },
+        {
+          "type": "email",
+          "sample": "dic_pdy@bsnl.in",
+          "scheme": "AHST"
+        },
+        {
+          "type": "email",
+          "sample": "inaehq@inae.in",
+          "scheme": "AI-TGSES"
+        },
+        {
+          "type": "email",
+          "sample": "secretaryapj@gmail.com",
+          "scheme": "AIS-SC"
+        },
+        {
+          "type": "email",
+          "sample": "atisis.assam@gmail.com",
+          "scheme": "AITH-ATISIS"
+        }
+      ]
+    },
+    "ai_tasks_training_data.jsonl": {
+      "file": "ai_tasks_training_data.jsonl",
+      "sizeBytes": 16006453,
+      "sha256": "9d17770b6799e5c98d4c002a6aff30219faa60fc33411a1f41382d73595004e7",
+      "totalRecords": 18728,
+      "validSyntaxRecords": 18728,
+      "syntaxErrors": 0,
+      "taskTypes": {
+        "TASK": 18728
+      },
+      "uniqueSchemeCodes": 4682,
+      "missingIdentifiers": 0,
+      "duplicateTasks": 18724
+    },
+    "official_document_checklists.json": {
+      "file": "official_document_checklists.json",
+      "sizeBytes": 6121457,
+      "sha256": "237c589800e8f081cba0b554f05bca6e2d6d1850ff44784ba026946f34483475",
+      "totalSchemes": 736,
+      "totalDocuments": 6389,
+      "mandatoryDocuments": 4805,
+      "optionalDocuments": 0,
+      "conditionalDocuments": 0,
+      "alternativeDocuments": 1584,
+      "oneOfGroupsCount": 1584,
+      "validOneOfOptionsTotal": 4414,
+      "invalidOneOfGroups": 0,
+      "documentTypesFound": {
+        "IDENTITY_PROOF": 1148,
+        "PROPERTY_OR_LEGAL_PROOF": 208,
+        "FINANCIAL_PROOF": 532,
+        "INCOME_PROOF": 180,
+        "CATEGORY_PROOF": 239,
+        "SCHEME_SPECIFIC_PROOF": 3276,
+        "PHOTO_PROOF": 347,
+        "AGE_OR_EDUCATION_PROOF": 248,
+        "ADDRESS_PROOF": 189,
+        "SKILL_OR_TRAINING_PROOF": 22
+      },
+      "missingSourceEvidence": 0,
+      "missingSourceUrl": 0,
+      "provenanceDistribution": {
+        "VERIFIED_OFFICIAL": 6389
+      },
+      "uniqueSchemeCodes": 736,
+      "duplicateSchemeCodes": 0
+    },
+    "eligibility_criteria_dataset.json": {
+      "file": "eligibility_criteria_dataset.json",
+      "sizeBytes": 16623654,
+      "sha256": "7cd8dc3ddfe92f45ee21a18011e64ce19e28d2d154e15e92739262fc55fe297a",
+      "totalSchemes": 4675,
+      "totalCriteria": 26080,
+      "uniqueSchemeCodes": 4675,
+      "duplicateSchemeCodes": 0,
+      "criteriaTypes": {
+        "UNKNOWN": 26080
+      },
+      "schemesWithZeroCriteria": 0
+    },
+    "scheme_to_document_relationships.json": {
+      "file": "scheme_to_document_relationships.json",
+      "sizeBytes": 78168,
+      "sha256": "6f112d4f5ecf1fde11cb60cc7cf756afa73b41af0ec0bfe311575d516296abb1",
+      "totalRelationships": 436,
+      "relationshipTypes": {
+        "PROVES_CRITERION": 436
+      },
+      "uniqueSchemes": 259,
+      "confidenceMin": 1.0,
+      "confidenceAvg": 1.0
+    },
+    "raw_source_evidence.json": {
+      "file": "raw_source_evidence.json",
+      "sizeBytes": 4530822,
+      "sha256": "6b2362d9a057dfd6c562b21a623d16b1dbb6bde6176d036aefe2df905d832498",
+      "totalRecords": 4682,
+      "withRawEligibility": 4675,
+      "withRawDocuments": 781,
+      "missingRawContent": 7,
+      "uniqueSchemes": 4682
+    },
+    "human_review_queue.json": {
+      "file": "human_review_queue.json",
+      "sizeBytes": 1448944,
+      "sha256": "4e7871e1304b22bd4361be8cad110a558860d06bbb2d00a7280bb4d7a64dfdc1",
+      "totalRecords": 3818,
+      "issueTypes": {
+        "SLUG_NOT_RESOLVED_IN_MYSCHEME_API": 3818
+      },
+      "uniqueSchemes": 3818
+    }
+  },
+  "crossDatasetConsistency": {
+    "masterSchemesTotal": 4682,
+    "officialChecklistSchemes": 736,
+    "eligibilityCriteriaSchemes": 4675,
+    "humanReviewQueueSchemes": 3818,
+    "coveragePercentage": 98.9,
+    "zeroDuplicateCodesAcrossMaster": true,
+    "zeroDuplicateSlugsAcrossMaster": true,
+    "oneOfAlternativeGroupsValidated": 1584,
+    "invalidOneOfGroupsDetected": 0
+  },
+  "piiAuditSummary": {
+    "status": "PASS",
+    "citizenNameIncluded": false,
+    "phoneNumberIncluded": false,
+    "emailAddressIncluded": false,
+    "aadhaarNumberIncluded": false,
+    "rationCardNumberIncluded": false,
+    "credentialsIncluded": false
+  },
+  "overallStatus": "PASS"
+}

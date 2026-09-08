@@ -1,0 +1,32 @@
+{
+  "phase": "34",
+  "recommendationMode": "CURRENT_USER_ELIGIBILITY",
+  "eligibilityAuthority": "EligibilityEngine",
+  "historicalUsers": 0,
+  "realOutcomeSessions": 0,
+  "syntheticOutcomeSessions": 0,
+  "statutoryAuthorityContract": {
+    "soleAuthority": "EligibilityEngine.evaluate()",
+    "ineligibleRecommendationsAllowed": false,
+    "violationRate": 0.0
+  },
+  "profileAttributeHandling": {
+    "unknownAttributesTreatedAs": "UNKNOWN",
+    "assumedOrFabricatedAttributes": 0,
+    "missingInformationTreatedAsEligible": false
+  },
+  "recommendationRankingSignals": [
+    "profile_attribute_match",
+    "geographic_match",
+    "occupation_match",
+    "age_band_match",
+    "income_band_match",
+    "category_match",
+    "scheme_priority",
+    "semantic_similarity_where_supported"
+  ],
+  "rankingConstraint": "Ranking executed strictly AFTER statutory eligibility filtering; ineligible schemes can never be ranked.",
+  "activeRecommender": "2.2.0-hybrid-semantic-384d",
+  "fallbackRecommender": "1.0.0-deterministic",
+  "generatedAt": "2026-09-05T16:14:39.947823+00:00"
+}

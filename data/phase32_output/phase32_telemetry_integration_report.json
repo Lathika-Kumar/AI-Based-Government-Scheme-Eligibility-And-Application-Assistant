@@ -1,0 +1,40 @@
+{
+  "phase": 32,
+  "telemetryFlowStatus": "CONNECTED_AND_FUNCTIONAL",
+  "diagnosticResult": "NO_REAL_CITIZEN_DATA",
+  "explanation": "Telemetry integration is connected and functioning correctly. Zero legitimate outcomes is expected because the platform currently has no qualifying genuine production citizen traffic.",
+  "frontendEndpoints": {
+    "recommendationShown": "Recommendations.jsx -> trackRecommendationEvent()",
+    "schemeViewed": "SchemeDetails.jsx -> trackRecommendationEvent()",
+    "applicationStarted": "SchemeDetails.jsx -> trackRecommendationEvent()",
+    "schemeApplied": "ApplicationWizard.jsx -> trackRecommendationEvent()",
+    "applicationCompleted": "ApplicationWizard.jsx -> trackRecommendationEvent()"
+  },
+  "backendEndpoints": {
+    "recordEvent": "POST /api/recommendations/events",
+    "metrics": "GET /api/recommendations/events/metrics",
+    "readiness": "GET /api/recommendations/events/readiness"
+  },
+  "ingestionGates": {
+    "totalGates": 11,
+    "status": "ACTIVE_AND_ENFORCED",
+    "classificationPrecedence": "SYNTHETIC -> MALFORMED -> PII_VIOLATION -> ORPHAN -> DUPLICATE -> INVALID_SEQUENCE -> VALID"
+  },
+  "outcomesAccumulated": 0,
+  "requiredThreshold": 100,
+  "relevanceGradesBreakdown": {
+    "GRADE_0_IMPRESSED_UNENGAGED": 0,
+    "GRADE_1_VIEWED": 0,
+    "GRADE_2_INTENT_HIGH": 0,
+    "GRADE_3_CONVERTED": 0
+  },
+  "excludedTelemetry": {
+    "SYNTHETIC": 29,
+    "PII_VIOLATION": 0,
+    "MALFORMED": 0,
+    "DUPLICATE": 0,
+    "ORPHAN": 0,
+    "INVALID_SEQUENCE": 0
+  },
+  "generatedAt": "2026-09-05T20:37:47.358694"
+}

@@ -1,0 +1,100 @@
+{
+  "phase": 15,
+  "timestamp": "2026-09-03T06:45:00.000Z",
+  "implementationStatus": "PASS",
+  "citizenChecklistStatus": "PASS",
+  "adminChecklistStatus": "PASS",
+  "oneOfValidationStatus": "PASS",
+  "uploadValidationStatus": "PASS",
+  "databaseInvariantStatus": "PASS",
+  "backendTestStatus": "PASS",
+  "frontendTestStatus": "PASS",
+  "buildStatus": "PASS",
+  "validationScheme": {
+    "schemeCode": "SO2YT5YLM",
+    "slug": "so2yt5ylm",
+    "title": "Establishment of Fish Culture in Ponds to SC Families on 60% Subsidy",
+    "documentStatus": "DOCUMENTS_FOUND",
+    "overallProvenance": "VERIFIED_OFFICIAL",
+    "officialSourceUrl": "https://www.myscheme.gov.in/schemes/so2yt5ylm",
+    "totalOfficialDocuments": 9,
+    "alternativeGroups": [
+      {
+        "documentCode": "DOC_SO2YT5YLM_003",
+        "header": "Date of Birth Certificate",
+        "type": "ONE_OF",
+        "options": [
+          "Birth Certificate",
+          "Matriculation Certificate",
+          "PAN Card",
+          "Voter Card",
+          "Driving License"
+        ]
+      },
+      {
+        "documentCode": "DOC_SO2YT5YLM_004",
+        "header": "Identity Proof",
+        "type": "ONE_OF",
+        "options": [
+          "Ration Card",
+          "Aadhar Card",
+          "PAN Card",
+          "Voter Card"
+        ]
+      }
+    ],
+    "standaloneMandatoryDocuments": [
+      "Agreement 1 - Agreement deed between fish farmer and Fisheries Department",
+      "Agreement 2 - Agreement deed between fish farmer and panchayat for fish culture",
+      "Caste Certificate - Caste Certificate issued by 1st Class Magistrate",
+      "Training Certificate – Fisheries Training from any Govt. Institute",
+      "Lease deed - (Panchayat Resolution and receipt no.4 of Panchayat)",
+      "Receipt of Fish Seed (purchased from government/national fish seed farms)",
+      "Photographs of the Pond Site"
+    ]
+  },
+  "databaseInvariants": {
+    "before": {
+      "schemes": 4682,
+      "benefits": 35560,
+      "tags": 22500,
+      "scheme_verified_data": 4682,
+      "duplicateCodes": 0,
+      "duplicateSlugs": 0
+    },
+    "after": {
+      "schemes": 4682,
+      "benefits": 35560,
+      "tags": 22500,
+      "scheme_verified_data": 4682,
+      "duplicateCodes": 0,
+      "duplicateSlugs": 0
+    },
+    "invariantsPreserved": true
+  },
+  "testSummary": {
+    "schemeService": {
+      "testsRun": 250,
+      "failures": 0,
+      "errors": 0,
+      "status": "PASS"
+    },
+    "authService": {
+      "testsRun": 71,
+      "failures": 0,
+      "errors": 0,
+      "status": "PASS"
+    },
+    "frontend": {
+      "testsRun": 79,
+      "failures": 0,
+      "errors": 0,
+      "status": "PASS"
+    },
+    "productionBuild": {
+      "status": "PASS",
+      "timeSeconds": 3.84
+    }
+  },
+  "knownIssues": []
+}

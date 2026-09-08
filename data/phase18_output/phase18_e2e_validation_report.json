@@ -1,0 +1,87 @@
+{
+  "phase": "PHASE_18",
+  "auditTitle": "Complete End-to-End Citizen & Admin Application Flow Validation and Fix",
+  "status": "PASS",
+  "timestamp": "2026-09-04T09:54:55.000Z",
+  "databaseInvariants": {
+    "schemesCount": 4734,
+    "schemeVerifiedDataCount": 4682,
+    "difference": 52,
+    "duplicateSchemeCodes": 0,
+    "duplicateSlugs": 0,
+    "totalEmbeddedBenefits": 35612,
+    "totalEmbeddedTags": 22756,
+    "so2yt5ylmCanonicalDocuments": 9,
+    "mutations": 0
+  },
+  "userFlowValidation": {
+    "recommendationNavigation": "PASS",
+    "canonicalSchemeDetails": "PASS",
+    "seedOnlySchemeDetails": "PASS",
+    "documentChecklistResolution": "PASS",
+    "oneOfSemantics": "PASS",
+    "applicationWizard": "PASS",
+    "documentUpload": "PASS",
+    "submissionValidationGate": "PASS",
+    "adminApplicationReview": "PASS",
+    "adminDocumentReview": "PASS",
+    "adminSchemeManagement": "PASS",
+    "deadlineHandling": "PASS",
+    "approvalRateHandling": "PASS",
+    "securityAntiIdor": "PASS"
+  },
+  "validationSchemeSO2YT5YLM": {
+    "schemeCode": "SO2YT5YLM",
+    "slug": "so2yt5ylm",
+    "documentStatus": "DOCUMENTS_FOUND",
+    "overallProvenance": "VERIFIED_OFFICIAL",
+    "totalDocuments": 9,
+    "oneOfAlternativeGroups": 2,
+    "standaloneMandatoryDocuments": 7,
+    "e2eStatus": "PASS"
+  },
+  "seedOnlySchemeValidation": {
+    "sampleSchemeCode": "SCH-HLTH-001",
+    "slug": "ayushman-bharat-pmjay",
+    "source": "schemes.seed.json",
+    "fallbackChecklist": "PASS",
+    "applicationCreation": "PASS",
+    "submissionFlow": "PASS",
+    "e2eStatus": "PASS"
+  },
+  "testExecutionSummary": {
+    "backend": {
+      "framework": "JUnit 5 / Spring Boot Test / Mockito",
+      "testSuite": "Phase18EndToEndFlowValidationTest.java",
+      "testsRun": 304,
+      "passed": 304,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "buildStatus": "BUILD SUCCESS"
+    },
+    "frontend": {
+      "framework": "Vitest v3.2.6",
+      "testSuite": "phase18EndToEndFlow.test.js",
+      "testFiles": 8,
+      "testsRun": 93,
+      "passed": 93,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "buildStatus": "PASS"
+    },
+    "productionBuild": {
+      "bundler": "Vite v8.0.16",
+      "modulesTransformed": 2518,
+      "buildStatus": "SUCCESS",
+      "buildTimeSeconds": 1.78
+    }
+  },
+  "architecturalIntegrity": {
+    "recommendationEngine": "DETERMINISTIC_AST_AND_WEIGHTED_MATCH",
+    "aiDependency": "NONE",
+    "paymentModule": "OUT_OF_SCOPE",
+    "mySchemeRedirects": "NONE"
+  }
+}

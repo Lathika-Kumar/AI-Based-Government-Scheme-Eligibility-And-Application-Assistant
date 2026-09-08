@@ -1,0 +1,44 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: schemebridge-scheme-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://schemebridge_user:${MONGODB_SCHEMEBRIDGE_PASSWORD}@localhost:27017/schemebridge_scheme_db?authSource=admin}
+      auto-index-creation: true
+
+jwt:
+  secret: ${JWT_SECRET}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+recommendation:
+  weights:
+    semantic: 0.20
+    benefit: 0.15
+    demographic: 0.20
+    geographic: 0.20
+    occupation: 0.15
+    economic: 0.10
+  ml:
+    enabled: true
+    timeout-ms: 200
+    shadow-mode: false
+    embedding-index-path: ${SCHEME_EMBEDDING_INDEX:E:/SCHEMEBRIDGE/data/ml_models/scheme_embeddings.index}
+    metadata-path: ${SCHEME_EMBEDDING_META:E:/SCHEMEBRIDGE/data/ml_models/scheme_embeddings_metadata.json}
+    model-version: 2.2.0-hybrid-semantic-384d
+

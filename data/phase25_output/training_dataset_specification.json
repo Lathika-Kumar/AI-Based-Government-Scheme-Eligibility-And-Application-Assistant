@@ -1,0 +1,84 @@
+{
+  "datasetVersion": "phase25-ltr-spec-v1",
+  "description": "Standard schema for SchemeBridge Learning-to-Rank offline training datasets.",
+  "targetEventProgression": [
+    {
+      "eventType": "RECOMMENDATION_SHOWN",
+      "labelWeight": 0.0,
+      "description": "Impression of scheme card in recommended list"
+    },
+    {
+      "eventType": "SCHEME_VIEWED",
+      "labelWeight": 0.2,
+      "description": "Citizen clicked on scheme card to view summary"
+    },
+    {
+      "eventType": "SCHEME_EXPANDED",
+      "labelWeight": 0.4,
+      "description": "Citizen expanded full details and criteria"
+    },
+    {
+      "eventType": "SCHEME_SAVED",
+      "labelWeight": 0.6,
+      "description": "Citizen bookmarked or saved scheme to profile"
+    },
+    {
+      "eventType": "APPLICATION_STARTED",
+      "labelWeight": 0.8,
+      "description": "Citizen initiated application wizard for scheme"
+    },
+    {
+      "eventType": "APPLICATION_COMPLETED",
+      "labelWeight": 1.0,
+      "description": "Citizen completed and submitted application"
+    },
+    {
+      "eventType": "APPLICATION_APPROVED",
+      "labelWeight": 1.5,
+      "description": "Application approved by verifying officer"
+    }
+  ],
+  "featureColumns": [
+    {
+      "name": "query_occupation_affinity",
+      "type": "float",
+      "range": "[0.0, 1.0]"
+    },
+    {
+      "name": "query_economic_need",
+      "type": "float",
+      "range": "[0.0, 1.0]"
+    },
+    {
+      "name": "query_geographic_match",
+      "type": "float",
+      "range": "[0.0, 1.0]"
+    },
+    {
+      "name": "scheme_benefit_impact",
+      "type": "float",
+      "range": "[0.0, 1.0]"
+    },
+    {
+      "name": "semantic_embedding_similarity",
+      "type": "float",
+      "range": "[0.0, 1.0]"
+    },
+    {
+      "name": "recommendation_rank_position",
+      "type": "int",
+      "range": ">= 1"
+    }
+  ],
+  "excludedFields": [
+    "userId",
+    "citizenName",
+    "email",
+    "phone",
+    "aadhaar",
+    "address",
+    "tokens"
+  ],
+  "minimumTrainingSessionRequirement": 100,
+  "currentStatus": "TRAINING_NOT_READY"
+}

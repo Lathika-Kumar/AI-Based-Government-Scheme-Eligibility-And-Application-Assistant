@@ -1,0 +1,23 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: schemebridge-scheme-service-test
+  data:
+    mongodb:
+      uri: ${MONGODB_TEST_URI:mongodb://schemebridge_user:${MONGODB_SCHEMEBRIDGE_PASSWORD}@localhost:27017/schemebridge_test?authSource=admin}
+      auto-index-creation: true
+
+app:
+  seeder:
+    path: data/schemes/schemes_test.seed.json
+
+jwt:
+  secret: ${JWT_SECRET:test-jwt-secret-key-at-least-32-bytes-long-for-hmac-sha-256-schemebridge-test}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

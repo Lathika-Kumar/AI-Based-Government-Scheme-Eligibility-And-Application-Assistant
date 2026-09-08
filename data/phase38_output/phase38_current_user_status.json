@@ -1,0 +1,27 @@
+{
+  "phase": "38",
+  "reportType": "CURRENT_USER_RECOMMENDATION_STATUS",
+  "currentUserRecommendation": "READY",
+  "behavioralMlTraining": "NOT READY / NOT EXECUTED",
+  "canonicalBaselines": {
+    "historicalUsers": 0,
+    "historicalBehavioralRecords": 0,
+    "legitimateOutcomeSessions": "0 / 100",
+    "requiredOutcomeThreshold": 100,
+    "syntheticEventsGenerated": 0,
+    "historicalSyntheticFixtures": 29,
+    "quarantinedSyntheticFixtures": 29,
+    "piiViolations": 0,
+    "targetLeakageViolations": 0,
+    "statutoryEligibilityViolations": 0,
+    "productionDbMutations": 0,
+    "activeModel": "2.2.0-hybrid-semantic-384d",
+    "fallbackModel": "1.0.0-deterministic",
+    "circuitBreakerMs": 200
+  },
+  "separationOfConcerns": {
+    "currentCitizenPersonalization": "Profile attributes + Statutory EligibilityEngine + Active Model (READY)",
+    "futureBehavioralTraining": "Genuine historical telemetry + Qualification + Offline Training (NOT READY)"
+  },
+  "generatedAt": "2026-09-05T16:53:22.072427+00:00"
+}

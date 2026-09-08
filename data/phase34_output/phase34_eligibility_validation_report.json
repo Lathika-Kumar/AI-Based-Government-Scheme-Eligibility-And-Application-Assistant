@@ -1,0 +1,28 @@
+{
+  "phase": "34",
+  "authority": "EligibilityEngine",
+  "status": "PASS",
+  "triStateLogicEnforced": true,
+  "supportedStates": [
+    "ELIGIBLE",
+    "NOT_ELIGIBLE",
+    "INSUFFICIENT_DATA"
+  ],
+  "zeroGuessingZeroHallucination": true,
+  "testedPersonas": [
+    {
+      "persona": "Complete Profile (Software Engineer, Pune)",
+      "statutoryEligibilityPassed": true
+    },
+    {
+      "persona": "Partial Profile (Amina Begum, Bihar)",
+      "unknownAttributesSafelyHandled": true
+    },
+    {
+      "persona": "Farmer Profile (Rameshwar Patil, Maharashtra)",
+      "occupationAlignmentVerified": true
+    }
+  ],
+  "ineligibleLeakageIntoRecommendations": 0,
+  "generatedAt": "2026-09-05T16:14:39.947823+00:00"
+}

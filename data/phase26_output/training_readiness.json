@@ -1,0 +1,24 @@
+{
+  "status": "TRAINING_NOT_READY",
+  "trainingReady": false,
+  "realInteractionSessions": 0,
+  "minimumRequiredSessions": 100,
+  "reason": "Insufficient legitimate interaction data: 0 valid interaction sessions found (minimum required: 100). All 29 existing application_events are synthetic test fixtures and were excluded to prevent corrupting model weights.",
+  "syntheticRecordsExcluded": 29,
+  "databaseAudit": {
+    "totalRecommendationEvents": 0,
+    "legitimateRecommendationEvents": 0,
+    "syntheticRecommendationEvents": 0,
+    "duplicateRecommendationEvents": 0,
+    "invalidRecommendationEvents": 0,
+    "totalApplications": 0,
+    "totalApplicationEvents": 29,
+    "syntheticApplicationEventsExcluded": 29,
+    "totalFeedback": 0
+  },
+  "piiContamination": 0,
+  "featureSchemaVersion": "1.0.0",
+  "activeModelVersion": "2.2.0-hybrid-semantic-384d",
+  "fallbackModelVersion": "1.0.0-deterministic",
+  "generatedAt": "2026-09-05T14:48:12.657159"
+}

@@ -1,0 +1,65 @@
+{
+  "phase": 28,
+  "timestamp": "2026-09-05T15:19:01.808903",
+  "status": "VALIDATED",
+  "trainingStatus": "TRAINING_NOT_READY",
+  "reason": "Insufficient legitimate outcome sessions: 0 found (required threshold: 100, remaining: 100). All 29 historical application_events are synthetic test fixtures and remain quarantined.",
+  "databaseIntegrity": {
+    "mutations": {
+      "INSERT": 0,
+      "UPDATE": 0,
+      "DELETE": 0,
+      "DROP": 0
+    },
+    "syntheticFixturesQuarantined": 29,
+    "readOnlyConfirmed": true
+  },
+  "readinessMonitor": {
+    "trainingStatus": "TRAINING_NOT_READY",
+    "legitimateOutcomeSessions": 0,
+    "requiredOutcomeSessions": 100,
+    "remainingOutcomeSessions": 100,
+    "syntheticFixturesQuarantined": 29,
+    "piiViolations": 0,
+    "statutoryEligibilityViolations": 0,
+    "activeModel": "2.2.0-hybrid-semantic-384d",
+    "fallbackModel": "1.0.0-deterministic",
+    "circuitBreakerMs": 200,
+    "reason": "Insufficient legitimate outcome sessions: 0 found (required threshold: 100, remaining: 100). All 29 historical application_events are synthetic test fixtures and remain quarantined.",
+    "generatedAt": "2026-09-05T15:19:01.807118"
+  },
+  "dataQuality": {
+    "telemetrySummary": {
+      "totalRawRecommendationEvents": 0,
+      "totalRawApplicationEvents": 29,
+      "legitimateEvents": 0,
+      "syntheticEvents": 29,
+      "syntheticFixturesExcluded": 29,
+      "uniqueSessions": 0,
+      "uniqueSchemes": 0,
+      "invalidMalformedEvents": 0
+    },
+    "relevanceGradesBreakdown": {
+      "GRADE_0_IMPRESSED_UNENGAGED": 0,
+      "GRADE_1_VIEWED": 0,
+      "GRADE_2_INTENT_HIGH": 0,
+      "GRADE_3_CONVERTED": 0
+    },
+    "privacySafety": {
+      "piiViolationsCount": 0,
+      "status": "PASSED"
+    },
+    "statutoryEligibilityGate": {
+      "enforced": true,
+      "violationRate": 0.0
+    },
+    "generatedAt": "2026-09-05T15:19:01.808042"
+  },
+  "modelPreservation": {
+    "activeModel": "2.2.0-hybrid-semantic-384d",
+    "fallbackModel": "1.0.0-deterministic",
+    "circuitBreakerMs": 200,
+    "modelTrained": false,
+    "modelPromoted": false
+  }
+}

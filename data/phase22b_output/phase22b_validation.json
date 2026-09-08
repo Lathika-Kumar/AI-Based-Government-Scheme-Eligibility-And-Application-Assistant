@@ -1,0 +1,69 @@
+{
+  "phase": "Phase 22B \u2014 AI/ML Recommendation & Document Checklist Intelligence",
+  "timestamp": "2026-09-04T22:10:00Z",
+  "invariants": {
+    "schemes_count": 4734,
+    "scheme_verified_data_count": 4682,
+    "difference": 52,
+    "duplicate_codes": 0,
+    "duplicate_slugs": 0,
+    "so2yt5ylm_canonical_documents": 9,
+    "production_db_mutations": 0
+  },
+  "dataset_audit": {
+    "status": "PASSED",
+    "report": "docs/PHASE_22B_DATASET_AUDIT_REPORT.md",
+    "audit_json": "data/ml_dataset/phase22b_dataset_audit.json",
+    "pii_leakage_detected": false,
+    "syntax_errors": 0
+  },
+  "semantic_embedding_engine": {
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "dimensions": 384,
+    "schemes_indexed": 4734,
+    "index_file": "data/ml_models/scheme_embeddings.index",
+    "metadata_file": "data/ml_models/scheme_embeddings_metadata.json",
+    "registry_file": "data/ml_models/model_registry.json",
+    "index_size_bytes": 7271432
+  },
+  "dataset_split_and_evaluation": {
+    "split_manifest": "data/ml_models/split_manifest.json",
+    "train_records": 13108,
+    "validation_records": 2808,
+    "test_records": 2812,
+    "unique_train_schemes": 3277,
+    "unique_val_schemes": 702,
+    "unique_test_schemes": 703,
+    "scheme_leakage": 0,
+    "eligibility_violation_rate": 0.0,
+    "catalog_coverage_pct": 100.0,
+    "recommendation_diversity_shannon_entropy": 2.396
+  },
+  "document_intelligence": {
+    "predictions_file": "data/ml_predictions/document_checklist_predictions.json",
+    "schemes_processed": 4554,
+    "total_documents_extracted": 6389,
+    "one_of_groups_preserved": 1584,
+    "one_of_accuracy": 1.0,
+    "document_hallucination_rate": 0.0,
+    "provenance_completeness": 1.0,
+    "zero_unverified_insertions": true
+  },
+  "backend_integration": {
+    "service": "schemebridge-scheme-service",
+    "recommender_properties": "MlRecommenderProperties.java",
+    "semantic_index_service": "SemanticEmbeddingIndexService.java",
+    "recommendation_service": "EligibleSchemeRecommendationService.java",
+    "hard_eligibility_gate_enforced": true,
+    "circuit_breaker_enabled": true,
+    "timeout_ms": 200,
+    "shadow_mode_enabled": true,
+    "tests_passed": 320,
+    "tests_failed": 0
+  },
+  "frontend_verification": {
+    "vitest_suites_passed": 12,
+    "vitest_tests_passed": 122,
+    "production_build_exit_code": 0
+  }
+}

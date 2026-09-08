@@ -1,0 +1,46 @@
+{
+  "phase": "33",
+  "manifestName": "Phase 33 Production Operationalization & Handoff Integrity Manifest",
+  "timestamp": "2026-09-05T21:01:30.390783",
+  "artifactHashes": {
+    "phase33_readiness_report.json": {
+      "sha256": "05053dbc48e25b9992d6a0c90753b887e25eccc6abea94d3ab063c6b6ae4a126",
+      "bytes": 627
+    },
+    "phase33_telemetry_health_report.json": {
+      "sha256": "97dd6ca7439ab90d094d6728803d12c262b9aa091536a6613157c9548982c402",
+      "bytes": 577
+    },
+    "phase33_training_handoff.json": {
+      "sha256": "4acf83646efdb717e37a6c3b4088d293105567a7b72ce33a813c45e236aff3f6",
+      "bytes": 677
+    },
+    "phase33_validation_report.json": {
+      "sha256": "94ab5f37c86bb2f6b497ca99e507cde59607176e2f4a98775e8c37db14331b9a",
+      "bytes": 2549
+    }
+  },
+  "invariants": {
+    "statutoryEligibilityAuthority": "EligibilityEngine.evaluate()",
+    "statutoryEligibilityViolationRate": "0.00%",
+    "piiViolations": 0,
+    "targetLeakage": 0,
+    "syntheticEventsGenerated": 0,
+    "historicalFixturesQuarantined": 29,
+    "genuineRecommendationEvents": 0,
+    "genuineApplicationEvents": 0,
+    "legitimateOutcomeSessions": 0,
+    "trainingReadiness": "TRAINING_NOT_READY",
+    "modelTrainingAllowed": false,
+    "modelPromotionAllowed": false,
+    "activeModel": "2.2.0-hybrid-semantic-384d",
+    "fallbackModel": "1.0.0-deterministic",
+    "circuitBreakerMs": 200,
+    "databaseMutations": {
+      "INSERT": 0,
+      "UPDATE": 0,
+      "DELETE": 0,
+      "DROP": 0
+    }
+  }
+}

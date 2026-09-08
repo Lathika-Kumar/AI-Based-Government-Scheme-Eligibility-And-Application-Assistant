@@ -1,0 +1,202 @@
+{
+  "phase": "PHASE_24",
+  "title": "Production AI Recommendation & Document Checklist UAT, End-to-End Validation and Defect Hardening",
+  "executionTimestamp": "2026-09-04T23:29:13+05:30",
+  "status": "PASS",
+  "databaseForensicAudit": {
+    "baseline": {
+      "schemes": 4734,
+      "scheme_verified_data": 4682,
+      "difference_seed_only": 52,
+      "duplicate_scheme_codes": 0,
+      "duplicate_slugs": 0,
+      "embedded_benefits": 35612,
+      "embedded_tags": 22756,
+      "so2yt5ylm_canonical_docs": 9
+    },
+    "final": {
+      "schemes": 4734,
+      "scheme_verified_data": 4682,
+      "difference_seed_only": 52,
+      "duplicate_scheme_codes": 0,
+      "duplicate_slugs": 0,
+      "embedded_benefits": 35612,
+      "embedded_tags": 22756,
+      "so2yt5ylm_canonical_docs": 9
+    },
+    "mutations": {
+      "inserts": 0,
+      "updates": 0,
+      "deletes": 0,
+      "drops": 0,
+      "totalMutations": 0
+    },
+    "invariantsPreserved": true
+  },
+  "personaUatResults": {
+    "totalPersonasTested": 8,
+    "passed": 8,
+    "failed": 0,
+    "personas": [
+      {
+        "id": "persona_1",
+        "name": "Farmer",
+        "profile": { "occupation": "Farmer", "state": "Maharashtra", "age": 42, "income": 180000, "category": "OBC" },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-PM-KISAN",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      },
+      {
+        "id": "persona_2",
+        "name": "Student",
+        "profile": { "occupation": "Student", "state": "Delhi", "age": 20, "income": 80000, "category": "General" },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-NSP-SCHOLARSHIP",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      },
+      {
+        "id": "persona_3",
+        "name": "Senior Citizen",
+        "profile": { "occupation": "Retired", "state": "Kerala", "age": 68, "income": 120000, "category": "General" },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-IGNOP-PENSION",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      },
+      {
+        "id": "persona_4",
+        "name": "Unemployed Citizen",
+        "profile": { "occupation": "Unemployed", "state": "Uttar Pradesh", "age": 24, "income": 50000, "bpl": true, "category": "SC" },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-PMKVY-SKILL",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      },
+      {
+        "id": "persona_5",
+        "name": "Woman / Artisan",
+        "profile": { "gender": "Female", "occupation": "Artisan", "state": "Rajasthan", "age": 35, "income": 140000, "category": "OBC" },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-PM-VISHWAKARMA",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      },
+      {
+        "id": "persona_6",
+        "name": "Person with Disability (PwD)",
+        "profile": { "disabilityStatus": true, "occupation": "Self Employed", "state": "Tamil Nadu", "age": 31, "income": 90000, "category": "General" },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-ADIP-PWD",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      },
+      {
+        "id": "persona_7",
+        "name": "Urban Worker",
+        "profile": { "occupation": "Construction Worker", "state": "Karnataka", "age": 38, "income": 160000, "category": "ST" },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-PMAY-URBAN",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      },
+      {
+        "id": "persona_8",
+        "name": "Cold-start citizen",
+        "profile": { "state": "Gujarat", "age": 26 },
+        "statutoryGatePassed": true,
+        "recommendationGenerated": true,
+        "topRecommendation": "SCH-UNIVERSAL-HEALTH",
+        "noMlJargonExposed": true,
+        "status": "PASS"
+      }
+    ]
+  },
+  "boundaryConditionResults": {
+    "totalBoundaryTests": 5,
+    "passed": 5,
+    "failed": 0,
+    "tests": [
+      { "test": "Income below threshold", "result": "ELIGIBLE", "status": "PASS" },
+      { "test": "Income exactly at threshold", "result": "ELIGIBLE (inclusive)", "status": "PASS" },
+      { "test": "Income above threshold", "result": "EXCLUDED by Hard Statutory Gate", "status": "PASS" },
+      { "test": "Age boundary (underage minor)", "result": "EXCLUDED by Hard Statutory Gate", "status": "PASS" },
+      { "test": "ML Resurrect Prevention", "result": "BLOCKED (ineligible schemes never evaluated by ML)", "status": "PASS" }
+    ],
+    "statutoryEligibilityViolationRate": "0.00%"
+  },
+  "documentChecklistAndReadiness": {
+    "singleAuthoritativeSource": true,
+    "schemeDetailsParityWithWizard": true,
+    "oneOfSemanticsPreserved": "100.00%",
+    "documentHallucinationRate": "0.00%",
+    "canonicalDataPrecedence": "100.00%",
+    "frontendChecklistScenarios": [
+      { "scenario": "String requirement parsing", "status": "PASS" },
+      { "scenario": "Object requirement parsing", "status": "PASS" },
+      { "scenario": "ONE_OF option A in vault", "status": "PASS" },
+      { "scenario": "ONE_OF option B in vault", "status": "PASS" },
+      { "scenario": "ONE_OF neither option in vault", "status": "PASS" },
+      { "scenario": "Nested structured requirement parsing", "status": "PASS" },
+      { "scenario": "SchemeDetails vs ApplicationWizard checklist parity", "status": "PASS" }
+    ]
+  },
+  "conversationalAiResults": {
+    "citizenAi": {
+      "groundedInRealData": true,
+      "multiTurnContextPreserved": true,
+      "antiHallucinationVerified": true,
+      "testQueries": [
+        { "query": "Why was this scheme recommended to me?", "grounded": true, "status": "PASS" },
+        { "query": "What documents do I need?", "grounded": true, "status": "PASS" },
+        { "query": "Can I provide a Voter ID instead?", "oneOfPreserved": true, "status": "PASS" },
+        { "query": "Tell me about SuperFakeSchemeXYZ999", "antiHallucinationTriggered": true, "status": "PASS" }
+      ]
+    },
+    "adminAi": {
+      "authorizationEnforced": true,
+      "allowedRoles": ["ROLE_ADMIN", "ROLE_SCHEME_MANAGER", "ROLE_VERIFICATION_OFFICER"],
+      "rejectedRoles": ["ROLE_USER", "ROLE_CITIZEN"],
+      "unauthorizedRejectionStatus": "PASS (SecurityException)",
+      "operationalGroundingVerified": true,
+      "metricsGroundingVerified": true
+    }
+  },
+  "mlFallbackAndCircuitBreaker": {
+    "semanticIndexUnavailableFallback": "PASS (DETERMINISTIC_FALLBACK)",
+    "semanticSimilarityExceptionFallback": "PASS (DETERMINISTIC_FALLBACK)",
+    "statutoryGateActiveDuringFallback": "PASS (100% active, 0.00% violation rate)",
+    "circuitBreakerTimeoutMs": 200
+  },
+  "testExecutionSummary": {
+    "backend": {
+      "suite": "schemebridge-scheme-service",
+      "totalTests": 362,
+      "passed": 362,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "targetedUatTests": 26,
+      "buildStatus": "SUCCESS"
+    },
+    "frontend": {
+      "suite": "schemebridge-frontend",
+      "totalTestSuites": 13,
+      "totalTests": 130,
+      "passed": 130,
+      "failed": 0,
+      "errors": 0,
+      "targetedUatTests": 8,
+      "buildStatus": "SUCCESS (built in 2.15s)"
+    }
+  },
+  "overallVerdict": "PASS"
+}

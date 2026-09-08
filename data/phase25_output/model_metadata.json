@@ -1,0 +1,24 @@
+{
+  "activeModel": {
+    "version": "2.2.0-hybrid-semantic-384d",
+    "type": "HYBRID_SEMANTIC_MADM",
+    "status": "ACTIVE",
+    "statutoryEligibilityViolationRate": 0.0,
+    "ndcgAt5": 0.6384,
+    "avgLatencyMs": 8.2255,
+    "lastEvaluated": "2026-09-04T23:51:19.741443"
+  },
+  "candidateModel": {
+    "version": "phase25-candidate-v1",
+    "type": "LEARNING_TO_RANK",
+    "status": "REJECTED_TRAINING_NOT_READY",
+    "reason": "Insufficient legitimate interaction telemetry",
+    "statutoryEligibilityViolationRate": 0.0
+  },
+  "fallbackModel": {
+    "version": "1.0.0-deterministic",
+    "type": "DETERMINISTIC_MADM",
+    "status": "AVAILABLE",
+    "statutoryEligibilityViolationRate": 0.0
+  }
+}

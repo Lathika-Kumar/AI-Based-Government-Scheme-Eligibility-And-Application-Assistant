@@ -1,0 +1,33 @@
+{
+  "phase": "36",
+  "reportType": "CURRENT_CITIZEN_RECOMMENDATION_FLOW",
+  "status": "READY",
+  "pipeline": "CURRENT_CITIZEN_PROFILE -> PROFILE_NORMALIZATION -> ELIGIBILITY_ENGINE -> ELIGIBLE_ONLY -> RECOMMENDER_RANKING -> TOP_K",
+  "eligibilityAuthority": "EligibilityEngine",
+  "coldStartHandling": "DETERMINISTIC_STATUTORY_EVALUATION",
+  "historicalUsersRequired": false,
+  "historicalInteractionsRequired": false,
+  "missingDataPolicy": "CONSERVATIVE_INSUFFICIENT_DATA (Zero guessing, zero defaulting)",
+  "targetLeakagePolicy": "ZERO_TARGET_LEAKAGE (Outcomes strictly excluded from ranking features)",
+  "testedPersonas": [
+    {
+      "persona": "Urban Software Engineer, Pune, Maharashtra",
+      "statutoryEligibilityPassed": true,
+      "recommendationsReturned": 10,
+      "coldStartVerified": true
+    },
+    {
+      "persona": "Rural Farmer, Solapur, Maharashtra",
+      "statutoryEligibilityPassed": true,
+      "recommendationsReturned": 10,
+      "coldStartVerified": true
+    },
+    {
+      "persona": "Incomplete Profile, Bihar",
+      "statutoryEligibilityPassed": true,
+      "insufficientDataHandledSafely": true,
+      "zeroFalsePositives": true
+    }
+  ],
+  "generatedAt": "2026-09-05T16:36:02.816664+00:00"
+}

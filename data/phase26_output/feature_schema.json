@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "description": "Canonical User-Scheme Feature Engineering & Comparison Schema for SchemeBridge Learning-to-Rank.",
+  "userFeatures": [
+    "ageBucket",
+    "stateCode",
+    "district",
+    "occupationCode",
+    "incomeTier",
+    "categoryCode",
+    "genderCode",
+    "disabilityStatus",
+    "isFarmer",
+    "isStudent",
+    "bplStatus",
+    "educationLevel"
+  ],
+  "schemeFeatures": [
+    "schemeCode",
+    "schemeCategory",
+    "benefitCategory",
+    "schemeLevel",
+    "stateOrUt",
+    "minAge",
+    "maxAge",
+    "maxIncome",
+    "eligibleOccupations",
+    "eligibleCategories",
+    "eligibleGenders",
+    "disabilityApplicable"
+  ],
+  "comparisonFeatures": [
+    "ageMatch",
+    "incomeMatch",
+    "stateMatch",
+    "occupationMatch",
+    "categoryMatch",
+    "genderMatch",
+    "disabilityMatch"
+  ],
+  "matchStatuses": [
+    "MATCH",
+    "MISMATCH",
+    "UNKNOWN"
+  ],
+  "behavioralRelevanceSignals": {
+    "RECOMMENDATION_SHOWN": 0.0,
+    "SCHEME_VIEWED": 0.2,
+    "SCHEME_EXPANDED": 0.4,
+    "SCHEME_SAVED": 0.6,
+    "APPLICATION_STARTED": 0.8,
+    "SCHEME_APPLIED": 1.0,
+    "APPLICATION_COMPLETED": 1.5
+  },
+  "privacySafety": {
+    "piiExcluded": [
+      "udid",
+      "aadhaar",
+      "phone",
+      "aadhaarnumber",
+      "email",
+      "fullname",
+      "udidnumber",
+      "address",
+      "mobilenumber",
+      "pincode",
+      "name"
+    ],
+    "statutoryEligibilityGatePrecedence": true
+  }
+}

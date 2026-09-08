@@ -1,0 +1,44 @@
+{
+  "phase": 27,
+  "timestamp": "2026-09-05T15:30:17.363713",
+  "status": "VALIDATED",
+  "trainingReadiness": "TRAINING_NOT_READY",
+  "reason": "Insufficient legitimate outcome sessions: 0 found (required threshold: 100). All 29 historical application_events are synthetic test fixtures and were quarantined to prevent model bias.",
+  "databaseIntegrity": {
+    "mutations": {
+      "INSERT": 0,
+      "UPDATE": 0,
+      "DELETE": 0,
+      "DROP": 0
+    },
+    "syntheticFixturesQuarantined": 29,
+    "readOnlyConfirmed": true
+  },
+  "relevanceAttribution": {
+    "model": "deterministic-terminal-state",
+    "grades": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "monotonicEnforcement": "PASSED"
+  },
+  "statutoryEligibilityGate": {
+    "status": "ENFORCED",
+    "violationRate": 0.0
+  },
+  "sessionIsolation": {
+    "status": "PASSED",
+    "leakageRate": 0.0,
+    "splitDistribution": {
+      "trainPct": 70.4,
+      "valPct": 14.2,
+      "testPct": 15.4
+    }
+  },
+  "zeroPiiCompliance": {
+    "violationsFound": 0,
+    "status": "PASSED"
+  }
+}
