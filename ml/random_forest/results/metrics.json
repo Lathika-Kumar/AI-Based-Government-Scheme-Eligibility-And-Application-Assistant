@@ -1,0 +1,82 @@
+{
+  "modelName": "RandomForestClassifier",
+  "algorithm": "Random Forest",
+  "framework": "scikit-learn",
+  "trainedAt": "2026-09-19T17:18:10.289407+00:00",
+  "hyperparameters": {
+    "n_estimators": 200,
+    "random_state": 42,
+    "class_weight": "balanced",
+    "test_size": 0.2,
+    "stratify": true
+  },
+  "dataset": {
+    "path": "data\\synthetic_citizen_eligibility_dataset.csv",
+    "type": "Synthetic Citizen Eligibility Demographics (Schema-aligned with CitizenEligibilityProfile.java)",
+    "samples": 5000,
+    "features": 12,
+    "trainingSamples": 4000,
+    "testingSamples": 1000,
+    "targetVariable": "eligible",
+    "classes": {
+      "1": 3150,
+      "0": 1850
+    }
+  },
+  "performance": {
+    "accuracy": 0.984,
+    "precision": 0.9841,
+    "recall": 0.984,
+    "f1Score": 0.984,
+    "classificationReport": {
+      "0": {
+        "precision": 0.9707446808510638,
+        "recall": 0.9864864864864865,
+        "f1-score": 0.9785522788203753,
+        "support": 370.0
+      },
+      "1": {
+        "precision": 0.9919871794871795,
+        "recall": 0.9825396825396825,
+        "f1-score": 0.9872408293460925,
+        "support": 630.0
+      },
+      "accuracy": 0.984,
+      "macro avg": {
+        "precision": 0.9813659301691217,
+        "recall": 0.9845130845130845,
+        "f1-score": 0.982896554083234,
+        "support": 1000.0
+      },
+      "weighted avg": {
+        "precision": 0.9841274549918166,
+        "recall": 0.984,
+        "f1-score": 0.9840260656515771,
+        "support": 1000.0
+      }
+    },
+    "confusionMatrix": [
+      [
+        365,
+        5
+      ],
+      [
+        11,
+        619
+      ]
+    ]
+  },
+  "artifacts": {
+    "model": "models\\random_forest_scheme_model.pkl",
+    "metrics": "results\\metrics.json",
+    "report": "results\\classification_report.txt",
+    "confusionMatrix": "results\\confusion_matrix.png",
+    "featureImportance": "results\\feature_importance.csv"
+  },
+  "governance": {
+    "isolatedFromProduction": true,
+    "liveServiceReplaced": false,
+    "statutoryEligibilityOverridden": false,
+    "notes": "Standalone ML experimentation module for academic research and model evaluation."
+  }
+}

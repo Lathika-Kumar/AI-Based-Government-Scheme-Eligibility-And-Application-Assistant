@@ -55,6 +55,10 @@ public class DocumentChecklistItemResponse {
     private boolean canApprove;
     private boolean alternativeSatisfied;
     private List<ApplicationDocumentVersion> versionHistory;
+    private String source;
+    private String vaultDocumentId;
+    private String identityMatchStatus;
+    private boolean satisfied;
     public String getDocument() {
         return document != null ? document : documentName;
     }

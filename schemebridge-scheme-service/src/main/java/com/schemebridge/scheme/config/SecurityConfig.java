@@ -49,18 +49,19 @@ public class SecurityConfig {
                 .requestMatchers("/api/profile/**").authenticated()
                 .requestMatchers("/api/feedback/**").authenticated()
 
+
                 // Conversational AI endpoints
                 .requestMatchers("/api/ai/citizen/**", "/api/ai/chat", "/api/v1/ai/**").authenticated()
-                .requestMatchers("/api/ai/admin/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "VERIFICATION_OFFICER")
+                .requestMatchers("/api/ai/admin/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "VERIFICATION_OFFICER", "ADMINISTRATOR")
 
                 // All Admin Operations endpoints
-                .requestMatchers("/api/admin/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "VERIFICATION_OFFICER")
+                .requestMatchers("/api/admin/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "VERIFICATION_OFFICER", "ADMINISTRATOR")
 
                 // State-modifying endpoints (POST, PUT, PATCH, DELETE) under /api/schemes require SCHEME_MANAGER or ADMIN
-                .requestMatchers(HttpMethod.POST, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "ADMINISTRATOR")
+                .requestMatchers(HttpMethod.PUT, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "ADMINISTRATOR")
+                .requestMatchers(HttpMethod.PATCH, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "ADMINISTRATOR")
+                .requestMatchers(HttpMethod.DELETE, "/api/schemes/**").hasAnyRole("SCHEME_MANAGER", "ADMIN", "ADMINISTRATOR")
                 
                 // Any other request must be authenticated
                 .anyRequest().authenticated()

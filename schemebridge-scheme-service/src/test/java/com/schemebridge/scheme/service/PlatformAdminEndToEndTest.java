@@ -1,6 +1,7 @@
 package com.schemebridge.scheme.service;
 
 import com.schemebridge.scheme.document.*;
+import com.schemebridge.scheme.enums.DetailedDocumentStatus;
 import com.schemebridge.scheme.dto.request.CreateApplicationRequest;
 import com.schemebridge.scheme.dto.response.ApplicationDocumentResponse;
 import com.schemebridge.scheme.dto.response.ApplicationResponse;
@@ -86,7 +87,12 @@ class PlatformAdminEndToEndTest {
                 adminAuditService
         );
         lenient().when(detailedDocumentStatusTransitionService.transitionDocumentStatus(any(), any(), any(), any()))
-                .thenAnswer(inv -> inv.getArgument(0));
+                .thenAnswer(inv -> {
+                    ApplicationDocument d = inv.getArgument(0);
+                    DetailedDocumentStatus st = inv.getArgument(1);
+                    d.setDetailedStatus(st);
+                    return d;
+                });
 
         RequiredDocument rd = RequiredDocument.builder()
                 .documentCode("INCOME_PROOF")

@@ -28,6 +28,7 @@ public class AdminMetricsService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationDocumentRepository applicationDocumentRepository;
     private final GrievanceRepository grievanceRepository;
+    private final FeedbackRepository feedbackRepository;
     private final NotificationRepository notificationRepository;
     private final MongoTemplate mongoTemplate;
 
@@ -53,7 +54,7 @@ public class AdminMetricsService {
         long docsVerified = applicationDocumentRepository.countByVerificationStatus(DocumentVerificationStatus.VERIFIED);
         long docsRejected = applicationDocumentRepository.countByVerificationStatus(DocumentVerificationStatus.REJECTED);
 
-        // 4. Grievance counts
+        // 4. Grievance & Feedback counts
         long totalGrievances = grievanceRepository.count();
         long openGrievances = grievanceRepository.countByStatus(GrievanceStatus.OPEN);
         long inProgressGrievances = grievanceRepository.countByStatus(GrievanceStatus.IN_PROGRESS)
@@ -63,6 +64,7 @@ public class AdminMetricsService {
         Instant sevenDaysAgo = Instant.now().minus(7, ChronoUnit.DAYS);
         long overdueGrievances = grievanceRepository.countByStatusInAndCreatedAtBefore(
                 List.of(GrievanceStatus.OPEN, GrievanceStatus.IN_PROGRESS), sevenDaysAgo);
+        long totalFeedback = feedbackRepository.count();
 
         // 5. Time-based application volume
         Instant startOfDay = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant();
@@ -144,6 +146,7 @@ public class AdminMetricsService {
                 .inProgressGrievances(inProgressGrievances)
                 .resolvedGrievances(resolvedGrievances)
                 .overdueGrievances(overdueGrievances)
+                .totalFeedback(totalFeedback)
                 .applicationsToday(appsToday)
                 .applicationsThisWeek(appsWeek)
                 .applicationsThisMonth(appsMonth)

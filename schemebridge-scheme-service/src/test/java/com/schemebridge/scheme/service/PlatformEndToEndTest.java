@@ -5,6 +5,7 @@ import com.schemebridge.scheme.dto.request.CitizenEligibilityProfile;
 import com.schemebridge.scheme.dto.request.CreateApplicationRequest;
 import com.schemebridge.scheme.dto.response.*;
 import com.schemebridge.scheme.repository.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,18 @@ public class PlatformEndToEndTest {
         schemeRepository.save(activeScheme);
     }
 
+    @AfterEach
+    public void tearDown() {
+        applicationRepository.deleteAll();
+        applicationDocumentRepository.deleteAll();
+        applicationReviewRepository.deleteAll();
+        applicationEventRepository.deleteAll();
+        if (activeScheme != null && activeScheme.getId() != null) {
+            schemeRepository.deleteById(activeScheme.getId());
+        }
+        logout();
+    }
+
     private void login(String username, String... roles) {
         List<SimpleGrantedAuthority> authorities = Arrays.stream(roles)
                 .map(r -> new SimpleGrantedAuthority("ROLE_" + r.toUpperCase()))
@@ -123,7 +136,10 @@ public class PlatformEndToEndTest {
         assertEquals(0, appRes.getDocumentReadiness().getUploaded());
 
         // 5. Citizen uploads mandatory document.
-        MockMultipartFile file = new MockMultipartFile("file", "aadhaar.pdf", "application/pdf", "dummy content".getBytes());
+        byte[] validPdf = ("%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\n"
+                + "Official Government Document Aadhaar Simulation Test Fixture with Valid Minimum Byte Length\n"
+                + "%%EOF\n").getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "aadhaar.pdf", "application/pdf", validPdf);
         ApplicationDocumentResponse uploadRes = applicationService.uploadDocument(
                 appRes.getId(), "AADHAAR", file, "citizen_user"
         );
@@ -180,7 +196,7 @@ public class PlatformEndToEndTest {
         assertEquals("Uploaded document image is blurred.", citizenViewApp.getDocuments().get(0).getRejectionReason());
 
         // 14. Citizen uploads a new/corrected document.
-        MockMultipartFile correctedFile = new MockMultipartFile("file", "aadhaar_clear.pdf", "application/pdf", "clear content".getBytes());
+        MockMultipartFile correctedFile = new MockMultipartFile("file", "aadhaar_clear.pdf", "application/pdf", validPdf);
         ApplicationDocumentResponse reuploadRes = applicationService.uploadDocument(
                 appRes.getId(), "AADHAAR", correctedFile, "citizen_user"
         );

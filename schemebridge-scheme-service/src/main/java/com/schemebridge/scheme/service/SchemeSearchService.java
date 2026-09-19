@@ -13,13 +13,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.bson.Document;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SchemeSearchService {
 
     private final MongoTemplate mongoTemplate;
@@ -95,6 +100,8 @@ public class SchemeSearchService {
             String regexPattern = ".*" + java.util.regex.Pattern.quote(cleanQ) + ".*";
             
             List<Criteria> textCriteria = new ArrayList<>();
+            textCriteria.add(Criteria.where("schemeCode").regex(regexPattern, "i"));
+            textCriteria.add(Criteria.where("slug").regex(regexPattern, "i"));
             textCriteria.add(Criteria.where("title.english").regex(regexPattern, "i"));
             textCriteria.add(Criteria.where("title.tamil").regex(regexPattern, "i"));
             textCriteria.add(Criteria.where("description.english").regex(regexPattern, "i"));
@@ -181,8 +188,26 @@ public class SchemeSearchService {
         query.with(Sort.by(direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sort));
 
         List<Scheme> schemes = mongoTemplate.find(query, Scheme.class);
+        List<String> schemeCodes = schemes.stream()
+                .map(Scheme::getSchemeCode)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        Map<String, SchemeApplicationStats> statsMap = getStatsForSchemeCodes(schemeCodes);
+
         List<SchemeResponse> content = schemes.stream()
-                .map(schemeService::mapToResponse)
+                .map(s -> {
+                    SchemeResponse resp = schemeService.mapToResponse(s);
+                    SchemeApplicationStats stats = statsMap.get(s.getSchemeCode());
+                    if (stats != null) {
+                        resp.setApplicationsCount(stats.getTotalApplications());
+                        resp.setApprovalRate(stats.getApprovalRate());
+                    } else {
+                        resp.setApplicationsCount(0L);
+                        resp.setApprovalRate(null);
+                    }
+                    return resp;
+                })
                 .collect(Collectors.toList());
 
         return PagedSchemeResponse.builder()
@@ -192,6 +217,59 @@ public class SchemeSearchService {
                 .totalElements(totalElements)
                 .totalPages(totalPages)
                 .build();
+    }
+
+    @Getter
+    public static class SchemeApplicationStats {
+        private long totalApplications = 0;
+        private long approved = 0;
+        private long rejected = 0;
+
+        public void addApplications(String status, long count) {
+            totalApplications += count;
+            if ("APPROVED".equalsIgnoreCase(status) || "VERIFIED".equalsIgnoreCase(status)) {
+                approved += count;
+            } else if ("REJECTED".equalsIgnoreCase(status)) {
+                rejected += count;
+            }
+        }
+
+        public Double getApprovalRate() {
+            long decided = approved + rejected;
+            if (decided == 0) return null;
+            return Math.round((double) approved / decided * 100.0 * 10.0) / 10.0;
+        }
+    }
+
+    private Map<String, SchemeApplicationStats> getStatsForSchemeCodes(List<String> schemeCodes) {
+        if (schemeCodes == null || schemeCodes.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        try {
+            Aggregation agg = Aggregation.newAggregation(
+                    Aggregation.match(Criteria.where("schemeCode").in(schemeCodes)),
+                    Aggregation.group("schemeCode", "status").count().as("count")
+            );
+            AggregationResults<Document> results = mongoTemplate.aggregate(agg, "applications", Document.class);
+            Map<String, SchemeApplicationStats> map = new HashMap<>();
+            for (Document doc : results.getMappedResults()) {
+                Document idDoc = doc.get("_id", Document.class);
+                if (idDoc != null) {
+                    String code = idDoc.getString("schemeCode");
+                    String status = idDoc.getString("status");
+                    Number countNum = (Number) doc.get("count");
+                    long count = countNum != null ? countNum.longValue() : 0L;
+                    if (code != null) {
+                        SchemeApplicationStats stats = map.computeIfAbsent(code, k -> new SchemeApplicationStats());
+                        stats.addApplications(status, count);
+                    }
+                }
+            }
+            return map;
+        } catch (Exception e) {
+            log.warn("Failed to compute scheme application stats", e);
+            return Collections.emptyMap();
+        }
     }
 
     private List<SchemeLevel> parseSchemeLevels(String input) {

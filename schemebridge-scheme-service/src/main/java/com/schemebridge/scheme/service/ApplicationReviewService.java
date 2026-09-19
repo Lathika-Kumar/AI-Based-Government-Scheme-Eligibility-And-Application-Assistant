@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,6 +59,12 @@ public class ApplicationReviewService {
     @Autowired(required = false)
     private EligibilityEngine eligibilityEngine;
 
+    @Autowired(required = false)
+    private com.schemebridge.scheme.repository.DocumentVerificationResultRepository documentVerificationResultRepository;
+
+    @Autowired(required = false)
+    private CitizenVaultDocumentService citizenVaultDocumentService;
+
     @Transactional(readOnly = true)
     public PagedApplicationResponse getApplicationsQueue(
             String status,
@@ -81,7 +88,9 @@ public class ApplicationReviewService {
         long totalElements = mongoOperations.count(query, Application.class);
 
         Sort.Direction dir = Sort.Direction.fromString(direction != null ? direction : "DESC");
-        Pageable pageable = PageRequest.of(page, size, Sort.by(dir, sort != null ? sort : "createdAt"));
+        String sortField = (sort != null && !sort.isBlank()) ? sort : "createdAt";
+        Sort sortSpec = Sort.by(dir, sortField).and(Sort.by(dir, "_id"));
+        Pageable pageable = PageRequest.of(page, size, sortSpec);
         query.with(pageable);
 
         List<Application> apps = mongoOperations.find(query, Application.class);
@@ -100,12 +109,24 @@ public class ApplicationReviewService {
                 .build();
     }
 
+    public Application findApplicationByIdOrNumber(String applicationId) {
+        return applicationRepository.findById(applicationId)
+                .or(() -> applicationRepository.findByApplicationNumber(applicationId))
+                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID or reference: " + applicationId));
+    }
+
+    @Transactional(readOnly = true)
+    public ApplicationResponse getApplicationForReview(String applicationId) {
+        Application app = findApplicationByIdOrNumber(applicationId);
+        return applicationService.getApplicationDetails(app.getId(), null);
+    }
+
     @Transactional
     public ApplicationResponse startReview(String applicationId, String reviewerId, String reviewerRole) {
         log.info("Starting review for application: {}, reviewer: {}", applicationId, reviewerId);
 
-        Application app = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + applicationId));
+        Application app = findApplicationByIdOrNumber(applicationId);
+        String resolvedId = app.getId();
 
         ApplicationStatus oldStatus = app.getStatus();
         if (!applicationStatusTransitionService.isValidTransition(oldStatus, ApplicationStatus.UNDER_REVIEW)) {
@@ -117,10 +138,10 @@ public class ApplicationReviewService {
         Application savedApp = applicationRepository.save(app);
 
         // Upsert review record
-        ApplicationReview review = applicationReviewRepository.findByApplicationId(applicationId)
+        ApplicationReview review = applicationReviewRepository.findByApplicationId(resolvedId)
                 .orElse(new ApplicationReview());
         
-        review.setApplicationId(applicationId);
+        review.setApplicationId(resolvedId);
         review.setReviewerId(reviewerId);
         review.setReviewerRole(reviewerRole);
         review.setReviewStatus(ApplicationStatus.UNDER_REVIEW.name());
@@ -130,7 +151,7 @@ public class ApplicationReviewService {
 
         // Record UNDER_REVIEW timeline event
         applicationEventService.recordEvent(
-                applicationId,
+                resolvedId,
                 app.getUserId(),
                 ApplicationEventType.UNDER_REVIEW,
                 oldStatus,
@@ -148,7 +169,7 @@ public class ApplicationReviewService {
                 "Your application " + app.getApplicationNumber() + " is now under active review.",
                 "IN_APP",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 reviewerId,
                 Map.of("applicationNumber", app.getApplicationNumber())
         );
@@ -159,7 +180,7 @@ public class ApplicationReviewService {
                 reviewerRole,
                 "APPLICATION_REVIEW_STARTED",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 Map.of("status", oldStatus.name()),
                 Map.of("status", "UNDER_REVIEW"),
                 null,
@@ -174,39 +195,71 @@ public class ApplicationReviewService {
     public ApplicationResponse verifyDocument(String applicationId, String documentCode, String reviewerId) {
         log.info("Verifying document: application={}, code={}, reviewer={}", applicationId, documentCode, reviewerId);
 
-        Application app = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + applicationId));
+        Application app = findApplicationByIdOrNumber(applicationId);
+        String resolvedId = app.getId();
+        final String citizenUserId = app.getUserId();
 
         if (app.getStatus() != ApplicationStatus.UNDER_REVIEW) {
-            throw new IllegalStateException("Application must be in UNDER_REVIEW state to verify documents.");
+            if (app.getStatus() == ApplicationStatus.DOCUMENTS_PENDING || app.getStatus() == ApplicationStatus.SUBMITTED || app.getStatus() == ApplicationStatus.READY_FOR_SUBMISSION) {
+                startReview(resolvedId, reviewerId, "ADMIN");
+                app = applicationRepository.findById(resolvedId).orElse(app);
+            } else {
+                throw new IllegalStateException("Application must be in UNDER_REVIEW state to verify documents.");
+            }
         }
 
-        ApplicationDocument doc = applicationDocumentRepository.findByApplicationIdAndDocumentCode(applicationId, documentCode)
+        ApplicationDocument doc = applicationDocumentRepository.findByApplicationIdAndDocumentCode(resolvedId, documentCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Document not found for code: " + documentCode));
 
         if (!doc.isUploaded()) {
             throw new IllegalStateException("Cannot verify an unuploaded document.");
         }
 
+
         doc.setVerificationStatus(DocumentVerificationStatus.VERIFIED);
         doc.setVerifiedAt(Instant.now());
         doc.setVerifiedBy(reviewerId);
+        doc.setAdminReviewedBy(reviewerId);
+        doc.setAdminReviewedAt(Instant.now());
+        doc.setAdminVerificationResult("ADMIN_VERIFIED");
         doc.setRejectionReason(null);
+        doc.setCorrectionReason(null);
         detailedDocumentStatusTransitionService.transitionDocumentStatus(
-                doc, DetailedDocumentStatus.VERIFIED, reviewerId, "Document verified by administrative officer.");
+                doc, DetailedDocumentStatus.ADMIN_VERIFIED, reviewerId, "Document verified and approved by administrative officer.");
+
+        // Synchronize officer verification to Citizen's permanent vault
+        if (citizenVaultDocumentService != null) {
+            try {
+                citizenVaultDocumentService.syncOfficerVerification(citizenUserId, documentCode, reviewerId);
+            } catch (Exception e) {
+                log.warn("Failed to sync officer verification to Citizen Vault: {}", e.getMessage());
+            }
+        }
+
+        // Update verification result if present
+        if (documentVerificationResultRepository != null) {
+            documentVerificationResultRepository.findTopByApplicationIdAndDocumentCodeOrderByVersionDesc(resolvedId, documentCode)
+                    .ifPresent(vr -> {
+                        vr.setOfficerStatus("ADMIN_VERIFIED");
+                        vr.setReviewedBy(reviewerId);
+                        vr.setReviewedAt(Instant.now());
+                        vr.setRemarks("Document verified by administrative officer.");
+                        documentVerificationResultRepository.save(vr);
+                    });
+        }
 
         // Promote OCR-extracted attributes to legally verified state in citizen profile if present
         if (ocrResultRepository != null && citizenProfileService != null) {
             int ver = doc.getVersion() != null ? doc.getVersion() : 1;
             Optional<DocumentOcrResult> ocrOpt = ocrResultRepository.findByApplicationIdAndDocumentCodeAndVersion(
-                    applicationId, documentCode, ver);
+                    resolvedId, documentCode, ver);
             if (ocrOpt.isPresent()) {
                 DocumentOcrResult ocr = ocrOpt.get();
                 if (ocr.getExtractedFields() != null) {
                     ocr.getExtractedFields().forEach((fieldKey, fieldDetail) -> {
                         if (fieldDetail != null && fieldDetail.getValue() != null) {
                             citizenProfileService.linkVerifiedDocumentAttribute(
-                                    app.getUserId(),
+                                    citizenUserId,
                                     fieldKey,
                                     fieldDetail.getValue(),
                                     "DOCUMENT_VERIFIED",
@@ -222,12 +275,12 @@ public class ApplicationReviewService {
 
         // Record DOCUMENT_VERIFIED timeline event
         applicationEventService.recordEvent(
-                applicationId,
+                resolvedId,
                 app.getUserId(),
                 ApplicationEventType.DOCUMENT_VERIFIED,
                 app.getStatus(),
                 app.getStatus(),
-                "Document " + documentCode + " has been verified.",
+                "Document " + documentCode + " has been verified by administrative officer.",
                 Map.of("documentCode", documentCode, "reviewerId", reviewerId)
         );
 
@@ -237,10 +290,10 @@ public class ApplicationReviewService {
                 null,
                 NotificationType.DOCUMENT_VERIFIED,
                 "Document Verified: " + doc.getDocumentName(),
-                "Your uploaded document " + doc.getDocumentName() + " has been verified.",
+                "Your uploaded document " + doc.getDocumentName() + " has been verified by administrative officer.",
                 "IN_APP",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 reviewerId,
                 Map.of("documentCode", documentCode)
         );
@@ -253,13 +306,121 @@ public class ApplicationReviewService {
                 "APPLICATION_DOCUMENT",
                 doc.getId() != null ? doc.getId() : documentCode,
                 Map.of("status", "PENDING"),
-                Map.of("status", "VERIFIED"),
+                Map.of("status", "ADMIN_VERIFIED"),
                 null,
                 null,
-                Map.of("applicationId", applicationId, "documentCode", documentCode)
+                Map.of("applicationId", resolvedId, "documentCode", documentCode)
         );
 
         return applicationService.mapToResponse(app);
+    }
+
+    @Transactional
+    public ApplicationResponse requestDocumentCorrection(String applicationId, String documentCode, String reason, String reviewerId) {
+        log.info("Requesting document correction: application={}, code={}, reason={}, reviewer={}", applicationId, documentCode, reason, reviewerId);
+
+        if (!StringUtils.hasText(reason)) {
+            throw new IllegalArgumentException("Correction reason is mandatory.");
+        }
+
+        Application app = findApplicationByIdOrNumber(applicationId);
+        String resolvedId = app.getId();
+
+        if (app.getStatus() != ApplicationStatus.UNDER_REVIEW) {
+            if (app.getStatus() == ApplicationStatus.DOCUMENTS_PENDING || app.getStatus() == ApplicationStatus.SUBMITTED || app.getStatus() == ApplicationStatus.READY_FOR_SUBMISSION) {
+                startReview(resolvedId, reviewerId, "ADMIN");
+                app = applicationRepository.findById(resolvedId).orElse(app);
+            } else {
+                throw new IllegalStateException("Application must be in UNDER_REVIEW state to request document correction.");
+            }
+        }
+
+        ApplicationDocument doc = applicationDocumentRepository.findByApplicationIdAndDocumentCode(resolvedId, documentCode)
+                .orElseThrow(() -> new ResourceNotFoundException("Document not found for code: " + documentCode));
+
+        if (!doc.isUploaded()) {
+            throw new IllegalStateException("Cannot request correction for an unuploaded document.");
+        }
+
+        doc.setCorrectionReason(reason);
+        doc.setRejectionReason(reason);
+        doc.setRejectedAt(Instant.now());
+        doc.setVerificationStatus(DocumentVerificationStatus.REJECTED);
+        doc.setAdminVerificationResult("CORRECTION_REQUIRED");
+        doc.setAdminReviewedBy(reviewerId);
+        doc.setAdminReviewedAt(Instant.now());
+        detailedDocumentStatusTransitionService.transitionDocumentStatus(
+                doc, DetailedDocumentStatus.CORRECTION_REQUIRED, reviewerId, reason);
+
+        // Update verification result if present
+        if (documentVerificationResultRepository != null) {
+            documentVerificationResultRepository.findTopByApplicationIdAndDocumentCodeOrderByVersionDesc(resolvedId, documentCode)
+                    .ifPresent(vr -> {
+                        vr.setOfficerStatus("CORRECTION_REQUIRED");
+                        vr.setReviewedBy(reviewerId);
+                        vr.setReviewedAt(Instant.now());
+                        vr.setRemarks(reason);
+                        documentVerificationResultRepository.save(vr);
+                    });
+        }
+
+        // Record DOCUMENT_REJECTED event
+        applicationEventService.recordEvent(
+                resolvedId,
+                app.getUserId(),
+                ApplicationEventType.DOCUMENT_REJECTED,
+                app.getStatus(),
+                app.getStatus(),
+                "Document " + documentCode + " correction requested: " + reason,
+                Map.of("documentCode", documentCode, "correctionReason", reason, "reviewerId", reviewerId)
+        );
+
+        // Transition application state to CORRECTION_REQUIRED
+        ApplicationStatus oldStatus = app.getStatus();
+        app.setStatus(ApplicationStatus.CORRECTION_REQUIRED);
+        app.setUpdatedAt(Instant.now());
+        Application savedApp = applicationRepository.save(app);
+
+        // Record CORRECTION_REQUIRED event
+        applicationEventService.recordEvent(
+                resolvedId,
+                app.getUserId(),
+                ApplicationEventType.CORRECTION_REQUIRED,
+                oldStatus,
+                ApplicationStatus.CORRECTION_REQUIRED,
+                "Application returned for correction. Action required by citizen.",
+                Map.of("reviewerId", reviewerId)
+        );
+
+        // Notify Citizen
+        notificationService.sendNotification(
+                app.getUserId(),
+                null,
+                NotificationType.CORRECTION_REQUIRED,
+                "Action Required: Document Correction Requested for " + app.getApplicationNumber(),
+                "Document " + doc.getDocumentName() + " requires correction: " + reason + ". Please upload a replacement.",
+                "IN_APP",
+                "APPLICATION",
+                resolvedId,
+                reviewerId,
+                Map.of("documentCode", documentCode, "correctionReason", reason)
+        );
+
+        // Record Audit Log
+        adminAuditService.recordAction(
+                reviewerId,
+                "ADMIN",
+                "DOCUMENT_CORRECTION_REQUESTED",
+                "APPLICATION_DOCUMENT",
+                doc.getId() != null ? doc.getId() : documentCode,
+                Map.of("status", "PENDING"),
+                Map.of("status", "CORRECTION_REQUIRED", "reason", reason),
+                null,
+                null,
+                Map.of("applicationId", resolvedId, "documentCode", documentCode)
+        );
+
+        return applicationService.mapToResponse(savedApp);
     }
 
     @Transactional
@@ -270,14 +431,19 @@ public class ApplicationReviewService {
             throw new IllegalArgumentException("Rejection reason is mandatory.");
         }
 
-        Application app = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + applicationId));
+        Application app = findApplicationByIdOrNumber(applicationId);
+        String resolvedId = app.getId();
 
         if (app.getStatus() != ApplicationStatus.UNDER_REVIEW) {
-            throw new IllegalStateException("Application must be in UNDER_REVIEW state to reject documents.");
+            if (app.getStatus() == ApplicationStatus.DOCUMENTS_PENDING || app.getStatus() == ApplicationStatus.SUBMITTED || app.getStatus() == ApplicationStatus.READY_FOR_SUBMISSION) {
+                startReview(resolvedId, reviewerId, "ADMIN");
+                app = applicationRepository.findById(resolvedId).orElse(app);
+            } else {
+                throw new IllegalStateException("Application must be in UNDER_REVIEW state to reject documents.");
+            }
         }
 
-        ApplicationDocument doc = applicationDocumentRepository.findByApplicationIdAndDocumentCode(applicationId, documentCode)
+        ApplicationDocument doc = applicationDocumentRepository.findByApplicationIdAndDocumentCode(resolvedId, documentCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Document not found for code: " + documentCode));
 
         if (!doc.isUploaded()) {
@@ -287,12 +453,27 @@ public class ApplicationReviewService {
         doc.setVerificationStatus(DocumentVerificationStatus.REJECTED);
         doc.setRejectedAt(Instant.now());
         doc.setRejectionReason(reason);
+        doc.setAdminVerificationResult("REJECTED");
+        doc.setAdminReviewedBy(reviewerId);
+        doc.setAdminReviewedAt(Instant.now());
         detailedDocumentStatusTransitionService.transitionDocumentStatus(
                 doc, DetailedDocumentStatus.REJECTED, reviewerId, reason);
 
+        // Update verification result if present
+        if (documentVerificationResultRepository != null) {
+            documentVerificationResultRepository.findTopByApplicationIdAndDocumentCodeOrderByVersionDesc(resolvedId, documentCode)
+                    .ifPresent(vr -> {
+                        vr.setOfficerStatus("REJECTED");
+                        vr.setReviewedBy(reviewerId);
+                        vr.setReviewedAt(Instant.now());
+                        vr.setRemarks(reason);
+                        documentVerificationResultRepository.save(vr);
+                    });
+        }
+
         // Record DOCUMENT_REJECTED event
         applicationEventService.recordEvent(
-                applicationId,
+                resolvedId,
                 app.getUserId(),
                 ApplicationEventType.DOCUMENT_REJECTED,
                 app.getStatus(),
@@ -309,7 +490,7 @@ public class ApplicationReviewService {
 
         // Record CORRECTION_REQUIRED event
         applicationEventService.recordEvent(
-                applicationId,
+                resolvedId,
                 app.getUserId(),
                 ApplicationEventType.CORRECTION_REQUIRED,
                 oldStatus,
@@ -327,7 +508,7 @@ public class ApplicationReviewService {
                 "Document " + doc.getDocumentName() + " requires correction: " + reason + ". Please upload a replacement.",
                 "IN_APP",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 reviewerId,
                 Map.of("documentCode", documentCode, "rejectionReason", reason)
         );
@@ -343,7 +524,7 @@ public class ApplicationReviewService {
                 Map.of("status", "REJECTED", "reason", reason),
                 null,
                 null,
-                Map.of("applicationId", applicationId, "documentCode", documentCode)
+                Map.of("applicationId", resolvedId, "documentCode", documentCode)
         );
 
         return applicationService.mapToResponse(savedApp);
@@ -353,26 +534,36 @@ public class ApplicationReviewService {
     public ApplicationResponse approveApplication(String applicationId, String remarks, String reviewerId, String reviewerRole) {
         log.info("Approving application: {}, reviewer: {}", applicationId, reviewerId);
 
-        Application app = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + applicationId));
+        Application app = findApplicationByIdOrNumber(applicationId);
+        String resolvedId = app.getId();
+
+        if (app.getStatus() == ApplicationStatus.SUBMITTED || app.getStatus() == ApplicationStatus.DOCUMENTS_PENDING || app.getStatus() == ApplicationStatus.READY_FOR_SUBMISSION) {
+            startReview(resolvedId, reviewerId, reviewerRole);
+            app = applicationRepository.findById(resolvedId).orElse(app);
+        }
 
         ApplicationStatus oldStatus = app.getStatus();
         if (!applicationStatusTransitionService.isValidTransition(oldStatus, ApplicationStatus.APPROVED)) {
             throw new IllegalStateException("Cannot approve application in " + oldStatus + " state.");
         }
 
-        // Verify all mandatory documents are VERIFIED
-        List<ApplicationDocument> docs = applicationDocumentRepository.findAllByApplicationId(applicationId);
+        // Strict Application Approval Gate: All mandatory documents must be officer-verified (ADMIN_VERIFIED or VERIFIED)
+        List<ApplicationDocument> docs = applicationDocumentRepository.findAllByApplicationId(resolvedId);
+        List<String> unverifiedMandatory = new ArrayList<>();
         for (ApplicationDocument d : docs) {
             if (d.isMandatory()) {
                 if (!d.isUploaded()) {
-                    throw new IllegalStateException("Cannot approve application. Mandatory document " + d.getDocumentCode() + " is missing.");
+                    unverifiedMandatory.add(d.getDocumentCode());
+                    continue;
                 }
-                boolean isVerified = d.getDetailedStatus() == DetailedDocumentStatus.VERIFIED || d.getVerificationStatus() == DocumentVerificationStatus.VERIFIED;
-                if (!isVerified || d.getDetailedStatus() == DetailedDocumentStatus.REJECTED || d.getDetailedStatus() == DetailedDocumentStatus.REUPLOAD_REQUIRED) {
-                    throw new IllegalStateException("Cannot approve application. Mandatory document " + d.getDocumentCode() + " is not verified.");
+                boolean isOfficerVerified = d.getDetailedStatus() != null && d.getDetailedStatus().isOfficerVerified();
+                if (!isOfficerVerified) {
+                    unverifiedMandatory.add(d.getDocumentCode());
                 }
             }
+        }
+        if (!unverifiedMandatory.isEmpty()) {
+            throw new IllegalStateException("DOCUMENTS_NOT_VERIFIED: Application cannot be approved until all mandatory documents are officer-verified. Pending documents: " + unverifiedMandatory);
         }
 
         // Re-evaluate deterministic legal eligibility against citizen's latest profile (including verified attributes)
@@ -399,9 +590,9 @@ public class ApplicationReviewService {
         Application savedApp = applicationRepository.save(app);
 
         // Update review record
-        ApplicationReview review = applicationReviewRepository.findByApplicationId(applicationId)
+        ApplicationReview review = applicationReviewRepository.findByApplicationId(resolvedId)
                 .orElse(new ApplicationReview());
-        review.setApplicationId(applicationId);
+        review.setApplicationId(resolvedId);
         review.setReviewerId(reviewerId);
         review.setReviewerRole(reviewerRole);
         review.setReviewStatus(ApplicationStatus.APPROVED.name());
@@ -412,7 +603,7 @@ public class ApplicationReviewService {
 
         // Record APPROVED event
         applicationEventService.recordEvent(
-                applicationId,
+                resolvedId,
                 app.getUserId(),
                 ApplicationEventType.APPROVED,
                 oldStatus,
@@ -430,7 +621,7 @@ public class ApplicationReviewService {
                 "Your application " + app.getApplicationNumber() + " for scheme " + app.getSchemeCode() + " has been approved.",
                 "IN_APP",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 reviewerId,
                 Map.of("applicationNumber", app.getApplicationNumber(), "remarks", remarks != null ? remarks : "")
         );
@@ -441,7 +632,7 @@ public class ApplicationReviewService {
                 reviewerRole,
                 "APPLICATION_APPROVED",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 Map.of("status", oldStatus.name()),
                 Map.of("status", "APPROVED", "remarks", remarks != null ? remarks : ""),
                 null,
@@ -460,8 +651,13 @@ public class ApplicationReviewService {
             throw new IllegalArgumentException("Rejection reason is mandatory.");
         }
 
-        Application app = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + applicationId));
+        Application app = findApplicationByIdOrNumber(applicationId);
+        String resolvedId = app.getId();
+
+        if (app.getStatus() == ApplicationStatus.SUBMITTED) {
+            startReview(resolvedId, reviewerId, reviewerRole);
+            app = applicationRepository.findById(resolvedId).orElse(app);
+        }
 
         ApplicationStatus oldStatus = app.getStatus();
         if (!applicationStatusTransitionService.isValidTransition(oldStatus, ApplicationStatus.REJECTED)) {
@@ -473,20 +669,21 @@ public class ApplicationReviewService {
         Application savedApp = applicationRepository.save(app);
 
         // Update review record
-        ApplicationReview review = applicationReviewRepository.findByApplicationId(applicationId)
+        ApplicationReview review = applicationReviewRepository.findByApplicationId(resolvedId)
                 .orElse(new ApplicationReview());
-        review.setApplicationId(applicationId);
+        review.setApplicationId(resolvedId);
         review.setReviewerId(reviewerId);
         review.setReviewerRole(reviewerRole);
         review.setReviewStatus(ApplicationStatus.REJECTED.name());
         review.setDecisionReason(reason);
+        review.setRemarks(reason);
         review.setUpdatedAt(Instant.now());
         review.setCompletedAt(Instant.now());
         applicationReviewRepository.save(review);
 
         // Record REJECTED event
         applicationEventService.recordEvent(
-                applicationId,
+                resolvedId,
                 app.getUserId(),
                 ApplicationEventType.REJECTED,
                 oldStatus,
@@ -504,7 +701,7 @@ public class ApplicationReviewService {
                 "Your application " + app.getApplicationNumber() + " was rejected: " + reason,
                 "IN_APP",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 reviewerId,
                 Map.of("applicationNumber", app.getApplicationNumber(), "decisionReason", reason)
         );
@@ -515,9 +712,88 @@ public class ApplicationReviewService {
                 reviewerRole,
                 "APPLICATION_REJECTED",
                 "APPLICATION",
-                applicationId,
+                resolvedId,
                 Map.of("status", oldStatus.name()),
                 Map.of("status", "REJECTED", "reason", reason),
+                null,
+                null,
+                Map.of("applicationNumber", app.getApplicationNumber())
+        );
+
+        return applicationService.mapToResponse(savedApp);
+    }
+
+    @Transactional
+    public ApplicationResponse requestMoreDocuments(String applicationId, String reason, String reviewerId, String reviewerRole) {
+        log.info("Requesting more documents for application: {}, reason: {}, reviewer: {}", applicationId, reason, reviewerId);
+
+        if (!StringUtils.hasText(reason)) {
+            throw new IllegalArgumentException("Correction/document request reason is mandatory.");
+        }
+
+        Application app = findApplicationByIdOrNumber(applicationId);
+        String resolvedId = app.getId();
+
+        if (app.getStatus() == ApplicationStatus.SUBMITTED) {
+            startReview(resolvedId, reviewerId, reviewerRole);
+            app = applicationRepository.findById(resolvedId).orElse(app);
+        }
+
+        ApplicationStatus oldStatus = app.getStatus();
+        if (!applicationStatusTransitionService.isValidTransition(oldStatus, ApplicationStatus.CORRECTION_REQUIRED)) {
+            throw new IllegalStateException("Cannot request documents for application in " + oldStatus + " state.");
+        }
+
+        app.setStatus(ApplicationStatus.CORRECTION_REQUIRED);
+        app.setUpdatedAt(Instant.now());
+        Application savedApp = applicationRepository.save(app);
+
+        // Update review record
+        ApplicationReview review = applicationReviewRepository.findByApplicationId(resolvedId)
+                .orElse(new ApplicationReview());
+        review.setApplicationId(resolvedId);
+        review.setReviewerId(reviewerId);
+        review.setReviewerRole(reviewerRole);
+        review.setReviewStatus(ApplicationStatus.CORRECTION_REQUIRED.name());
+        review.setDecisionReason(reason);
+        review.setRemarks(reason);
+        review.setUpdatedAt(Instant.now());
+        applicationReviewRepository.save(review);
+
+        // Record CORRECTION_REQUIRED event
+        applicationEventService.recordEvent(
+                resolvedId,
+                app.getUserId(),
+                ApplicationEventType.CORRECTION_REQUIRED,
+                oldStatus,
+                ApplicationStatus.CORRECTION_REQUIRED,
+                "Application returned for additional documents / correction. Reason: " + reason,
+                Map.of("reason", reason, "reviewerId", reviewerId)
+        );
+
+        // Notify Citizen
+        notificationService.sendNotification(
+                app.getUserId(),
+                null,
+                NotificationType.CORRECTION_REQUIRED,
+                "Action Required: Documents Requested for " + app.getApplicationNumber(),
+                "Your application " + app.getApplicationNumber() + " requires additional documents or correction: " + reason,
+                "IN_APP",
+                "APPLICATION",
+                resolvedId,
+                reviewerId,
+                Map.of("applicationNumber", app.getApplicationNumber(), "reason", reason)
+        );
+
+        // Record Audit Log
+        adminAuditService.recordAction(
+                reviewerId,
+                reviewerRole,
+                "APPLICATION_CORRECTION_REQUIRED",
+                "APPLICATION",
+                resolvedId,
+                Map.of("status", oldStatus.name()),
+                Map.of("status", "CORRECTION_REQUIRED", "reason", reason),
                 null,
                 null,
                 Map.of("applicationNumber", app.getApplicationNumber())

@@ -46,6 +46,7 @@ public class AuthServiceIntegrationTest {
                 .email(email)
                 .password("StrongPassword123!")
                 .phoneNumber("9876543210")
+                .dob(java.time.LocalDate.of(2000, 1, 1))
                 .build();
 
         // Act & Assert: Signup should fail because of simulated OTP saving exception

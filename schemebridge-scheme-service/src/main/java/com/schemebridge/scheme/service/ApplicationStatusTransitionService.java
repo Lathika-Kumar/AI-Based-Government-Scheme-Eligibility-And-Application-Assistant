@@ -20,6 +20,9 @@ public class ApplicationStatusTransitionService {
         // DOCUMENTS_PENDING transitions
         ALLOWED_TRANSITIONS.put(ApplicationStatus.DOCUMENTS_PENDING, Set.of(
                 ApplicationStatus.READY_FOR_SUBMISSION,
+                ApplicationStatus.UNDER_REVIEW,
+                ApplicationStatus.CORRECTION_REQUIRED,
+                ApplicationStatus.REJECTED,
                 ApplicationStatus.CANCELLED
         ));
 
@@ -27,12 +30,17 @@ public class ApplicationStatusTransitionService {
         ALLOWED_TRANSITIONS.put(ApplicationStatus.READY_FOR_SUBMISSION, Set.of(
                 ApplicationStatus.DOCUMENTS_PENDING,
                 ApplicationStatus.SUBMITTED,
+                ApplicationStatus.UNDER_REVIEW,
+                ApplicationStatus.CORRECTION_REQUIRED,
+                ApplicationStatus.REJECTED,
                 ApplicationStatus.CANCELLED
         ));
 
         // SUBMITTED transitions
         ALLOWED_TRANSITIONS.put(ApplicationStatus.SUBMITTED, Set.of(
                 ApplicationStatus.UNDER_REVIEW,
+                ApplicationStatus.CORRECTION_REQUIRED,
+                ApplicationStatus.REJECTED,
                 ApplicationStatus.CANCELLED
         ));
 
@@ -48,6 +56,7 @@ public class ApplicationStatusTransitionService {
         ALLOWED_TRANSITIONS.put(ApplicationStatus.CORRECTION_REQUIRED, Set.of(
                 ApplicationStatus.READY_FOR_SUBMISSION,
                 ApplicationStatus.DOCUMENTS_PENDING,
+                ApplicationStatus.REJECTED,
                 ApplicationStatus.CANCELLED
         ));
 

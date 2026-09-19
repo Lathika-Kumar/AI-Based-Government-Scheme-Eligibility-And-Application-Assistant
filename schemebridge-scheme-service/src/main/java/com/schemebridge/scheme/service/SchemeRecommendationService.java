@@ -197,13 +197,24 @@ public class SchemeRecommendationService {
                     reasons.add("Income is within applicable welfare criteria.");
                 }
 
+                double fGeo = (scheme.getSchemeLevel() == SchemeLevel.STATE && profile.getState() != null && profile.getState().equalsIgnoreCase(scheme.getStateOrUt())) ? 1.0 : (scheme.getSchemeLevel() == SchemeLevel.CENTRAL ? 0.85 : 0.0);
+                double fOcc = 0.0;
+                String occ = profile.getOccupation() != null ? profile.getOccupation().trim().toLowerCase() : "";
+                String titleText = (scheme.getTitle() != null && scheme.getTitle().getEnglish() != null) ? scheme.getTitle().getEnglish().toLowerCase() : "";
+                String descText = (scheme.getShortDescription() != null && scheme.getShortDescription().getEnglish() != null) ? scheme.getShortDescription().getEnglish().toLowerCase() : "";
+                if (!occ.isEmpty() && (titleText.contains(occ) || descText.contains(occ))) {
+                    fOcc = 1.0;
+                }
+
                 if (semanticEmbeddingIndexService != null && semanticEmbeddingIndexService.isAvailable()) {
                     String query = (profile.getOccupation() != null ? profile.getOccupation() : "") + " "
                             + (profile.getState() != null ? profile.getState() : "") + " "
                             + (profile.getSocialCategory() != null ? profile.getSocialCategory() : "");
                     double sim = semanticEmbeddingIndexService.computeCosineSimilarity(scheme.getSchemeCode(), query);
-                    semanticScore = Math.round(sim * 10000.0) / 10000.0;
+                    semanticScore = Math.round(((0.40 * sim) + (0.30 * fGeo) + (0.30 * fOcc)) * 10000.0) / 10000.0;
                     rankingMethod = "HYBRID_SEMANTIC";
+                } else {
+                    semanticScore = Math.round(((0.50 * fGeo) + (0.50 * fOcc)) * 10000.0) / 10000.0;
                 }
             }
 
@@ -284,13 +295,23 @@ public class SchemeRecommendationService {
                 return Integer.compare(cat1, cat2);
             }
 
-            // 2. matchScore descending
+            // 2. For ELIGIBLE schemes, rank by personalized score descending
+            if (o1.getRecommendationCategory() == RecommendationCategory.ELIGIBLE && o2.getRecommendationCategory() == RecommendationCategory.ELIGIBLE) {
+                double sem1 = o1.getSemanticScore() != null ? o1.getSemanticScore() : 0.0;
+                double sem2 = o2.getSemanticScore() != null ? o2.getSemanticScore() : 0.0;
+                int semCompare = Double.compare(sem2, sem1);
+                if (semCompare != 0) {
+                    return semCompare;
+                }
+            }
+
+            // 3. matchScore descending
             int scoreCompare = Double.compare(o2.getMatchScore(), o1.getMatchScore());
             if (scoreCompare != 0) {
                 return scoreCompare;
             }
 
-            // 3. schemeCode ascending
+            // 4. schemeCode ascending (deterministic tie-breaker)
             return o1.getSchemeCode().compareTo(o2.getSchemeCode());
         }
 

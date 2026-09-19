@@ -104,9 +104,15 @@ public class NotificationService {
         for (SseEmitter emitter : sseEmitters) {
             try {
                 emitter.send(SseEmitter.event()
-                        .name(notification.getType().name())
+                        .name("notification")
                         .id(notification.getId())
                         .data(response));
+                if (!"notification".equalsIgnoreCase(notification.getType().name())) {
+                    emitter.send(SseEmitter.event()
+                            .name(notification.getType().name())
+                            .id(notification.getId())
+                            .data(response));
+                }
             } catch (Exception e) {
                 deadEmitters.add(emitter);
             }
@@ -148,7 +154,7 @@ public class NotificationService {
 
         Query unreadQuery = new Query(new Criteria().andOperator(
                 roleCriteria,
-                Criteria.where("read").is(false)
+                Criteria.where("read").ne(true)
         ));
         long unreadCount = mongoTemplate.count(unreadQuery, Notification.class);
 
@@ -178,7 +184,7 @@ public class NotificationService {
                         Criteria.where("recipientRole").in("ROLE_ADMIN", "ROLE_SCHEME_MANAGER", "ROLE_VERIFICATION_OFFICER", "ADMIN"),
                         Criteria.where("recipientUserId").is("admin")
                 ),
-                Criteria.where("read").is(false)
+                Criteria.where("read").ne(true)
         ));
         return mongoTemplate.count(unreadQuery, Notification.class);
     }
@@ -192,20 +198,36 @@ public class NotificationService {
             if (notif.getRecipientUserId() == null || !notif.getRecipientUserId().equals(userId)) {
                 throw new SecurityException("Unauthorized to update this notification");
             }
+        } else {
+            boolean isTargetedToAdmin = notif.getRecipientRole() != null &&
+                    List.of("ROLE_ADMIN", "ADMIN", "ROLE_SCHEME_MANAGER", "SCHEME_MANAGER", "ROLE_VERIFICATION_OFFICER", "VERIFICATION_OFFICER")
+                            .contains(notif.getRecipientRole().toUpperCase());
+            boolean isForThisUser = notif.getRecipientUserId() != null &&
+                    (notif.getRecipientUserId().equals(userId) || "admin".equalsIgnoreCase(notif.getRecipientUserId()));
+
+            if (!isTargetedToAdmin && !isForThisUser) {
+                throw new SecurityException("Unauthorized to update this notification");
+            }
         }
 
-        notif.setRead(true);
-        notif.setReadAt(Instant.now());
-        Notification saved = notificationRepository.save(notif);
-        return toResponse(saved);
+        if (!notif.isRead()) {
+            notif.setRead(true);
+            notif.setReadAt(Instant.now());
+            notif = notificationRepository.save(notif);
+        }
+        return toResponse(notif);
     }
 
     @Transactional
     public void markAllAsRead(String userId, boolean isPrivileged) {
         if (isPrivileged) {
-            Query query = new Query(new Criteria().orOperator(
-                    Criteria.where("recipientRole").in("ROLE_ADMIN", "ROLE_SCHEME_MANAGER", "ROLE_VERIFICATION_OFFICER", "ADMIN"),
-                    Criteria.where("recipientUserId").is(userId)
+            Query query = new Query(new Criteria().andOperator(
+                    new Criteria().orOperator(
+                            Criteria.where("recipientRole").in("ROLE_ADMIN", "ROLE_SCHEME_MANAGER", "ROLE_VERIFICATION_OFFICER", "ADMIN"),
+                            Criteria.where("recipientUserId").is(userId),
+                            Criteria.where("recipientUserId").is("admin")
+                    ),
+                    Criteria.where("read").ne(true)
             ));
             List<Notification> notifs = mongoTemplate.find(query, Notification.class);
             Instant now = Instant.now();

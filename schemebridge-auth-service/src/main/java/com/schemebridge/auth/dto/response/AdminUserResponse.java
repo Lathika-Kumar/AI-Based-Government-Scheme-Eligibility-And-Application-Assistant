@@ -19,6 +19,7 @@ public class AdminUserResponse {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private java.time.LocalDate dob;
     private AccountStatus accountStatus;
     private boolean emailVerified;
     private List<String> roles;

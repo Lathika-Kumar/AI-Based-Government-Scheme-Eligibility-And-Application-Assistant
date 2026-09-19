@@ -23,6 +23,7 @@ public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
     private final com.schemebridge.scheme.repository.CitizenProfileRepository citizenProfileRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public FeedbackResponse createFeedback(CreateFeedbackRequest request, String userId) {
@@ -36,13 +37,18 @@ public class FeedbackService {
                     .orElse("Citizen");
         }
 
+        Integer rating = request.getRating();
+        if (rating == null || rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("Feedback rating must be an integer between 1 and 5.");
+        }
+
         Feedback feedback = Feedback.builder()
                 .feedbackNumber(feedbackNumber)
                 .userId(userId)
                 .citizenEmail(request.getCitizenEmail())
                 .citizenName(resolvedName)
                 .type(request.getType())
-                .rating(request.getRating() != null ? request.getRating() : 5)
+                .rating(rating)
                 .comment(request.getComment())
                 .relatedScheme(request.getRelatedScheme())
                 .status("RECEIVED")
@@ -52,6 +58,30 @@ public class FeedbackService {
 
         Feedback saved = feedbackRepository.save(feedback);
         log.info("Persisted portal feedback reference={}, userId={}, citizenName={}, type={}", saved.getFeedbackNumber(), userId, saved.getCitizenName(), saved.getType());
+
+        // Notify Admins of new citizen feedback
+        try {
+            notificationService.sendNotification(
+                    null,
+                    "ROLE_ADMIN",
+                    com.schemebridge.scheme.document.NotificationType.FEEDBACK_SUBMITTED,
+                    "New Citizen Feedback Submitted",
+                    String.format("Citizen %s submitted a %s with a %d-star rating.",
+                            resolvedName, saved.getType() != null ? saved.getType() : "General feedback", saved.getRating()),
+                    "IN_APP",
+                    "FEEDBACK",
+                    saved.getId(),
+                    userId,
+                    java.util.Map.of(
+                            "feedbackNumber", saved.getFeedbackNumber(),
+                            "feedbackType", saved.getType() != null ? saved.getType() : "General",
+                            "rating", saved.getRating()
+                    )
+            );
+        } catch (Exception e) {
+            log.warn("Failed to dispatch admin notification for feedback {}: {}", saved.getFeedbackNumber(), e.getMessage());
+        }
+
         return FeedbackResponse.fromEntity(saved);
     }
 

@@ -68,6 +68,44 @@ public class GridFsDocumentStorageService implements DocumentStorageService {
         }
     }
 
+    @Override
+    public String storeVaultDocument(String userId, String documentCode, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Cannot store empty file.");
+        }
+
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename() != null ? file.getOriginalFilename() : "vault_document");
+        if (originalFilename.contains("..")) {
+            throw new IllegalArgumentException("Invalid filename path traversal detected.");
+        }
+
+        String extension = "";
+        int lastIndex = originalFilename.lastIndexOf('.');
+        if (lastIndex >= 0) {
+            extension = originalFilename.substring(lastIndex + 1);
+        }
+
+        String safeFileName = "vault_" + userId + "_" + documentCode + "_" + UUID.randomUUID() + (extension.isEmpty() ? "" : "." + extension);
+
+        Document metadata = new Document();
+        metadata.put("type", "CITIZEN_VAULT_DOCUMENT");
+        metadata.put("userId", userId);
+        metadata.put("documentCode", documentCode);
+        metadata.put("originalFilename", originalFilename);
+        metadata.put("contentType", file.getContentType());
+        metadata.put("fileSize", file.getSize());
+        metadata.put("uploadedAt", java.time.Instant.now().toString());
+
+        try (InputStream inputStream = file.getInputStream()) {
+            ObjectId fileId = gridFsTemplate.store(inputStream, safeFileName, file.getContentType(), metadata);
+            log.info("Stored Citizen Vault document in GridFS: userId={}, documentCode={}, fileId={}", userId, documentCode, fileId);
+            return fileId.toHexString();
+        } catch (IOException e) {
+            log.error("Failed to store vault document in GridFS", e);
+            throw new RuntimeException("Could not store vault document in MongoDB GridFS", e);
+        }
+    }
+
     public String storeCircular(MultipartFile file, String uploadedBy) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Cannot store empty circular file.");

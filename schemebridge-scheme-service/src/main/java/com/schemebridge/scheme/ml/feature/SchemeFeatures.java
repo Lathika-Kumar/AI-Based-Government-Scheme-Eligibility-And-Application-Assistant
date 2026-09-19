@@ -29,4 +29,8 @@ public class SchemeFeatures {
     private List<String> eligibleCategories;
     private List<String> eligibleGenders;
     private Boolean disabilityApplicable;
+    private Boolean isFarmer;
+    private Boolean isStudent;
+    private Boolean bplStatus;
+    private String beneficiaryType;
 }

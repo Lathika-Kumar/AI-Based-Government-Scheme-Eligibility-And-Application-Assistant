@@ -37,4 +37,9 @@ public class SchemeResponse {
     private Instant lastVerifiedAt;
     private Instant createdAt;
     private Instant updatedAt;
+    private Long applicationsCount;
+    private Double approvalRate;
+    private String deadline;
+    private String sourceUrl;
+    private String applicationUrl;
 }

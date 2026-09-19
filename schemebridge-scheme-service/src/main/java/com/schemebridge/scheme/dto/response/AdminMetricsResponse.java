@@ -32,12 +32,13 @@ public class AdminMetricsResponse {
     private long documentsVerified;
     private long documentsRejected;
 
-    // Grievance metrics
+    // Grievance & Feedback metrics
     private long totalGrievances;
     private long openGrievances;
     private long inProgressGrievances;
     private long resolvedGrievances;
     private long overdueGrievances;
+    private long totalFeedback;
 
     // Time-based application submission counts
     private long applicationsToday;

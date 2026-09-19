@@ -16,4 +16,6 @@ public class CreateApplicationRequest {
 
     @Valid
     private CitizenEligibilityProfile profile;
+
+    private String previousApplicationId;
 }

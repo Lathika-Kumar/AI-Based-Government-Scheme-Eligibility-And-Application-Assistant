@@ -166,6 +166,80 @@ class NotificationServiceTest {
     }
 
     @Test
+    @DisplayName("Already-read notification remains read idempotently without altering readAt or re-saving")
+    void testMarkAsRead_AlreadyRead_RemainsReadIdempotent() {
+        Instant originalReadAt = Instant.now().minusSeconds(3600);
+        Notification alreadyRead = Notification.builder()
+                .id("notif-read")
+                .recipientUserId("citizen-1")
+                .read(true)
+                .readAt(originalReadAt)
+                .build();
+
+        when(notificationRepository.findById("notif-read")).thenReturn(Optional.of(alreadyRead));
+
+        NotificationResponse response = notificationService.markAsRead("notif-read", "citizen-1", false);
+        assertNotNull(response);
+        assertTrue(response.isRead());
+        assertEquals(originalReadAt, response.getReadAt());
+        verify(notificationRepository, never()).save(any(Notification.class));
+    }
+
+    @Test
+    @DisplayName("Admin cannot mark arbitrary citizen-private notification as read")
+    void testMarkAsRead_AdminCannotMarkPrivateCitizenNotification() {
+        Notification privateCitizenNotif = Notification.builder()
+                .id("notif-private")
+                .recipientUserId("citizen-1")
+                .recipientRole(null)
+                .read(false)
+                .build();
+
+        when(notificationRepository.findById("notif-private")).thenReturn(Optional.of(privateCitizenNotif));
+
+        assertThrows(SecurityException.class, () ->
+                notificationService.markAsRead("notif-private", "admin-1", true));
+    }
+
+    @Test
+    @DisplayName("Privileged user can mark notification explicitly addressed to recipientUserId 'admin'")
+    void testMarkAsRead_AdminCanMarkNotificationAddressedToAdminUser() {
+        Notification adminUserNotif = Notification.builder()
+                .id("notif-admin-user")
+                .recipientUserId("admin")
+                .recipientRole(null)
+                .read(false)
+                .build();
+
+        when(notificationRepository.findById("notif-admin-user")).thenReturn(Optional.of(adminUserNotif));
+        when(notificationRepository.save(any(Notification.class))).thenReturn(adminUserNotif);
+
+        NotificationResponse response = notificationService.markAsRead("notif-admin-user", "admin-user-id", true);
+        assertNotNull(response);
+        assertTrue(response.isRead());
+    }
+
+    @Test
+    @DisplayName("Admin markAllAsRead queries unread admin notifications and marks them read")
+    void testMarkAllAsRead_AdminScoped() {
+        Notification adminNotif = Notification.builder()
+                .id("notif-admin-all")
+                .recipientRole("ROLE_ADMIN")
+                .read(false)
+                .build();
+
+        when(mongoTemplate.find(any(org.springframework.data.mongodb.core.query.Query.class), eq(Notification.class)))
+                .thenReturn(List.of(adminNotif));
+
+        notificationService.markAllAsRead("admin-1", true);
+
+        verify(notificationRepository, times(1)).saveAll(argThat(iterable -> {
+            List<Notification> list = (List<Notification>) iterable;
+            return list.size() == 1 && list.get(0).isRead();
+        }));
+    }
+
+    @Test
     @DisplayName("Citizen markAllAsRead is scoped exclusively to authenticated citizen's unread notifications")
     void testMarkAllAsRead_CitizenScoped() {
         when(notificationRepository.findAllByRecipientUserIdAndReadFalse("citizen-1"))

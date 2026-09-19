@@ -110,8 +110,13 @@ public class GrievanceService {
                 .orElseThrow(() -> new ResourceNotFoundException("Grievance not found with ID: " + id));
 
         boolean isPrivileged = "ROLE_ADMIN".equals(authorRole) || "ROLE_SCHEME_MANAGER".equals(authorRole) || "ROLE_VERIFICATION_OFFICER".equals(authorRole);
-        if (!isPrivileged && !g.getUserId().equals(authorId)) {
-            throw new SecurityException("Unauthorized to reply to this grievance");
+        if (!isPrivileged) {
+            if (!g.getUserId().equals(authorId)) {
+                throw new SecurityException("Unauthorized to reply to this grievance");
+            }
+            if (g.getStatus() == GrievanceStatus.RESOLVED || g.getStatus() == GrievanceStatus.CLOSED || g.getStatus() == GrievanceStatus.REJECTED) {
+                throw new IllegalStateException("This grievance has been resolved. Further replies are closed.");
+            }
         }
 
         GrievanceTimelineEntry entry = GrievanceTimelineEntry.builder()
@@ -128,24 +133,41 @@ public class GrievanceService {
         g.setUpdatedAt(Instant.now());
 
         if (isPrivileged) {
-            if (g.getStatus() == GrievanceStatus.OPEN) {
-                g.setStatus(GrievanceStatus.IN_PROGRESS);
-            }
+            g.setStatus(GrievanceStatus.RESOLVED);
+            g.setResolution(request.getMessage());
+            g.setResolvedAt(Instant.now());
+
+            GrievanceTimelineEntry resolvedEntry = GrievanceTimelineEntry.builder()
+                    .id(UUID.randomUUID().toString())
+                    .authorId(authorId)
+                    .authorRole(authorRole)
+                    .action("RESOLVED")
+                    .message("Resolution: " + request.getMessage())
+                    .timestamp(Instant.now())
+                    .internalOnly(false)
+                    .build();
+            g.getTimeline().add(resolvedEntry);
+
             // Notify citizen
             if (!request.isInternalOnly()) {
                 notificationService.sendNotification(
                         g.getUserId(),
                         null,
                         NotificationType.GRIEVANCE_UPDATED,
-                        "Update on Grievance " + g.getGrievanceNumber(),
-                        "An operations officer replied: " + (request.getMessage().length() > 80 ? request.getMessage().substring(0, 77) + "..." : request.getMessage()),
+                        "Grievance Resolved: " + g.getGrievanceNumber(),
+                        "Your grievance has been resolved: " + (request.getMessage().length() > 80 ? request.getMessage().substring(0, 77) + "..." : request.getMessage()),
                         "IN_APP",
                         "GRIEVANCE",
                         g.getId(),
                         authorId,
-                        Map.of("grievanceNumber", g.getGrievanceNumber())
+                        Map.of("grievanceNumber", g.getGrievanceNumber(), "resolution", request.getMessage())
                 );
             }
+
+            adminAuditService.recordAction(authorId, authorRole, "GRIEVANCE_RESOLVED", "GRIEVANCE", id,
+                    Map.of("status", "IN_PROGRESS"),
+                    Map.of("status", "RESOLVED", "resolution", request.getMessage()),
+                    null, null, Map.of("grievanceNumber", g.getGrievanceNumber()));
         } else {
             // Citizen replied, change to IN_PROGRESS if was waiting
             if (g.getStatus() == GrievanceStatus.WAITING_FOR_CITIZEN) {

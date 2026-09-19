@@ -372,7 +372,7 @@ class CurrentCitizenRecommendationAndChecklistTest {
                 .gender("MALE")
                 .state("KARNATAKA")
                 .district("Bengaluru")
-                .occupation("STUDENT_SECONDARY")
+                .occupation("DISQUALIFIED")
                 .annualIncome(1500000.0)
                 .socialCategory("GENERAL")
                 .onboardingComplete(true)
@@ -396,6 +396,10 @@ class CurrentCitizenRecommendationAndChecklistTest {
         schemeRepository.findBySchemeCode(SCHEME_SCHOLARSHIP_CODE).ifPresent(schemeRepository::delete);
         schemeRepository.findBySchemeCode(SCHEME_PENSION_CODE).ifPresent(schemeRepository::delete);
         schemeRepository.findBySchemeCode(SCHEME_UNMAPPED_CODE).ifPresent(schemeRepository::delete);
+        schemeRepository.findBySchemeCode("SCH-SEARCH-01").ifPresent(schemeRepository::delete);
+        schemeRepository.findBySchemeCode("SCH-SEARCH-02").ifPresent(schemeRepository::delete);
+        schemeRepository.findBySchemeCode("SCH-SEARCH-03").ifPresent(schemeRepository::delete);
+        schemeRepository.findBySchemeCode("SCH-TIME-01").ifPresent(schemeRepository::delete);
 
         verifiedDataRepository.findBySchemeCode(SCHEME_FARMER_CODE).ifPresent(verifiedDataRepository::delete);
         verifiedDataRepository.findBySchemeCode(SCHEME_SCHOLARSHIP_CODE).ifPresent(verifiedDataRepository::delete);
@@ -611,7 +615,7 @@ class CurrentCitizenRecommendationAndChecklistTest {
         // Now test with verified attribute: if citizen has verified Aadhaar
         CitizenProfile profileA = citizenProfileRepository.findByUserId(FIRST_TIME_USER_A).orElseThrow();
         Map<String, VerifiedAttribute<?>> attrs = new HashMap<>(profileA.getVerifiedAttributes() != null ? profileA.getVerifiedAttributes() : Map.of());
-        attrs.put("AADHAAR", VerifiedAttribute.builder().source("DIGILOCKER_VERIFIED").verified(true).build());
+        attrs.put("AADHAAR", VerifiedAttribute.builder().source("DOCUMENT_VERIFIED").verified(true).build());
         profileA.setVerifiedAttributes(attrs);
         citizenProfileRepository.save(profileA);
 

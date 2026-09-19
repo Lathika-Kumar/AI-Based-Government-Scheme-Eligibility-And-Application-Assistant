@@ -2,12 +2,15 @@ package com.schemebridge.auth.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schemebridge.auth.config.SecurityConfig;
+import com.schemebridge.auth.dto.request.ChangePasswordRequest;
 import com.schemebridge.auth.dto.request.LoginRequest;
 import com.schemebridge.auth.dto.request.LogoutRequest;
 import com.schemebridge.auth.dto.request.RefreshRequest;
 import com.schemebridge.auth.dto.request.SignupRequest;
 import com.schemebridge.auth.dto.request.VerifyOtpRequest;
+import com.schemebridge.auth.dto.response.GenericMessageResponse;
 import com.schemebridge.auth.dto.response.LoginResponse;
+import com.schemebridge.auth.exception.LoginVerificationException;
 import com.schemebridge.auth.dto.response.SignupResponse;
 import com.schemebridge.auth.dto.response.TokenRefreshResponse;
 import com.schemebridge.auth.dto.response.VerifyOtpResponse;
@@ -56,6 +59,7 @@ public class AuthControllerTest {
                 .email("user@example.com")
                 .password("StrongPassword123!")
                 .phoneNumber("9876543210")
+                .dob(java.time.LocalDate.of(2000, 1, 1))
                 .build();
     }
 
@@ -382,5 +386,87 @@ public class AuthControllerTest {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/api/auth/me")
                 .header("Authorization", "Bearer " + badSigJwt))
                 .andExpect(status().isForbidden());
+    }
+
+    // ── Change Password Tests ──────────────────────────────────────────────────
+
+    @Test
+    public void testChangePassword_NoJwt_ReturnsForbidden() throws Exception {
+        ChangePasswordRequest request = ChangePasswordRequest.builder()
+                .currentPassword("CurrentPassword123!")
+                .newPassword("NewPassword123!")
+                .build();
+
+        mockMvc.perform(post("/api/auth/change-password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void testChangePassword_ValidRequest_ReturnsOk() throws Exception {
+        String validJwt = "valid.jwt.token";
+        ChangePasswordRequest request = ChangePasswordRequest.builder()
+                .currentPassword("CurrentPassword123!")
+                .newPassword("NewPassword123!")
+                .build();
+
+        GenericMessageResponse mockResponse = GenericMessageResponse.builder()
+                .message("Password changed successfully.")
+                .build();
+
+        when(jwtTokenProvider.validateToken(validJwt)).thenReturn(true);
+        when(jwtTokenProvider.getUserIdFromToken(validJwt)).thenReturn("11");
+        when(jwtTokenProvider.getRolesFromToken(validJwt)).thenReturn(List.of("USER"));
+        when(authService.changePassword(org.mockito.ArgumentMatchers.eq(11L), any(ChangePasswordRequest.class)))
+                .thenReturn(mockResponse);
+
+        mockMvc.perform(post("/api/auth/change-password")
+                .header("Authorization", "Bearer " + validJwt)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Password changed successfully."));
+    }
+
+    @Test
+    public void testChangePassword_InvalidCurrentPassword_ReturnsBadRequest() throws Exception {
+        String validJwt = "valid.jwt.token";
+        ChangePasswordRequest request = ChangePasswordRequest.builder()
+                .currentPassword("WrongPassword123!")
+                .newPassword("NewPassword123!")
+                .build();
+
+        when(jwtTokenProvider.validateToken(validJwt)).thenReturn(true);
+        when(jwtTokenProvider.getUserIdFromToken(validJwt)).thenReturn("11");
+        when(jwtTokenProvider.getRolesFromToken(validJwt)).thenReturn(List.of("USER"));
+        when(authService.changePassword(org.mockito.ArgumentMatchers.eq(11L), any(ChangePasswordRequest.class)))
+                .thenThrow(new LoginVerificationException("Current password is incorrect"));
+
+        mockMvc.perform(post("/api/auth/change-password")
+                .header("Authorization", "Bearer " + validJwt)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Current password is incorrect"));
+    }
+
+    @Test
+    public void testChangePassword_ValidationFailure_WeakPassword_ReturnsBadRequest() throws Exception {
+        String validJwt = "valid.jwt.token";
+        ChangePasswordRequest request = ChangePasswordRequest.builder()
+                .currentPassword("CurrentPassword123!")
+                .newPassword("weak") // fails pattern & length
+                .build();
+
+        when(jwtTokenProvider.validateToken(validJwt)).thenReturn(true);
+        when(jwtTokenProvider.getUserIdFromToken(validJwt)).thenReturn("11");
+        when(jwtTokenProvider.getRolesFromToken(validJwt)).thenReturn(List.of("USER"));
+
+        mockMvc.perform(post("/api/auth/change-password")
+                .header("Authorization", "Bearer " + validJwt)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
     }
 }

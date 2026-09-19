@@ -21,4 +21,20 @@ public interface EligibilityEngineContract {
      * @return Deterministic result (ELIGIBLE, NOT_ELIGIBLE, or INSUFFICIENT_DATA)
      */
     EligibilityEvaluationResult evaluate(CitizenEligibilityProfile profile, Scheme scheme);
+
+    /**
+     * Evaluates a citizen eligibility profile against a specific scheme's criteria
+     * taking into account authoritative canonical SchemeVerifiedData.
+     *
+     * @param profile      Verified citizen demographic and eligibility attributes
+     * @param scheme       Master scheme document with eligibility rules
+     * @param verifiedData Canonical SchemeVerifiedData with authoritative criteria
+     * @return Deterministic result (ELIGIBLE, NOT_ELIGIBLE, or INSUFFICIENT_DATA)
+     */
+    default EligibilityEvaluationResult evaluate(
+            CitizenEligibilityProfile profile,
+            Scheme scheme,
+            com.schemebridge.scheme.document.SchemeVerifiedData verifiedData) {
+        return evaluate(profile, scheme);
+    }
 }

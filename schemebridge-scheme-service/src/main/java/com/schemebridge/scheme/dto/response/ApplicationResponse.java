@@ -15,6 +15,7 @@ public class ApplicationResponse {
     private String id;
     private String applicationNumber;
     private String userId;
+    private String applicantName;
     private String schemeCode;
     private MultilingualText schemeTitle;
     private String status;
@@ -23,4 +24,5 @@ public class ApplicationResponse {
     private Instant updatedAt;
     private DocumentReadinessResponse documentReadiness;
     private List<ApplicationDocumentResponse> documents;
+    private String previousApplicationId;
 }

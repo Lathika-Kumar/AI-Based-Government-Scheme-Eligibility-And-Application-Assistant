@@ -1,5 +1,6 @@
 package com.schemebridge.auth.service;
 
+import com.schemebridge.auth.dto.request.ChangePasswordRequest;
 import com.schemebridge.auth.dto.request.LoginRequest;
 import com.schemebridge.auth.dto.request.LogoutRequest;
 import com.schemebridge.auth.dto.request.RefreshRequest;
@@ -81,6 +82,7 @@ public class AuthService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(normalizedEmail)
+                .dob(request.getDob())
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhoneNumber())
                 .accountStatus(AccountStatus.PENDING_VERIFICATION)
@@ -243,6 +245,10 @@ public class AuthService {
                 .user(LoginResponse.UserInfoDto.builder()
                         .id(user.getId())
                         .email(user.getEmail())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .phoneNumber(user.getPhoneNumber())
+                        .dob(user.getDob())
                         .roles(roles)
                         .build())
                 .build();
@@ -335,7 +341,40 @@ public class AuthService {
         return LoginResponse.UserInfoDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .phoneNumber(user.getPhoneNumber())
+                .dob(user.getDob())
                 .roles(roles)
+                .build();
+    }
+
+    /**
+     * Authenticated change password.
+     * Verifies the user's current password against the stored BCrypt hash,
+     * validates that the new password differs from the current password,
+     * and persists the newly hashed password.
+     */
+    @Transactional
+    public GenericMessageResponse changePassword(Long userId, ChangePasswordRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new LoginVerificationException("User not found"));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            throw new LoginVerificationException("Current password is incorrect");
+        }
+
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPasswordHash())) {
+            throw new LoginVerificationException("New password cannot be the same as current password");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        log.info("Password changed successfully for userId={}", userId);
+
+        return GenericMessageResponse.builder()
+                .message("Password changed successfully.")
                 .build();
     }
 

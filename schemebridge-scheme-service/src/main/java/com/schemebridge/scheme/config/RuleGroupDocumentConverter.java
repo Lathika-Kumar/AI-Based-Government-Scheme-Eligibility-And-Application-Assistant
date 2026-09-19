@@ -69,10 +69,13 @@ public class RuleGroupDocumentConverter implements Converter<Document, RuleGroup
             }
         }
 
+        String rawText = source.getString("rawText");
+
         return RuleGroup.builder()
                 .logicalOperator(logicalOperator)
                 .conditions(conditions)
                 .groups(groups)
+                .rawText(rawText)
                 .build();
     }
 

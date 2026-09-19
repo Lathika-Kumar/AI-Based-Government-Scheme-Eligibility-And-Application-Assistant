@@ -112,6 +112,55 @@ class GrievanceServiceTest {
     }
 
     @Test
+    void testOfficerReply_ResolvesGrievanceAndNotifiesCitizen() {
+        when(grievanceRepository.findById("grv-100")).thenReturn(Optional.of(testGrievance));
+        when(grievanceRepository.save(any(Grievance.class))).thenReturn(testGrievance);
+
+        GrievanceReplyRequest req = GrievanceReplyRequest.builder()
+                .message("We have approved your revised certificate.")
+                .internalOnly(false)
+                .build();
+
+        GrievanceResponse response = grievanceService.replyToGrievance("grv-100", req, "officer-1", "ROLE_VERIFICATION_OFFICER");
+
+        assertNotNull(response);
+        assertEquals(GrievanceStatus.RESOLVED, testGrievance.getStatus());
+        assertEquals("We have approved your revised certificate.", testGrievance.getResolution());
+        assertNotNull(testGrievance.getResolvedAt());
+        assertTrue(testGrievance.getTimeline().stream().anyMatch(t -> "RESOLVED".equals(t.getAction())));
+        verify(notificationService).sendNotification(eq("citizen-1"), any(), eq(NotificationType.GRIEVANCE_UPDATED), any(), any(), any(), any(), any(), any(), any());
+        verify(adminAuditService).recordAction(eq("officer-1"), eq("ROLE_VERIFICATION_OFFICER"), eq("GRIEVANCE_RESOLVED"), eq("GRIEVANCE"), eq("grv-100"), any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void testCitizenReply_ToResolvedGrievance_ThrowsIllegalStateException() {
+        testGrievance.setStatus(GrievanceStatus.RESOLVED);
+        when(grievanceRepository.findById("grv-100")).thenReturn(Optional.of(testGrievance));
+
+        GrievanceReplyRequest req = GrievanceReplyRequest.builder()
+                .message("Can I still ask something?")
+                .build();
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+                grievanceService.replyToGrievance("grv-100", req, "citizen-1", "ROLE_USER"));
+        assertEquals("This grievance has been resolved. Further replies are closed.", ex.getMessage());
+    }
+
+    @Test
+    void testCitizenReply_ToOpenGrievance_Success() {
+        when(grievanceRepository.findById("grv-100")).thenReturn(Optional.of(testGrievance));
+        when(grievanceRepository.save(any(Grievance.class))).thenReturn(testGrievance);
+
+        GrievanceReplyRequest req = GrievanceReplyRequest.builder()
+                .message("Uploaded the latest pay slip.")
+                .build();
+
+        GrievanceResponse response = grievanceService.replyToGrievance("grv-100", req, "citizen-1", "ROLE_USER");
+        assertNotNull(response);
+        assertTrue(testGrievance.getTimeline().stream().anyMatch(t -> "CITIZEN_REPLY".equals(t.getAction())));
+    }
+
+    @Test
     void testCitizenUnauthorizedAccess_ThrowsSecurityException() {
         when(grievanceRepository.findById("grv-100")).thenReturn(Optional.of(testGrievance));
 

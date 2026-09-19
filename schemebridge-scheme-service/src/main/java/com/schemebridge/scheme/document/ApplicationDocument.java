@@ -54,6 +54,16 @@ public class ApplicationDocument {
     private String verifiedBy;
 
     private String rejectionReason;
+    private String correctionReason;
+
+    private String sha256;
+    private String documentType;
+    private Double verificationScore;
+
+    private String aiVerificationResult;
+    private String adminVerificationResult;
+    private String adminReviewedBy;
+    private Instant adminReviewedAt;
 
     @Indexed
     private DocumentVerificationStatus verificationStatus;
@@ -63,4 +73,17 @@ public class ApplicationDocument {
 
     @Builder.Default
     private List<ApplicationDocumentVersion> versionHistory = new ArrayList<>();
+
+    @Builder.Default
+    private String source = "USER_UPLOAD";
+
+    @Builder.Default
+    private String provider = "LOCAL";
+
+    @Builder.Default
+    private String verificationMethod = "OFFICER_REVIEW";
+
+    private String vaultDocumentId;
+
+    private String identityMatchStatus;
 }

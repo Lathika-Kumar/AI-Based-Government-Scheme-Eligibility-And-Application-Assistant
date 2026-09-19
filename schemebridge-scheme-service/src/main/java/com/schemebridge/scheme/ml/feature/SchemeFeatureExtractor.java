@@ -37,19 +37,33 @@ public class SchemeFeatureExtractor {
         List<String> genders = new ArrayList<>();
         Boolean disabilityApplicable = null;
 
+        Boolean isFarmer = null;
+        Boolean isStudent = null;
+        Boolean bplStatus = null;
+
         // 1. PRIORITY 1: Authoritative canonical SchemeVerifiedData structured eligibility
         if (verifiedData != null && verifiedData.getEligibility() != null) {
             Map<String, Object> struct = verifiedData.getEligibility().getStructuredEligibility();
             if (struct != null) {
-                if (struct.get("minAge") instanceof Number n) {
+                // minAge / ageMin
+                Object minAgeObj = struct.get("minAge") != null ? struct.get("minAge") : struct.get("ageMin");
+                if (minAgeObj instanceof Number n) {
                     minAge = n.intValue();
                 }
-                if (struct.get("maxAge") instanceof Number n) {
+
+                // maxAge / ageMax
+                Object maxAgeObj = struct.get("maxAge") != null ? struct.get("maxAge") : struct.get("ageMax");
+                if (maxAgeObj instanceof Number n) {
                     maxAge = n.intValue();
                 }
-                if (struct.get("maxIncome") instanceof Number n) {
+
+                // maxIncome / incomeLimit
+                Object maxIncObj = struct.get("maxIncome") != null ? struct.get("maxIncome") : struct.get("incomeLimit");
+                if (maxIncObj instanceof Number n) {
                     maxIncome = n.doubleValue();
                 }
+
+                // Occupations
                 if (struct.get("eligibleOccupations") instanceof List<?> list) {
                     for (Object o : list) {
                         if (o != null && !o.toString().isBlank()) {
@@ -57,25 +71,59 @@ public class SchemeFeatureExtractor {
                             if (!occupations.contains(occ)) occupations.add(occ);
                         }
                     }
+                } else if (struct.get("occupation") instanceof String s && !s.isBlank()) {
+                    String occ = s.trim().toUpperCase();
+                    if (!occupations.contains(occ)) occupations.add(occ);
                 }
-                if (struct.get("eligibleCategories") instanceof List<?> list) {
+
+                // farmerStatus / studentStatus
+                if (Boolean.TRUE.equals(struct.get("farmerStatus"))) {
+                    isFarmer = true;
+                    if (!occupations.contains("FARMER")) occupations.add("FARMER");
+                }
+                if (Boolean.TRUE.equals(struct.get("studentStatus"))) {
+                    isStudent = true;
+                    if (!occupations.contains("STUDENT")) occupations.add("STUDENT");
+                }
+
+                // Categories / Caste
+                Object catObj = struct.get("eligibleCategories") != null ? struct.get("eligibleCategories")
+                        : (struct.get("socialCategory") != null ? struct.get("socialCategory") : struct.get("caste"));
+                if (catObj instanceof List<?> list) {
                     for (Object o : list) {
                         if (o != null && !o.toString().isBlank()) {
                             String c = o.toString().trim().toUpperCase();
                             if (!categories.contains(c)) categories.add(c);
                         }
                     }
+                } else if (catObj instanceof String s && !s.isBlank()) {
+                    String c = s.trim().toUpperCase();
+                    if (!"ALL".equals(c) && !"ANY".equals(c) && !categories.contains(c)) categories.add(c);
                 }
-                if (struct.get("eligibleGenders") instanceof List<?> list) {
+
+                // Genders
+                Object genObj = struct.get("eligibleGenders") != null ? struct.get("eligibleGenders") : struct.get("gender");
+                if (genObj instanceof List<?> list) {
                     for (Object o : list) {
                         if (o != null && !o.toString().isBlank()) {
                             String g = o.toString().trim().toUpperCase();
                             if (!genders.contains(g)) genders.add(g);
                         }
                     }
+                } else if (genObj instanceof String s && !s.isBlank()) {
+                    String g = s.trim().toUpperCase();
+                    if (!"ALL".equals(g) && !"BOTH".equals(g) && !"ANY".equals(g) && !genders.contains(g)) genders.add(g);
                 }
-                if (struct.get("disabilityApplicable") instanceof Boolean b) {
+
+                // Disability
+                Object disObj = struct.get("disabilityApplicable") != null ? struct.get("disabilityApplicable") : struct.get("disabilityStatus");
+                if (disObj instanceof Boolean b) {
                     disabilityApplicable = b;
+                }
+
+                // BPL
+                if (struct.get("bplStatus") instanceof Boolean b) {
+                    bplStatus = b;
                 }
             }
         }
@@ -119,6 +167,10 @@ public class SchemeFeatureExtractor {
                 .eligibleCategories(categories.isEmpty() ? null : categories)
                 .eligibleGenders(genders.isEmpty() ? null : genders)
                 .disabilityApplicable(disabilityApplicable)
+                .isFarmer(isFarmer)
+                .isStudent(isStudent)
+                .bplStatus(bplStatus)
+                .beneficiaryType(scheme.getBeneficiaryType() != null ? scheme.getBeneficiaryType() : (verifiedData != null && verifiedData.getIdentity() != null ? verifiedData.getIdentity().getBeneficiaryType() : null))
                 .build();
     }
 

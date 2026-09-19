@@ -9,7 +9,6 @@ import java.time.Instant;
  * Source states:
  *   - SELF_DECLARED: Manually entered by citizen.
  *   - OCR_EXTRACTED: Extracted from uploaded document via AI OCR (unconfirmed).
- *   - DIGILOCKER_VERIFIED: Sourced directly from government-verified DigiLocker.
  *   - DOCUMENT_VERIFIED: Confirmed by admin officer during application review.
  */
 @Getter

@@ -331,6 +331,13 @@ public class SchemeService {
                 .lastVerifiedAt(scheme.getLastVerifiedAt())
                 .createdAt(scheme.getCreatedAt())
                 .updatedAt(scheme.getUpdatedAt())
+                .deadline(scheme.getApplicationInfo() != null && scheme.getApplicationInfo().getDeadline() != null
+                        ? scheme.getApplicationInfo().getDeadline().toString()
+                        : (scheme.getApplicationInfo() != null && scheme.getApplicationInfo().getApplicationEndDate() != null
+                                ? scheme.getApplicationInfo().getApplicationEndDate().toString()
+                                : null))
+                .sourceUrl(scheme.getSource() != null ? scheme.getSource().getSourceUrl() : null)
+                .applicationUrl(scheme.getApplicationInfo() != null ? scheme.getApplicationInfo().getApplicationUrl() : null)
                 .build();
     }
 }

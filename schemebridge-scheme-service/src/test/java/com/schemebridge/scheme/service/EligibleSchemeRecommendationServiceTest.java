@@ -47,6 +47,8 @@ class EligibleSchemeRecommendationServiceTest {
                 .isFarmer(true)
                 .annualIncome(160000.0)
                 .socialCategory("OBC")
+                .age(34)
+                .gender("Male")
                 .bplStatus(true)
                 .build();
 

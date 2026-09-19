@@ -13,6 +13,8 @@ import java.util.Optional;
 @Repository
 public interface ApplicationDocumentRepository extends MongoRepository<ApplicationDocument, String> {
     List<ApplicationDocument> findAllByApplicationId(String applicationId);
+    List<ApplicationDocument> findAllByUserId(String userId);
+    void deleteAllByUserId(String userId);
     Optional<ApplicationDocument> findByApplicationIdAndDocumentCode(String applicationId, String documentCode);
     long countByVerificationStatus(DocumentVerificationStatus status);
     long countByUploadedTrue();

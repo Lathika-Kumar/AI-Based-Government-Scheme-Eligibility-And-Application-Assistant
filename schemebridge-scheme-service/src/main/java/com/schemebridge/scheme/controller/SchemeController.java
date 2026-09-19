@@ -8,6 +8,7 @@ import com.schemebridge.scheme.dto.response.BulkEligibilityEvaluationResponse;
 import com.schemebridge.scheme.dto.response.EligibilityEvaluationResponse;
 import com.schemebridge.scheme.dto.response.PagedSchemeResponse;
 import com.schemebridge.scheme.dto.response.PersonalizedRecommendationResponse;
+import com.schemebridge.scheme.dto.response.PersonalizedSchemeRecommendationResponse;
 import com.schemebridge.scheme.dto.response.SchemeDraftResponse;
 import com.schemebridge.scheme.dto.response.SchemeResponse;
 import com.schemebridge.scheme.exception.ResourceNotFoundException;
@@ -42,6 +43,8 @@ public class SchemeController {
     private final GeminiSchemeExtractionService geminiSchemeExtractionService;
     @org.springframework.beans.factory.annotation.Autowired(required = false)
     private EligibilityEvaluationService eligibilityEvaluationService;
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    private com.schemebridge.scheme.service.EligibleSchemeRecommendationService eligibleSchemeRecommendationService;
 
     private String getActorId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -265,12 +268,18 @@ public class SchemeController {
     @PostMapping("/recommendations")
     @Operation(summary = "Get ranked personalized recommendations for a citizen profile (Authenticated only)")
     @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "BearerAuth")
-    public ResponseEntity<PersonalizedRecommendationResponse> getRecommendations(
+    public ResponseEntity<?> getRecommendations(
             @Valid @RequestBody CitizenEligibilityProfile profile,
             @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         
+        if (eligibleSchemeRecommendationService != null) {
+            PersonalizedSchemeRecommendationResponse response = eligibleSchemeRecommendationService.getPersonalizedRecommendations(
+                    profile, page, size
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
         PersonalizedRecommendationResponse response = schemeRecommendationService.getRecommendations(
                 profile, status, page, size
         );

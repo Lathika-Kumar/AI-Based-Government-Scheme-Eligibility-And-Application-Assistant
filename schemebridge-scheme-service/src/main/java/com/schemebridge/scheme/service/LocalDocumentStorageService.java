@@ -63,6 +63,28 @@ public class LocalDocumentStorageService implements DocumentStorageService {
     }
 
     @Override
+    public String storeVaultDocument(String userId, String documentCode, MultipartFile file) {
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename() != null ? file.getOriginalFilename() : "vault_document");
+        String extension = "";
+        int lastIndex = originalFilename.lastIndexOf('.');
+        if (lastIndex >= 0) {
+            extension = originalFilename.substring(lastIndex + 1);
+        }
+        String safeFileName = UUID.randomUUID().toString() + (extension.isEmpty() ? "" : "." + extension);
+        try {
+            Path targetDir = this.rootLocation.resolve("vault/" + userId + "/" + documentCode).normalize();
+            Files.createDirectories(targetDir);
+            Path targetPath = targetDir.resolve(safeFileName).normalize();
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+            return "vault/" + userId + "/" + documentCode + "/" + safeFileName;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store vault file " + originalFilename, e);
+        }
+    }
+
+    @Override
     public InputStream retrieve(String storageReference) {
         try {
             Path targetPath = this.rootLocation.resolve(storageReference).normalize();

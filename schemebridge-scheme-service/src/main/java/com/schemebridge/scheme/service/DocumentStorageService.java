@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 public interface DocumentStorageService {
     String store(String applicationId, String documentCode, MultipartFile file);
+    String storeVaultDocument(String userId, String documentCode, MultipartFile file);
     InputStream retrieve(String storageReference);
     void delete(String storageReference);
 }

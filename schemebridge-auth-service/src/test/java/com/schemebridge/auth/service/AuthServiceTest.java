@@ -84,6 +84,7 @@ public class AuthServiceTest {
                 .email("user@example.com")
                 .password("StrongPassword123!")
                 .phoneNumber("9876543210")
+                .dob(java.time.LocalDate.of(2000, 1, 1))
                 .build();
     }
 

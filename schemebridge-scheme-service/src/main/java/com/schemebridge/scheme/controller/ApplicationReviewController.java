@@ -1,6 +1,7 @@
 package com.schemebridge.scheme.controller;
 
 import com.schemebridge.scheme.dto.request.RejectDocumentRequest;
+import com.schemebridge.scheme.dto.request.ReviewActionRequest;
 import com.schemebridge.scheme.dto.request.ReviewDecisionRequest;
 import com.schemebridge.scheme.dto.response.ApplicationResponse;
 import com.schemebridge.scheme.dto.response.PagedApplicationResponse;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -56,6 +58,13 @@ public class ApplicationReviewController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/{applicationId}")
+    @Operation(summary = "Get exact application details for administrative review")
+    public ResponseEntity<ApplicationResponse> getApplicationById(@PathVariable String applicationId) {
+        ApplicationResponse response = applicationReviewService.getApplicationForReview(applicationId);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/{applicationId}/review/start")
     @Operation(summary = "Start application review and move status to UNDER_REVIEW")
     public ResponseEntity<ApplicationResponse> startReview(@PathVariable String applicationId) {
@@ -85,6 +94,89 @@ public class ApplicationReviewController {
     ) {
         String reviewerId = getReviewerId();
         ApplicationResponse response = applicationReviewService.rejectDocument(applicationId, documentCode, request.getReason(), reviewerId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/{applicationId}/documents/{documentCode}/correction")
+    @Operation(summary = "Request correction/re-upload of a citizen application document")
+    public ResponseEntity<ApplicationResponse> requestDocumentCorrection(
+            @PathVariable String applicationId,
+            @PathVariable String documentCode,
+            @Valid @RequestBody RejectDocumentRequest request
+    ) {
+        String reviewerId = getReviewerId();
+        ApplicationResponse response = applicationReviewService.requestDocumentCorrection(applicationId, documentCode, request.getReason(), reviewerId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/{applicationId}/review")
+    @Operation(summary = "Execute administrative review decision: APPROVE, REJECT, or REQUEST_MORE_DOCUMENTS")
+    public ResponseEntity<ApplicationResponse> reviewApplication(
+            @PathVariable String applicationId,
+            @Valid @RequestBody(required = false) ReviewActionRequest request
+    ) {
+        if (request == null || request.getAction() == null || request.getAction().isBlank()) {
+            throw new IllegalArgumentException("Review action is mandatory. Supported actions: APPROVE, REJECT, REQUEST_MORE_DOCUMENTS");
+        }
+
+        String reviewerId = getReviewerId();
+        String reviewerRole = getReviewerRole();
+        String action = request.getAction().trim().toUpperCase();
+
+        String effectiveRemarks = StringUtils.hasText(request.getRemarks())
+                ? request.getRemarks()
+                : (StringUtils.hasText(request.getReviewerNotes())
+                ? request.getReviewerNotes()
+                : (StringUtils.hasText(request.getReason())
+                ? request.getReason()
+                : request.getCorrectionReason()));
+
+        ApplicationResponse response;
+        switch (action) {
+            case "APPROVE":
+            case "APPROVED":
+                String approveRemarks = StringUtils.hasText(effectiveRemarks) ? effectiveRemarks : "Approved";
+                response = applicationReviewService.approveApplication(applicationId, approveRemarks, reviewerId, reviewerRole);
+                break;
+            case "REJECT":
+            case "REJECTED":
+                if (!StringUtils.hasText(effectiveRemarks)) {
+                    throw new IllegalArgumentException("Rejection remarks are mandatory.");
+                }
+                response = applicationReviewService.rejectApplication(applicationId, effectiveRemarks, reviewerId, reviewerRole);
+                break;
+            case "REQUEST_MORE_DOCUMENTS":
+            case "REQUEST_DOCUMENTS":
+            case "CORRECTION_REQUIRED":
+            case "CORRECTION":
+                if (!StringUtils.hasText(effectiveRemarks)) {
+                    throw new IllegalArgumentException("Correction/document request reason is mandatory.");
+                }
+                response = applicationReviewService.requestMoreDocuments(applicationId, effectiveRemarks, reviewerId, reviewerRole);
+                break;
+            case "START":
+            case "START_REVIEW":
+                response = applicationReviewService.startReview(applicationId, reviewerId, reviewerRole);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid review action: '" + request.getAction() + "'. Supported actions are: APPROVE, REJECT, REQUEST_MORE_DOCUMENTS");
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/{applicationId}/review/request-documents")
+    @Operation(summary = "Request more documents or corrections for an application")
+    public ResponseEntity<ApplicationResponse> requestMoreDocuments(
+            @PathVariable String applicationId,
+            @Valid @RequestBody ReviewDecisionRequest request
+    ) {
+        String reviewerId = getReviewerId();
+        String reviewerRole = getReviewerRole();
+        if (request == null || request.getRemarks() == null || request.getRemarks().isBlank()) {
+            throw new IllegalArgumentException("Correction/document request reason is mandatory.");
+        }
+        ApplicationResponse response = applicationReviewService.requestMoreDocuments(applicationId, request.getRemarks(), reviewerId, reviewerRole);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -140,7 +140,11 @@ public class UserSchemeComparisonService {
         }
 
         for (String cat : eligibleCategories) {
-            if (userCategory.equalsIgnoreCase(cat.trim())) {
+            String c = cat.trim().toUpperCase();
+            if ("ALL".equals(c) || "ANY".equals(c)) {
+                return FeatureMatchStatus.MATCH;
+            }
+            if (userCategory.equalsIgnoreCase(c)) {
                 return FeatureMatchStatus.MATCH;
             }
         }
@@ -156,7 +160,19 @@ public class UserSchemeComparisonService {
         }
 
         for (String g : eligibleGenders) {
-            if (userGender.equalsIgnoreCase(g.trim())) {
+            String gn = g.trim().toUpperCase();
+            if ("ALL".equals(gn) || "BOTH".equals(gn) || "ANY".equals(gn)) {
+                return FeatureMatchStatus.MATCH;
+            }
+            if (userGender.equalsIgnoreCase(gn)) {
+                return FeatureMatchStatus.MATCH;
+            }
+            if (("FEMALE".equals(gn) || "WOMEN".equals(gn) || "GIRL".equals(gn)) &&
+                ("FEMALE".equalsIgnoreCase(userGender) || "WOMEN".equalsIgnoreCase(userGender))) {
+                return FeatureMatchStatus.MATCH;
+            }
+            if (("MALE".equals(gn) || "MEN".equals(gn) || "BOY".equals(gn)) &&
+                ("MALE".equalsIgnoreCase(userGender) || "MEN".equalsIgnoreCase(userGender))) {
                 return FeatureMatchStatus.MATCH;
             }
         }

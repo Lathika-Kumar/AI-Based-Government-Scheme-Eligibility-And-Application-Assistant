@@ -15,6 +15,7 @@ public interface ApplicationRepository extends MongoRepository<Application, Stri
     Optional<Application> findByUserIdAndSchemeCode(String userId, String schemeCode);
     Optional<Application> findFirstByUserIdAndSchemeCodeOrderByCreatedAtDesc(String userId, String schemeCode);
     Optional<Application> findByUserIdAndSchemeCodeAndStatusIn(String userId, String schemeCode, List<ApplicationStatus> statuses);
+    List<Application> findAllByUserIdAndSchemeCodeAndStatusIn(String userId, String schemeCode, List<ApplicationStatus> statuses);
     Optional<Application> findFirstByOrderByApplicationNumberDesc();
     long countByStatus(ApplicationStatus status);
 }

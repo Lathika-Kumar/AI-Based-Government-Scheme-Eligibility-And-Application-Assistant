@@ -29,7 +29,21 @@ public class ApplicationDocumentResponse {
     private Integer version;
     private String downloadUrl;
     private String rejectionReason;
+    private String correctionReason;
+    private String sha256;
+    private String documentType;
+    private Double verificationScore;
+    private String aiVerificationResult;
+    private String adminVerificationResult;
+    private String adminReviewedBy;
+    private Instant adminReviewedAt;
     private String verificationStatus;
     private DetailedDocumentStatus status;
     private List<ApplicationDocumentVersion> versionHistory;
+    private String source;
+    private String provider;
+    private String verificationMethod;
+    private String vaultDocumentId;
+    private String identityMatchStatus;
+    private boolean satisfied;
 }

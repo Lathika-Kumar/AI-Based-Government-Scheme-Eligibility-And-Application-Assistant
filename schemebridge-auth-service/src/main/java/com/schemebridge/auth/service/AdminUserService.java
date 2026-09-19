@@ -45,9 +45,10 @@ public class AdminUserService {
                 String term = "%" + search.trim().toLowerCase() + "%";
                 Predicate firstNameMatch = cb.like(cb.lower(root.get("firstName")), term);
                 Predicate lastNameMatch  = cb.like(cb.lower(root.get("lastName")), term);
+                Predicate fullNameMatch  = cb.like(cb.concat(cb.concat(cb.lower(root.get("firstName")), " "), cb.lower(root.get("lastName"))), term);
                 Predicate emailMatch     = cb.like(cb.lower(root.get("email")), term);
                 Predicate phoneMatch     = cb.like(cb.lower(root.get("phoneNumber")), term);
-                predicates.add(cb.or(firstNameMatch, lastNameMatch, emailMatch, phoneMatch));
+                predicates.add(cb.or(firstNameMatch, lastNameMatch, fullNameMatch, emailMatch, phoneMatch));
             }
 
             if (statusStr != null && !statusStr.trim().isEmpty() && !"all".equalsIgnoreCase(statusStr)) {
@@ -58,12 +59,11 @@ public class AdminUserService {
             }
 
             if (roleStr != null && !roleStr.trim().isEmpty() && !"all".equalsIgnoreCase(roleStr)) {
-                String formattedRole = roleStr.trim().toUpperCase();
-                if (!formattedRole.startsWith("ROLE_")) {
-                    formattedRole = "ROLE_" + formattedRole;
+                List<String> candidates = resolveRoleCandidates(roleStr);
+                if (!candidates.isEmpty()) {
+                    Join<User, Role> roleJoin = root.join("roles");
+                    predicates.add(cb.upper(roleJoin.get("name")).in(candidates));
                 }
-                Join<User, Role> roleJoin = root.join("roles");
-                predicates.add(cb.equal(cb.upper(roleJoin.get("name")), formattedRole));
             }
 
             query.distinct(true);
@@ -75,12 +75,17 @@ public class AdminUserService {
                 .map(this::toResponse)
                 .collect(Collectors.toList());
 
+        long totalUsers = userRepository.count();
+        Map<String, Long> roleCounts = getRoleCounts();
+
         return PagedAdminUserResponse.builder()
                 .content(content)
                 .page(userPage.getNumber())
                 .size(userPage.getSize())
                 .totalElements(userPage.getTotalElements())
                 .totalPages(userPage.getTotalPages())
+                .totalUsers(totalUsers)
+                .roleCounts(roleCounts)
                 .build();
     }
 
@@ -137,7 +142,10 @@ public class AdminUserService {
 
         Set<Role> resolvedRoles = new HashSet<>();
         for (String roleName : normalizedRoleNames) {
+            String unprefixed = roleName.startsWith("ROLE_") ? roleName.substring(5) : roleName;
             Role role = roleRepository.findByName(roleName)
+                    .or(() -> roleRepository.findByName(unprefixed))
+                    .or(() -> roleRepository.findByNameIgnoreCase(roleName))
                     .orElseGet(() -> roleRepository.save(Role.builder().name(roleName).description(roleName + " authority").build()));
             resolvedRoles.add(role);
         }
@@ -159,9 +167,44 @@ public class AdminUserService {
         return toResponse(saved);
     }
 
+    @Transactional(readOnly = true)
+    public Map<String, Long> getRoleCounts() {
+        Map<String, Long> counts = new LinkedHashMap<>();
+        counts.put("all", userRepository.count());
+        counts.put("citizens", userRepository.countUsersByRoleNames(List.of("USER", "ROLE_USER")));
+        counts.put("officers", userRepository.countUsersByRoleNames(List.of("VERIFICATION_OFFICER", "ROLE_VERIFICATION_OFFICER")));
+        counts.put("managers", userRepository.countUsersByRoleNames(List.of("SCHEME_MANAGER", "ROLE_SCHEME_MANAGER")));
+        counts.put("admins", userRepository.countUsersByRoleNames(List.of("ADMIN", "ROLE_ADMIN", "SUPER_ADMIN", "ROLE_SUPER_ADMIN")));
+        return counts;
+    }
+
+    private List<String> resolveRoleCandidates(String roleStr) {
+        if (roleStr == null || roleStr.trim().isEmpty() || "all".equalsIgnoreCase(roleStr.trim())) {
+            return Collections.emptyList();
+        }
+        String clean = roleStr.trim().toUpperCase();
+        if ("CITIZENS".equals(clean) || "CITIZEN".equals(clean) || "USER".equals(clean) || "ROLE_USER".equals(clean)) {
+            return List.of("USER", "ROLE_USER");
+        }
+        if ("ADMIN".equals(clean) || "ROLE_ADMIN".equals(clean) || "ADMINS".equals(clean) || "ADMINISTRATOR".equals(clean)
+                || "SUPER_ADMIN".equals(clean) || "ROLE_SUPER_ADMIN".equals(clean) || "SUPER_ADMINS".equals(clean)) {
+            return List.of("ADMIN", "ROLE_ADMIN", "SUPER_ADMIN", "ROLE_SUPER_ADMIN");
+        }
+        if ("SCHEME_MANAGER".equals(clean) || "ROLE_SCHEME_MANAGER".equals(clean) || "MANAGERS".equals(clean) || "MANAGER".equals(clean)) {
+            return List.of("SCHEME_MANAGER", "ROLE_SCHEME_MANAGER");
+        }
+        if ("VERIFICATION_OFFICER".equals(clean) || "ROLE_VERIFICATION_OFFICER".equals(clean) || "OFFICERS".equals(clean) || "OFFICER".equals(clean)) {
+            return List.of("VERIFICATION_OFFICER", "ROLE_VERIFICATION_OFFICER");
+        }
+        String unprefixed = clean.startsWith("ROLE_") ? clean.substring(5) : clean;
+        String prefixed = clean.startsWith("ROLE_") ? clean : "ROLE_" + clean;
+        return List.of(clean, unprefixed, prefixed);
+    }
+
     private AdminUserResponse toResponse(User user) {
         List<String> roles = user.getRoles().stream()
                 .map(Role::getName)
+                .map(name -> name.startsWith("ROLE_") ? name : "ROLE_" + name)
                 .sorted()
                 .collect(Collectors.toList());
 
@@ -171,6 +214,7 @@ public class AdminUserService {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
+                .dob(user.getDob())
                 .accountStatus(user.getAccountStatus())
                 .emailVerified(user.isEmailVerified())
                 .roles(roles)

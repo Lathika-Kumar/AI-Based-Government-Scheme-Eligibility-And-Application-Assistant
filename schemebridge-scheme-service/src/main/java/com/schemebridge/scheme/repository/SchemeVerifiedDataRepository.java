@@ -14,6 +14,8 @@ public interface SchemeVerifiedDataRepository extends MongoRepository<SchemeVeri
 
     Optional<SchemeVerifiedData> findBySchemeCode(String schemeCode);
 
+    List<SchemeVerifiedData> findBySchemeCodeIn(java.util.Collection<String> schemeCodes);
+
     Optional<SchemeVerifiedData> findBySlug(String slug);
 
     List<SchemeVerifiedData> findByDocumentStatus(String documentStatus);

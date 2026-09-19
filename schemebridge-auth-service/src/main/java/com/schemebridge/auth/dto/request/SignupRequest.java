@@ -38,4 +38,8 @@ public class SignupRequest {
         message = "Phone number must be exactly 10 digits"
     )
     private String phoneNumber;
+
+    @jakarta.validation.constraints.NotNull(message = "Date of birth is required")
+    @jakarta.validation.constraints.Past(message = "Date of birth must be in the past")
+    private java.time.LocalDate dob;
 }

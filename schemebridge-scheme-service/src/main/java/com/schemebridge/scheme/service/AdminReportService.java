@@ -33,6 +33,7 @@ public class AdminReportService {
         if (schemeCode != null && !schemeCode.isBlank() && !"all".equalsIgnoreCase(schemeCode)) {
             query.addCriteria(Criteria.where("schemeCode").is(schemeCode));
         }
+        query.fields().include("applicationNumber", "userId", "schemeCode", "status", "createdAt", "submittedAt");
 
         List<Application> list = mongoTemplate.find(query, Application.class);
         StringBuilder csv = new StringBuilder();
@@ -55,6 +56,7 @@ public class AdminReportService {
                 query.addCriteria(Criteria.where("status").is(SchemeStatus.valueOf(status.toUpperCase())));
             } catch (Exception ignored) {}
         }
+        query.fields().include("schemeCode", "title.english", "category.code", "status", "schemeLevel", "stateOrUt");
         List<Scheme> list = mongoTemplate.find(query, Scheme.class);
         StringBuilder csv = new StringBuilder();
         csv.append("Scheme Code,Title,Category,Status,Scheme Level,State\n");
@@ -80,6 +82,7 @@ public class AdminReportService {
                 query.addCriteria(Criteria.where("status").is(GrievanceStatus.valueOf(status.toUpperCase())));
             } catch (Exception ignored) {}
         }
+        query.fields().include("grievanceNumber", "userId", "category", "subject", "priority", "status", "createdAt", "resolvedAt");
         List<Grievance> list = mongoTemplate.find(query, Grievance.class);
         StringBuilder csv = new StringBuilder();
         csv.append("Grievance Number,User ID,Category,Subject,Priority,Status,Created At,Resolved At\n");

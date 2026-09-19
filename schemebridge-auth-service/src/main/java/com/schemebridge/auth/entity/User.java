@@ -37,6 +37,9 @@ public class User {
     @Column(name = "PHONE_NUMBER", length = 20)
     private String phoneNumber;
 
+    @Column(name = "DOB")
+    private java.time.LocalDate dob;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "ACCOUNT_STATUS", nullable = false, length = 30)
     private AccountStatus accountStatus;

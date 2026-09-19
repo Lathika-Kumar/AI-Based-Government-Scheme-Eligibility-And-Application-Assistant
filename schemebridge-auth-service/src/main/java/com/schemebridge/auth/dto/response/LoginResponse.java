@@ -24,6 +24,10 @@ public class LoginResponse {
     public static class UserInfoDto {
         private Long id;
         private String email;
+        private String firstName;
+        private String lastName;
+        private String phoneNumber;
+        private java.time.LocalDate dob;
         private List<String> roles;
     }
 }

@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -323,5 +324,55 @@ class CitizenProfileServiceTest {
         assertEquals("OCR_EXTRACTED", updated.getVerifiedAttributes().get("annualIncome").getSource());
         assertEquals("doc-999", updated.getVerifiedAttributes().get("annualIncome").getDocumentId());
         assertEquals(0.95, updated.getVerifiedAttributes().get("annualIncome").getConfidenceScore());
+    }
+
+    @Test
+    void testUpsertProfile_WithDob_PersistsDobAndCalculatesAge() {
+        when(citizenProfileRepository.findByUserId("301")).thenReturn(Optional.empty());
+        when(citizenProfileRepository.save(any(CitizenProfile.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        LocalDate dob = LocalDate.of(2007, 3, 22);
+        int expectedAge = java.time.Period.between(dob, LocalDate.now()).getYears();
+
+        CitizenProfileRequest req = CitizenProfileRequest.builder()
+                .displayName("Lathika Kumar")
+                .dob(dob)
+                .gender("Female")
+                .build();
+
+        CitizenProfile saved = citizenProfileService.upsertProfile("301", req);
+        assertNotNull(saved);
+        assertEquals("Lathika Kumar", saved.getDisplayName());
+        assertEquals(dob, saved.getDob());
+        assertEquals(expectedAge, saved.getAge());
+    }
+
+    @Test
+    void testToResponse_IncludesDob() {
+        LocalDate dob = LocalDate.of(2005, 8, 14);
+        sampleProfile.setDob(dob);
+
+        CitizenProfileResponse response = citizenProfileService.toResponse(sampleProfile);
+        assertNotNull(response);
+        assertEquals(dob, response.getDob());
+        assertEquals(35, response.getAge());
+    }
+
+    @Test
+    void testUpdateDob_UpdatesDobAndRecalculatesAge() {
+        when(citizenProfileRepository.findByUserId("101")).thenReturn(Optional.of(sampleProfile));
+        when(citizenProfileRepository.save(any(CitizenProfile.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        LocalDate newDob = LocalDate.of(2005, 8, 14);
+        int expectedAge = java.time.Period.between(newDob, LocalDate.now()).getYears();
+
+        CitizenProfileRequest req = CitizenProfileRequest.builder()
+                .dob(newDob)
+                .build();
+
+        CitizenProfile updated = citizenProfileService.upsertProfile("101", req);
+        assertNotNull(updated);
+        assertEquals(newDob, updated.getDob());
+        assertEquals(expectedAge, updated.getAge());
     }
 }

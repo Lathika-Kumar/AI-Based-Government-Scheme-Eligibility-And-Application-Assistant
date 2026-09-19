@@ -50,6 +50,9 @@ class AdminOperationsTest {
     private AdminAuditLogRepository adminAuditLogRepository;
 
     @Mock
+    private FeedbackRepository feedbackRepository;
+
+    @Mock
     private MongoTemplate mongoTemplate;
 
     private AdminMetricsService adminMetricsService;
@@ -61,7 +64,7 @@ class AdminOperationsTest {
     void setUp() {
         adminAuditService = new AdminAuditService(adminAuditLogRepository, mongoTemplate);
         adminSettingsService = new AdminSettingsService(adminSettingsRepository, adminAuditService);
-        adminMetricsService = new AdminMetricsService(schemeRepository, applicationRepository, applicationDocumentRepository, grievanceRepository, notificationRepository, mongoTemplate);
+        adminMetricsService = new AdminMetricsService(schemeRepository, applicationRepository, applicationDocumentRepository, grievanceRepository, feedbackRepository, notificationRepository, mongoTemplate);
         adminReportService = new AdminReportService(mongoTemplate, applicationRepository, schemeRepository, grievanceRepository);
     }
 
@@ -93,6 +96,7 @@ class AdminOperationsTest {
         when(grievanceRepository.countByStatus(GrievanceStatus.WAITING_FOR_CITIZEN)).thenReturn(0L);
         when(grievanceRepository.countByStatus(GrievanceStatus.RESOLVED)).thenReturn(2L);
         when(grievanceRepository.countByStatus(GrievanceStatus.CLOSED)).thenReturn(0L);
+        when(feedbackRepository.count()).thenReturn(3L);
 
         AdminMetricsResponse metrics = adminMetricsService.getMetrics();
         assertNotNull(metrics);
@@ -103,6 +107,7 @@ class AdminOperationsTest {
         assertEquals(4L, metrics.getUnderReviewApplications());
         assertEquals(10L, metrics.getApprovedApplications());
         assertEquals(5L, metrics.getTotalGrievances());
+        assertEquals(3L, metrics.getTotalFeedback());
     }
 
     @Test

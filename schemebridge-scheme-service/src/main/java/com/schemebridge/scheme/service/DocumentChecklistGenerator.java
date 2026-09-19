@@ -174,9 +174,9 @@ public class DocumentChecklistGenerator {
                     .optional(true)
                     .sourceRequirement("Requirement information unavailable")
                     .issuingAuthority("Not Available")
+                    .provenance(RequirementProvenance.SYSTEM_CONFIGURED)
                     .status(DetailedDocumentStatus.NOT_UPLOADED)
                     .statusString("NOT_AVAILABLE")
-                    .userProvided(false)
                     .build());
         }
 

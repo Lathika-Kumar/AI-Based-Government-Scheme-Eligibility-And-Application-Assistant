@@ -39,6 +39,9 @@ public class Application {
     @Indexed
     private ApplicationStatus status;
 
+    @Indexed
+    private String previousApplicationId;
+
     private Instant submittedAt;
 
     @CreatedDate

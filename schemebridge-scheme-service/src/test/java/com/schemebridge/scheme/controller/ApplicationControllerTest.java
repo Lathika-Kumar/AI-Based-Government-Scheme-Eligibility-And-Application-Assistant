@@ -41,6 +41,9 @@ public class ApplicationControllerTest {
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
 
+    @MockBean
+    private com.schemebridge.scheme.repository.DocumentVerificationResultRepository documentVerificationResultRepository;
+
     @Test
     public void testGetMyApplications_Unauthenticated_ReturnsForbidden() throws Exception {
         mockMvc.perform(get("/api/applications/my")
@@ -142,5 +145,36 @@ public class ApplicationControllerTest {
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDownloadDocument_AdminRole_ReturnsPdfBytes() throws Exception {
+        String token = "admin-download-token";
+        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+        when(jwtTokenProvider.getUserIdFromToken(token)).thenReturn("99");
+        when(jwtTokenProvider.getRolesFromToken(token)).thenReturn(List.of("ADMIN"));
+
+        byte[] pdfBytes = "%PDF-1.4 test bytes".getBytes();
+        com.schemebridge.scheme.dto.response.DocumentDownloadDto downloadDto = com.schemebridge.scheme.dto.response.DocumentDownloadDto.builder()
+                .fileName("aadhaar.pdf")
+                .contentType("application/pdf")
+                .fileSize((long) pdfBytes.length)
+                .inputStream(new java.io.ByteArrayInputStream(pdfBytes))
+                .build();
+
+        when(applicationService.getDocumentDownload(eq("app-123"), eq("AADHAAR"), eq("99"), eq(true)))
+                .thenReturn(downloadDto);
+
+        mockMvc.perform(get("/api/applications/app-123/documents/AADHAAR/download")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header().string("Content-Type", "application/pdf"))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.content().bytes(pdfBytes));
+    }
+
+    @Test
+    public void testDownloadDocument_Unauthenticated_ReturnsForbidden() throws Exception {
+        mockMvc.perform(get("/api/applications/app-123/documents/AADHAAR/download"))
+                .andExpect(status().isForbidden());
     }
 }

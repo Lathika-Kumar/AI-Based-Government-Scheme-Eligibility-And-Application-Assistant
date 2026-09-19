@@ -1,8 +1,10 @@
 package com.schemebridge.auth.service;
 
+import com.schemebridge.auth.dto.request.ChangePasswordRequest;
 import com.schemebridge.auth.dto.request.ResetPasswordRequest;
 import com.schemebridge.auth.dto.response.GenericMessageResponse;
 import com.schemebridge.auth.entity.*;
+import com.schemebridge.auth.exception.LoginVerificationException;
 import com.schemebridge.auth.exception.OtpVerificationException;
 import com.schemebridge.auth.exception.RateLimitException;
 import com.schemebridge.auth.repository.OtpVerificationRepository;
@@ -291,6 +293,90 @@ class AuthServiceHardeningTest {
             GenericMessageResponse response = authService.resendOtp("verified@test.com");
             assertTrue(response.getMessage().contains("new OTP has been sent"));
             verify(otpVerificationRepository, never()).save(any());
+        }
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // Change Password
+    // ══════════════════════════════════════════════════════════════════════════
+
+    @Nested
+    @DisplayName("Change Password Tests")
+    class ChangePasswordTests {
+
+        @Test
+        @DisplayName("Valid current password -> password changed and BCrypt hash updated")
+        void changePassword_success() {
+            User user = activeUser(40L, "citizen@example.com");
+            when(userRepository.findById(40L)).thenReturn(Optional.of(user));
+            when(passwordEncoder.matches("OldPassword123!", "existing-hash")).thenReturn(true);
+            when(passwordEncoder.matches("NewPassword123!", "existing-hash")).thenReturn(false);
+            when(passwordEncoder.encode("NewPassword123!")).thenReturn("new-bcrypt-hash");
+
+            ChangePasswordRequest request = ChangePasswordRequest.builder()
+                    .currentPassword("OldPassword123!")
+                    .newPassword("NewPassword123!")
+                    .build();
+
+            GenericMessageResponse response = authService.changePassword(40L, request);
+
+            assertNotNull(response);
+            assertEquals("Password changed successfully.", response.getMessage());
+            assertEquals("new-bcrypt-hash", user.getPasswordHash());
+            verify(userRepository).save(user);
+        }
+
+        @Test
+        @DisplayName("Incorrect current password -> throws LoginVerificationException")
+        void changePassword_incorrectCurrentPassword() {
+            User user = activeUser(40L, "citizen@example.com");
+            when(userRepository.findById(40L)).thenReturn(Optional.of(user));
+            when(passwordEncoder.matches("WrongPassword!", "existing-hash")).thenReturn(false);
+
+            ChangePasswordRequest request = ChangePasswordRequest.builder()
+                    .currentPassword("WrongPassword!")
+                    .newPassword("NewPassword123!")
+                    .build();
+
+            LoginVerificationException ex = assertThrows(LoginVerificationException.class,
+                    () -> authService.changePassword(40L, request));
+
+            assertEquals("Current password is incorrect", ex.getMessage());
+            verify(userRepository, never()).save(any());
+        }
+
+        @Test
+        @DisplayName("New password same as current password -> rejected to prevent reuse")
+        void changePassword_samePasswordRejected() {
+            User user = activeUser(40L, "citizen@example.com");
+            when(userRepository.findById(40L)).thenReturn(Optional.of(user));
+            when(passwordEncoder.matches("SamePassword123!", "existing-hash")).thenReturn(true);
+
+            ChangePasswordRequest request = ChangePasswordRequest.builder()
+                    .currentPassword("SamePassword123!")
+                    .newPassword("SamePassword123!")
+                    .build();
+
+            LoginVerificationException ex = assertThrows(LoginVerificationException.class,
+                    () -> authService.changePassword(40L, request));
+
+            assertEquals("New password cannot be the same as current password", ex.getMessage());
+            verify(userRepository, never()).save(any());
+        }
+
+        @Test
+        @DisplayName("User not found -> throws LoginVerificationException")
+        void changePassword_userNotFound() {
+            when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+            ChangePasswordRequest request = ChangePasswordRequest.builder()
+                    .currentPassword("AnyPassword123!")
+                    .newPassword("NewPassword123!")
+                    .build();
+
+            assertThrows(LoginVerificationException.class,
+                    () -> authService.changePassword(999L, request));
+            verify(userRepository, never()).save(any());
         }
     }
 

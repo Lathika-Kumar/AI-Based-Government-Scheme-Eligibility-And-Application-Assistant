@@ -28,9 +28,11 @@ public class RecommendationController {
             @RequestParam(defaultValue = "10") int size
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("GET /api/recommendations invoked for authenticated userId={}, page={}, size={}", userId, page, size);
+        int safePage = Math.max(0, page);
+        int safeSize = Math.min(50, Math.max(1, size));
+        log.info("GET /api/recommendations invoked for authenticated userId={}, page={}, size={}", userId, safePage, safeSize);
         PersonalizedSchemeRecommendationResponse response =
-                recommendationService.getPersonalizedRecommendations(userId, page, size);
+                recommendationService.getPersonalizedRecommendations(userId, safePage, safeSize);
         return ResponseEntity.ok(response);
     }
 
@@ -41,9 +43,11 @@ public class RecommendationController {
             @RequestParam(defaultValue = "10") int size
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("POST /api/recommendations invoked for authenticated userId={}, page={}, size={}", userId, page, size);
+        int safePage = Math.max(0, page);
+        int safeSize = Math.min(50, Math.max(1, size));
+        log.info("POST /api/recommendations invoked for authenticated userId={}, page={}, size={}", userId, safePage, safeSize);
         PersonalizedSchemeRecommendationResponse response =
-                recommendationService.getPersonalizedRecommendations(userId, page, size);
+                recommendationService.getPersonalizedRecommendations(userId, safePage, safeSize);
         return ResponseEntity.ok(response);
     }
 }

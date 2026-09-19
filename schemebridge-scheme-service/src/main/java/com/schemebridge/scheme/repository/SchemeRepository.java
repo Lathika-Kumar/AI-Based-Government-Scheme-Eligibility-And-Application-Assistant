@@ -11,6 +11,7 @@ public interface SchemeRepository extends MongoRepository<Scheme, String> {
     Optional<Scheme> findBySchemeCode(String schemeCode);
     Optional<Scheme> findBySlug(String slug);
     List<Scheme> findAllByStatus(SchemeStatus status);
+    List<Scheme> findBySchemeCodeIn(java.util.Collection<String> schemeCodes);
     long countByStatus(SchemeStatus status);
     
     @Query("{ 'category.code' : ?0 }")

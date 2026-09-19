@@ -1,5 +1,6 @@
 package com.schemebridge.auth.controller;
 
+import com.schemebridge.auth.dto.request.ChangePasswordRequest;
 import com.schemebridge.auth.dto.request.ForgotPasswordRequest;
 import com.schemebridge.auth.dto.request.LoginRequest;
 import com.schemebridge.auth.dto.request.LogoutRequest;
@@ -124,6 +125,31 @@ public class AuthController {
         Long userId = Long.valueOf(userIdStr);
         LoginResponse.UserInfoDto userInfo = authService.getUserInfo(userId);
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
+    }
+
+    // ── Change Password ────────────────────────────────────────────────────────
+
+    @PostMapping("/change-password")
+    @Operation(
+        summary = "Change password for authenticated user",
+        description = "Changes the password of the currently authenticated user after verifying current password.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Password changed successfully",
+            content = @Content(schema = @Schema(implementation = GenericMessageResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Validation failed, current password incorrect, or new password equals current",
+            content = @Content(schema = @Schema(implementation = com.schemebridge.auth.dto.response.ErrorResponse.class))),
+        @ApiResponse(responseCode = "401", description = "Unauthenticated request")
+    })
+    public ResponseEntity<GenericMessageResponse> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
+        org.springframework.security.core.Authentication authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        String userIdStr = (String) authentication.getPrincipal();
+        Long userId = Long.valueOf(userIdStr);
+        GenericMessageResponse response = authService.changePassword(userId, request);
+        return ResponseEntity.ok(response);
     }
 
     // ── Forgot Password ────────────────────────────────────────────────────────

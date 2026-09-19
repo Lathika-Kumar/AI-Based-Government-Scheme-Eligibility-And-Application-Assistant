@@ -37,7 +37,10 @@ public class NotificationController {
         if (auth != null) {
             return auth.getAuthorities().stream()
                     .map(a -> a.getAuthority())
-                    .filter(r -> r.equals("ROLE_ADMIN") || r.equals("ROLE_SCHEME_MANAGER") || r.equals("ROLE_VERIFICATION_OFFICER"))
+                    .map(String::toUpperCase)
+                    .filter(r -> r.equals("ROLE_ADMIN") || r.equals("ADMIN") ||
+                                 r.equals("ROLE_SCHEME_MANAGER") || r.equals("SCHEME_MANAGER") ||
+                                 r.equals("ROLE_VERIFICATION_OFFICER") || r.equals("VERIFICATION_OFFICER"))
                     .findFirst()
                     .orElse("ROLE_USER");
         }
@@ -46,7 +49,9 @@ public class NotificationController {
 
     private boolean isPrivileged() {
         String role = getRole();
-        return "ROLE_ADMIN".equals(role) || "ROLE_SCHEME_MANAGER".equals(role) || "ROLE_VERIFICATION_OFFICER".equals(role);
+        return "ROLE_ADMIN".equals(role) || "ADMIN".equals(role) ||
+               "ROLE_SCHEME_MANAGER".equals(role) || "SCHEME_MANAGER".equals(role) ||
+               "ROLE_VERIFICATION_OFFICER".equals(role) || "VERIFICATION_OFFICER".equals(role);
     }
 
     @GetMapping("/api/notifications")
@@ -72,7 +77,7 @@ public class NotificationController {
         return new ResponseEntity<>(Map.of("unreadCount", count), HttpStatus.OK);
     }
 
-    @PostMapping("/api/notifications/{id}/read")
+    @RequestMapping(value = "/api/notifications/{id}/read", method = {RequestMethod.POST, RequestMethod.PATCH})
     @Operation(summary = "Mark a notification as read")
     public ResponseEntity<NotificationResponse> markAsRead(@PathVariable String id) {
         String userId = getUserId();
@@ -80,7 +85,7 @@ public class NotificationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/api/notifications/read-all")
+    @RequestMapping(value = "/api/notifications/read-all", method = {RequestMethod.POST, RequestMethod.PATCH})
     @Operation(summary = "Mark all notifications as read")
     public ResponseEntity<Map<String, String>> markAllAsRead() {
         String userId = getUserId();

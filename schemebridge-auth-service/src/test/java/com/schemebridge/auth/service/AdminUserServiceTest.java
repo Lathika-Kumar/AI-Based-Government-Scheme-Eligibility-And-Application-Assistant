@@ -71,12 +71,18 @@ class AdminUserServiceTest {
     void testGetUsers_Success() {
         Page<User> page = new PageImpl<>(List.of(testUser));
         when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
+        when(userRepository.count()).thenReturn(41L);
+        when(userRepository.countUsersByRoleNames(any())).thenReturn(1L);
 
         PagedAdminUserResponse response = adminUserService.getUsers("admin", "ACTIVE", "ADMIN", 0, 10, "createdAt", "DESC");
 
         assertNotNull(response);
         assertEquals(1, response.getContent().size());
         assertEquals("admin@schemebridge.gov.in", response.getContent().get(0).getEmail());
+        assertEquals(41L, response.getTotalUsers());
+        assertNotNull(response.getRoleCounts());
+        assertEquals(41L, response.getRoleCounts().get("all"));
+        assertTrue(response.getContent().get(0).getRoles().contains("ROLE_ADMIN"));
     }
 
     @Test
@@ -129,4 +135,38 @@ class AdminUserServiceTest {
         assertNotNull(response);
     }
 
+    @Test
+    void testGetRoleCounts_Authoritative() {
+        when(userRepository.count()).thenReturn(41L);
+        when(userRepository.countUsersByRoleNames(List.of("USER", "ROLE_USER"))).thenReturn(40L);
+        when(userRepository.countUsersByRoleNames(List.of("VERIFICATION_OFFICER", "ROLE_VERIFICATION_OFFICER"))).thenReturn(0L);
+        when(userRepository.countUsersByRoleNames(List.of("SCHEME_MANAGER", "ROLE_SCHEME_MANAGER"))).thenReturn(1L);
+        when(userRepository.countUsersByRoleNames(List.of("ADMIN", "ROLE_ADMIN", "SUPER_ADMIN", "ROLE_SUPER_ADMIN"))).thenReturn(2L);
+
+        Map<String, Long> counts = adminUserService.getRoleCounts();
+
+        assertNotNull(counts);
+        assertEquals(41L, counts.get("all"));
+        assertEquals(40L, counts.get("citizens"));
+        assertEquals(0L, counts.get("officers"));
+        assertEquals(1L, counts.get("managers"));
+        assertEquals(2L, counts.get("admins"));
+    }
+
+    @Test
+    void testRoleNormalization_UnprefixedRoleInDb() {
+        Role rawAdmin = Role.builder().id(10L).name("ADMIN").description("Admin").build();
+        User userWithRawRole = User.builder()
+                .id(200L)
+                .email("rawadmin@schemebridge.gov.in")
+                .accountStatus(AccountStatus.ACTIVE)
+                .roles(Set.of(rawAdmin))
+                .build();
+
+        when(userRepository.findById(200L)).thenReturn(Optional.of(userWithRawRole));
+
+        AdminUserResponse response = adminUserService.getUserById(200L);
+        assertNotNull(response);
+        assertTrue(response.getRoles().contains("ROLE_ADMIN"), "Role should be normalized with ROLE_ prefix for API consumers");
+    }
 }

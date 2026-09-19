@@ -38,19 +38,26 @@ public class UserFeatureExtractor {
             return buildEmptyUserFeatures();
         }
 
-        Boolean isStudent = null;
-        Boolean bplCardHolder = null;
-        Boolean isFarmer = null;
+        Boolean isFarmer = profile.getIsFarmer();
+        Boolean isStudent = profile.getIsStudent();
+        Boolean bplCardHolder = profile.getBplStatus();
 
         if (profile.getAttributes() != null) {
-            Object studentObj = profile.getAttributes().get("isStudent");
-            if (studentObj instanceof Boolean) isStudent = (Boolean) studentObj;
+            if (isStudent == null) {
+                Object studentObj = profile.getAttributes().get("isStudent");
+                if (studentObj instanceof Boolean b) isStudent = b;
+            }
 
-            Object bplObj = profile.getAttributes().get("bplCardHolder");
-            if (bplObj instanceof Boolean) bplCardHolder = (Boolean) bplObj;
+            if (bplCardHolder == null) {
+                Object bplObj = profile.getAttributes().get("bplStatus");
+                if (bplObj == null) bplObj = profile.getAttributes().get("bplCardHolder");
+                if (bplObj instanceof Boolean b) bplCardHolder = b;
+            }
 
-            Object farmerObj = profile.getAttributes().get("isFarmer");
-            if (farmerObj instanceof Boolean) isFarmer = (Boolean) farmerObj;
+            if (isFarmer == null) {
+                Object farmerObj = profile.getAttributes().get("isFarmer");
+                if (farmerObj instanceof Boolean b) isFarmer = b;
+            }
         }
 
         String occ = profile.getOccupation();
@@ -63,10 +70,20 @@ public class UserFeatureExtractor {
 
         Double income = profile.getAnnualIncome() != null ? profile.getAnnualIncome().doubleValue() : null;
 
+        String dist = profile.getDistrict();
+        if (dist == null && profile.getAttributes() != null && profile.getAttributes().get("district") != null) {
+            dist = profile.getAttributes().get("district").toString();
+        }
+
+        String edu = "UNKNOWN";
+        if (profile.getAttributes() != null && profile.getAttributes().get("education") != null) {
+            edu = normalizeString(profile.getAttributes().get("education").toString());
+        }
+
         return UserFeatures.builder()
                 .ageBucket(determineAgeBucket(profile.getAge()))
                 .stateCode(normalizeString(profile.getState()))
-                .district("UNKNOWN")
+                .district(dist != null ? normalizeString(dist) : "UNKNOWN")
                 .occupationCode(normalizeString(profile.getOccupation()))
                 .incomeTier(determineIncomeTier(income, bplCardHolder))
                 .categoryCode(normalizeString(profile.getSocialCategory()))
@@ -75,7 +92,7 @@ public class UserFeatureExtractor {
                 .isFarmer(isFarmer)
                 .isStudent(isStudent)
                 .bplStatus(bplCardHolder)
-                .educationLevel("UNKNOWN")
+                .educationLevel(edu)
                 .build();
     }
 

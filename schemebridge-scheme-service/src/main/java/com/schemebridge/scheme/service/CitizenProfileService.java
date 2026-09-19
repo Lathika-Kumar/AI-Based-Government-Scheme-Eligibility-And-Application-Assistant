@@ -208,26 +208,92 @@ public class CitizenProfileService {
     // ── Conversion ────────────────────────────────────────────────────────────
 
     public CitizenEligibilityProfile toCitizenEligibilityProfile(CitizenProfile profile) {
+        if (profile == null) return null;
+
+        Integer resolvedAge = profile.getAge();
+        if ((resolvedAge == null || resolvedAge <= 0) && profile.getDob() != null) {
+            resolvedAge = java.time.Period.between(profile.getDob(), java.time.LocalDate.now()).getYears();
+        }
+
+        Boolean isFarmer = profile.getIsFarmer();
+        if (isFarmer == null && profile.getOccupation() != null) {
+            String occLower = profile.getOccupation().toLowerCase();
+            if (occLower.contains("farmer") || occLower.contains("agriculture") || occLower.contains("kisan")) {
+                isFarmer = true;
+            }
+        }
+
+        Boolean isStudent = profile.getIsStudent();
+        if (isStudent == null && profile.getOccupation() != null) {
+            String occLower = profile.getOccupation().toLowerCase();
+            if (occLower.contains("student") || occLower.contains("scholar")) {
+                isStudent = true;
+            }
+        }
+
         CitizenEligibilityProfile dto = CitizenEligibilityProfile.builder()
-                .age(profile.getAge())
+                .age(resolvedAge)
                 .gender(profile.getGender())
                 .annualIncome(profile.getAnnualIncome())
                 .occupation(profile.getOccupation())
                 .state(profile.getState())
+                .district(profile.getDistrict())
                 .socialCategory(profile.getSocialCategory())
                 .disabilityStatus(profile.getDisabilityStatus())
+                .isFarmer(isFarmer)
+                .isStudent(isStudent)
+                .bplStatus(profile.getBplStatus())
+                .maritalStatus(profile.getMaritalStatus())
+                .employmentStatus(profile.getEmploymentStatus())
+                .residentialAreaType(profile.getResidentialAreaType())
+                .rationCardType(profile.getRationCardType())
+                .landholdingArea(profile.getLandholdingArea())
+                .minorityStatus(profile.getMinorityStatus())
                 .build();
+
+        if (profile.getDistrict() != null) dto.getAttributes().put("district", profile.getDistrict());
+        if (profile.getDob() != null) dto.getAttributes().put("dob", profile.getDob().toString());
+        if (profile.getMaritalStatus() != null) dto.getAttributes().put("maritalStatus", profile.getMaritalStatus());
+        if (profile.getPincode() != null) dto.getAttributes().put("pincode", profile.getPincode());
+        if (profile.getResidentialAreaType() != null) dto.getAttributes().put("residentialAreaType", profile.getResidentialAreaType());
+        if (profile.getRationCardType() != null) dto.getAttributes().put("rationCardType", profile.getRationCardType());
+        if (profile.getEmploymentStatus() != null) dto.getAttributes().put("employmentStatus", profile.getEmploymentStatus());
+        if (profile.getEducation() != null) dto.getAttributes().put("education", profile.getEducation());
 
         if (profile.getVerifiedAttributes() != null) {
             dto.getAttributes().put("verifiedAttributes", profile.getVerifiedAttributes());
         }
-        if (profile.getIsFarmer() != null) dto.getAttributes().put("isFarmer", profile.getIsFarmer());
+        if (isFarmer != null) dto.getAttributes().put("isFarmer", isFarmer);
         if (profile.getLandholdingArea() != null) dto.getAttributes().put("landholdingArea", profile.getLandholdingArea());
-        if (profile.getIsStudent() != null) dto.getAttributes().put("isStudent", profile.getIsStudent());
+        if (isStudent != null) dto.getAttributes().put("isStudent", isStudent);
         if (profile.getMinorityStatus() != null) dto.getAttributes().put("minorityStatus", profile.getMinorityStatus());
         if (profile.getBplStatus() != null) dto.getAttributes().put("bplStatus", profile.getBplStatus());
 
         return dto;
+    }
+
+    public CitizenProfile toCitizenProfile(CitizenEligibilityProfile dto, String userId) {
+        if (dto == null) return CitizenProfile.builder().userId(userId != null ? userId : "citizen").build();
+        return CitizenProfile.builder()
+                .userId(userId != null ? userId : "citizen")
+                .age(dto.getAge())
+                .gender(dto.getGender())
+                .annualIncome(dto.getAnnualIncome())
+                .occupation(dto.getOccupation())
+                .state(dto.getState())
+                .socialCategory(dto.getSocialCategory())
+                .disabilityStatus(dto.getDisabilityStatus())
+                .isFarmer(dto.getIsFarmer())
+                .isStudent(dto.getIsStudent())
+                .bplStatus(dto.getBplStatus())
+                .maritalStatus(dto.getMaritalStatus())
+                .district(dto.getDistrict())
+                .employmentStatus(dto.getEmploymentStatus())
+                .residentialAreaType(dto.getResidentialAreaType())
+                .rationCardType(dto.getRationCardType())
+                .landholdingArea(dto.getLandholdingArea())
+                .minorityStatus(dto.getMinorityStatus())
+                .build();
     }
 
     // ── Mapping ───────────────────────────────────────────────────────────────
