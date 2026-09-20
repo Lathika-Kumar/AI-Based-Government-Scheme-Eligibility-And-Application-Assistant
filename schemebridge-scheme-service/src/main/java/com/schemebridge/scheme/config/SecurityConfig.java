@@ -2,6 +2,7 @@ package com.schemebridge.scheme.config;
 
 import com.schemebridge.scheme.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    @Value("${cors.allowed-origins:http://localhost:5173,http://localhost:5174,http://localhost:3000}")
+    private String allowedOrigins;
+
+    @Value("${schemebridge.frontend-url:http://localhost:5173}")
+    private String frontendUrl;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -75,7 +82,21 @@ public class SecurityConfig {
     @Bean
     public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
         org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
-        configuration.setAllowedOriginPatterns(java.util.List.of("http://localhost:*", "http://127.0.0.1:*"));
+        java.util.Set<String> patterns = new java.util.LinkedHashSet<>();
+        patterns.add("http://localhost:*");
+        patterns.add("http://127.0.0.1:*");
+        patterns.add("https://*.onrender.com");
+        if (frontendUrl != null && !frontendUrl.isBlank()) {
+            patterns.add(frontendUrl.trim());
+        }
+        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
+            for (String origin : allowedOrigins.split(",")) {
+                if (!origin.isBlank()) {
+                    patterns.add(origin.trim());
+                }
+            }
+        }
+        configuration.setAllowedOriginPatterns(new java.util.ArrayList<>(patterns));
         configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type", "Cache-Control"));
         configuration.setAllowCredentials(true);
