@@ -42,8 +42,12 @@ public class AuthApplication {
     }
 
     public static void main(String[] args) {
+        if (System.getenv("JWT_EXPIRATION") == null && System.getProperty("JWT_EXPIRATION") == null) {
+            System.setProperty("JWT_EXPIRATION", "3600000");
+        }
+
         // Fail-fast configuration check
-        String[] requiredKeys = {"ORACLE_URL", "ORACLE_USERNAME", "ORACLE_PASSWORD", "JWT_SECRET", "JWT_EXPIRATION"};
+        String[] requiredKeys = {"ORACLE_URL", "ORACLE_USERNAME", "ORACLE_PASSWORD", "JWT_SECRET"};
         for (String key : requiredKeys) {
             String value = System.getenv(key);
             if (value == null) {
