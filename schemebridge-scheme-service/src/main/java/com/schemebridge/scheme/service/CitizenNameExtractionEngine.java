@@ -401,11 +401,18 @@ public class CitizenNameExtractionEngine {
                         list.add(new RawCandidate(nextLine, "DIRECTLY_AFTER_DOB", 60, i + 1, false, false));
                     }
                 }
-                // 2 lines before DOB
+                // 2 lines before DOB (i - 2)
                 if (i > 1) {
                     String lineMinus2 = lines[i - 2].trim();
                     if (!relPattern.matcher(lineMinus2).find() && !lineMinus2.matches("(?i).*(?:government|india|state|authority).*")) {
-                        list.add(new RawCandidate(lineMinus2, "NEAR_DOB_MINUS_2", 35, i - 2, false, false));
+                        list.add(new RawCandidate(lineMinus2, "NEAR_DOB_MINUS_2", 85, i - 2, false, false));
+                    }
+                }
+                // 3 lines before DOB (i - 3)
+                if (i > 2) {
+                    String lineMinus3 = lines[i - 3].trim();
+                    if (!relPattern.matcher(lineMinus3).find() && !lineMinus3.matches("(?i).*(?:government|india|state|authority).*")) {
+                        list.add(new RawCandidate(lineMinus3, "NEAR_DOB_MINUS_3", 80, i - 3, false, false));
                     }
                 }
             }
@@ -510,6 +517,9 @@ public class CitizenNameExtractionEngine {
         if (PATTERN_INTRAWORD_MIXED_CASE.matcher(raw).find() || PATTERN_INTRAWORD_MIXED_CASE.matcher(normalized).find()) {
             return new NameCandidate(raw, normalized, rc.sourceAnchor(), 0, 0, 0, -100, 0, 0, 0, -100, true, "Font CMap corruption (mixed case)");
         }
+        if (raw.matches(".*[a-z][A-Z]{2,}.*") || normalized.matches(".*[a-z][A-Z]{2,}.*")) {
+            return new NameCandidate(raw, normalized, rc.sourceAnchor(), 0, 0, 0, -100, 0, 0, 0, -100, true, "Font glyph corruption (e.g. bTTT)");
+        }
         if (lowerNorm.matches(".*([a-z])\\1{2,}.*")) {
             return new NameCandidate(raw, normalized, rc.sourceAnchor(), 0, 0, 0, -100, 0, 0, 0, -100, true, "Repeated character artifact");
         }
@@ -525,6 +535,14 @@ public class CitizenNameExtractionEngine {
             String alphaOnly = t.replaceAll("[^A-Za-z]", "").toLowerCase();
             if (alphaOnly.length() >= 2 && !alphaOnly.matches(".*[aeiouy].*")) {
                 return new NameCandidate(raw, normalized, rc.sourceAnchor(), 0, 0, 0, -100, 0, 0, 0, -100, true, "Vowelless token: " + t);
+            }
+        }
+
+        // Single word of 4+ chars with < 15% vowels (consonant cluster e.g. dfgh)
+        if (tokens.length == 1 && normalized.length() >= 4) {
+            long vowels = lowerNorm.chars().filter(c -> "aeiouy".indexOf(c) >= 0).count();
+            if ((double) vowels / normalized.length() < 0.15) {
+                return new NameCandidate(raw, normalized, rc.sourceAnchor(), 0, 0, 0, -100, 0, 0, 0, -100, true, "Consonant cluster / low vowel ratio");
             }
         }
 

@@ -57,6 +57,9 @@ public class Phase12EndToEndWorkflowTest {
     private DocumentOcrService documentOcrService;
 
     @Autowired
+    private com.schemebridge.scheme.repository.CitizenVaultDocumentRepository citizenVaultDocumentRepository;
+
+    @Autowired
     private SchemeDocumentRequirementResolver requirementResolver;
 
     private Scheme agriScheme;
@@ -68,6 +71,7 @@ public class Phase12EndToEndWorkflowTest {
         applicationDocumentRepository.deleteAll();
         applicationRepository.deleteAll();
         ocrResultRepository.deleteAll();
+        citizenVaultDocumentRepository.deleteAll();
         schemeRepository.findBySchemeCode(SCHEME_CODE).ifPresent(schemeRepository::delete);
         citizenProfileRepository.findByUserId(CITIZEN_ID).ifPresent(citizenProfileRepository::delete);
 

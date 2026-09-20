@@ -46,6 +46,9 @@ public class Phase11aRealDocumentValidationTest {
     private CitizenProfileRepository citizenProfileRepository;
 
     @Autowired
+    private com.schemebridge.scheme.repository.CitizenVaultDocumentRepository citizenVaultDocumentRepository;
+
+    @Autowired
     private ApplicationService applicationService;
 
     @Autowired
@@ -67,6 +70,7 @@ public class Phase11aRealDocumentValidationTest {
         applicationDocumentRepository.deleteAll();
         applicationRepository.deleteAll();
         ocrResultRepository.deleteAll();
+        citizenVaultDocumentRepository.deleteAll();
         schemeRepository.findBySchemeCode(SCHEME_CODE).ifPresent(schemeRepository::delete);
         citizenProfileRepository.findByUserId(TEST_USER_ID).ifPresent(citizenProfileRepository::delete);
 

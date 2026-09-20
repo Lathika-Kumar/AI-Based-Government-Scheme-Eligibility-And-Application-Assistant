@@ -317,11 +317,23 @@ public class ApplicationService {
             if (vDoc.getLinkedApplications() != null && applicationId != null && !vDoc.getLinkedApplications().contains(applicationId)) {
                 vDoc.getLinkedApplications().add(applicationId);
             }
+            if (citizenVaultDocumentService != null && vDoc.getId() != null && applicationId != null) {
+                citizenVaultDocumentService.linkApplicationToVaultDocument(vDoc.getId(), applicationId);
+            }
             log.info("Universal Cross-Scheme Auto-Reuse from Citizen Vault: appId={}, reqCode={}, vaultDocId={}",
                     applicationId, ad.getDocumentCode(), vDoc.getId());
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public void syncVaultDocumentsForCitizen(String userId) {
+        if (!StringUtils.hasText(userId)) return;
+        List<Application> userApps = applicationRepository.findAllByUserId(userId);
+        for (Application app : userApps) {
+            syncVaultDocumentsForApplication(app);
+        }
     }
 
     @Transactional

@@ -396,8 +396,23 @@ public class CitizenVaultDocumentService {
         if (StringUtils.hasText(appDoc.getApplicationId()) && !vaultDoc.getLinkedApplications().contains(appDoc.getApplicationId())) {
             vaultDoc.getLinkedApplications().add(appDoc.getApplicationId());
         }
+        if (StringUtils.hasText(appDoc.getIdentityMatchStatus())) {
+            vaultDoc.setIdentityMatchStatus(appDoc.getIdentityMatchStatus());
+        }
 
         return vaultDocumentRepository.save(vaultDoc);
+    }
+
+    @Transactional
+    public void linkApplicationToVaultDocument(String vaultDocId, String applicationId) {
+        if (!StringUtils.hasText(vaultDocId) || !StringUtils.hasText(applicationId)) return;
+        vaultDocumentRepository.findById(vaultDocId).ifPresent(doc -> {
+            if (doc.getLinkedApplications() == null) doc.setLinkedApplications(new ArrayList<>());
+            if (!doc.getLinkedApplications().contains(applicationId)) {
+                doc.getLinkedApplications().add(applicationId);
+                vaultDocumentRepository.save(doc);
+            }
+        });
     }
 
     /**

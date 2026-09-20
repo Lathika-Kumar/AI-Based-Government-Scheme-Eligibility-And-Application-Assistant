@@ -1877,6 +1877,255 @@ class DocumentExtractionServiceTest {
         assertTrue(response.getIdentityVerification().isOverallMatch());
         assertEquals("MATCH", response.getIdentityVerification().getStatus());
     }
+
+    // =========================================================================
+    // 13 CANONICAL DOCUMENT EXTRACTION & IDENTITY VERIFICATION REQUIREMENTS
+    // =========================================================================
+
+    @Test
+    @DisplayName("Canonical Test 1: English Aadhaar name + corrupted regional-language line -> holderName = 'Lathika', not 'bTTT'")
+    void testCanonical1_EnglishAadhaarNameWithCorruptedRegionalGlyph() {
+        String content = "Unique Identification Authority of India\n" +
+                "To\n" +
+                "Lathika\n" +
+                "bTTT\n" +
+                "DOB: 22/03/2007\n" +
+                "Female\n" +
+                "5826 1294 0244\n";
+
+        String extractedName = extractionService.extractNameFromText(content);
+        assertEquals("Lathika", extractedName, "Must extract genuine English name 'Lathika' and reject 'bTTT'");
+        assertFalse(extractionService.isValidName("bTTT"), "'bTTT' must fail isValidName");
+        assertTrue(extractionService.isValidName("Lathika"), "'Lathika' must pass isValidName");
+    }
+
+    @Test
+    @DisplayName("Canonical Test 2: Aadhaar number with one space -> XXXX-XXXX-0244")
+    void testCanonical2_AadhaarNumberSingleSpace() {
+        String input = "5826 1294 0244";
+        String extracted = extractionService.extractAadhaarNumber(input);
+        assertEquals("XXXX-XXXX-0244", extracted);
+    }
+
+    @Test
+    @DisplayName("Canonical Test 3: Aadhaar number with multiple spaces -> XXXX-XXXX-0244")
+    void testCanonical3_AadhaarNumberMultipleSpaces() {
+        String input = "5826  1294  0244";
+        String extracted = extractionService.extractAadhaarNumber(input);
+        assertEquals("XXXX-XXXX-0244", extracted);
+    }
+
+    @Test
+    @DisplayName("Canonical Test 4: Aadhaar number with Unicode NBSP -> XXXX-XXXX-0244")
+    void testCanonical4_AadhaarNumberUnicodeNBSP() {
+        String input = "5826\u00A01294\u00A00244";
+        String extracted = extractionService.extractAadhaarNumber(input);
+        assertEquals("XXXX-XXXX-0244", extracted);
+    }
+
+    @Test
+    @DisplayName("Canonical Test 5: Aadhaar number hyphenated -> XXXX-XXXX-0244")
+    void testCanonical5_AadhaarNumberHyphenated() {
+        String input = "5826-1294-0244";
+        String extracted = extractionService.extractAadhaarNumber(input);
+        assertEquals("XXXX-XXXX-0244", extracted);
+    }
+
+    @Test
+    @DisplayName("Canonical Test 6: Aadhaar number contiguous -> XXXX-XXXX-0244")
+    void testCanonical6_AadhaarNumberContiguous() {
+        String input = "582612940244";
+        String extracted = extractionService.extractAadhaarNumber(input);
+        assertEquals("XXXX-XXXX-0244", extracted);
+    }
+
+    @Test
+    @DisplayName("Canonical Test 7: Aadhaar number labeled -> XXXX-XXXX-0244")
+    void testCanonical7_AadhaarNumberLabeled() {
+        String input = "Aadhaar Number: 5826 1294 0244";
+        String extracted = extractionService.extractAadhaarNumber(input);
+        assertEquals("XXXX-XXXX-0244", extracted);
+    }
+
+    @Test
+    @DisplayName("Canonical Test 8: Missing name -> holderName = null, status = NOT_FOUND, zero profile fallback")
+    void testCanonical8_MissingName_ReturnsNull_ZeroProfileFallback() {
+        CitizenProfile applicantProfile = CitizenProfile.builder()
+                .userId("user-lathika")
+                .displayName("Lathika.K")
+                .dob(LocalDate.of(2007, 3, 22))
+                .build();
+        when(citizenProfileRepository.findByUserId("user-lathika")).thenReturn(Optional.of(applicantProfile));
+
+        String content = "Unique Identification Authority of India\n" +
+                "DOB: 22/03/2007\n" +
+                "Female\n" +
+                "5826 1294 0244\n";
+
+        MockMultipartFile file = new MockMultipartFile("file", "no_name.txt", "text/plain", content.getBytes(StandardCharsets.UTF_8));
+        StructuredDocumentExtractionResponse response = extractionService.extractAndVerify(file, "AADHAAR", "Identity Proof", "user-lathika");
+
+        assertNotNull(response);
+        DocumentFieldExtraction nameField = response.getFields().get("holderName");
+        assertNotNull(nameField);
+        assertNull(nameField.getValue(), "Holder name MUST be null when missing from document; NEVER fall back to profile");
+        assertEquals("NOT_FOUND", nameField.getStatus());
+        assertFalse(response.getIdentityVerification().isOverallMatch());
+    }
+
+    @Test
+    @DisplayName("Canonical Test 9: Corrupted name only -> holderName = null, NOT bTTT")
+    void testCanonical9_CorruptedNameOnly_ReturnsNull() {
+        CitizenProfile applicantProfile = CitizenProfile.builder()
+                .userId("user-lathika")
+                .displayName("Lathika.K")
+                .dob(LocalDate.of(2007, 3, 22))
+                .build();
+        when(citizenProfileRepository.findByUserId("user-lathika")).thenReturn(Optional.of(applicantProfile));
+
+        String content = "Unique Identification Authority of India\n" +
+                "bTTT\n" +
+                "DOB: 22/03/2007\n" +
+                "Female\n" +
+                "5826 1294 0244\n";
+
+        MockMultipartFile file = new MockMultipartFile("file", "corrupt_only.txt", "text/plain", content.getBytes(StandardCharsets.UTF_8));
+        StructuredDocumentExtractionResponse response = extractionService.extractAndVerify(file, "AADHAAR", "Identity Proof", "user-lathika");
+
+        assertNotNull(response);
+        DocumentFieldExtraction nameField = response.getFields().get("holderName");
+        assertNotNull(nameField);
+        assertNull(nameField.getValue(), "Holder name MUST be null when only corrupted glyph noise exists");
+        assertEquals("NOT_FOUND", nameField.getStatus());
+        assertFalse(response.getIdentityVerification().isOverallMatch());
+    }
+
+    @Test
+    @DisplayName("Canonical Test 10: Correct identity -> Lathika, 22/03/2007 vs Lathika.K, 22/03/2007 -> MATCH")
+    void testCanonical10_CorrectIdentityMatch() {
+        CitizenProfile applicantProfile = CitizenProfile.builder()
+                .userId("user-lathika")
+                .displayName("Lathika.K")
+                .dob(LocalDate.of(2007, 3, 22))
+                .gender("Female")
+                .build();
+        when(citizenProfileRepository.findByUserId("user-lathika")).thenReturn(Optional.of(applicantProfile));
+
+        String content = "Unique Identification Authority of India\n" +
+                "To\n" +
+                "Lathika\n" +
+                "DOB: 22/03/2007\n" +
+                "Female\n" +
+                "5826 1294 0244\n";
+
+        MockMultipartFile file = new MockMultipartFile("file", "lathika_correct.txt", "text/plain", content.getBytes(StandardCharsets.UTF_8));
+        StructuredDocumentExtractionResponse response = extractionService.extractAndVerify(file, "AADHAAR", "Identity Proof", "user-lathika");
+
+        assertNotNull(response);
+        assertEquals("Lathika", response.getFields().get("holderName").getValue());
+        assertEquals("2007-03-22", response.getFields().get("dateOfBirth").getValue());
+        assertEquals("XXXX-XXXX-0244", response.getFields().get("documentNumber").getValue());
+
+        IdentityVerificationResult idResult = response.getIdentityVerification();
+        assertNotNull(idResult);
+        assertEquals("MATCH", idResult.getStatus());
+        assertTrue(idResult.isNameMatch());
+        assertTrue(idResult.isDobMatch());
+        assertTrue(idResult.isOverallMatch());
+    }
+
+    @Test
+    @DisplayName("Canonical Test 11: Wrong identity -> Aditya Kumar, 14/08/2005 vs Lathika.K, 22/03/2007 -> MISMATCH")
+    void testCanonical11_WrongIdentityMismatch() {
+        CitizenProfile applicantProfile = CitizenProfile.builder()
+                .userId("user-lathika")
+                .displayName("Lathika.K")
+                .dob(LocalDate.of(2007, 3, 22))
+                .gender("Female")
+                .build();
+        when(citizenProfileRepository.findByUserId("user-lathika")).thenReturn(Optional.of(applicantProfile));
+
+        String content = "Unique Identification Authority of India\n" +
+                "To\n" +
+                "Aditya Kumar\n" +
+                "DOB: 14/08/2005\n" +
+                "Male\n" +
+                "5826 1294 9999\n";
+
+        MockMultipartFile file = new MockMultipartFile("file", "aditya_aadhaar.txt", "text/plain", content.getBytes(StandardCharsets.UTF_8));
+        StructuredDocumentExtractionResponse response = extractionService.extractAndVerify(file, "AADHAAR", "Identity Proof", "user-lathika");
+
+        assertNotNull(response);
+        assertEquals("Aditya Kumar", response.getFields().get("holderName").getValue());
+        IdentityVerificationResult idResult = response.getIdentityVerification();
+        assertNotNull(idResult);
+        assertEquals("MISMATCH", idResult.getStatus());
+        assertFalse(idResult.isNameMatch());
+        assertFalse(idResult.isDobMatch());
+        assertFalse(idResult.isOverallMatch());
+    }
+
+    @Test
+    @DisplayName("Canonical Test 12: Income certificate -> holder name only, DOB not required -> MATCH")
+    void testCanonical12_IncomeCertificate_HolderNameOnly_DobNotRequired() {
+        CitizenProfile applicantProfile = CitizenProfile.builder()
+                .userId("user-lathika")
+                .displayName("Lathika.K")
+                .dob(LocalDate.of(2007, 3, 22))
+                .build();
+        when(citizenProfileRepository.findByUserId("user-lathika")).thenReturn(Optional.of(applicantProfile));
+
+        String content = "GOVERNMENT OF TAMIL NADU\n" +
+                "Revenue Department - Income Certificate\n" +
+                "Certificate No: TN/INC/2026/009988\n" +
+                "This is to certify that Selvi Lathika daughter of Thiru Kumar Late\n" +
+                "Annual Income: Rs. 60000/annum\n";
+
+        MockMultipartFile file = new MockMultipartFile("file", "income.txt", "text/plain", content.getBytes(StandardCharsets.UTF_8));
+        StructuredDocumentExtractionResponse response = extractionService.extractAndVerify(file, "INCOME_CERTIFICATE", "Financial Proof", "user-lathika");
+
+        assertNotNull(response);
+        assertEquals("Lathika", response.getFields().get("holderName").getValue());
+        assertNull(response.getFields().get("dateOfBirth").getValue(), "Income certificate has no DOB");
+
+        IdentityVerificationResult idResult = response.getIdentityVerification();
+        assertNotNull(idResult);
+        assertEquals("MATCH", idResult.getStatus());
+        assertTrue(idResult.isNameMatch());
+        assertNull(idResult.getDobMatch(), "DOB match must be null for name-only documents");
+        assertTrue(idResult.isOverallMatch());
+    }
+
+    @Test
+    @DisplayName("Canonical Test 13: Caste certificate -> holder name only, DOB not required -> MATCH")
+    void testCanonical13_CasteCertificate_HolderNameOnly_DobNotRequired() {
+        CitizenProfile applicantProfile = CitizenProfile.builder()
+                .userId("user-lathika")
+                .displayName("Lathika.K")
+                .dob(LocalDate.of(2007, 3, 22))
+                .build();
+        when(citizenProfileRepository.findByUserId("user-lathika")).thenReturn(Optional.of(applicantProfile));
+
+        String content = "GOVERNMENT OF TAMIL NADU\n" +
+                "Revenue Department - Community Certificate\n" +
+                "Certificate No: TN/CST/2026/001122\n" +
+                "This is to certify that Selvi Lathika daughter of Thiru Kumar Late\n" +
+                "Category: BC\n";
+
+        MockMultipartFile file = new MockMultipartFile("file", "caste.txt", "text/plain", content.getBytes(StandardCharsets.UTF_8));
+        StructuredDocumentExtractionResponse response = extractionService.extractAndVerify(file, "CASTE_CERTIFICATE", "Category Proof", "user-lathika");
+
+        assertNotNull(response);
+        assertEquals("Lathika", response.getFields().get("holderName").getValue());
+        assertNull(response.getFields().get("dateOfBirth").getValue(), "Caste certificate has no DOB");
+
+        IdentityVerificationResult idResult = response.getIdentityVerification();
+        assertNotNull(idResult);
+        assertEquals("MATCH", idResult.getStatus());
+        assertTrue(idResult.isNameMatch());
+        assertNull(idResult.getDobMatch(), "DOB match must be null for name-only documents");
+        assertTrue(idResult.isOverallMatch());
+    }
 }
 
 

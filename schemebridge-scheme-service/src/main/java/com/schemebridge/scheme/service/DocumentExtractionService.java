@@ -63,10 +63,10 @@ public class DocumentExtractionService {
     private final CitizenNameExtractionEngine citizenNameExtractionEngine;
 
     // Standard Regex Patterns for Grounded Indian Document Extraction
-    private static final Pattern PATTERN_AADHAAR = Pattern.compile("(?i)(?:Aadhaar(?:[ \\t]*No(?:\\.|mber)?)?[ \\t:\\-]*)?\\b(\\d{4})[ \\t\\-\\u00A0.]{1,4}(\\d{4})[ \\t\\-\\u00A0.]{1,4}(\\d{4})\\b");
+    private static final Pattern PATTERN_AADHAAR = Pattern.compile("(?i)(?:Aadhaar(?:[ \\t]*(?:Card)?[ \\t]*(?:No(?:\\.|mber)?|Num)?)?[ \\t:\\-]*)?\\b(\\d{4})[ \\t\\-\\u00A0.\\u202F]{1,8}(\\d{4})[ \\t\\-\\u00A0.\\u202F]{1,8}(\\d{4})\\b");
     private static final Pattern PATTERN_AADHAAR_CONTIGUOUS = Pattern.compile("(?i)(?:Aadhaar(?:[ \\t]*No(?:\\.|mber)?)?[ \\t:\\-]*)?\\b(\\d{12})\\b");
     private static final Pattern PATTERN_MASKED_AADHAAR = Pattern.compile("(?i)(?:^|[^A-Za-z0-9])([X*x]{4}[ \\t\\-\\u00A0.]{0,4}[X*x]{4})[ \\t\\-\\u00A0.]{0,4}(\\d{4})\\b");
-    private static final Pattern PATTERN_AADHAAR_LABELED = Pattern.compile("(?i)(?:Aadhaar(?:[ \\t]*(?:Card)?[ \\t]*(?:No|Number|Num))?|UID|आधार(?:[ \\t]*संख्या)?)[ \\t:\\-]+([0-9X*x \\t\\-.]{12,24})");
+    private static final Pattern PATTERN_AADHAAR_LABELED = Pattern.compile("(?i)(?:Aadhaar(?:[ \\t]*(?:Card)?[ \\t]*(?:No(?:\\.|mber)?|Num)?)|UID(?:AI)?|आधार(?:[ \\t]*संख्या)?)[ \\t:\\-]+([0-9X*x \\t\\-.\\u00A0\\u202F]{12,28})");
     // Matches enrollment / reference numbers to EXCLUDE from Aadhaar candidate list
     private static final Pattern PATTERN_ENROLLMENT_PREFIX = Pattern.compile("(?i)(?:Enrollment|Enrolment|EID|Ref(?:erence)?|VID|BARCODE)[^0-9]{0,5}[0-9]");
     private static final Pattern PATTERN_PAN = Pattern.compile("\\b([A-Z]{5}[0-9]{4}[A-Z])\\b");
@@ -110,6 +110,12 @@ public class DocumentExtractionService {
             "thority", "ority", "ramen", "odviae", "iogfn",
             "nadu", "tamil", "state", "pradesh", "karnataka", "kerala", "andhra",
             "revenue", "tahsildar", "srimushnam", "kozhai"
+    );
+    private static final Set<String> STOP_WORDS = Set.of(
+            "of", "used", "with", "and", "the", "not", "date", "birth", "card", "number",
+            "for", "from", "in", "on", "at", "by", "is", "it", "as", "or", "if", "be",
+            "to", "this", "that", "these", "those", "can", "so", "do", "all", "any",
+            "proof", "identity", "citizenship", "help", "code", "portal", "year", "based"
     );
 
     @Autowired
@@ -483,13 +489,36 @@ public class DocumentExtractionService {
             }
 
             // Universal Citizen/Holder Name Extraction across ALL document types
-            CitizenNameExtractionEngine.ExtractionResult nameResult = citizenNameExtractionEngine.extractCitizenHolderName(
-                    extracted.pdfText() != null ? extracted.pdfText() : rawText,
-                    extracted.visualOcrText(),
-                    extracted.ocrData(),
-                    detectedDocType
-            );
-            holderName = nameResult.holderName();
+            if ("AADHAAR".equals(detectedDocType)) {
+                String aadhaarName = extractNameFromText(rawText);
+                if (aadhaarName != null && isValidName(aadhaarName)) {
+                    holderName = aadhaarName;
+                } else {
+                    CitizenNameExtractionEngine.ExtractionResult nameResult = citizenNameExtractionEngine.extractCitizenHolderName(
+                            extracted.pdfText() != null ? extracted.pdfText() : rawText,
+                            extracted.visualOcrText(),
+                            extracted.ocrData(),
+                            detectedDocType
+                    );
+                    if (nameResult != null && nameResult.holderName() != null && isValidName(nameResult.holderName())) {
+                        holderName = nameResult.holderName();
+                    } else {
+                        holderName = null;
+                    }
+                }
+            } else {
+                CitizenNameExtractionEngine.ExtractionResult nameResult = citizenNameExtractionEngine.extractCitizenHolderName(
+                        extracted.pdfText() != null ? extracted.pdfText() : rawText,
+                        extracted.visualOcrText(),
+                        extracted.ocrData(),
+                        detectedDocType
+                );
+                if (nameResult != null && nameResult.holderName() != null && isValidName(nameResult.holderName())) {
+                    holderName = nameResult.holderName();
+                } else {
+                    holderName = null;
+                }
+            }
         }
 
         // Build structured fields with explicit FOUND / NOT_FOUND and source
@@ -589,29 +618,34 @@ public class DocumentExtractionService {
         }
 
         if ((mime != null && mime.contains("pdf")) || fName.endsWith(".pdf")) {
-            String pdfBoxText = null;
+            String posBoxText = null;
+            String streamBoxText = null;
             try (PDDocument document = Loader.loadPDF(new RandomAccessReadBuffer(bytes))) {
                 PDFTextStripper posStripper = new PDFTextStripper();
                 posStripper.setSortByPosition(true);
                 String posTxt = posStripper.getText(document);
+                if (posTxt != null && !posTxt.isBlank()) {
+                    posBoxText = normalizePdfWhitespace(posTxt);
+                }
 
                 PDFTextStripper streamStripper = new PDFTextStripper();
                 streamStripper.setSortByPosition(false);
                 String streamTxt = streamStripper.getText(document);
-
-                StringBuilder sb = new StringBuilder();
-                if (posTxt != null && !posTxt.isBlank()) {
-                    sb.append(posTxt.trim());
-                }
-                if (streamTxt != null && !streamTxt.isBlank() && (posTxt == null || !posTxt.contains(streamTxt.trim()))) {
-                    if (sb.length() > 0) sb.append("\n");
-                    sb.append(streamTxt.trim());
-                }
-                if (sb.length() > 0) {
-                    pdfBoxText = sb.toString();
+                if (streamTxt != null && !streamTxt.isBlank()) {
+                    streamBoxText = normalizePdfWhitespace(streamTxt);
                 }
             } catch (Exception e) {
                 log.debug("PDFBox text stripping note: {}", e.getMessage());
+            }
+
+            String pdfBoxText = posBoxText;
+            if (streamBoxText != null) {
+                String streamHolder = extractNameFromText(streamBoxText);
+                String posHolder = (posBoxText != null) ? extractNameFromText(posBoxText) : null;
+                if (streamHolder != null && isValidName(streamHolder) && (posHolder == null || !isValidName(posHolder))) {
+                    log.info("PDF stream order preferred over position sorting for {}: found holder '{}'", filename, streamHolder);
+                    pdfBoxText = streamBoxText;
+                }
             }
 
             // Render PDF page 0 to JPEG for visual OCR inspection if needed
@@ -621,19 +655,29 @@ public class DocumentExtractionService {
             CitizenNameExtractionEngine.StructuredOcrData ocrData = ocrRes.ocrData();
 
             // Check if PDFBox produced a valid holder name or Aadhaar number
-            CitizenNameExtractionEngine.ExtractionResult pdfNameResult = (pdfBoxText != null)
-                    ? citizenNameExtractionEngine.extractCitizenHolderName(pdfBoxText, null, null)
-                    : null;
-            CitizenNameExtractionEngine.ExtractionResult ocrNameResult = (ocrText != null)
-                    ? citizenNameExtractionEngine.extractCitizenHolderName(ocrText, ocrData, null)
-                    : null;
+            String pdfHolder = (pdfBoxText != null) ? extractNameFromText(pdfBoxText) : null;
+            if (pdfHolder == null || !isValidName(pdfHolder)) {
+                CitizenNameExtractionEngine.ExtractionResult pdfNameResult = (pdfBoxText != null)
+                        ? citizenNameExtractionEngine.extractCitizenHolderName(pdfBoxText, null, null)
+                        : null;
+                if (pdfNameResult != null && "FOUND".equals(pdfNameResult.status()) && isValidName(pdfNameResult.holderName())) {
+                    pdfHolder = pdfNameResult.holderName();
+                }
+            }
 
-            String pdfHolder = (pdfNameResult != null && "FOUND".equals(pdfNameResult.status())) ? pdfNameResult.holderName() : null;
-            String ocrHolder = (ocrNameResult != null && "FOUND".equals(ocrNameResult.status())) ? ocrNameResult.holderName() : null;
+            String ocrHolder = (ocrText != null) ? extractNameFromText(ocrText) : null;
+            if (ocrHolder == null || !isValidName(ocrHolder)) {
+                CitizenNameExtractionEngine.ExtractionResult ocrNameResult = (ocrText != null)
+                        ? citizenNameExtractionEngine.extractCitizenHolderName(ocrText, ocrData, null)
+                        : null;
+                if (ocrNameResult != null && "FOUND".equals(ocrNameResult.status()) && isValidName(ocrNameResult.holderName())) {
+                    ocrHolder = ocrNameResult.holderName();
+                }
+            }
             String testNum = (pdfBoxText != null) ? extractAadhaarNumber(pdfBoxText) : null;
 
             // If visual OCR found a valid holder while PDF text produced no valid holder or an invalid string
-            if (ocrHolder != null && (pdfHolder == null || !isValidName(pdfHolder))) {
+            if (ocrHolder != null && isValidName(ocrHolder) && (pdfHolder == null || !isValidName(pdfHolder))) {
                 log.info("Visual OCR preferred over unreliable/disordered PDF text for {}: found holder '{}'", filename, ocrHolder);
                 return new ExtractedTextResult(ocrText, "OCR_VISUAL", ocrData);
             }
@@ -797,6 +841,20 @@ public class DocumentExtractionService {
         }
     }
 
+    private String normalizePdfWhitespace(String s) {
+        if (s == null) return null;
+        String normalized = s.replace('\u00A0', ' ')
+                .replace('\u202F', ' ')
+                .replace('\u200B', ' ')
+                .replace('\uFEFF', ' ')
+                .replace('\u200E', ' ')
+                .replace('\u200F', ' ');
+        return normalized.replaceAll("\r\n|\r", "\n")
+                .replaceAll("[ \t]+", " ")
+                .replaceAll("\n{3,}", "\n\n")
+                .trim();
+    }
+
     /**
      * Extracts a valid Aadhaar number from document text.
      *
@@ -812,9 +870,9 @@ public class DocumentExtractionService {
      * NEVER returns a number derived from enrollment IDs, barcodes, PINs, or
      * unrelated numeric sequences.
      */
-    private String extractAadhaarNumber(String text) {
+    public String extractAadhaarNumber(String text) {
         if (text == null || text.isBlank()) return null;
-        String clean = text.replace('\u00A0', ' ');
+        String clean = text.replaceAll("[\\u00A0\\u202F\\u200B\\uFEFF]", " ");
         String[] lines = clean.split("\r?\n");
 
         // ── Phase 0: Masked Aadhaar (XXXX XXXX 0244 / **** **** 0244 / xxxxxxxx0244) ──────────────
@@ -1082,12 +1140,106 @@ public class DocumentExtractionService {
 
     public String extractNameFromText(String text) {
         if (text == null || text.isBlank()) return null;
-        CitizenNameExtractionEngine.ExtractionResult res = citizenNameExtractionEngine.extractCitizenHolderName(
-                text,
-                null,
-                "GENERAL"
-        );
-        return res.holderName();
+
+        String normalized = text.replaceAll("[\\u00A0\\u202F\\u200B\\uFEFF]", " ")
+                                .replace("\r\n", "\n")
+                                .replace('\r', '\n');
+        String[] lines = normalized.split("\n");
+
+        record RawCand(String raw, boolean afterTo, boolean rightNearDob, int offset, int lineIndex) {}
+        List<RawCand> rawCandidates = new ArrayList<>();
+
+        // Locate DOB line index if present
+        int dobLineIndex = -1;
+        for (int i = 0; i < lines.length; i++) {
+            if (PATTERN_DOB.matcher(lines[i]).find()) {
+                dobLineIndex = i;
+                break;
+            }
+        }
+
+        // 1. Collect lines after / on "To"
+        for (int i = 0; i < lines.length; i++) {
+            String l = lines[i].trim();
+            Matcher mTo = Pattern.compile("(?i)^To(?:\\s*[:\\-]\\s*|\\s+)(.+)$").matcher(l);
+            if (mTo.find()) {
+                String candidate = mTo.group(1).trim();
+                if (!candidate.isBlank()) {
+                    boolean rightNear = (dobLineIndex >= 0 && Math.abs(dobLineIndex - i) <= 1);
+                    int off = (dobLineIndex >= 0) ? Math.abs(dobLineIndex - i) : 0;
+                    rawCandidates.add(new RawCand(candidate, true, rightNear, off, i));
+                }
+            } else if (l.matches("(?i)^To\\s*[:\\-]?$")) {
+                if (i + 1 < lines.length && !lines[i + 1].isBlank()) {
+                    boolean rightNear = (dobLineIndex >= 0 && Math.abs(dobLineIndex - (i + 1)) <= 1);
+                    int off = (dobLineIndex >= 0) ? Math.abs(dobLineIndex - (i + 1)) : 0;
+                    rawCandidates.add(new RawCand(lines[i + 1].trim(), true, rightNear, off, i + 1));
+                }
+                if (i + 2 < lines.length && !lines[i + 2].isBlank()) {
+                    boolean rightNear = (dobLineIndex >= 0 && Math.abs(dobLineIndex - (i + 2)) <= 1);
+                    int off = (dobLineIndex >= 0) ? Math.abs(dobLineIndex - (i + 2)) : 0;
+                    rawCandidates.add(new RawCand(lines[i + 2].trim(), true, rightNear, off, i + 2));
+                }
+            }
+        }
+
+        // 2. Collect lines adjacent to DOB (i - 1, i - 2, i - 3 AND i + 1, i + 2)
+        if (dobLineIndex >= 0) {
+            for (int offset = 1; offset <= 3; offset++) {
+                int idx = dobLineIndex - offset;
+                if (idx >= 0 && !lines[idx].isBlank()) {
+                    rawCandidates.add(new RawCand(lines[idx].trim(), false, offset == 1, offset, idx));
+                }
+            }
+            for (int offset = 1; offset <= 2; offset++) {
+                int idx = dobLineIndex + offset;
+                if (idx < lines.length && !lines[idx].isBlank()) {
+                    rawCandidates.add(new RawCand(lines[idx].trim(), false, offset == 1, offset, idx));
+                }
+            }
+        }
+
+        // 3. Explicit Name label (e.g. Name: Lathika Kumar)
+        Matcher mNameExp = PATTERN_NAME_EXPLICIT.matcher(normalized);
+        while (mNameExp.find()) {
+            rawCandidates.add(new RawCand(mNameExp.group(1).trim(), false, false, 0, -1));
+        }
+
+        // Clean, filter with isValidName, and score candidates
+        record ScoredCandidate(String name, int score) {}
+        List<ScoredCandidate> scored = new ArrayList<>();
+
+        for (RawCand rc : rawCandidates) {
+            String cleaned = cleanCandidateName(rc.raw);
+            boolean valid = (cleaned != null && isValidName(cleaned));
+            log.info("extractNameFromText candidate: raw='{}' -> cleaned='{}', valid={}", rc.raw, cleaned, valid);
+            if (!valid) {
+                continue;
+            }
+
+            int score = scoreCandidate(cleaned, rc.afterTo, rc.rightNearDob);
+            if (rc.offset > 0 && rc.offset <= 3) {
+                score += 5; // Near DOB bonus
+            }
+            log.info("extractNameFromText candidate scored: '{}' -> score={}", cleaned, score);
+            scored.add(new ScoredCandidate(cleaned, score));
+        }
+
+        if (scored.isEmpty()) {
+            // Fallback: try citizenNameExtractionEngine
+            CitizenNameExtractionEngine.ExtractionResult res = citizenNameExtractionEngine.extractCitizenHolderName(
+                    text,
+                    null,
+                    "AADHAAR"
+            );
+            if (res != null && res.holderName() != null && isValidName(res.holderName())) {
+                return res.holderName();
+            }
+            return null;
+        }
+
+        scored.sort((a, b) -> Integer.compare(b.score(), a.score()));
+        return scored.get(0).name();
     }
 
     private int scoreCandidate(String name, boolean afterTo, boolean rightBeforeDob) {
@@ -1095,11 +1247,16 @@ public class DocumentExtractionService {
         if (afterTo) score += 15;
         if (rightBeforeDob) score += 5;
 
+        // Normal English personal name
+        if (name.matches("^[A-Za-z.\\s]{2,40}$")) {
+            score += 10;
+        }
+
         // Proper capitalization bonus (Title Case: "Lathika", "Lathika Kumar", "Lathika K")
         if (name.matches("^[A-Z][a-zA-Z.]*(?:\\s+[A-Z][a-zA-Z.]*)*$")) {
-            score += 10;
-        } else if (name.matches("^[A-Z\\s.]+$")) {
             score += 5;
+        } else if (name.matches("^[A-Z\\s.]+$")) {
+            score += 2;
         }
 
         // Multi-word name bonus
@@ -1135,8 +1292,8 @@ public class DocumentExtractionService {
         List<String> goodTokens = new ArrayList<>();
         for (String tok : tokens) {
             String lower = tok.replaceAll("[^A-Za-z]", "").toLowerCase();
-            // Reject token if it is a known address keyword
-            if (ADDRESS_KEYWORDS.contains(lower)) continue;
+            // Reject token if it is a known address keyword or stop-word
+            if (ADDRESS_KEYWORDS.contains(lower) || STOP_WORDS.contains(lower)) continue;
             // Reject token if it shows intra-word mixed casing (font CMap corruption artifact)
             if (PATTERN_INTRAWORD_MIXED_CASE.matcher(tok).find()) continue;
             // Reject token if it is 4+ chars entirely uppercase in a multi-token context
@@ -1145,12 +1302,11 @@ public class DocumentExtractionService {
             if (alpha.length() >= 4 && alpha.equals(alpha.toUpperCase()) && tokens.length > 1) continue;
             goodTokens.add(tok);
         }
-        // If we filtered away all tokens, return the cleaned string (so isValidName can reject it)
-        if (goodTokens.isEmpty()) return normalizePersonNameCandidate(cleaned);
+        if (goodTokens.isEmpty()) return null;
         return normalizePersonNameCandidate(String.join(" ", goodTokens));
     }
 
-    private boolean isValidName(String name) {
+    public boolean isValidName(String name) {
         if (name == null) return false;
         String trimmed = name.trim();
         if (trimmed.length() < 3 || trimmed.length() > 45) return false;
@@ -1165,7 +1321,8 @@ public class DocumentExtractionService {
                 "signature", "digitally", "signed", "portal",
                 "unique", "revenue", "verification", "application", "certification",
                 "registration", "declaration", "authentication", "uidai", "llittlo",
-                "lual", "reading", "barcode", "tahsildar"
+                "lual", "reading", "barcode", "tahsildar", "helpdesk", "helpline",
+                "biometric", "information", "guidelines", "onloirn"
         };
         for (String word : blacklistContains) {
             if (lower.contains(word)) return false;
@@ -1180,6 +1337,9 @@ public class DocumentExtractionService {
                 "male", "female", "transgender", "income", "caste", "ration", "mera", "pehchan",
                 "help", "download", "issue", "valid", "date", "year", "state", "taluk", "district",
                 "village", "town", "street", "door", "table", "source", "applicant",
+                "code", "qr", "pin", "sub", "post", "vtc", "po", "scanner", "reader", "app",
+                "lock", "unlock", "proof", "rules", "rule", "regulations", "online", "offline",
+                "xml", "mobile", "phone", "email", "toll", "free", "contact", "support", "letter",
                 "be", "on", "can", "to", "of", "the", "in", "at", "by", "for", "with", "from",
                 "an", "is", "it", "as", "or", "if", "and", "so", "do", "not", "all", "any"
         };
@@ -1198,7 +1358,7 @@ public class DocumentExtractionService {
         }
 
         // 4. Must NOT look like raw font glyph corruption (e.g. single lowercase letter followed by uppercase letters like "bTTT")
-        if (trimmed.matches("^[a-z][A-Z]{2,}$")) {
+        if (trimmed.matches(".*[a-z][A-Z]{2,}.*")) {
             return false;
         }
 
@@ -1217,6 +1377,18 @@ public class DocumentExtractionService {
             String cleanWord = w.replaceAll("[^A-Za-z]", "").toLowerCase();
             if (cleanWord.length() >= 2 && !cleanWord.matches(".*[aeiouy].*")) {
                 return false;
+            }
+        }
+
+        // 6b. Single words of 4+ chars must have at least 15% vowels (rejects heavy consonant clusters like "dfgh")
+        if (words.length == 1) {
+            String cleanWord = words[0].replaceAll("[^A-Za-z]", "").toLowerCase();
+            if (cleanWord.length() >= 4) {
+                long vowels = cleanWord.chars().filter(c -> "aeiouy".indexOf(c) >= 0).count();
+                double vowelRatio = (double) vowels / cleanWord.length();
+                if (vowelRatio < 0.15) {
+                    return false;
+                }
             }
         }
 

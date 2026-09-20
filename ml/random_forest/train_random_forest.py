@@ -4,9 +4,12 @@ SchemeBridge Standalone Random Forest Machine Learning Experimentation Pipeline
 File: ml/random_forest/train_random_forest.py
 
 Purpose:
-Trains and evaluates a scikit-learn Pipeline with ColumnTransformer, OneHotEncoder,
-and RandomForestClassifier(n_estimators=200, random_state=42, class_weight='balanced')
-for citizen welfare scheme eligibility classification.
+"Citizen Welfare Scheme Recommendation Model"
+The model demonstrates how citizen profile attributes can be used by a Random Forest
+classifier to recommend the most relevant government welfare scheme category for a citizen.
+
+Conceptual Output Flow:
+Citizen Profile -> Feature Processing -> Random Forest Classifier -> Predicted Scheme Category -> Recommended Welfare Scheme
 
 Architectural Isolation:
 - This module is strictly an offline experimentation pipeline.
@@ -65,332 +68,341 @@ def get_paths():
     }
 
 
-def generate_or_load_dataset(csv_path: str) -> pd.DataFrame:
+def generate_or_load_dataset(csv_path: str, force_regenerate: bool = False) -> pd.DataFrame:
     """
-    Loads or creates the documented experimental citizen eligibility dataset.
-    Note on Dataset Origin & Ground Truth:
-    The raw SchemeBridge scheme catalog (master_schemes_4734.json) contains official
-    scheme criteria definitions, but does not contain labeled citizen application
-    decisions. To perform supervised Random Forest training, this dataset models
-    citizen demographic profiles (strictly mirroring CitizenEligibilityProfile.java)
-    evaluated against statutory multi-criteria welfare gatekeepers.
+    Loads or creates the documented demonstration dataset.
+    
+    Label: Demonstration / synthetic ML dataset for Random Forest scheme recommendation.
+    Note:
+    This dataset models citizen demographic profiles and maps them to appropriate
+    statutory welfare scheme categories. It is strictly for standalone ML demonstration.
     """
-    if os.path.exists(csv_path):
-        return pd.read_csv(csv_path)
+    if os.path.exists(csv_path) and not force_regenerate:
+        # Check if existing dataset has scheme_category
+        existing_df = pd.read_csv(csv_path)
+        if "scheme_category" in existing_df.columns:
+            return existing_df
 
-    print(f"[*] Generating reproducible experimental dataset at: {csv_path}")
+    print(f"[*] Generating reproducible demonstration dataset at: {csv_path}")
     np.random.seed(42)
     n_samples = 5000
 
+    # Attributes
     ages = np.random.randint(18, 76, size=n_samples)
-    genders = np.random.choice(["MALE", "FEMALE", "TRANSGENDER"], size=n_samples, p=[0.50, 0.48, 0.02])
+    genders = np.random.choice(["Female", "Male", "Transgender"], size=n_samples, p=[0.49, 0.49, 0.02])
     states = np.random.choice([
-        "TAMIL_NADU", "MAHARASHTRA", "UTTAR_PRADESH", "KARNATAKA",
-        "KERALA", "BIHAR", "RAJASTHAN", "GUJARAT", "MADHYA_PRADESH", "WEST_BENGAL"
+        "Tamil Nadu", "Maharashtra", "Uttar Pradesh", "Karnataka",
+        "Kerala", "Bihar", "Rajasthan", "Gujarat", "Madhya Pradesh", "West Bengal"
     ], size=n_samples)
-    incomes = np.round(np.random.exponential(scale=200000, size=n_samples) + 25000, -2)
+    
+    # Incomes in INR: distributed across economically weaker, lower-middle, and middle class
+    incomes = np.round(np.random.exponential(scale=180000, size=n_samples) + 30000, -2)
+    
     occupations = np.random.choice([
-        "FARMER", "STUDENT", "SELF_EMPLOYED", "UNEMPLOYED", "SALARIED", "ARTISAN", "DAILY_WAGE_WORKER"
-    ], size=n_samples, p=[0.24, 0.16, 0.18, 0.12, 0.14, 0.08, 0.08])
-    categories = np.random.choice(["GENERAL", "OBC", "SC", "ST", "EWS"], size=n_samples, p=[0.28, 0.38, 0.18, 0.10, 0.06])
-    marital = np.random.choice(["SINGLE", "MARRIED", "WIDOWED", "DIVORCED"], size=n_samples, p=[0.25, 0.62, 0.09, 0.04])
-    disability = np.random.choice([0, 1], size=n_samples, p=[0.94, 0.06])
-    rural_urban = np.random.choice(["RURAL", "URBAN", "SEMI_URBAN"], size=n_samples, p=[0.60, 0.25, 0.15])
-    employment = np.random.choice(["EMPLOYED", "UNEMPLOYED", "SELF_EMPLOYED", "STUDENT"], size=n_samples, p=[0.45, 0.15, 0.25, 0.15])
-    land = np.where(occupations == "FARMER", np.round(np.random.uniform(0.5, 10.0, size=n_samples), 1), 0.0)
-    bpl = np.where(incomes <= 120000, np.random.choice([0, 1], size=n_samples, p=[0.15, 0.85]), 0)
-
-    # Multi-criteria statutory eligibility evaluation rules:
-    eligible = []
+        "Student", "Farmer", "Artisan", "Self-Employed", "Daily Wage Worker", "Unemployed", "Salaried"
+    ], size=n_samples, p=[0.18, 0.22, 0.10, 0.16, 0.12, 0.10, 0.12])
+    
+    categories = np.random.choice(["OBC", "General", "SC", "ST", "EWS"], size=n_samples, p=[0.38, 0.28, 0.18, 0.10, 0.06])
+    rural_flags = np.random.choice(["Yes", "No"], size=n_samples, p=[0.62, 0.38])
+    
+    # Students: students or youth under 25 who study
+    student_flags = []
     for i in range(n_samples):
-        # Criterion 1: Small/Marginal Farmer Income Support (e.g., PM-KISAN, State Rythu/Krishi schemes)
-        c1 = (occupations[i] == "FARMER") and (land[i] <= 5.0) and (incomes[i] <= 400000)
-        # Criterion 2: Low Income / BPL / Affirmative Action Welfare (e.g., PMAY, Ayushman, State Aid)
-        c2 = (bpl[i] == 1 or incomes[i] <= 250000) and (disability[i] == 1 or categories[i] in ["SC", "ST", "EWS", "OBC"]) and (ages[i] >= 18)
-        # Criterion 3: Youth / Student Education & Scholarship Grant (e.g., NSP, Post-Matric)
-        c3 = (occupations[i] == "STUDENT") and (ages[i] <= 28) and (incomes[i] <= 300000)
-        # Criterion 4: Women Economic Empowerment & Pension Support
-        c4 = (genders[i] == "FEMALE") and (incomes[i] <= 350000) and (marital[i] in ["WIDOWED", "DIVORCED", "MARRIED"]) and (ages[i] >= 21)
+        if occupations[i] == "Student":
+            student_flags.append("Yes")
+        elif ages[i] <= 24 and np.random.rand() < 0.15:
+            student_flags.append("Yes")
+        else:
+            student_flags.append("No")
+    student_flags = np.array(student_flags)
 
-        is_elig = 1 if (c1 or c2 or c3 or c4) else 0
-        eligible.append(is_elig)
+    # Disability status: ~6% of citizens
+    disability_flags = np.random.choice(["Yes", "No"], size=n_samples, p=[0.06, 0.94])
+
+    # Target: scheme_category
+    # Categories:
+    # 1. "Education & Scholarships"
+    # 2. "Agriculture & Farmer Welfare"
+    # 3. "Social Welfare & Disability Support"
+    # 4. "Senior Citizen Pension & Healthcare"
+    # 5. "Women & Child Development"
+    # 6. "Skill Development & Entrepreneurship"
+    # 7. "Rural & Urban Livelihood Support"
+    scheme_categories = []
+    for i in range(n_samples):
+        age = ages[i]
+        gender = genders[i]
+        inc = incomes[i]
+        occ = occupations[i]
+        cat = categories[i]
+        rur = rural_flags[i]
+        stu = student_flags[i]
+        dis = disability_flags[i]
+
+        # Decision logic for statutory category assignment
+        if dis == "Yes" and inc <= 500000:
+            target = "Social Welfare & Disability Support"
+        elif stu == "Yes" or occ == "Student":
+            target = "Education & Scholarships"
+        elif age >= 60:
+            target = "Senior Citizen Pension & Healthcare"
+        elif occ == "Farmer":
+            target = "Agriculture & Farmer Welfare"
+        elif gender == "Female" and (inc <= 350000 or cat in ["SC", "ST", "OBC"] or rur == "Yes"):
+            target = "Women & Child Development"
+        elif occ in ["Artisan", "Self-Employed"]:
+            target = "Skill Development & Entrepreneurship"
+        else:
+            target = "Rural & Urban Livelihood Support"
+
+        # Realistic stochastic variance (1.5% edge case / alternative scheme match)
+        if np.random.rand() < 0.015:
+            possible = [
+                "Education & Scholarships", "Agriculture & Farmer Welfare",
+                "Social Welfare & Disability Support", "Senior Citizen Pension & Healthcare",
+                "Women & Child Development", "Skill Development & Entrepreneurship",
+                "Rural & Urban Livelihood Support"
+            ]
+            target = np.random.choice(possible)
+
+        scheme_categories.append(target)
 
     df = pd.DataFrame({
         "age": ages,
         "gender": genders,
         "state": states,
-        "annual_income": incomes,
+        "income": incomes,
         "occupation": occupations,
         "category": categories,
-        "marital_status": marital,
-        "disability_status": disability,
-        "rural_urban_status": rural_urban,
-        "employment_status": employment,
-        "land_ownership": land,
-        "bpl_status": bpl,
-        "eligible": eligible,
+        "rural": rural_flags,
+        "student": student_flags,
+        "disability": disability_flags,
+        "scheme_category": scheme_categories,
     })
 
     df.to_csv(csv_path, index=False)
+    print(f"[+] Dataset created with {len(df)} records.")
     return df
 
 
-def plot_and_save_confusion_matrix(cm, save_path: str):
+def plot_and_save_confusion_matrix(cm, labels, save_path: str):
     """Generates and saves an annotated confusion matrix heatmap."""
-    fig, ax = plt.subplots(figsize=(6, 5), dpi=300)
+    fig, ax = plt.subplots(figsize=(10, 8), dpi=300)
     im = ax.imshow(cm, interpolation="nearest", cmap=plt.cm.Blues)
     ax.figure.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
 
-    classes = ["Not Eligible (0)", "Eligible (1)"]
+    # Format ticks
     ax.set(
         xticks=np.arange(cm.shape[1]),
         yticks=np.arange(cm.shape[0]),
-        xticklabels=classes,
-        yticklabels=classes,
-        title="Random Forest Confusion Matrix\nCitizen Welfare Scheme Eligibility",
-        ylabel="True Label",
-        xlabel="Predicted Label",
+        xticklabels=labels,
+        yticklabels=labels,
+        title="SchemeBridge Random Forest - Confusion Matrix\nCitizen Welfare Scheme Recommendation",
+        ylabel="True Scheme Category",
+        xlabel="Predicted Scheme Category",
     )
+    plt.setp(ax.get_xticklabels(), rotation=35, ha="right", rotation_mode="anchor")
 
+    # Annotate text
     thresh = cm.max() / 2.0
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
+            val = cm[i, j]
             ax.text(
-                j, i, format(cm[i, j], "d"),
-                ha="center", va="center",
-                color="white" if cm[i, j] > thresh else "black",
-                fontsize=11, fontweight="bold"
+                j,
+                i,
+                f"{val:,}",
+                ha="center",
+                va="center",
+                color="white" if val > thresh else "black",
+                fontsize=8,
+                fontweight="bold" if i == j else "normal",
             )
 
     fig.tight_layout()
     plt.savefig(save_path, bbox_inches="tight")
-    plt.close(fig)
+    plt.close()
+    print(f"[+] Confusion matrix plot saved: {save_path}")
 
 
-def train_model():
-    """Main training execution."""
+def main():
     paths = get_paths()
+    print("==================================================")
+    print("SCHEMEBRIDGE RANDOM FOREST ML TRAINING PIPELINE")
+    print("Citizen Welfare Scheme Recommendation Model")
+    print("==================================================")
 
-    # 1. Load Dataset
-    df = generate_or_load_dataset(paths["data_path"])
-    target_col = "eligible"
+    # Step 1 & 2: Load and inspect dataset
+    df = generate_or_load_dataset(paths["data_path"], force_regenerate=True)
+    total_records = len(df)
+    print(f"[+] Total dataset records: {total_records}")
+    print(f"[+] Scheme category distribution:\n{df['scheme_category'].value_counts()}\n")
 
-    X = df.drop(columns=[target_col])
+    # Feature and target segregation
+    target_col = "scheme_category"
+    feature_cols = [c for c in df.columns if c != target_col]
+    X = df[feature_cols]
     y = df[target_col]
 
-    num_samples = len(df)
-    num_features = X.shape[1]
-    class_dist = y.value_counts().to_dict()
+    categorical_cols = ["gender", "state", "occupation", "category", "rural", "student", "disability"]
+    numerical_cols = ["age", "income"]
 
-    # Pre-training dataset summary
-    print("==================================================")
-    print("RANDOM FOREST TRAINING")
-    print("==================================================")
-    print(f"Dataset shape: {num_samples} x {num_features}")
-    print(f"Number of samples: {num_samples}")
-    print(f"Number of features: {num_features}")
-    print(f"Target column: {target_col}")
-    print("Class distribution:")
-    for k in sorted(class_dist.keys()):
-        print(f"{k} -> {class_dist[k]}")
-    print("==================================================")
-    print("")
-
-    # 2. Define Features & ColumnTransformer Preprocessor
-    cat_cols = ["gender", "state", "occupation", "category", "marital_status", "rural_urban_status", "employment_status"]
-    num_cols = ["age", "annual_income", "disability_status", "land_ownership", "bpl_status"]
-
+    # Step 3: Preprocessing pipeline
     preprocessor = ColumnTransformer(
         transformers=[
-            ("num", StandardScaler(), num_cols),
-            ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), cat_cols),
+            ("num", StandardScaler(), numerical_cols),
+            ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
         ]
     )
 
-    # 3. Define Pipeline with RandomForestClassifier
-    n_estimators = 200
-    random_state = 42
-    class_weight = "balanced"
+    # Step 4: Split into training and testing data (80/20 stratified)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.20, random_state=42, stratify=y
+    )
+    train_count = len(X_train)
+    test_count = len(X_test)
+    print(f"[+] Split: {train_count} training samples, {test_count} testing samples (80/20 stratified).")
 
-    rf_classifier = RandomForestClassifier(
-        n_estimators=n_estimators,
-        random_state=random_state,
-        class_weight=class_weight,
+    # Step 5: Configure and train RandomForestClassifier
+    rf = RandomForestClassifier(
+        n_estimators=200,
+        max_depth=16,
+        min_samples_split=4,
+        min_samples_leaf=2,
+        class_weight="balanced",
+        random_state=42,
         n_jobs=-1,
     )
 
-    pipeline = Pipeline(
-        steps=[
-            ("preprocessor", preprocessor),
-            ("classifier", rf_classifier),
-        ]
-    )
+    pipeline = Pipeline(steps=[
+        ("preprocessor", preprocessor),
+        ("classifier", rf),
+    ])
 
-    # 4. Stratified Train / Test Split
-    test_size = 0.20
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=random_state, stratify=y
-    )
-
-    train_samples = len(X_train)
-    test_samples = len(X_test)
-
-    # 5. Train Model
+    print("[*] Training RandomForestClassifier (200 trees)...")
     pipeline.fit(X_train, y_train)
+    print("[+] Model training complete.")
 
-    # 6. Evaluate Model on Holdout Test Set
+    # Step 6: Generate predictions
     y_pred = pipeline.predict(X_test)
 
-    acc = float(accuracy_score(y_test, y_pred))
-    prec = float(precision_score(y_test, y_pred, average="weighted", zero_division=0))
-    rec = float(recall_score(y_test, y_pred, average="weighted", zero_division=0))
-    f1 = float(f1_score(y_test, y_pred, average="weighted", zero_division=0))
+    # Step 7: Calculate evaluation metrics
+    acc = accuracy_score(y_test, y_pred)
+    prec = precision_score(y_test, y_pred, average="weighted", zero_division=0)
+    rec = recall_score(y_test, y_pred, average="weighted", zero_division=0)
+    f1 = f1_score(y_test, y_pred, average="weighted", zero_division=0)
 
-    class_rep_text = classification_report(y_test, y_pred, digits=4, zero_division=0)
-    class_rep_dict = classification_report(y_test, y_pred, output_dict=True, zero_division=0)
-    cm = confusion_matrix(y_test, y_pred)
+    classes = sorted(list(pipeline.classes_))
+    cm = confusion_matrix(y_test, y_pred, labels=classes)
+    clf_report = classification_report(y_test, y_pred, digits=4, zero_division=0)
 
-    # 7. Extract Feature Importances
-    preprocessor_fitted = pipeline.named_steps["preprocessor"]
-    rf_fitted = pipeline.named_steps["classifier"]
-    encoded_feature_names = preprocessor_fitted.get_feature_names_out()
-
-    importances = pd.DataFrame({
-        "feature": encoded_feature_names,
-        "importance": rf_fitted.feature_importances_,
-    }).sort_values(by="importance", ascending=False)
-    importances.to_csv(paths["importance_path"], index=False)
-
-    # 8. Save Confusion Matrix and Classification Report
-    plot_and_save_confusion_matrix(cm, paths["cm_path"])
+    # Save classification report
     with open(paths["report_path"], "w", encoding="utf-8") as f:
-        f.write(class_rep_text)
+        f.write("SchemeBridge Random Forest - Classification Report\n")
+        f.write("Citizen Welfare Scheme Recommendation Model\n")
+        f.write(f"Evaluated on {test_count} test samples\n")
+        f.write(f"Generated at: {datetime.now(timezone.utc).isoformat()}\n\n")
+        f.write(clf_report)
 
-    # 9. Save Serialized Model
-    joblib.dump({
-        "pipeline": pipeline,
-        "feature_columns": list(X.columns),
-        "target_column": target_col,
-        "encoded_feature_names": list(encoded_feature_names),
-        "trained_at": datetime.now(timezone.utc).isoformat(),
-        "n_samples": num_samples,
-    }, paths["model_path"])
-
-    # 10. Save Metrics JSON
+    # Save metrics JSON
     metrics_payload = {
-        "modelName": "RandomForestClassifier",
-        "algorithm": "Random Forest",
-        "framework": "scikit-learn",
-        "trainedAt": datetime.now(timezone.utc).isoformat(),
+        "model_name": "RandomForestClassifier",
+        "task": "Citizen Welfare Scheme Recommendation",
+        "total_records": total_records,
+        "train_samples": train_count,
+        "test_samples": test_count,
+        "features": {
+            "numerical": numerical_cols,
+            "categorical": categorical_cols,
+            "all": feature_cols,
+        },
+        "target_variable": target_col,
+        "classes": classes,
+        "metrics": {
+            "accuracy": round(float(acc), 4),
+            "precision_weighted": round(float(prec), 4),
+            "recall_weighted": round(float(rec), 4),
+            "f1_score_weighted": round(float(f1), 4),
+            "accuracy_percent": f"{acc * 100:.2f}%",
+            "precision_percent": f"{prec * 100:.2f}%",
+            "recall_percent": f"{rec * 100:.2f}%",
+            "f1_percent": f"{f1 * 100:.2f}%",
+        },
         "hyperparameters": {
-            "n_estimators": n_estimators,
-            "random_state": random_state,
-            "class_weight": class_weight,
-            "test_size": test_size,
-            "stratify": True,
+            "n_estimators": 200,
+            "max_depth": 16,
+            "min_samples_split": 4,
+            "min_samples_leaf": 2,
+            "class_weight": "balanced",
+            "random_state": 42,
         },
-        "dataset": {
-            "path": os.path.relpath(paths["data_path"], paths["base_dir"]),
-            "type": "Synthetic Citizen Eligibility Demographics (Schema-aligned with CitizenEligibilityProfile.java)",
-            "samples": num_samples,
-            "features": num_features,
-            "trainingSamples": train_samples,
-            "testingSamples": test_samples,
-            "targetVariable": target_col,
-            "classes": {str(k): int(v) for k, v in class_dist.items()},
-        },
-        "performance": {
-            "accuracy": round(acc, 4),
-            "precision": round(prec, 4),
-            "recall": round(rec, 4),
-            "f1Score": round(f1, 4),
-            "classificationReport": class_rep_dict,
-            "confusionMatrix": cm.tolist(),
-        },
-        "artifacts": {
-            "model": os.path.relpath(paths["model_path"], paths["base_dir"]),
-            "metrics": os.path.relpath(paths["metrics_path"], paths["base_dir"]),
-            "report": os.path.relpath(paths["report_path"], paths["base_dir"]),
-            "confusionMatrix": os.path.relpath(paths["cm_path"], paths["base_dir"]),
-            "featureImportance": os.path.relpath(paths["importance_path"], paths["base_dir"]),
-        },
-        "governance": {
-            "isolatedFromProduction": True,
-            "liveServiceReplaced": False,
-            "statutoryEligibilityOverridden": False,
-            "notes": "Standalone ML experimentation module for academic research and model evaluation."
-        }
+        "confusion_matrix": cm.tolist(),
+        "trained_at_utc": datetime.now(timezone.utc).isoformat(),
+        "architectural_status": "STANDALONE_OFFLINE_EXPERIMENTATION_ONLY",
     }
 
     with open(paths["metrics_path"], "w", encoding="utf-8") as f:
         json.dump(metrics_payload, f, indent=2)
 
-    # 11. Print Section 7 Terminal Output
-    print("==================================================")
-    print("SCHEMEBRIDGE RANDOM FOREST TRAINING")
-    print("==================================================")
+    # Save confusion matrix plot
+    plot_and_save_confusion_matrix(cm, classes, paths["cm_path"])
+
+    # Extract and save feature importances
+    ohe_step = pipeline.named_steps["preprocessor"].named_transformers_["cat"]
+    cat_feature_names = ohe_step.get_feature_names_out(categorical_cols).tolist()
+    all_feature_names = numerical_cols + cat_feature_names
+    importances = pipeline.named_steps["classifier"].feature_importances_
+
+    fi_df = pd.DataFrame({
+        "feature": all_feature_names,
+        "importance": importances,
+    }).sort_values(by="importance", ascending=False)
+    fi_df.to_csv(paths["importance_path"], index=False)
+    print(f"[+] Feature importances saved: {paths['importance_path']}")
+
+    # Step 8: Save trained model artifact
+    model_artifact = {
+        "pipeline": pipeline,
+        "model": rf,
+        "feature_cols": feature_cols,
+        "numerical_cols": numerical_cols,
+        "categorical_cols": categorical_cols,
+        "target_col": target_col,
+        "classes": classes,
+        "trained_at": datetime.now(timezone.utc).isoformat(),
+        "metrics": {
+            "accuracy": acc,
+            "precision": prec,
+            "recall": rec,
+            "f1": f1,
+        },
+    }
+    joblib.dump(model_artifact, paths["model_path"], compress=3)
+    print(f"[+] Model artifact saved: {paths['model_path']}")
+
+    # Terminal summary block exactly matching presentation requirements
+    print("\n========================================")
+    print("SCHEMEBRIDGE RANDOM FOREST MODEL")
+    print("Citizen Welfare Scheme Recommendation")
+    print("========================================")
+    print(f"Dataset records: {total_records}")
+    print(f"Training samples: {train_count}")
+    print(f"Testing samples: {test_count}")
     print("")
-    print("Dataset:")
-    print(f"ml/random_forest/data/synthetic_citizen_eligibility_dataset.csv")
+    print("Model: RandomForestClassifier")
     print("")
-    print("Samples:")
-    print(f"{num_samples} (Train: {train_samples}, Test: {test_samples})")
+    print(f"Accuracy : {acc * 100:.2f}%")
+    print(f"Precision: {prec * 100:.2f}%")
+    print(f"Recall   : {rec * 100:.2f}%")
+    print(f"F1 Score : {f1 * 100:.2f}%")
     print("")
-    print("Features:")
-    print(f"{num_features} raw features ({len(encoded_feature_names)} encoded columns)")
+    print("Model saved:")
+    print("ml/random_forest/models/random_forest_scheme_model.pkl")
     print("")
-    print("Target:")
-    print(f"{target_col} (Classes: {class_dist})")
-    print("")
-    print("--------------------------------------------------")
-    print("MODEL")
-    print("--------------------------------------------------")
-    print("Algorithm: Random Forest Classifier")
-    print(f"Number of Trees: {n_estimators}")
-    print(f"Random State: {random_state}")
-    print(f"Class Weight: {class_weight}")
-    print("")
-    print("--------------------------------------------------")
-    print("TRAINING")
-    print("--------------------------------------------------")
-    print(f"Training samples: {train_samples}")
-    print(f"Testing samples: {test_samples}")
-    print("")
-    print("Training completed successfully.")
-    print("")
-    print("--------------------------------------------------")
-    print("PERFORMANCE")
-    print("--------------------------------------------------")
-    print(f"Accuracy : {acc:.4f}")
-    print(f"Precision: {prec:.4f}")
-    print(f"Recall   : {rec:.4f}")
-    print(f"F1 Score : {f1:.4f}")
-    print("")
-    print("--------------------------------------------------")
-    print("CLASSIFICATION REPORT")
-    print("--------------------------------------------------")
-    print(class_rep_text)
-    print("--------------------------------------------------")
-    print("CONFUSION MATRIX")
-    print("--------------------------------------------------")
-    print(cm)
-    print("")
-    print("--------------------------------------------------")
-    print("FEATURE IMPORTANCE")
-    print("--------------------------------------------------")
-    for idx, row in importances.head(10).iterrows():
-        print(f"  {row['feature']:<35} : {row['importance']:.4f}")
-    print("")
-    print("Model saved to:")
-    print(f"ml/random_forest/models/random_forest_scheme_model.pkl")
-    print("")
-    print("Metrics saved to:")
-    print(f"ml/random_forest/results/metrics.json")
-    print("")
-    print("==================================================")
-    print("TRAINING COMPLETE")
-    print("==================================================")
+    print("Evaluation results saved:")
+    print("ml/random_forest/results/metrics.json")
+    print("========================================\n")
 
 
 if __name__ == "__main__":
-    train_model()
+    main()

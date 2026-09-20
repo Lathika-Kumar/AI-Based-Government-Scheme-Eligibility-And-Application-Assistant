@@ -4,8 +4,14 @@ SchemeBridge Standalone Random Forest Model Evaluation & Inference Script
 File: ml/random_forest/evaluate_model.py
 
 Purpose:
+"Citizen Welfare Scheme Recommendation Model"
 Loads the trained serialized model from ml/random_forest/models/random_forest_scheme_model.pkl,
-validates its pipeline components, and performs evaluation and inference on citizen profiles.
+validates its pipeline components, and performs evaluation and sample inference on citizen profiles.
+
+Architectural Isolation:
+- This module is strictly an offline experimentation pipeline.
+- It is NOT connected to or referenced by Spring Boot backend, DocumentExtractionService,
+  EligibilityEngine, or React frontend.
 """
 
 import os
@@ -34,17 +40,20 @@ def evaluate():
 
     print("==================================================")
     print("SCHEMEBRIDGE RANDOM FOREST MODEL EVALUATION")
+    print("Citizen Welfare Scheme Recommendation Model")
     print("==================================================")
     print(f"Loading model from: {model_path}")
     checkpoint = joblib.load(model_path)
     pipeline = checkpoint["pipeline"]
     trained_at = checkpoint.get("trained_at", "Unknown")
+    classes = checkpoint.get("classes", [])
     print(f"Model trained at: {trained_at}")
     print(f"Pipeline steps: {[step[0] for step in pipeline.steps]}")
+    print(f"Target scheme categories ({len(classes)} classes): {classes}")
     print("")
 
     df = pd.read_csv(data_path)
-    target_col = "eligible"
+    target_col = "scheme_category"
     X = df.drop(columns=[target_col])
     y = df[target_col]
 
@@ -62,67 +71,108 @@ def evaluate():
     print(f"Inference Latency: {total_time_ms:.2f} ms total ({latency_per_sample_us:.2f} us/sample)")
     print("")
 
-    # Demonstrate sample profile inference
-    sample_profiles = pd.DataFrame([
+    # Specific requested demonstration citizen profile
+    demo_profile = pd.DataFrame([{
+        "age": 22,
+        "gender": "Female",
+        "state": "Tamil Nadu",
+        "income": 120000,
+        "occupation": "Student",
+        "category": "OBC",
+        "rural": "Yes",
+        "student": "Yes",
+        "disability": "No",
+    }])
+
+    pred_category = pipeline.predict(demo_profile)[0]
+    pred_probs = pipeline.predict_proba(demo_profile)[0]
+    category_prob = pred_probs[list(pipeline.classes_).index(pred_category)] * 100.0
+
+    print("==================================================")
+    print("SAMPLE PREDICTION (STANDALONE RANDOM FOREST)")
+    print("==================================================")
+    print("Input Citizen Profile:")
+    print("")
+    print(f"Age: {demo_profile.iloc[0]['age']}")
+    print(f"Gender: {demo_profile.iloc[0]['gender']}")
+    print(f"State: {demo_profile.iloc[0]['state']}")
+    print(f"Income: {demo_profile.iloc[0]['income']}")
+    print(f"Occupation: {demo_profile.iloc[0]['occupation']}")
+    print(f"Category: {demo_profile.iloc[0]['category']}")
+    print(f"Rural: {demo_profile.iloc[0]['rural']}")
+    print(f"Student: {demo_profile.iloc[0]['student']}")
+    print(f"Disability: {demo_profile.iloc[0]['disability']}")
+    print("")
+    print("Predicted Scheme Category:")
+    print(f"{pred_category}")
+    print(f"(Confidence / Model Probability: {category_prob:.1f}%)")
+    print("==================================================")
+    print("")
+
+    # Additional diverse sample citizen profiles for validation
+    additional_profiles = pd.DataFrame([
         {
-            "age": 42,
-            "gender": "MALE",
-            "state": "TAMIL_NADU",
-            "annual_income": 120000.0,
-            "occupation": "FARMER",
-            "category": "OBC",
-            "marital_status": "MARRIED",
-            "disability_status": 0,
-            "rural_urban_status": "RURAL",
-            "employment_status": "SELF_EMPLOYED",
-            "land_ownership": 2.5,
-            "bpl_status": 1,
+            "age": 45,
+            "gender": "Male",
+            "state": "Maharashtra",
+            "income": 150000,
+            "occupation": "Farmer",
+            "category": "General",
+            "rural": "Yes",
+            "student": "No",
+            "disability": "No",
         },
         {
-            "age": 35,
-            "gender": "MALE",
-            "state": "MAHARASHTRA",
-            "annual_income": 850000.0,
-            "occupation": "SALARIED",
-            "category": "GENERAL",
-            "marital_status": "SINGLE",
-            "disability_status": 0,
-            "rural_urban_status": "URBAN",
-            "employment_status": "EMPLOYED",
-            "land_ownership": 0.0,
-            "bpl_status": 0,
-        },
-        {
-            "age": 22,
-            "gender": "FEMALE",
-            "state": "KARNATAKA",
-            "annual_income": 80000.0,
-            "occupation": "STUDENT",
+            "age": 67,
+            "gender": "Male",
+            "state": "Uttar Pradesh",
+            "income": 60000,
+            "occupation": "Unemployed",
             "category": "SC",
-            "marital_status": "SINGLE",
-            "disability_status": 0,
-            "rural_urban_status": "RURAL",
-            "employment_status": "STUDENT",
-            "land_ownership": 0.0,
-            "bpl_status": 1,
-        }
+            "rural": "Yes",
+            "student": "No",
+            "disability": "No",
+        },
+        {
+            "age": 34,
+            "gender": "Female",
+            "state": "Karnataka",
+            "income": 95000,
+            "occupation": "Artisan",
+            "category": "OBC",
+            "rural": "No",
+            "student": "No",
+            "disability": "No",
+        },
+        {
+            "age": 29,
+            "gender": "Male",
+            "state": "Kerala",
+            "income": 80000,
+            "occupation": "Unemployed",
+            "category": "General",
+            "rural": "No",
+            "student": "No",
+            "disability": "Yes",
+        },
     ])
 
-    print("Sample Citizen Inferences:")
-    probs = pipeline.predict_proba(sample_profiles)
-    preds = pipeline.predict(sample_profiles)
+    extra_preds = pipeline.predict(additional_profiles)
+    extra_probs = pipeline.predict_proba(additional_profiles)
 
     descriptions = [
-        "Farmer (Tamil Nadu, 2.5 acres, 1.2L income, BPL)",
-        "Urban Salaried (Maharashtra, 8.5L income, General)",
-        "Student (Karnataka, SC, 80k income, BPL)"
+        "Rural Farmer (Maharashtra, 45, Male, General, 1.5L Income)",
+        "Elderly Citizen (Uttar Pradesh, 67, Male, SC, 60k Income)",
+        "Urban Artisan (Karnataka, 34, Female, OBC, 95k Income)",
+        "Person with Disability (Kerala, 29, Male, General, 80k Income)",
     ]
 
+    print("Additional Demonstration Profiles:")
     for i, desc in enumerate(descriptions):
-        label = "Eligible (1)" if preds[i] == 1 else "Not Eligible (0)"
-        prob_elig = probs[i][1] * 100.0
+        cat = extra_preds[i]
+        prob = extra_probs[i][list(pipeline.classes_).index(cat)] * 100.0
         print(f"Profile {i+1}: {desc}")
-        print(f"  -> Prediction: {label} (Probability Eligible: {prob_elig:.1f}%)")
+        print(f"  -> Predicted Scheme Category: {cat} ({prob:.1f}% confidence)")
 
     print("")
     print("==================================================")
