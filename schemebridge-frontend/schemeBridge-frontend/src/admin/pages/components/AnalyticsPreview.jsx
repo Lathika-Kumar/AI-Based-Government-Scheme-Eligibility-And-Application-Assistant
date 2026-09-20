@@ -1,0 +1,159 @@
+import React from "react";
+import {
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  AreaChart,
+  Area,
+  LineChart,
+  Line
+} from "recharts";
+
+export default function AnalyticsPreview({ data }) {
+  // Expected data shape:
+  // {
+  //   applicationsByState: [{ name, value }],
+  //   applicationsByCategory: [{ name, value, color }],
+  //   approvalRateData: [{ month, rate }],
+  //   monthlyTrendData: [{ month, applications, approved, rejected }]
+  // }
+  const {
+    applicationsByState = [],
+    applicationsByCategory = [],
+    approvalRateData = [],
+    monthlyTrendData = []
+  } = data || {};
+
+  return (
+    <div className="space-y-3.5">
+      <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider select-none">
+        Analytics Preview
+      </h3>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Applications by State */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex flex-col justify-between h-80">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">
+              Applications by State
+            </h4>
+            <span className="text-[9px] text-slate-400 dark:text-slate-400 font-bold uppercase tracking-wider">
+              Geographic
+            </span>
+          </div>
+          <div className="h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={applicationsByState} layout="vertical" margin={{ left: -5, right: 10, top: 10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
+                <XAxis type="number" stroke="#94a3b8" fontSize={9} fontStyle="italic" />
+                <YAxis dataKey="name" type="category" stroke="#94a3b8" fontSize={9} width={70} />
+                <Tooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                <Bar dataKey="value" fill="#4F46E5" radius={[0, 4, 4, 0]}>
+                  {applicationsByState.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={index % 2 === 0 ? "#4F46E5" : "#2563EB"} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Applications by Category */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex flex-col justify-between h-80">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">
+              Applications by Category
+            </h4>
+            <span className="text-[9px] text-slate-400 dark:text-slate-400 font-bold uppercase tracking-wider">
+              Functional
+            </span>
+          </div>
+          <div className="h-56 flex items-center justify-center">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={applicationsByCategory}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={70}
+                  paddingAngle={4}
+                  dataKey="value"
+                >
+                  {applicationsByCategory.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: "9px", marginTop: "5px" }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Approval Rate */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex flex-col justify-between h-80">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">
+              Approval Rate (%)
+            </h4>
+            <span className="text-[9px] text-slate-400 dark:text-slate-400 font-bold uppercase tracking-wider">
+              SLA Ratio
+            </span>
+          </div>
+          <div className="h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={approvalRateData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorRate" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#16A34A" stopOpacity={0.25}/>
+                    <stop offset="95%" stopColor="#16A34A" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="month" stroke="#94a3b8" fontSize={9} />
+                <YAxis stroke="#94a3b8" fontSize={9} domain={[70, 100]} />
+                <Tooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                <Area type="monotone" dataKey="rate" stroke="#16A34A" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRate)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Monthly Trend */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex flex-col justify-between h-80">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">
+              Monthly Trend
+            </h4>
+            <span className="text-[9px] text-slate-400 dark:text-slate-400 font-bold uppercase tracking-wider">
+              6 Months
+            </span>
+          </div>
+          <div className="h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthlyTrendData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="month" stroke="#94a3b8" fontSize={9} />
+                <YAxis stroke="#94a3b8" fontSize={9} />
+                <Tooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: "9px", marginTop: "5px" }} />
+                <Line type="monotone" dataKey="applications" stroke="#4F46E5" strokeWidth={2} dot={{ r: 3 }} name="Total" />
+                <Line type="monotone" dataKey="approved" stroke="#16A34A" strokeWidth={2} dot={{ r: 3 }} name="Approved" />
+                <Line type="monotone" dataKey="rejected" stroke="#DC2626" strokeWidth={2} dot={{ r: 3 }} name="Rejected" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

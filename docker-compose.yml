@@ -1,0 +1,100 @@
+version: "3.8"
+
+services:
+  # ── 1. Database: MongoDB 7.0 ────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: schemebridge-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-schemebridge_user}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-31Rfp1OuAafIzBhm1Xu6G5p7}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME:-schemebridge_scheme_db}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - schemebridge-net
+
+  # ── 2. Backend: Scheme Service (Port 8081) ──────────────────────────────────
+  scheme-service:
+    build:
+      context: ./schemebridge-scheme-service
+      dockerfile: Dockerfile
+    container_name: schemebridge-scheme-service
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: "8081"
+      MONGODB_URI: "mongodb://${MONGO_ROOT_USER:-schemebridge_user}:${MONGO_ROOT_PASSWORD:-31Rfp1OuAafIzBhm1Xu6G5p7}@mongodb:27017/${MONGO_DB_NAME:-schemebridge_scheme_db}?authSource=admin"
+      JWT_SECRET: ${JWT_SECRET:-LRCXhnioMtYNNZMrgfKfabTER44FEVNKiB9RVMuO1tE=}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      SCHEME_EMBEDDING_INDEX: /app/data/ml_models/scheme_embeddings.index
+      SCHEME_EMBEDDING_META: /app/data/ml_models/scheme_embeddings_metadata.json
+    volumes:
+      - ./data/ml_models:/app/data/ml_models:ro
+    ports:
+      - "8081:8081"
+    networks:
+      - schemebridge-net
+
+  # ── 3. Backend: Auth Service (Port 8080) ────────────────────────────────────
+  auth-service:
+    build:
+      context: ./schemebridge-auth-service
+      dockerfile: Dockerfile
+    container_name: schemebridge-auth-service
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      SERVER_PORT: "8080"
+      ORACLE_URL: ${ORACLE_URL:-jdbc:oracle:thin:@host.docker.internal:1521/XEPDB1}
+      ORACLE_USERNAME: ${ORACLE_USERNAME:-SYSTEM}
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-system}
+      JWT_SECRET: ${JWT_SECRET:-LRCXhnioMtYNNZMrgfKfabTER44FEVNKiB9RVMuO1tE=}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost,http://localhost:80,http://localhost:5173,http://localhost:3000}
+      SPRING_MAIL_HOST: ${SPRING_MAIL_HOST:-localhost}
+      SPRING_MAIL_PORT: ${SPRING_MAIL_PORT:-587}
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-}
+      SPRING_MAIL_SMTP_AUTH: ${SPRING_MAIL_SMTP_AUTH:-false}
+      SPRING_MAIL_SMTP_STARTTLS: ${SPRING_MAIL_SMTP_STARTTLS:-false}
+    ports:
+      - "8080:8080"
+    networks:
+      - schemebridge-net
+
+  # ── 4. Frontend: React + Nginx Reverse Proxy (Port 80) ──────────────────────
+  frontend:
+    build:
+      context: ./schemebridge-frontend/schemeBridge-frontend
+      dockerfile: Dockerfile
+    container_name: schemebridge-frontend
+    restart: unless-stopped
+    depends_on:
+      - scheme-service
+      - auth-service
+    ports:
+      - "${PORT:-80}:80"
+    networks:
+      - schemebridge-net
+
+volumes:
+  mongo_data:
+    name: schemebridge_mongo_data
+
+networks:
+  schemebridge-net:
+    name: schemebridge_network
+    driver: bridge
