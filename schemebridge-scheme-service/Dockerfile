@@ -14,7 +14,9 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Run as non-privileged user for security
-RUN addgroup -S schemebridge && adduser -S sbscheme -G schemebridge
+RUN addgroup -S schemebridge && adduser -S sbscheme -G schemebridge && \
+    mkdir -p /app/storage && \
+    chown -R sbscheme:schemebridge /app
 USER sbscheme:schemebridge
 
 # Copy compiled JAR from builder stage

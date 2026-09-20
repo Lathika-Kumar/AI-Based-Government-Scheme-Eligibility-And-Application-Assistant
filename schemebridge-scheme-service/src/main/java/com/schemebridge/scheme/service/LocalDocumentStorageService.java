@@ -16,12 +16,22 @@ public class LocalDocumentStorageService implements DocumentStorageService {
     private final Path rootLocation;
 
     public LocalDocumentStorageService(@Value("${scheme.storage.upload-dir:storage}") String uploadDir) {
-        this.rootLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
+        Path target = Paths.get(uploadDir).toAbsolutePath().normalize();
+        Path configuredRoot;
         try {
-            Files.createDirectories(this.rootLocation);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize local upload storage folder", e);
+            Files.createDirectories(target);
+            configuredRoot = target;
+        } catch (Exception e) {
+            // Fallback to writable temporary directory in containerized environments (e.g. Render/Docker)
+            Path fallback = Paths.get(System.getProperty("java.io.tmpdir", "/tmp"), "storage").toAbsolutePath().normalize();
+            try {
+                Files.createDirectories(fallback);
+                configuredRoot = fallback;
+            } catch (IOException ex) {
+                throw new RuntimeException("Could not initialize local upload storage folder: " + target + " or " + fallback, ex);
+            }
         }
+        this.rootLocation = configuredRoot;
     }
 
     @Override
