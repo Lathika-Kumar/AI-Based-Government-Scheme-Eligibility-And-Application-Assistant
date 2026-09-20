@@ -329,7 +329,7 @@ public class ApplicationService {
 
     @Transactional
     public void syncVaultDocumentsForCitizen(String userId) {
-        if (!StringUtils.hasText(userId)) return;
+        if (userId == null || userId.trim().isEmpty()) return;
         List<Application> userApps = applicationRepository.findAllByUserId(userId);
         for (Application app : userApps) {
             syncVaultDocumentsForApplication(app);
