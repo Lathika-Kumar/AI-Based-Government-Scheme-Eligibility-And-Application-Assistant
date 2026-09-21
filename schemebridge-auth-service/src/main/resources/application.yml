@@ -68,8 +68,8 @@ mail:
 
 brevo:
   enabled: ${BREVO_EMAIL_ENABLED:${BREVO_ENABLED:false}}
-  api-key: ${BREVO_API_KEY:${brevo.api-key:}}
-  sender-email: ${BREVO_SENDER_EMAIL:${brevo.sender-email:}}
-  sender-name: ${BREVO_SENDER_NAME:${brevo.sender-name:SchemeBridge}}
+  api-key: ${BREVO_API_KEY:}
+  sender-email: ${BREVO_SENDER_EMAIL:noreply@schemebridge.gov.in}
+  sender-name: ${BREVO_SENDER_NAME:SchemeBridge}
   endpoint: ${BREVO_API_ENDPOINT:https://api.brevo.com/v3/smtp/email}
 
