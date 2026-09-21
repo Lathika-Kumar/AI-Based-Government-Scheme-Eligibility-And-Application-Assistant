@@ -34,17 +34,24 @@ public class SchemeSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        byte[] jsonData = null;
         Path seedPath = Paths.get(seedFilePath);
-        if (!Files.exists(seedPath)) {
-            log.info("No seed file found at {}. Skipping auto-seeding.", seedFilePath);
-            return;
+        if (Files.exists(seedPath)) {
+            log.info("Starting database seeding from filesystem: {}...", seedFilePath);
+            jsonData = Files.readAllBytes(seedPath);
+        } else {
+            org.springframework.core.io.ClassPathResource resource =
+                    new org.springframework.core.io.ClassPathResource("data/schemes.seed.json");
+            if (resource.exists()) {
+                log.info("Starting database seeding from classpath resource: data/schemes.seed.json...");
+                try (java.io.InputStream is = resource.getInputStream()) {
+                    jsonData = is.readAllBytes();
+                }
+            } else {
+                log.info("No seed file found at {} or classpath. Skipping auto-seeding.", seedFilePath);
+                return;
+            }
         }
-
-        log.info("Starting database seeding from {}...", seedFilePath);
-
-
-        
-        byte[] jsonData = Files.readAllBytes(seedPath);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
