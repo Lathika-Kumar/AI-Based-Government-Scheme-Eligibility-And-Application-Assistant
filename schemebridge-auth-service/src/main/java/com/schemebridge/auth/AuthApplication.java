@@ -11,27 +11,33 @@ import java.nio.file.Paths;
 public class AuthApplication {
 
     static {
-        // Load local .env file if it exists
+        System.setProperty("java.net.preferIPv6Addresses", "true");
+        // Load local and parent .env file if they exist
         try {
-            Path envPath = Paths.get(".env");
-            if (Files.exists(envPath)) {
-                try (BufferedReader reader = Files.newBufferedReader(envPath)) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        line = line.trim();
-                        if (line.isEmpty() || line.startsWith("#")) {
-                            continue;
-                        }
-                        int equalIdx = line.indexOf('=');
-                        if (equalIdx > 0) {
-                            String key = line.substring(0, equalIdx).trim();
-                            String value = line.substring(equalIdx + 1).trim();
-                            // Remove surrounding quotes if any
-                            if ((value.startsWith("\"") && value.endsWith("\"")) || 
-                                (value.startsWith("'") && value.endsWith("'"))) {
-                                value = value.substring(1, value.length() - 1);
+            Path[] candidatePaths = {
+                Paths.get("../.env"),
+                Paths.get(".env")
+            };
+            for (Path envPath : candidatePaths) {
+                if (Files.exists(envPath)) {
+                    try (BufferedReader reader = Files.newBufferedReader(envPath)) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            line = line.trim();
+                            if (line.isEmpty() || line.startsWith("#")) {
+                                continue;
                             }
-                            System.setProperty(key, value);
+                            int equalIdx = line.indexOf('=');
+                            if (equalIdx > 0) {
+                                String key = line.substring(0, equalIdx).trim();
+                                String value = line.substring(equalIdx + 1).trim();
+                                // Remove surrounding quotes if any
+                                if ((value.startsWith("\"") && value.endsWith("\"")) || 
+                                    (value.startsWith("'") && value.endsWith("'"))) {
+                                    value = value.substring(1, value.length() - 1);
+                                }
+                                System.setProperty(key, value);
+                            }
                         }
                     }
                 }

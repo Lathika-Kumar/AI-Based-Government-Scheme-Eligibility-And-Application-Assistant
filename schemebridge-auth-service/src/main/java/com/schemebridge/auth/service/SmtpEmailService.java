@@ -67,7 +67,10 @@ public class SmtpEmailService implements EmailService {
     }
 
     private void sendMimeEmail(String toEmail, String subject, String htmlContent, String plainText) {
-        log.info("Dispatching email to: {} [Subject: {}]", toEmail, subject);
+        String maskedEmail = com.schemebridge.auth.util.LogUtils.maskEmail(toEmail);
+        log.info("[EMAIL] Attempting to send OTP email");
+        log.info("[EMAIL] SMTP configuration loaded: YES");
+        log.info("[EMAIL] Sending email to: {}", maskedEmail);
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
@@ -83,13 +86,13 @@ public class SmtpEmailService implements EmailService {
             helper.setText(plainText, htmlContent);
 
             mailSender.send(message);
-            log.info("Email successfully dispatched to {}", toEmail);
+            log.info("[EMAIL] Email sent successfully to: {}", maskedEmail);
         } catch (MailException | MessagingException ex) {
+            log.error("[EMAIL] Failed to send OTP email: {}", ex.getMessage());
             if (logRawOtp) {
-                log.warn("SMTP host is not reachable in development mode ({}). Notification dispatch logged in dev mode: {}", toEmail, ex.getMessage());
+                log.warn("[EMAIL] Development mode active (OTP logged to console). Bypassing fatal delivery failure: {}", ex.getMessage());
                 return;
             }
-            log.error("Failed to dispatch email to {}: {}", toEmail, ex.getMessage());
             throw new EmailDeliveryException("Failed to send OTP email: " + ex.getMessage(), ex);
         }
     }

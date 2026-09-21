@@ -60,16 +60,16 @@ management:
 
 
 otp:
-  log-raw-value: ${OTP_LOG_RAW_VALUE:false}
+  log-raw-value: ${OTP_LOG_RAW_VALUE:true}
 
 mail:
   from: ${SPRING_MAIL_FROM:noreply@schemebridge.gov.in}
   from-name: ${SPRING_MAIL_FROM_NAME:SchemeBridge Portal}
 
 brevo:
-  enabled: ${BREVO_EMAIL_ENABLED:false}
-  api-key: ${BREVO_API_KEY:}
-  sender-email: ${BREVO_SENDER_EMAIL:}
-  sender-name: ${BREVO_SENDER_NAME:SchemeBridge}
+  enabled: ${BREVO_EMAIL_ENABLED:${BREVO_ENABLED:false}}
+  api-key: ${BREVO_API_KEY:${brevo.api-key:}}
+  sender-email: ${BREVO_SENDER_EMAIL:${brevo.sender-email:}}
+  sender-name: ${BREVO_SENDER_NAME:${brevo.sender-name:SchemeBridge}}
   endpoint: ${BREVO_API_ENDPOINT:https://api.brevo.com/v3/smtp/email}
 

@@ -21,6 +21,7 @@ import com.schemebridge.auth.repository.OtpVerificationRepository;
 import com.schemebridge.auth.repository.RefreshTokenRepository;
 import com.schemebridge.auth.repository.RoleRepository;
 import com.schemebridge.auth.repository.UserRepository;
+import com.schemebridge.auth.util.LogUtils;
 import com.schemebridge.auth.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,8 +66,10 @@ public class AuthService {
 
     @Transactional
     public SignupResponse signup(SignupRequest request) {
+        log.info("[AUTH] Signup request received");
         // Normalize email
         String normalizedEmail = request.getEmail().trim().toLowerCase();
+        log.info("[AUTH] Email validated: {}", LogUtils.maskEmail(normalizedEmail));
 
         // Check if email already exists
         if (userRepository.existsByEmail(normalizedEmail)) {
@@ -95,6 +98,7 @@ public class AuthService {
 
         // Generate Secure 6-digit OTP
         String rawOtp = generateSixDigitOtp();
+        log.info("[AUTH] OTP generated");
 
         // Log OTP clearly for local testing/development only if enabled
         if (logRawOtp) {
@@ -111,6 +115,7 @@ public class AuthService {
                 .build();
 
         otpVerificationRepository.save(otpVerification);
+        log.info("[AUTH] OTP saved successfully");
 
         // Dispatch OTP via Email Service
         emailService.sendEmailVerificationOtp(normalizedEmail, savedUser.getFirstName(), rawOtp);
@@ -389,7 +394,9 @@ public class AuthService {
      */
     @Transactional
     public GenericMessageResponse forgotPassword(String email) {
+        log.info("[AUTH] Password recovery request received");
         String normalizedEmail = email.trim().toLowerCase();
+        log.info("[AUTH] Email validated: {}", LogUtils.maskEmail(normalizedEmail));
         userRepository.findByEmail(normalizedEmail).ifPresent(user -> {
             // Expire all outstanding unverified PASSWORD_RESET OTPs for this user
             otpVerificationRepository.expirePreviousOtps(
@@ -399,6 +406,7 @@ public class AuthService {
                     LocalDateTime.now().minusSeconds(1));
 
             String rawOtp = generateSixDigitOtp();
+            log.info("[AUTH] OTP generated");
             if (logRawOtp) {
                 log.info("[TEST-ONLY] Password-reset OTP for user {}: {}", normalizedEmail, rawOtp);
             }
@@ -411,12 +419,13 @@ public class AuthService {
                     .attempts(0)
                     .build();
             otpVerificationRepository.save(otp);
+            log.info("[AUTH] OTP saved successfully");
 
             // Dispatch Password Reset OTP (silently log failures to preserve anti-enumeration)
             try {
                 emailService.sendPasswordResetOtp(normalizedEmail, user.getFirstName(), rawOtp);
             } catch (Exception ex) {
-                log.error("Failed to deliver password reset email for userId={}: {}", user.getId(), ex.getMessage());
+                log.error("[EMAIL] Failed to send OTP email: {}", ex.getMessage());
             }
 
             log.info("Password-reset OTP issued for userId={}", user.getId());
@@ -520,7 +529,9 @@ public class AuthService {
      */
     @Transactional
     public GenericMessageResponse resendOtp(String email) {
+        log.info("[AUTH] Resend OTP request received");
         String normalizedEmail = email.trim().toLowerCase();
+        log.info("[AUTH] Email validated: {}", LogUtils.maskEmail(normalizedEmail));
 
         userRepository.findByEmail(normalizedEmail).ifPresent(user -> {
             // If already verified, silently succeed
@@ -551,6 +562,7 @@ public class AuthService {
 
             // Generate and save new OTP
             String rawOtp = generateSixDigitOtp();
+            log.info("[AUTH] OTP generated");
             if (logRawOtp) {
                 log.info("[TEST-ONLY] Resent OTP for user {}: {}", normalizedEmail, rawOtp);
             }
@@ -563,6 +575,7 @@ public class AuthService {
                     .attempts(0)
                     .build();
             otpVerificationRepository.save(newOtp);
+            log.info("[AUTH] OTP saved successfully");
 
             // Dispatch Resent OTP via Email Service
             emailService.sendEmailVerificationOtp(normalizedEmail, user.getFirstName(), rawOtp);

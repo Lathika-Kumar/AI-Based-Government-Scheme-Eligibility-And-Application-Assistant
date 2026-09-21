@@ -21,7 +21,7 @@ const AUTH_BASE  = import.meta.env.VITE_AUTH_API_URL   ?? "";
 const SCHEME_BASE = import.meta.env.VITE_SCHEME_API_URL ?? "";
 
 
-const DEFAULT_TIMEOUT_MS = 15_000;
+const DEFAULT_TIMEOUT_MS = 60_000;
 
 /** Storage keys — must match AuthContext.jsx */
 const KEYS = {

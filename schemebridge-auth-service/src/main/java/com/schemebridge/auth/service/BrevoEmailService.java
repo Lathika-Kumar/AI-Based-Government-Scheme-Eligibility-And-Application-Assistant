@@ -107,11 +107,12 @@ public class BrevoEmailService implements EmailService {
 
     private void dispatchEmail(String toEmail, String recipientName, String subject,
                                String htmlContent, String plainText, String rawOtp, boolean isVerification) {
-        log.info("Initiating email dispatch to: {} [Subject: {}]", toEmail, subject);
+        String maskedEmail = com.schemebridge.auth.util.LogUtils.maskEmail(toEmail);
+        log.info("Initiating email dispatch to: {} [Subject: {}]", maskedEmail, subject);
 
         if (!brevoEnabled) {
             if (smtpEmailService != null) {
-                log.info("Brevo email disabled; routing dispatch to SMTP service for {}", toEmail);
+                log.info("Brevo email disabled; routing dispatch to SMTP service for {}", maskedEmail);
                 if (isVerification) {
                     smtpEmailService.sendEmailVerificationOtp(toEmail, recipientName, rawOtp);
                 } else {

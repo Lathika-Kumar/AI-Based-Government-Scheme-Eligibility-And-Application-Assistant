@@ -84,15 +84,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailDeliveryException.class)
     public ResponseEntity<ErrorResponse> handleEmailDeliveryException(EmailDeliveryException ex, HttpServletRequest request) {
-        log.error("Email delivery failure: {}", ex.getMessage());
-        String msg = (ex.getMessage() != null && !ex.getMessage().isBlank())
-                ? ex.getMessage()
-                : "Failed to dispatch verification email. Please check your email address or try again later.";
+        log.error("[EMAIL] Failed to send OTP email: {}", ex.getMessage());
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.SERVICE_UNAVAILABLE.value())
                 .error(HttpStatus.SERVICE_UNAVAILABLE.name())
-                .message(msg)
+                .code("EMAIL_DELIVERY_FAILED")
+                .success(false)
+                .message("Unable to send verification email. Please try again later.")
                 .path(request.getRequestURI())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
