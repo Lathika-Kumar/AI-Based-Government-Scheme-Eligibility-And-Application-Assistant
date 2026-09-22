@@ -1,0 +1,2776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SchemeBridge - System Requirements Specification (SRS)</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 18mm 16mm 20mm 16mm;
+            @top-center {
+                content: "SRS | SchemeBridge | Full Stack Java (AI-Integrated) Training Programme";
+                font-family: 'Segoe UI', Arial, sans-serif;
+                font-size: 8pt;
+                color: #64748b;
+                border-bottom: 1px solid #cbd5e1;
+                padding-bottom: 4px;
+                width: 100%;
+            }
+            @bottom-left {
+                content: "Confidential — For Training & Evaluation Use Only | Karpagam College of Engineering";
+                font-family: 'Segoe UI', Arial, sans-serif;
+                font-size: 7.5pt;
+                color: #94a3b8;
+            }
+            @bottom-right {
+                content: "Page " counter(page);
+                font-family: 'Segoe UI', Arial, sans-serif;
+                font-size: 8pt;
+                font-weight: 600;
+                color: #475569;
+            }
+        }
+
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.5;
+            color: #1e293b;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Document Header / Cover Styling */
+        .doc-header {
+            text-align: center;
+            border-bottom: 3px solid #1e3a8a;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+
+        .doc-header h1 {
+            font-size: 20pt;
+            color: #1e3a8a;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0 0 6px 0;
+            font-weight: 800;
+        }
+
+        .doc-header h2 {
+            font-size: 13pt;
+            color: #b45309;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .doc-header h3 {
+            font-size: 11pt;
+            color: #475569;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Section Headings */
+        h1 {
+            font-size: 14pt;
+            color: #0f172a;
+            border-bottom: 2px solid #0284c7;
+            padding-bottom: 4px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            font-size: 12pt;
+            color: #1e3a8a;
+            background-color: #f1f5f9;
+            padding: 6px 10px;
+            border-left: 4px solid #1e3a8a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 10.5pt;
+            color: #0369a1;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+
+        h4 {
+            font-size: 9.8pt;
+            color: #334155;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            page-break-after: avoid;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 8px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 8px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 3px;
+        }
+
+        /* Tables */
+        .table-container {
+            width: 100%;
+            margin-bottom: 14px;
+            page-break-inside: auto;
+        }
+
+        table.srs-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8.5pt;
+            page-break-inside: auto;
+        }
+
+        table.srs-table tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        table.srs-table th {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            color: #ffffff;
+            font-weight: 600;
+            text-align: left;
+            padding: 6px 8px;
+            border: 1px solid #cbd5e1;
+            letter-spacing: 0.2px;
+        }
+
+        table.srs-table td {
+            padding: 5px 8px;
+            border: 1px solid #cbd5e1;
+            vertical-align: top;
+        }
+
+        table.srs-table tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        table.srs-table tr:hover td {
+            background-color: #f1f5f9;
+        }
+
+        /* Callout / Note Box */
+        .callout-box {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 8px 12px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 8.8pt;
+            color: #78350f;
+        }
+
+        .callout-box p {
+            margin: 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 14px auto;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+
+        /* Code Blocks & Preformatted Text */
+        pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 7.8pt;
+            line-height: 1.35;
+            overflow-x: auto;
+            margin: 8px 0 12px 0;
+            page-break-inside: avoid;
+            border: 1px solid #334155;
+        }
+
+        code {
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 8pt;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            border: 1px solid #e2e8f0;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+            border: none;
+        }
+
+        /* Page Breaks */
+        .page-break {
+            page-break-before: always;
+            margin-top: 20px;
+        }
+
+        /* Clean badges & indicators */
+        strong {
+            color: #0f172a;
+        }
+
+        .header-running {
+            font-size: 7.5pt;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 4px;
+            margin-bottom: 12px;
+        }
+
+        .footer-running {
+            font-size: 7.5pt;
+            color: #94a3b8;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 4px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-running">
+        <span>SRS Template | SchemeBridge</span>
+        <span>Full Stack Java (AI-Integrated) Training Programme</span>
+    </div>
+
+    <h1>SYSTEM REQUIREMENTS SPECIFICATION (SRS)</h1>
+<h2>Full Stack Java (AI-Integrated) Training Programme</h2>
+<h3>Karpagam College of Engineering, Coimbatore</h3>
+<div class="page-break"></div>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Field</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Project Title</strong></td>
+<td><strong>SchemeBridge: AI-Based Government Scheme Eligibility &amp; Application Assistant</strong></td>
+</tr>
+<tr>
+<td><strong>SIH Problem Statement ID</strong></td>
+<td><strong>SIH25120</strong> (Smart India Hackathon 2025)</td>
+</tr>
+<tr>
+<td><strong>Ministry / Organisation</strong></td>
+<td><strong>Ministry of Electronics and Information Technology (MeitY) &amp; Ministry of Social Justice and Empowerment, Government of India</strong></td>
+</tr>
+<tr>
+<td><strong>Domain Category</strong></td>
+<td><strong>Smart Governance / Citizen Services / Artificial Intelligence &amp; Public Welfare</strong></td>
+</tr>
+<tr>
+<td><strong>Team Name</strong></td>
+<td><strong>Team SchemeBridge</strong></td>
+</tr>
+<tr>
+<td><strong>Team Members</strong></td>
+<td>1. Lead Full-Stack Java &amp; AI Developer (CSE)<br>2. Frontend Architect &amp; UI/UX Specialist (CSE)<br>3. Cloud, DevOps &amp; Quality Assurance Engineer (CSE/IT)</td>
+</tr>
+<tr>
+<td><strong>Institution</strong></td>
+<td><strong>Karpagam College of Engineering (Autonomous), Coimbatore - 641032</strong></td>
+</tr>
+<tr>
+<td><strong>Project Type</strong></td>
+<td><strong>[X] Software only</strong>      [ ] Software + Hardware (Hybrid)</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td><strong>v1.0 (Final Official Release)</strong></td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td><strong>September 21, 2026</strong></td>
+</tr>
+<tr>
+<td><strong>Faculty Mentors</strong></td>
+<td><strong>Dr. Arul Antran Vijay S / Dr. Jothi Prakash V / Mr. Jegathesh P / Mr. Navaneetha Krishnan M / Dr. Castro S.</strong></td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout-box">
+<p><em>Note: This SRS document is prepared in accordance with IEEE Std 830-1998 for the Full Stack Java (AI-Integrated) Training Programme Internal Review (Day 22) and SIH Evaluation.</em></p>
+</div>
+<div class="page-break"></div>
+<h2>DOCUMENT REVISION HISTORY</h2>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Description of Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v1.0</strong></td>
+<td>2026-09-05</td>
+<td>Team SchemeBridge</td>
+<td>Initial draft — Complete SRS skeleton, architecture design, and database schema definition.</td>
+</tr>
+<tr>
+<td><strong>v1.1</strong></td>
+<td>2026-09-14</td>
+<td>Team SchemeBridge</td>
+<td>Integrated AI/ML Module Specifications (Random Forest 98.40% classifier + Sentence Transformer semantic search), API catalogs, and Docker configurations.</td>
+</tr>
+<tr>
+<td><strong>v2.0</strong></td>
+<td>2026-09-21</td>
+<td>Team SchemeBridge</td>
+<td>Final post-review edition: Complete use cases (FR-001 to FR-016), NFR verification metrics, full ER data dictionary, CI/CD pipeline, and SIH compliance updates.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>1. INTRODUCTION</h2>
+<h3>1.1 Purpose</h3>
+<p>This System Requirements Specification (SRS) document describes the functional, non-functional, interface, and machine learning requirements for <strong>SchemeBridge: AI-Based Government Scheme Eligibility &amp; Application Assistant</strong>, developed as part of the <strong>Smart India Hackathon 2025</strong> submission under Problem Statement <strong>SIH25120</strong>. It is structured in strict accordance with <strong>IEEE Std 830-1998</strong> and serves as the definitive technical contract and design baseline between the student engineering team, faculty evaluators, and industry reviewers.</p>
+<h3>1.2 Scope</h3>
+<ul>
+<li><strong>System Name:</strong> <strong>SchemeBridge (Citizen Welfare Discovery &amp; Automated Filing Engine)</strong></li>
+<li><strong>What the system does:</strong><br />
+SchemeBridge is an intelligent, bilingual digital governance platform designed to eliminate information asymmetry and bureaucratic barriers preventing vulnerable citizens from accessing Indian central and state government welfare schemes. The platform provides:
+<ol>
+<li>Instant natural language and demographic profiling to match citizens with 4,734+ government welfare schemes.</li>
+<li>High-precision statutory eligibility checking combining deterministic Abstract Syntax Tree (AST) business rules with machine learning classification.</li>
+<li>Secure digital document vault with automated optical character recognition (OCR) and document readiness verification.</li>
+<li>End-to-end assisted application filing, grievance registration, and administrative verification workflows with real-time auditability.</li>
+</ol>
+</li>
+</ul>
+<h3>1.3 Definitions, Acronyms &amp; Abbreviations</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Term / Acronym</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SRS</strong></td>
+<td>System Requirements Specification — this IEEE Std 830-1998 document</td>
+</tr>
+<tr>
+<td><strong>SIH</strong></td>
+<td>Smart India Hackathon 2025</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td>Application Programming Interface (RESTful HTTP/JSON)</td>
+</tr>
+<tr>
+<td><strong>REST</strong></td>
+<td>Representational State Transfer — stateless architectural style for HTTP APIs</td>
+</tr>
+<tr>
+<td><strong>JWT</strong></td>
+<td>JSON Web Token — cryptographically signed token for stateless authentication</td>
+</tr>
+<tr>
+<td><strong>ML / AI</strong></td>
+<td>Machine Learning / Artificial Intelligence</td>
+</tr>
+<tr>
+<td><strong>AST</strong></td>
+<td>Abstract Syntax Tree — syntactic tree representation of statutory eligibility logic</td>
+</tr>
+<tr>
+<td><strong>OCR</strong></td>
+<td>Optical Character Recognition — automated text extraction from scanned certificates</td>
+</tr>
+<tr>
+<td><strong>CRUD</strong></td>
+<td>Create, Read, Update, Delete — fundamental database storage operations</td>
+</tr>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>Continuous Integration / Continuous Deployment — automated build, test, and release pipeline</td>
+</tr>
+<tr>
+<td><strong>FR</strong></td>
+<td>Functional Requirement</td>
+</tr>
+<tr>
+<td><strong>NFR</strong></td>
+<td>Non-Functional Requirement</td>
+</tr>
+<tr>
+<td><strong>UC</strong></td>
+<td>Use Case</td>
+</tr>
+<tr>
+<td><strong>ER</strong></td>
+<td>Entity-Relationship (database architectural schema)</td>
+</tr>
+<tr>
+<td><strong>SPA</strong></td>
+<td>Single Page Application (built via React 18 and Vite)</td>
+</tr>
+<tr>
+<td><strong>PWA</strong></td>
+<td>Progressive Web Application — client web application with offline-first caching</td>
+</tr>
+<tr>
+<td><strong>DPDPA</strong></td>
+<td>Digital Personal Data Protection Act, 2023 (India)</td>
+</tr>
+<tr>
+<td><strong>BPL / EWS</strong></td>
+<td>Below Poverty Line / Economically Weaker Section</td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.4 References</h3>
+<ul>
+<li><strong>IEEE Std 830-1998:</strong> IEEE Recommended Practice for Software Requirements Specifications.</li>
+<li><strong>SIH 2025 Problem Statement SIH25120:</strong> Ministry of Electronics and Information Technology (MeitY).</li>
+<li><strong>Spring Boot 3.3.2 Documentation:</strong> <a href="https://docs.spring.io/spring-boot/">https://docs.spring.io/spring-boot/</a></li>
+<li><strong>Spring Security 6.x Architecture:</strong> <a href="https://docs.spring.io/spring-security/reference/">https://docs.spring.io/spring-security/reference/</a></li>
+<li><strong>React 18 &amp; Vite Documentation:</strong> <a href="https://react.dev/">https://react.dev/</a> and <a href="https://vitejs.dev/">https://vitejs.dev/</a></li>
+<li><strong>MongoDB 7.0 Manual:</strong> <a href="https://www.mongodb.com/docs/v7.0/">https://www.mongodb.com/docs/v7.0/</a></li>
+<li><strong>Oracle Database 21c / XE Documentation:</strong> <a href="https://docs.oracle.com/en/database/">https://docs.oracle.com/en/database/</a></li>
+<li><strong>Digital Personal Data Protection Act 2023:</strong> Gazette of India, Ministry of Law and Justice.</li>
+</ul>
+<h3>1.5 Document Overview</h3>
+<ul>
+<li><strong>Section 2</strong> details product perspective, 12 core product functions, user classes, operational environments, constraints, and dependencies.</li>
+<li><strong>Section 3</strong> establishes the multi-layer microservices architecture, technology stack, and end-to-end data flows.</li>
+<li><strong>Section 4</strong> specifies external interfaces (UI screens, third-party APIs, communication protocols).</li>
+<li><strong>Section 5</strong> formalizes functional requirements in standard use case tables across all services.</li>
+<li><strong>Section 6</strong> delivers comprehensive AI/ML specifications for the Random Forest Classifier and Semantic Vector Search / Conversational AI.</li>
+<li><strong>Sections 7–10</strong> define measurable non-functional requirements, database design (ER diagram + data dictionary), API specifications, and DevOps containerization plans.</li>
+<li><strong>Sections 11–14</strong> establish the project milestone schedule, team ownership matrix, risk register, and technical appendices.</li>
+</ul>
+<div class="page-break"></div>
+<h2>2. OVERALL DESCRIPTION</h2>
+<h3>2.1 Product Perspective</h3>
+<p>SchemeBridge replaces the currently fragmented, manual, and error-prone process of discovering and applying for government schemes in India. Citizens currently have to navigate dozens of disconnected state and central portals (e.g., National Scholarship Portal, PM-KISAN, State e-Seva centres) or rely on predatory middlemen. SchemeBridge acts as an integrated intelligent bridge: it indexes 4,734+ government schemes from official gazettes and open datasets, cross-verifies citizen demographic profiles against statutory criteria, and routes validated applications directly into standardized administrative review queues.</p>
+<pre><code>┌─────────────────────────┐       ┌─────────────────────────┐       ┌─────────────────────────┐
+│     Disorganized        │       │       SchemeBridge      │       │     Authorized State    │
+│  Gazettes &amp; Guidelines  │ ────► │  AI &amp; Rules Engine Hub  │ ────► │    &amp; Central Review     │
+│  (Central / State Data) │       │   (Spring Boot + ML)    │       │     Officer Portal      │
+└─────────────────────────┘       └─────────────────────────┘       └─────────────────────────┘
+                                               ▲
+                                               │
+                                  ┌─────────────────────────┐
+                                  │   Citizen / Beneficiary │
+                                  │  Web &amp; Mobile Interface │
+                                  └─────────────────────────┘
+</code></pre>
+<h3>2.2 Product Functions — Feature Summary</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>#</th>
+<th>Feature Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>Bilingual Citizen Authentication &amp; Onboarding</strong></td>
+<td>Secure OTP/password registration and progressive 6-step demographic profile creation (age, income, caste category, occupation, state/district domicile).</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>Deterministic Statutory Eligibility Engine</strong></td>
+<td>High-performance Boolean AST engine evaluating complex nested rules (age ranges, income caps, landholding limits, gender restrictions) with zero false-positives.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>Machine Learning Scheme Recommendation</strong></td>
+<td>Standalone multi-class scikit-learn Random Forest model predicting citizen welfare scheme categories with 98.40% accuracy based on demographic features.</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>Dense Semantic Vector Search (NLP)</strong></td>
+<td>384-dimensional dense semantic vector retrieval (<code>all-MiniLM-L6-v2</code>) enabling conversational, typo-tolerant natural language scheme search.</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>Conversational AI Citizen Assistant</strong></td>
+<td>Bilingual conversational chat assistant guiding users through scheme benefits, eligibility criteria, and required supporting documents.</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>Encrypted Citizen Document Vault</strong></td>
+<td>Tamper-proof personal repository for storing Aadhaar, Income, Caste, Land Record, and Disability certificates with version control.</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td><strong>Intelligent Document OCR &amp; Verification</strong></td>
+<td>Automated extraction and field-matching of names, dates of birth, certificate numbers, and issue authorities from uploaded PDF/images.</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>Guided 4-Step Scheme Application Wizard</strong></td>
+<td>Step-by-step application submission workflow auto-populating verified citizen profile attributes to prevent data re-entry.</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td><strong>Real-Time Application Status Tracker</strong></td>
+<td>Transparent visual timeline tracking application progression from <code>SUBMITTED</code> to <code>UNDER_REVIEW</code>, <code>DOCUMENT_VERIFICATION</code>, <code>APPROVED</code>, or <code>REJECTED</code>.</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td><strong>Citizen Grievance &amp; Escalation System</strong></td>
+<td>In-app dispute and grievance lodging mechanism with SLA timers and escalation workflows for delayed applications.</td>
+</tr>
+<tr>
+<td><strong>11</strong></td>
+<td><strong>Administrative Verification &amp; Audit Dashboard</strong></td>
+<td>Role-based portal for government verification officers to inspect applications, view OCR confidence scores, approve benefits, and log audit trails.</td>
+</tr>
+<tr>
+<td><strong>12</strong></td>
+<td><strong>Multi-Format Export &amp; Analytical Reporting</strong></td>
+<td>Dynamic generation of PDF application receipts, audit reports, and analytical aggregations on scheme disbursement metrics.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.3 User Classes and Characteristics</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>User Role</th>
+<th>Description</th>
+<th>Technical Expertise</th>
+<th>Primary Actions</th>
+<th>Access Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Citizen (Beneficiary)</strong></td>
+<td>General public seeking welfare benefits (farmers, students, women, senior citizens, BPL households).</td>
+<td>Low to Medium</td>
+<td>Profile onboarding, scheme discovery, eligibility assessment, document vault management, application submission, grievance filing.</td>
+<td>Authenticated Citizen (<code>ROLE_USER</code>)</td>
+</tr>
+<tr>
+<td><strong>Verification Officer (Field Staff)</strong></td>
+<td>Authorized government department staff reviewing applications in a designated district or department.</td>
+<td>Medium</td>
+<td>Review submitted applications, cross-check OCR document extractions, request resubmission, approve or reject applications.</td>
+<td>Verification Staff (<code>ROLE_VERIFICATION_OFFICER</code>)</td>
+</tr>
+<tr>
+<td><strong>Scheme Manager</strong></td>
+<td>Departmental official responsible for creating, editing, and publishing scheme guidelines and eligibility criteria.</td>
+<td>High</td>
+<td>Scheme catalog CRUD, rule criteria builder, document requirement management, circular uploads.</td>
+<td>Scheme Admin (<code>ROLE_SCHEME_MANAGER</code>)</td>
+</tr>
+<tr>
+<td><strong>System Administrator</strong></td>
+<td>Technical administrator managing platform security, system configurations, and infrastructure health.</td>
+<td>High</td>
+<td>User management, role assignment, system health monitoring, audit log review, platform parameters.</td>
+<td>Super Admin (<code>ROLE_ADMIN</code>)</td>
+</tr>
+<tr>
+<td><strong>AI/ML Service Agent</strong></td>
+<td>Internal microservice system actor executing automated background inferences.</td>
+<td>Automated System</td>
+<td>Vector index generation, multi-class category inference, OCR feature extraction, batch notification dispatch.</td>
+<td>Internal Service-to-Service Token</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.4 Operating Environment</h3>
+<ul>
+<li><strong>Server / Cloud:</strong> Docker containers deployed on Ubuntu 22.04 LTS / AWS EC2 / Railway / Local Kubernetes (minikube).</li>
+<li><strong>Backend Runtime:</strong> Java 17 LTS, Spring Boot 3.3.2.</li>
+<li><strong>Frontend Runtime:</strong> React 18.3, Vite 5.x, Node.js 18+ (runtime/build).</li>
+<li><strong>Databases:</strong>
+<ul>
+<li><em>Relational:</em> Oracle Database 21c XE (User authentication, credentials, roles, refresh tokens).</li>
+<li><em>Document / NoSQL:</em> MongoDB 7.0 (Master scheme catalog, applications, citizen vault documents, grievances, audit trails).</li>
+</ul>
+</li>
+<li><strong>AI/ML Runtime:</strong> Python 3.11, FastAPI, scikit-learn 1.4, Sentence-Transformers, NumPy, Pandas.</li>
+<li><strong>Client Browsers:</strong> Chrome 100+, Mozilla Firefox 100+, Apple Safari 15+, Microsoft Edge (responsive across desktop and mobile down to 375px).</li>
+<li><strong>Network / Transport:</strong> HTTPS (TLS 1.3), JSON REST endpoints, WebSockets (STOMP).</li>
+</ul>
+<h3>2.5 Design and Implementation Constraints</h3>
+<ul>
+<li><strong>Multi-Service Architecture:</strong> Backend logic partitioned cleanly between <code>schemebridge-auth-service</code> (Oracle DB) and <code>schemebridge-scheme-service</code> (MongoDB).</li>
+<li><strong>Stateless Authentication:</strong> All protected APIs must enforce stateless Bearer JWT verification with cryptographic signature checks (HMAC-SHA256).</li>
+<li><strong>Deterministic Legal Eligibility:</strong> Statutory welfare decisions must rely on deterministic Java rule validation (<code>EligibilityEngine.java</code>) to eliminate hallucination risks; ML recommendations are advisory.</li>
+<li><strong>Data Privacy Compliance:</strong> Architecture must comply with the Indian Digital Personal Data Protection Act (DPDPA 2023); citizen documents and PII must be encrypted at rest (AES-256).</li>
+<li><strong>Zero-CORS Reverse Proxy:</strong> Production container deployment routes traffic via unified Nginx ingress port 80/443 to eliminate cross-origin complexity.</li>
+</ul>
+<h3>2.6 Assumptions and Dependencies</h3>
+<ul>
+<li><strong>Assumptions:</strong>
+<ul>
+<li>Users possess basic digital literacy and access to a smartphone or desktop web browser with internet connectivity.</li>
+<li>Government scheme guidelines and statutory eligibility criteria are published in machine-readable official circulars or standardized portals.</li>
+</ul>
+</li>
+<li><strong>Dependencies:</strong>
+<ul>
+<li>Python FastAPI inference runtime for high-dimensional semantic search and Random Forest predictions.</li>
+<li>SMTP mail server for automated password reset and registration OTP dispatch.</li>
+<li>Tesseract OCR / PDFBox libraries for parsing incoming application certificates.</li>
+</ul>
+</li>
+</ul>
+<div class="page-break"></div>
+<h2>3. SYSTEM ARCHITECTURE</h2>
+<h3>3.1 High-Level Architecture Description</h3>
+<p>SchemeBridge employs a robust, loosely coupled microservices architecture structured into six distinct operational layers:</p>
+<pre><code>[ PRESENTATION LAYER ]
+  React 18 SPA (Vite) + Tailwind CSS + Lucide Icons + Axios HTTP Client
+                           │
+                           ▼ (HTTP / Port 80, 443)
+[ REVERSE PROXY / INGRESS GATEWAY LAYER ]
+  Nginx Reverse Proxy / Spring Cloud Gateway
+  - Routes /api/auth/* ───────────────► Auth Service
+  - Routes /api/* (Schemes/Apps/Vault) ► Scheme Service
+  - SSL/TLS Termination &amp; Gzip Static Asset Delivery
+                           │
+             ┌─────────────┴─────────────┐
+             ▼                           ▼
+[ BACKEND SERVICE LAYER ]
+  ┌─────────────────────────┐   ┌─────────────────────────┐
+  │  Auth Service (8080)    │   │  Scheme Service (8081)  │
+  │  - Spring Boot 3.3.2    │   │  - Spring Boot 3.3.2    │
+  │  - Spring Security JWT  │   │  - AST Eligibility     │
+  │  - User &amp; Profile Mgmt  │   │  - Application &amp; Vault  │
+  └───────────┬─────────────┘   └───────────┬─────────────┘
+              │                             │
+              ▼                             ├──────────────────────────┐
+[ DATA PERSISTENCE LAYER ]                  ▼                          ▼
+  ┌───────────────────────┐   ┌───────────────────────────┐  ┌─────────────────────────┐
+  │   Oracle DB (1521)    │   │     MongoDB 7.0 (27017)   │  │  AI/ML FastAPI (8000)   │
+  │  - Users &amp; Roles      │   │  - 4,734+ Master Schemes  │  │  - Random Forest Model  │
+  │  - Refresh Tokens     │   │  - Applications &amp; Vault   │  │  - 384-D Vector Index   │
+  │  - OTP State          │   │  - Grievances &amp; Audits    │  │  - Document OCR Engine  │
+  └───────────────────────┘   └───────────────────────────┘  └─────────────────────────┘
+</code></pre>
+<h3>3.2 Microservices Breakdown</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>#</th>
+<th>Microservice Name</th>
+<th>Port</th>
+<th>Database</th>
+<th>Primary Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>Frontend Ingress &amp; Gateway</strong></td>
+<td>80 / 443</td>
+<td>None</td>
+<td>Serves React SPA static assets; performs reverse proxy routing, request rate-limiting, and compression.</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>Auth Service (<code>schemebridge-auth-service</code>)</strong></td>
+<td>8080</td>
+<td>Oracle XE (1521)</td>
+<td>Citizen/Admin registration, BCrypt password hashing, JWT issue/refresh, and profile metadata.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>Scheme &amp; Eligibility Service (<code>schemebridge-scheme-service</code>)</strong></td>
+<td>8081</td>
+<td>MongoDB (27017)</td>
+<td>Core domain logic: 4,734+ scheme catalog, AST eligibility evaluation, application workflows, document vault, grievances, audit logs.</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>AI/ML Inference Service</strong></td>
+<td>8000</td>
+<td>In-Memory / File Index</td>
+<td>Python FastAPI microservice serving Random Forest category predictions and dense semantic vector similarity scoring.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>3.3 Technology Stack</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Frontend Framework</strong></td>
+<td>React + Vite</td>
+<td>18.3 / 5.x</td>
+<td>Single Page Application framework with fast HMR and optimized production bundling.</td>
+</tr>
+<tr>
+<td><strong>State &amp; HTTP</strong></td>
+<td>React Context + Axios</td>
+<td>1.7.x</td>
+<td>Centralized authentication, scheme, vault state management, and HTTP API client.</td>
+</tr>
+<tr>
+<td><strong>Styling &amp; Icons</strong></td>
+<td>Tailwind CSS + Lucide React</td>
+<td>3.4 / 0.38</td>
+<td>Responsive modern design system with full dark/light theme support.</td>
+</tr>
+<tr>
+<td><strong>Backend Framework</strong></td>
+<td>Spring Boot</td>
+<td>3.3.2</td>
+<td>Enterprise Java microservice framework with dependency injection and embedded Tomcat.</td>
+</tr>
+<tr>
+<td><strong>Security &amp; Auth</strong></td>
+<td>Spring Security + JJWT</td>
+<td>6.x / 0.12.6</td>
+<td>Stateless JWT authorization, role-based filters, and BCrypt password encryption.</td>
+</tr>
+<tr>
+<td><strong>Relational Database</strong></td>
+<td>Oracle Database XE</td>
+<td>21c</td>
+<td>High-reliability ACID persistence for user authentication and authorization credentials.</td>
+</tr>
+<tr>
+<td><strong>Document Database</strong></td>
+<td>MongoDB</td>
+<td>7.0</td>
+<td>Scalable schema-less JSON storage for diverse scheme criteria and application payloads.</td>
+</tr>
+<tr>
+<td><strong>Machine Learning</strong></td>
+<td>Python / scikit-learn / FastAPI</td>
+<td>3.11 / 1.4</td>
+<td>Model training pipeline, Random Forest scheme classifier, and vector search API.</td>
+</tr>
+<tr>
+<td><strong>Embeddings &amp; NLP</strong></td>
+<td>Sentence-Transformers</td>
+<td>2.5.x</td>
+<td>384-dimensional dense semantic text embeddings (<code>all-MiniLM-L6-v2</code>).</td>
+</tr>
+<tr>
+<td><strong>Document OCR</strong></td>
+<td>Apache PDFBox / Tesseract</td>
+<td>3.0.2 / 5.x</td>
+<td>Optical character recognition and metadata parsing from uploaded citizen documents.</td>
+</tr>
+<tr>
+<td><strong>Containerization</strong></td>
+<td>Docker &amp; Docker Compose</td>
+<td>24.x / 3.8</td>
+<td>Reproducible multi-container runtime across development, staging, and production.</td>
+</tr>
+<tr>
+<td><strong>CI / CD Pipeline</strong></td>
+<td>Jenkins</td>
+<td>2.440+</td>
+<td>Automated multi-stage build, test execution, container creation, and zero-downtime deployment.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>3.4 Hardware Component Specification (Hybrid Projects Only)</h3>
+<p><strong>Not Applicable.</strong> SchemeBridge is a 100% Software-only digital governance solution. It requires no physical microcontrollers, sensors, or external hardware actuators.</p>
+<h3>3.5 Data Flow Description</h3>
+<pre><code>[Citizen Action] ──► [React Frontend] ──► [Nginx Proxy / Gateway] ──► [Spring Boot Service]
+                                                                            │
+      ┌─────────────────────────┬───────────────────────────────────────────┤
+      ▼                         ▼                                           ▼
+[Oracle / Mongo DB]    [AST Rules Engine]                          [FastAPI AI Service]
+(Persist Record)       (Deterministic Check)                       (ML Category / Vectors)
+</code></pre>
+<ol>
+<li><strong>User Action:</strong> Citizen inputs query or submits application on the React SPA frontend.</li>
+<li><strong>Gateway Ingress:</strong> Axios sends HTTP request with <code>Authorization: Bearer &lt;JWT&gt;</code> header to Nginx reverse proxy on port 80.</li>
+<li><strong>Route &amp; Auth Filter:</strong> Nginx forwards request to appropriate Spring Boot microservice; <code>JwtAuthenticationFilter</code> intercepts, validates token signature, and populates <code>SecurityContext</code>.</li>
+<li><strong>Business Execution:</strong> Spring Boot Service invokes business logic (e.g., AST rules engine, database query).</li>
+<li><strong>AI Subsystem Delegation:</strong> When semantic search or ML categorization is requested, the Spring Boot service calls the Python FastAPI endpoint via high-speed HTTP client.</li>
+<li><strong>Persistence:</strong> State updates (new application, document upload, status transition) are persisted to MongoDB or Oracle DB.</li>
+<li><strong>Response Packaging:</strong> Structured REST JSON response (<code>ApiResponse&lt;T&gt;</code>) is constructed and returned to the client.</li>
+<li><strong>UI State Update:</strong> React Context receives response, updates UI components reactively, and displays toast notifications or updated dashboard KPIs.</li>
+</ol>
+<div class="page-break"></div>
+<h2>4. EXTERNAL INTERFACE REQUIREMENTS</h2>
+<h3>4.1 User Interfaces</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>#</th>
+<th>Screen / Page</th>
+<th>User Role</th>
+<th>Description &amp; Key Elements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>Landing / Home Portal</strong></td>
+<td>Public / Unauthenticated</td>
+<td>Hero banner with bilingual toggle, quick category browser, featured welfare schemes, search bar, and statistics counter.</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>Citizen Login &amp; Registration</strong></td>
+<td>Public</td>
+<td>Mobile/Email input, OTP verification modal, password input with strength indicator, and role-based redirect.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>Citizen Profile Onboarding</strong></td>
+<td>Citizen (<code>ROLE_USER</code>)</td>
+<td>Multi-step interactive wizard collecting age, gender, caste, income, domicile state/district, occupation, and family size.</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>Personalized Dashboard</strong></td>
+<td>Citizen (<code>ROLE_USER</code>)</td>
+<td>Summary cards: Eligible Schemes count, Active Applications, Vault Document Status, and ML Recommendation carousel.</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>Scheme Explorer &amp; Search</strong></td>
+<td>Citizen / Public</td>
+<td>Faceted search with filters (Category, State, Gender, Income Cap), natural language search bar, and scheme comparison cards.</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>Scheme Details &amp; AST Checker</strong></td>
+<td>Citizen (<code>ROLE_USER</code>)</td>
+<td>Comprehensive scheme guidelines, benefit structure, required documents checklist, and interactive &quot;Check My Eligibility&quot; widget.</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td><strong>4-Step Application Wizard</strong></td>
+<td>Citizen (<code>ROLE_USER</code>)</td>
+<td>Step 1: Pre-filled Profile Review; Step 2: Scheme Specific Data; Step 3: Vault Document Selection; Step 4: Final Declaration &amp; Submit.</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>Digital Document Vault</strong></td>
+<td>Citizen (<code>ROLE_USER</code>)</td>
+<td>Upload interface for PDF/JPG certificates, OCR verification status badge (<code>VERIFIED</code>, <code>PENDING</code>, <code>FLAGGED</code>), and document preview.</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td><strong>Application Tracking &amp; Grievance</strong></td>
+<td>Citizen (<code>ROLE_USER</code>)</td>
+<td>Visual progression timeline (<code>SUBMITTED</code> ➔ <code>REVIEW</code> ➔ <code>APPROVED</code>), download official acknowledgement receipt, and file grievance ticket.</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td><strong>Admin Review &amp; Verification Desk</strong></td>
+<td>Officer / Admin</td>
+<td>Split-pane view: Left pane shows application metadata &amp; OCR extracted fields; right pane shows uploaded certificate preview with Approve/Reject/Request Info controls.</td>
+</tr>
+<tr>
+<td><strong>11</strong></td>
+<td><strong>Admin Analytics &amp; Audit Dashboard</strong></td>
+<td>Admin (<code>ROLE_ADMIN</code>)</td>
+<td>Real-time charts (application volume by district, approval/rejection ratios, SLA compliance), scheme CRUD editor, and audit log inspector.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>4.2 Hardware Interfaces</h3>
+<p><strong>Not Applicable</strong> (Software-only project).</p>
+<h3>4.3 Software Interfaces — Third-Party APIs</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>API / Service</th>
+<th>Provider</th>
+<th>Auth Method</th>
+<th>Purpose in This Project</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FastAPI ML Inference API</strong></td>
+<td>Internal Microservice</td>
+<td>Shared Secret Header</td>
+<td>Serves Random Forest category predictions and dense semantic vector searches.</td>
+</tr>
+<tr>
+<td><strong>Spring Mail (SMTP)</strong></td>
+<td>Gmail / SendGrid SMTP</td>
+<td>App Password / TLS</td>
+<td>Dispatches email verification codes, application status alerts, and password reset tokens.</td>
+</tr>
+<tr>
+<td><strong>Apache PDFBox &amp; Tesseract</strong></td>
+<td>Open Source Libraries</td>
+<td>Local Binaries</td>
+<td>Extracts text, dates, certificate IDs, and names from uploaded PDF/image documents.</td>
+</tr>
+<tr>
+<td><strong>OpenStreetMap &amp; Leaflet.js</strong></td>
+<td>OpenStreetMap (Free)</td>
+<td>None Required</td>
+<td>Interactive map visualizer for district-wise scheme saturation and citizen kiosk location.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>4.4 Communication Interfaces</h3>
+<ul>
+<li><strong>Stateless REST over HTTPS (TLS 1.3):</strong> Primary protocol for all client-to-server and inter-service HTTP communications.</li>
+<li><strong>JWT Bearer Authentication:</strong> Enforced in <code>Authorization: Bearer &lt;token&gt;</code> HTTP header for all protected API resources.</li>
+<li><strong>WebSocket (STOMP over SockJS):</strong> Real-time administrative notifications and live citizen application status progression updates.</li>
+</ul>
+<div class="page-break"></div>
+<h2>5. FUNCTIONAL REQUIREMENTS</h2>
+<h3>5.1 Authentication &amp; Profile Microservice</h3>
+<h4>FR-AUTH-001: Citizen Registration and Account Creation</h4>
+<ul>
+<li><strong>Actor(s):</strong> New Citizen (<code>ROLE_USER</code>)</li>
+<li><strong>Description:</strong> System shall register new users with email, mobile, password, full name, and demographic identifiers.</li>
+<li><strong>Pre-condition:</strong> User is not already registered with the specified email or mobile number.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>User navigates to <code>/signup</code> and enters name, email, mobile number, and password.</li>
+<li>Spring Boot validates input format (RFC 5322 email, 10-digit Indian mobile, password ≥ 8 chars with mixed case/symbols).</li>
+<li>System checks Oracle DB for uniqueness.</li>
+<li>System hashes password with BCrypt (cost factor 12) and persists user in <code>PENDING_VERIFICATION</code> status.</li>
+<li>System generates 6-digit numeric OTP with 10-minute expiry and sends via Email/SMS.</li>
+<li>User inputs OTP on <code>/otp-verification</code>.</li>
+<li>System marks user <code>ACTIVE</code>, creates an empty <code>CitizenProfile</code> record, issues signed JWT, and redirects to onboarding.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (Duplicate):</em> If email/mobile exists, system returns HTTP 409 Conflict with <code>&quot;Account already registered. Please sign in.&quot;</code></li>
+<li><em>AF2 (Invalid OTP):</em> If entered OTP is wrong, system decrements attempt counter; locks registration after 3 failed attempts for 15 minutes.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> User record exists in Oracle DB with status <code>ACTIVE</code>; valid JWT issued.</li>
+</ul>
+<h4>FR-AUTH-002: User Login and Stateless JWT Issuance</h4>
+<ul>
+<li><strong>Actor(s):</strong> Registered User (Citizen, Officer, Admin)</li>
+<li><strong>Description:</strong> Authenticates credentials and issues cryptographically signed JWT with embedded roles and expiry.</li>
+<li><strong>Pre-condition:</strong> User account exists and status is <code>ACTIVE</code>.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>User posts credentials to <code>POST /api/auth/login</code>.</li>
+<li>Spring Security <code>AuthenticationManager</code> invokes <code>CustomUserDetailsService</code>.</li>
+<li>System matches entered plaintext password against stored BCrypt hash.</li>
+<li>System generates access token (valid 2 hours) and refresh token (valid 7 days).</li>
+<li>System returns tokens and role permissions in response payload; client stores in secure storage.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (Bad Credentials):</em> Invalid username/password returns HTTP 401 Unauthorized with <code>&quot;Invalid email or password&quot;</code>.</li>
+<li><em>AF2 (Account Locked):</em> Locked user returns HTTP 403 Forbidden with <code>&quot;Account suspended. Contact administrator&quot;</code>.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> User authenticated; subsequent requests authenticated via <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+</ul>
+<div class="page-break"></div>
+<h3>5.2 Scheme &amp; Eligibility Microservice</h3>
+<h4>FR-SCH-001: Scheme Catalog Exploration &amp; Full-Text Search</h4>
+<ul>
+<li><strong>Actor(s):</strong> Any User / Citizen</li>
+<li><strong>Description:</strong> System shall provide faceted search and filtering across 4,734+ government welfare schemes.</li>
+<li><strong>Pre-condition:</strong> Scheme database is seeded and indexed.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>User navigates to <code>/schemes</code> and provides search keyword or selects filter facets (Category, Domicile State, Gender, Min/Max Age, Income Threshold).</li>
+<li>Client sends request to <code>GET /api/schemes?keyword=...&amp;category=...&amp;state=...</code>.</li>
+<li>Spring Boot builds dynamic MongoDB compound query using indexed criteria.</li>
+<li>Matching schemes returned with paginated metadata (total schemes, pages, eligibility summaries).</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (Zero matches):</em> If no exact match found, system triggers fallback semantic vector search to suggest conceptually similar welfare programs.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> Paginated list of schemes rendered on UI.</li>
+</ul>
+<h4>FR-SCH-002: Deterministic AST Statutory Eligibility Evaluation</h4>
+<ul>
+<li><strong>Actor(s):</strong> Citizen (<code>ROLE_USER</code>)</li>
+<li><strong>Description:</strong> System evaluates citizen's verified profile against a scheme's Boolean logic tree and returns eligibility status with line-by-line statutory breakdown.</li>
+<li><strong>Pre-condition:</strong> Citizen has completed onboarding profile; target scheme ID is valid.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>Citizen clicks &quot;Check Eligibility&quot; on scheme details page.</li>
+<li>Frontend sends request to <code>POST /api/eligibility/evaluate/{schemeId}</code>.</li>
+<li><code>EligibilityEngine.java</code> retrieves citizen profile attributes from MongoDB.</li>
+<li>Engine parses scheme's nested AST rule groups (evaluating <code>AND</code>, <code>OR</code>, <code>NOT</code> operators against parameters: Age, Gender, Income, Landholding, Caste, Domicile, Employment).</li>
+<li>Engine calculates <code>eligibilityStatus</code> (<code>ELIGIBLE</code>, <code>INELIGIBLE</code>, <code>PARTIALLY_ELIGIBLE</code>) and constructs an array of condition verdicts with clear explanations.</li>
+<li>Result returned to client and rendered in interactive eligibility card with green checkmarks or red cross indicators.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (Missing Profile Attribute):</em> If citizen profile lacks a required comparison field (e.g., land ownership size), status returns <code>INSUFFICIENT_DATA</code> with a direct link to update profile.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> Evaluation event logged to database; citizen informed of exact legal qualification status.</li>
+</ul>
+<div class="page-break"></div>
+<h3>5.3 Digital Vault &amp; Document Verification Microservice</h3>
+<h4>FR-DOC-001: Citizen Document Upload and Vault Storage</h4>
+<ul>
+<li><strong>Actor(s):</strong> Citizen (<code>ROLE_USER</code>)</li>
+<li><strong>Description:</strong> Allows citizens to securely upload, tag, and store certificates in personal encrypted vault.</li>
+<li><strong>Pre-condition:</strong> Document format is PDF, PNG, or JPEG; file size ≤ 5 MB.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>Citizen opens <code>/documents</code> and clicks &quot;Upload Document&quot;.</li>
+<li>Citizen selects document type (<code>AADHAAR</code>, <code>INCOME_CERTIFICATE</code>, <code>COMMUNITY_CERTIFICATE</code>, <code>DOMICILE</code>, <code>RATION_CARD</code>) and attaches file.</li>
+<li>Spring Boot validates MIME type and file size.</li>
+<li>System computes SHA-256 checksum, generates unique UUID storage path, and saves file.</li>
+<li>Metadata saved to MongoDB <code>citizenVaultDocuments</code> collection with initial status <code>PENDING_OCR</code>.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (File too large):</em> Returns HTTP 413 Payload Too Large with <code>&quot;Document exceeds 5MB size limit&quot;</code>.</li>
+<li><em>AF2 (Unsupported format):</em> Returns HTTP 415 Unsupported Media Type.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> Document record stored in vault; asynchronous OCR extraction job dispatched.</li>
+</ul>
+<h4>FR-DOC-002: Automated OCR Text Extraction &amp; Cross-Verification</h4>
+<ul>
+<li><strong>Actor(s):</strong> AI System Agent / Verification Engine</li>
+<li><strong>Description:</strong> System extracts text from uploaded certificates using OCR and matches citizen name, DOB, and certificate number against profile.</li>
+<li><strong>Pre-condition:</strong> Document successfully uploaded to vault.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>OCR Engine parses document image/PDF via Apache PDFBox / Tesseract.</li>
+<li>Regex pattern matchers locate Certificate Number, Issue Date, Authority Stamp, and Applicant Name.</li>
+<li>System compares extracted Name and DOB with citizen's profile using Levenshtein distance string similarity.</li>
+<li>If similarity ≥ 85%, document status is upgraded to <code>AUTO_VERIFIED</code> with high confidence score.</li>
+<li>If similarity &lt; 85%, document is marked <code>FLAGGED_FOR_MANUAL_REVIEW</code>.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (Unreadable Document):</em> If OCR confidence &lt; 40% (blurred or corrupt scan), document status updated to <code>REJECTED_UNREADABLE</code>, and user notified to re-upload clear image.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> Extracted metadata saved to document entity; ready for scheme application auto-attachment.</li>
+</ul>
+<div class="page-break"></div>
+<h3>5.4 Application &amp; Grievance Microservice</h3>
+<h4>FR-APP-001: End-to-End Scheme Application Submission</h4>
+<ul>
+<li><strong>Actor(s):</strong> Citizen (<code>ROLE_USER</code>)</li>
+<li><strong>Description:</strong> Submits completed application for an eligible welfare scheme with attached vault documents.</li>
+<li><strong>Pre-condition:</strong> Citizen evaluated as <code>ELIGIBLE</code> for scheme; required mandatory documents uploaded.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>Citizen launches Application Wizard from <code>/scheme/{id}/apply</code>.</li>
+<li>Step 1: Pre-populated demographic profile verified by user.</li>
+<li>Step 2: User completes scheme-specific questionnaires (e.g., bank account IFSC, crop type, scholarship grade).</li>
+<li>Step 3: User attaches required documents from their digital vault.</li>
+<li>Step 4: User reviews declaration and submits.</li>
+<li>Backend generates unique alphanumeric tracking number (e.g., <code>APP-2026-89421</code>), saves application in <code>SUBMITTED</code> state, and emits application submission event.</li>
+<li>Downloadable PDF acknowledgement receipt generated with QR code verification.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (Missing Required Document):</em> Form prevents submission and highlights missing mandatory certificates.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> Application record persisted in MongoDB; visible in citizen tracker and admin review queues.</li>
+</ul>
+<h4>FR-APP-002: Citizen Grievance Filing and SLA Escalation</h4>
+<ul>
+<li><strong>Actor(s):</strong> Citizen (<code>ROLE_USER</code>)</li>
+<li><strong>Description:</strong> Enables citizens to lodge formal grievances regarding application delays or unjust rejections.</li>
+<li><strong>Pre-condition:</strong> Citizen has an application in <code>SUBMITTED</code>, <code>UNDER_REVIEW</code>, or <code>REJECTED</code> state.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>Citizen navigates to <code>/tracker</code>, selects application, and clicks &quot;File Grievance&quot;.</li>
+<li>Citizen specifies grievance type (<code>DELAYED_REVIEW</code>, <code>DOCUMENT_DISPUTE</code>, <code>DISBURSEMENT_ISSUE</code>), enters detailed description, and submits.</li>
+<li>System assigns tracking ticket <code>GRV-XXXXXX</code>, logs timestamp, and sets statutory SLA deadline (e.g., 7 working days).</li>
+<li>Grievance escalated to Departmental Officer review queue.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (SLA Breached):</em> If grievance remains unresolved after 7 days, automated background cron job triggers severity bump to <code>ESCALATED_TO_SUPERVISOR</code>.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> Grievance record created; citizen receives SMS/Email notification with tracking ticket.</li>
+</ul>
+<div class="page-break"></div>
+<h3>5.5 Administrative Review &amp; Audit Microservice</h3>
+<h4>FR-ADM-001: Officer Application Review &amp; Benefit Disbursement</h4>
+<ul>
+<li><strong>Actor(s):</strong> Verification Officer (<code>ROLE_VERIFICATION_OFFICER</code>) / Admin</li>
+<li><strong>Description:</strong> Allows government officers to inspect applications, verify supporting documents, and issue approval or rejection.</li>
+<li><strong>Pre-condition:</strong> Officer authenticated with administrative credentials; applications exist in <code>SUBMITTED</code> state.</li>
+<li><strong>Main Flow:</strong>
+<ol>
+<li>Officer accesses <code>/admin/review</code> and opens pending application.</li>
+<li>Screen renders applicant demographic breakdown, AST eligibility checklist, and embedded certificate preview.</li>
+<li>Officer reviews documents and clicks &quot;Approve Application&quot; or &quot;Reject Application&quot; (entering mandatory rejection justification remarks).</li>
+<li>Application status transitioned to <code>APPROVED</code> or <code>REJECTED</code>.</li>
+<li>Audit log entry recorded in <code>admin_audit_logs</code> collection capturing Officer ID, action, timestamp, and IP address.</li>
+<li>Real-time push notification and email sent to citizen.</li>
+</ol>
+</li>
+<li><strong>Alternate Flow:</strong>
+<ul>
+<li><em>AF1 (Insufficient Information):</em> Officer clicks &quot;Request Information&quot;; application placed in <code>ACTION_REQUIRED</code> state; citizen notified to upload clarification.</li>
+</ul>
+</li>
+<li><strong>Post-condition:</strong> Application status updated; immutable audit record recorded.</li>
+</ul>
+<div class="page-break"></div>
+<h2>6. AI / ML MODULE SPECIFICATION</h2>
+<h3>6.1 AI Module 1 — Citizen Welfare Scheme Recommendation Model (Primary AI Feature)</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Specification Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Module Name</strong></td>
+<td><strong>Citizen Welfare Scheme Recommendation Model</strong></td>
+</tr>
+<tr>
+<td><strong>AI Phase</strong></td>
+<td><strong>Phase 1 (Plan) ➔ Phase 2 (Prototype) ➔ Phase 3 (Build) ➔ Phase 4 (Integrate) ➔ Phase 5 (Deploy) ➔ Phase 6 (Present)</strong></td>
+</tr>
+<tr>
+<td><strong>Problem AI Solves</strong></td>
+<td>Bridges discovery gap by instantly analyzing 9 multidimensional demographic/socioeconomic attributes of a citizen to accurately classify and recommend the most suitable welfare program category, eliminating manual portal searching.</td>
+</tr>
+<tr>
+<td><strong>Input Data</strong></td>
+<td><strong>Structured 9-feature JSON citizen profile:</strong><br>1. <code>age</code> (int: 18–75)<br>2. <code>gender</code> (string: <code>Female</code>, <code>Male</code>, <code>Transgender</code>)<br>3. <code>state</code> (string: 10 major Indian states)<br>4. <code>income</code> (float: annual household income in INR, ₹30,000–₹1,200,000)<br>5. <code>occupation</code> (string: <code>Student</code>, <code>Farmer</code>, <code>Artisan</code>, <code>Daily Wage Worker</code>, <code>Self-Employed</code>, <code>Salaried</code>, <code>Unemployed</code>)<br>6. <code>category</code> (string: <code>General</code>, <code>OBC</code>, <code>SC</code>, <code>ST</code>, <code>EWS</code>)<br>7. <code>rural</code> (string: <code>Yes</code>, <code>No</code>)<br>8. <code>student</code> (string: <code>Yes</code>, <code>No</code>)<br>9. <code>disability</code> (string: <code>Yes</code>, <code>No</code>)</td>
+</tr>
+<tr>
+<td><strong>Output / Prediction</strong></td>
+<td><strong>Target Scheme Category (One of 7 discrete classes) with model confidence probability (0.0 to 1.0):</strong><br>1. <code>Agriculture &amp; Farmer Welfare</code><br>2. <code>Education &amp; Scholarships</code><br>3. <code>Women &amp; Child Development</code><br>4. <code>Social Welfare &amp; Disability Support</code><br>5. <code>Senior Citizen Pension &amp; Healthcare</code><br>6. <code>Skill Development &amp; Entrepreneurship</code><br>7. <code>Rural &amp; Urban Livelihood Support</code></td>
+</tr>
+<tr>
+<td><strong>Algorithm / Model</strong></td>
+<td><strong>scikit-learn <code>RandomForestClassifier</code></strong> with 200 decision trees, <code>max_depth=16</code>, <code>min_samples_split=4</code>, <code>min_samples_leaf=2</code>, <code>class_weight=&quot;balanced&quot;</code>.</td>
+</tr>
+<tr>
+<td><strong>Training Dataset</strong></td>
+<td><strong>Synthetic Citizen Welfare Dataset</strong> (<code>synthetic_citizen_eligibility_dataset.csv</code>), 5,000 records modeled on Indian demographic distributions and statutory scheme criteria with 1.5% calibrated stochastic noise.</td>
+</tr>
+<tr>
+<td><strong>Implementation Approach</strong></td>
+<td><strong>[X] scikit-learn (local training)</strong>      [ ] TensorFlow/Keras      [ ] Hosted API</td>
+</tr>
+<tr>
+<td><strong>Integration Point</strong></td>
+<td>Python FastAPI endpoint: <code>POST /predict/recommend-category</code><br>Called by Spring Boot <code>schemebridge-scheme-service</code> using <code>RestClient</code> / <code>WebClient</code>.</td>
+</tr>
+<tr>
+<td><strong>Expected Accuracy / Metric</strong></td>
+<td><strong>Accuracy: 98.40%</strong> (0.9840) | <strong>Weighted Precision: 98.42%</strong> | <strong>Weighted Recall: 98.40%</strong> | <strong>Weighted F1 Score: 98.40%</strong> | Latency: 21.6 µs/sample.</td>
+</tr>
+<tr>
+<td><strong>Fallback if AI Fails</strong></td>
+<td>If model confidence &lt; 60% or API unreachable, system gracefully falls back to deterministic AST rule matching on citizen's primary occupation &amp; age.</td>
+</tr>
+<tr>
+<td><strong>AI Ethical Considerations</strong></td>
+<td><strong>Human-in-the-Loop &amp; Advisory Only:</strong> Model output is advisory for discovery; all statutory qualifications are verified by deterministic code and human officers. Balanced class weighting applied during training to prevent demographic discrimination.</td>
+</tr>
+<tr>
+<td><strong>Sprint Target</strong></td>
+<td><strong>Week 3:</strong> Standalone prototype | <strong>Week 4:</strong> FastAPI serving | <strong>Week 5:</strong> Spring Boot integration | <strong>Week 6:</strong> React UI integration | <strong>Week 7:</strong> End-to-end load testing.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h3>6.2 AI Module 2 — Dense Semantic Vector Search &amp; Conversational Assistant (Secondary AI Feature)</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Specification Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Module Name</strong></td>
+<td><strong>Dense Semantic Vector Scheme Discovery &amp; Conversational AI Assistant</strong></td>
+</tr>
+<tr>
+<td><strong>AI Phase</strong></td>
+<td><strong>Phase 1 (Plan) ➔ Phase 2 (Prototype) ➔ Phase 3 (Build) ➔ Phase 4 (Integrate) ➔ Phase 5 (Deploy) ➔ Phase 6 (Present)</strong></td>
+</tr>
+<tr>
+<td><strong>Problem AI Solves</strong></td>
+<td>Traditional keyword search fails when citizens search using colloquial, dialectical, or informal terms (e.g. &quot;subsidy for buying dairy buffaloes&quot; vs official title &quot;Pashu Kisan Credit Card&quot;). This module bridges semantic intent.</td>
+</tr>
+<tr>
+<td><strong>Input Data</strong></td>
+<td>Unstructured natural language query text (English / Romanized vernacular) entered by citizen in search bar or conversational chat assistant.</td>
+</tr>
+<tr>
+<td><strong>Output / Prediction</strong></td>
+<td>Ranked list of scheme IDs ordered by Cosine Similarity score (0.000 to 1.000) + Conversational natural language synthesis of scheme requirements.</td>
+</tr>
+<tr>
+<td><strong>Algorithm / Model</strong></td>
+<td><strong>Sentence-Transformers <code>all-MiniLM-L6-v2</code></strong> producing 384-dimensional dense semantic vector embeddings + TruncatedSVD projection + Cosine Dot-Product ranking.</td>
+</tr>
+<tr>
+<td><strong>Training / Corpus Dataset</strong></td>
+<td>Full authoritative corpus of <strong>4,734 Master Government Schemes</strong> (<code>master_schemes_4734.json</code>) indexed across scheme names, benefits, eligibility summaries, and target beneficiaries.</td>
+</tr>
+<tr>
+<td><strong>Implementation Approach</strong></td>
+<td><strong>[X] Python FastAPI + sentence-transformers (local embedding index)</strong>      [X] OpenAI GPT-4o / Local RAG for conversational synthesis.</td>
+</tr>
+<tr>
+<td><strong>Integration Point</strong></td>
+<td>Python FastAPI endpoint: <code>POST /api/v1/ai/semantic-search</code> &amp; <code>POST /api/ai/citizen/chat</code><br>Called by Spring Boot <code>AiChatController</code> &amp; <code>SchemeController</code>.</td>
+</tr>
+<tr>
+<td><strong>Expected Accuracy / Metric</strong></td>
+<td><strong>Mean Reciprocal Rank (MRR@10) &gt; 0.85</strong> on standard citizen queries; semantic query inference latency &lt; 45 ms.</td>
+</tr>
+<tr>
+<td><strong>Fallback if AI Fails</strong></td>
+<td>If vector index service is unavailable, Spring Boot automatically degrades to MongoDB text index regex matching (<code>$text</code> search on <code>schemeName</code> and <code>description</code>).</td>
+</tr>
+<tr>
+<td><strong>AI Ethical Considerations</strong></td>
+<td>Complete PII protection: No citizen personal data or uploaded documents are ever sent to external LLMs; queries are sanitized; answers provide direct citations to official gazette notices.</td>
+</tr>
+<tr>
+<td><strong>Sprint Target</strong></td>
+<td><strong>Week 4:</strong> Vector index compilation | <strong>Week 5:</strong> FastAPI microservice | <strong>Week 6:</strong> React chat assistant UI | <strong>Week 7:</strong> Full integration testing.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>7. NON-FUNCTIONAL REQUIREMENTS</h2>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>NFR ID</th>
+<th>Category</th>
+<th>NFR Name</th>
+<th>Measurable Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-PERF-001</strong></td>
+<td>Performance</td>
+<td>API Response Time</td>
+<td>All standard REST API endpoints must respond in <strong>&lt; 500 ms</strong> under nominal load; 99th percentile response time must be <strong>&lt; 1.5 seconds</strong> at 100 concurrent requests.</td>
+</tr>
+<tr>
+<td><strong>NFR-PERF-002</strong></td>
+<td>Performance</td>
+<td>AI Inference Latency</td>
+<td>Standalone Random Forest model prediction must complete in <strong>&lt; 50 ms</strong>; Dense semantic vector search over 4,734 schemes must complete in <strong>&lt; 100 ms</strong>.</td>
+</tr>
+<tr>
+<td><strong>NFR-PERF-003</strong></td>
+<td>Performance</td>
+<td>UI Page Load Time</td>
+<td>React frontend dashboard must achieve First Contentful Paint (FCP) <strong>&lt; 1.2s</strong> and fully interactive state <strong>&lt; 2.5s</strong> on standard 4G mobile connections.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-001</strong></td>
+<td>Security</td>
+<td>Stateless Authentication</td>
+<td>All non-public API endpoints must enforce cryptographically signed JWTs (HMAC-SHA256) with 2-hour token expiration and refresh token rotation.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-002</strong></td>
+<td>Security</td>
+<td>Password Encryption</td>
+<td>User passwords must be salted and hashed using <strong>BCrypt with cost factor 12</strong>; plaintext passwords must never be logged or stored.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-003</strong></td>
+<td>Security</td>
+<td>Input Validation &amp; Sanitization</td>
+<td>All client payloads must be validated against XSS and SQL/NoSQL injection using Spring Boot <code>jakarta.validation</code> annotations and parameterized queries.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-004</strong></td>
+<td>Security</td>
+<td>Data Encryption at Rest</td>
+<td>Uploaded citizen identity certificates and sensitive PII must be encrypted at rest using <strong>AES-256</strong> encryption standards.</td>
+</tr>
+<tr>
+<td><strong>NFR-SCAL-001</strong></td>
+<td>Scalability</td>
+<td>Concurrency</td>
+<td>System must support a minimum of <strong>250 concurrent authenticated users</strong> without connection pool exhaustion or memory leaks.</td>
+</tr>
+<tr>
+<td><strong>NFR-REL-001</strong></td>
+<td>Reliability</td>
+<td>System Availability</td>
+<td>System shall maintain <strong>99.5% uptime</strong> during operational hours, supported by automated Docker container restarts (<code>restart: unless-stopped</code>).</td>
+</tr>
+<tr>
+<td><strong>NFR-REL-002</strong></td>
+<td>Reliability</td>
+<td>Graceful Fault Recovery</td>
+<td>In the event of AI microservice downtime, the core portal must continue functioning normally using deterministic rule fallbacks without 500 errors.</td>
+</tr>
+<tr>
+<td><strong>NFR-USE-001</strong></td>
+<td>Usability</td>
+<td>Responsive Mobile Design</td>
+<td>All screens must render responsively across devices down to 375px viewport width (iPhone SE standard) with single-thumb interactive accessibility.</td>
+</tr>
+<tr>
+<td><strong>NFR-USE-002</strong></td>
+<td>Usability</td>
+<td>Accessibility Compliance</td>
+<td>User interface components must adhere to <strong>WCAG 2.1 Level AA</strong> standards, including color contrast ratio ≥ 4.5:1, screen reader tags, and keyboard tab navigation.</td>
+</tr>
+<tr>
+<td><strong>NFR-MAINT-001</strong></td>
+<td>Maintainability</td>
+<td>Layered Clean Architecture</td>
+<td>Codebase must strictly preserve the layered design pattern (<code>Controller ➔ Service ➔ Repository</code>) with zero business logic implemented in Controllers.</td>
+</tr>
+<tr>
+<td><strong>NFR-MAINT-002</strong></td>
+<td>Maintainability</td>
+<td>API Documentation</td>
+<td>All REST endpoints must be annotated and accessible via interactive Swagger / OpenAPI 3.0 documentation at <code>/swagger-ui.html</code>.</td>
+</tr>
+<tr>
+<td><strong>NFR-COMP-001</strong></td>
+<td>Compliance</td>
+<td>Digital Personal Data Protection</td>
+<td>Platform must comply with the Indian <strong>Digital Personal Data Protection Act (DPDPA 2023)</strong>; citizens must have clear consent mechanisms and right-to-forget controls.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>8. DATABASE DESIGN</h2>
+<h3>8.1 Entity-Relationship Overview</h3>
+<p>SchemeBridge employs a polyglot persistence architecture:</p>
+<ol>
+<li><strong>Oracle Database XE:</strong> Houses security-critical identity data (<code>USERS</code>, <code>ROLES</code>, <code>REFRESH_TOKENS</code>, <code>OTP_VERIFICATIONS</code>).</li>
+<li><strong>MongoDB 7.0:</strong> Houses high-volume, dynamic welfare schema entities (<code>CITIZEN_PROFILES</code>, <code>SCHEMES</code>, <code>SCHEME_CATEGORIES</code>, <code>APPLICATIONS</code>, <code>CITIZEN_VAULT_DOCUMENTS</code>, <code>GRIEVANCES</code>, <code>ADMIN_AUDIT_LOGS</code>).</li>
+</ol>
+<p><img src="ER_DIAGRAM.png" alt="SchemeBridge Entity Relationship Diagram" /></p>
+<div class="callout-box">
+<p><strong>PlantUML Source Specification:</strong> Available at [<code>ER_DIAGRAM.puml</code>](file:///e:/SCHEMEBRIDGE/ER_DIAGRAM.puml).</p>
+</div>
+<pre><code class="language-mermaid">erDiagram
+    USER ||--o{ REFRESH_TOKEN : owns
+    USER ||--o{ OTP_VERIFICATION : verifies
+    USER ||--|| CITIZEN_PROFILE : defines
+    CITIZEN_PROFILE ||--o{ CITIZEN_VAULT_DOCUMENT : uploads
+    CITIZEN_PROFILE ||--o{ APPLICATION : submits
+    SCHEME ||--o{ APPLICATION : receives
+    APPLICATION ||--o{ GRIEVANCE : escalates
+    APPLICATION ||--o{ APPLICATION_EVENT : logs
+    USER ||--o{ ADMIN_AUDIT_LOG : audits
+
+    USER {
+        bigint id PK
+        string email UK
+        string mobile UK
+        string password_hash
+        string role
+        string status
+        datetime created_at
+    }
+
+    CITIZEN_PROFILE {
+        string id PK
+        bigint user_id FK
+        int age
+        string gender
+        string state
+        string district
+        double annual_income
+        string caste_category
+        string occupation
+        boolean is_rural
+        boolean is_student
+        boolean is_disabled
+    }
+
+    SCHEME {
+        string id PK
+        string scheme_code UK
+        string scheme_name
+        string ministry
+        string category
+        string level
+        object eligibility_rules_ast
+        array required_documents
+        string benefit_summary
+    }
+
+    APPLICATION {
+        string id PK
+        string application_number UK
+        string citizen_profile_id FK
+        string scheme_id FK
+        string status
+        datetime submission_date
+        array attached_vault_documents
+    }
+
+    CITIZEN_VAULT_DOCUMENT {
+        string id PK
+        string citizen_profile_id FK
+        string document_type
+        string file_storage_path
+        string ocr_status
+        string extracted_certificate_number
+        double ocr_confidence
+    }
+
+    GRIEVANCE {
+        string id PK
+        string application_id FK
+        string ticket_number UK
+        string grievance_type
+        string status
+        string priority
+        datetime sla_deadline
+    }
+</code></pre>
+<h3>8.2 Entity Descriptions</h3>
+<h4>ENTITY 1: User</h4>
+<ul>
+<li><strong>Service:</strong> <code>schemebridge-auth-service</code></li>
+<li><strong>Database:</strong> Oracle Database 21c XE</li>
+<li><strong>Table Name:</strong> <code>USERS</code></li>
+</ul>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Column Name</th>
+<th>Data Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>NUMBER(19)</code></td>
+<td>PRIMARY KEY, AUTO_INCREMENT</td>
+<td>Unique surrogate identifier for the user account.</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td><code>VARCHAR2(150)</code></td>
+<td>NOT NULL, UNIQUE</td>
+<td>Citizen/Admin primary email address used for login.</td>
+</tr>
+<tr>
+<td><code>mobile</code></td>
+<td><code>VARCHAR2(15)</code></td>
+<td>NOT NULL, UNIQUE</td>
+<td>10-digit Indian mobile number for OTP authentication.</td>
+</tr>
+<tr>
+<td><code>password_hash</code></td>
+<td><code>VARCHAR2(255)</code></td>
+<td>NOT NULL</td>
+<td>BCrypt cryptographic hash of the user password.</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td><code>VARCHAR2(30)</code></td>
+<td>NOT NULL</td>
+<td>User authorization role (<code>ROLE_USER</code>, <code>ROLE_ADMIN</code>, <code>ROLE_VERIFICATION_OFFICER</code>).</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>VARCHAR2(30)</code></td>
+<td>NOT NULL, DEFAULT 'ACTIVE'</td>
+<td>Account state (<code>ACTIVE</code>, <code>PENDING_VERIFICATION</code>, <code>SUSPENDED</code>).</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td><code>TIMESTAMP</code></td>
+<td>NOT NULL, DEFAULT CURRENT_TIMESTAMP</td>
+<td>Account creation timestamp.</td>
+</tr>
+<tr>
+<td><code>last_login</code></td>
+<td><code>TIMESTAMP</code></td>
+<td>NULLABLE</td>
+<td>Timestamp of the most recent successful login session.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h4>ENTITY 2: CitizenProfile</h4>
+<ul>
+<li><strong>Service:</strong> <code>schemebridge-scheme-service</code></li>
+<li><strong>Database:</strong> MongoDB 7.0</li>
+<li><strong>Collection Name:</strong> <code>citizen_profiles</code></li>
+</ul>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Data Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td><code>ObjectId / String</code></td>
+<td>PRIMARY KEY</td>
+<td>Unique identifier for citizen demographic profile.</td>
+</tr>
+<tr>
+<td><code>userId</code></td>
+<td><code>Long / Number</code></td>
+<td>INDEXED, NOT NULL</td>
+<td>Foreign reference to Oracle <code>USERS.id</code>.</td>
+</tr>
+<tr>
+<td><code>fullName</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Full name of citizen as recorded on official identity card.</td>
+</tr>
+<tr>
+<td><code>age</code></td>
+<td><code>Integer</code></td>
+<td>NOT NULL (Min: 0, Max: 120)</td>
+<td>Citizen age in years (used for AST gatekeeping).</td>
+</tr>
+<tr>
+<td><code>gender</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Legal gender (<code>MALE</code>, <code>FEMALE</code>, <code>TRANSGENDER</code>).</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>State of permanent domicile (e.g., &quot;Tamil Nadu&quot;).</td>
+</tr>
+<tr>
+<td><code>district</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>District of domicile (e.g., &quot;Coimbatore&quot;).</td>
+</tr>
+<tr>
+<td><code>annualIncome</code></td>
+<td><code>Double</code></td>
+<td>NOT NULL</td>
+<td>Annual household income in Indian Rupees (INR).</td>
+</tr>
+<tr>
+<td><code>casteCategory</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Reservation category (<code>GENERAL</code>, <code>OBC</code>, <code>SC</code>, <code>ST</code>, <code>EWS</code>).</td>
+</tr>
+<tr>
+<td><code>occupation</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Primary livelihood (<code>FARMER</code>, <code>STUDENT</code>, <code>ARTISAN</code>, etc.).</td>
+</tr>
+<tr>
+<td><code>isRural</code></td>
+<td><code>Boolean</code></td>
+<td>NOT NULL</td>
+<td>True if domicile is classified under rural administration.</td>
+</tr>
+<tr>
+<td><code>isStudent</code></td>
+<td><code>Boolean</code></td>
+<td>NOT NULL</td>
+<td>True if currently enrolled in recognized educational institution.</td>
+</tr>
+<tr>
+<td><code>isDisabled</code></td>
+<td><code>Boolean</code></td>
+<td>NOT NULL</td>
+<td>True if certified Person with Benchmark Disability (PwD).</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h4>ENTITY 3: Scheme</h4>
+<ul>
+<li><strong>Service:</strong> <code>schemebridge-scheme-service</code></li>
+<li><strong>Database:</strong> MongoDB 7.0</li>
+<li><strong>Collection Name:</strong> <code>schemes</code></li>
+</ul>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Data Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td><code>ObjectId / String</code></td>
+<td>PRIMARY KEY</td>
+<td>MongoDB internal object identifier.</td>
+</tr>
+<tr>
+<td><code>schemeCode</code></td>
+<td><code>String</code></td>
+<td>UNIQUE, INDEXED, NOT NULL</td>
+<td>Standardized government code (e.g., &quot;PM-KISAN-001&quot;).</td>
+</tr>
+<tr>
+<td><code>schemeName</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, TEXT INDEXED</td>
+<td>Official scheme title.</td>
+</tr>
+<tr>
+<td><code>ministry</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>Administering Ministry or State Department.</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>Scheme welfare category (e.g., &quot;Agriculture &amp; Farmer Welfare&quot;).</td>
+</tr>
+<tr>
+<td><code>level</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Scope of scheme (<code>CENTRAL</code>, <code>STATE</code>).</td>
+</tr>
+<tr>
+<td><code>eligibilityRulesAst</code></td>
+<td><code>Object / Document</code></td>
+<td>NOT NULL</td>
+<td>JSON Abstract Syntax Tree defining Boolean eligibility rules.</td>
+</tr>
+<tr>
+<td><code>requiredDocuments</code></td>
+<td><code>Array&lt;String&gt;</code></td>
+<td>NOT NULL</td>
+<td>List of required supporting document types.</td>
+</tr>
+<tr>
+<td><code>benefits</code></td>
+<td><code>Object / Document</code></td>
+<td>NOT NULL</td>
+<td>Detailed financial or non-financial welfare benefits.</td>
+</tr>
+<tr>
+<td><code>isActive</code></td>
+<td><code>Boolean</code></td>
+<td>NOT NULL, DEFAULT true</td>
+<td>Current publication status of scheme.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h4>ENTITY 4: Application</h4>
+<ul>
+<li><strong>Service:</strong> <code>schemebridge-scheme-service</code></li>
+<li><strong>Database:</strong> MongoDB 7.0</li>
+<li><strong>Collection Name:</strong> <code>applications</code></li>
+</ul>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Data Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td><code>ObjectId / String</code></td>
+<td>PRIMARY KEY</td>
+<td>Unique database record identifier.</td>
+</tr>
+<tr>
+<td><code>applicationNumber</code></td>
+<td><code>String</code></td>
+<td>UNIQUE, INDEXED, NOT NULL</td>
+<td>Citizen-facing tracking ID (e.g., &quot;APP-2026-91823&quot;).</td>
+</tr>
+<tr>
+<td><code>citizenProfileId</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>Reference to applicant's <code>citizen_profiles._id</code>.</td>
+</tr>
+<tr>
+<td><code>schemeId</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>Reference to target <code>schemes._id</code>.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>Progression status (<code>SUBMITTED</code>, <code>UNDER_REVIEW</code>, <code>APPROVED</code>, <code>REJECTED</code>).</td>
+</tr>
+<tr>
+<td><code>submissionDate</code></td>
+<td><code>Date</code></td>
+<td>NOT NULL</td>
+<td>Timestamp when application was filed.</td>
+</tr>
+<tr>
+<td><code>attachedDocuments</code></td>
+<td><code>Array&lt;Document&gt;</code></td>
+<td>NOT NULL</td>
+<td>References to vault documents with verified hashes.</td>
+</tr>
+<tr>
+<td><code>reviewRemarks</code></td>
+<td><code>String</code></td>
+<td>NULLABLE</td>
+<td>Official review comments or rejection justifications.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h4>ENTITY 5: CitizenVaultDocument</h4>
+<ul>
+<li><strong>Service:</strong> <code>schemebridge-scheme-service</code></li>
+<li><strong>Database:</strong> MongoDB 7.0</li>
+<li><strong>Collection Name:</strong> <code>citizen_vault_documents</code></li>
+</ul>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Data Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td><code>ObjectId / String</code></td>
+<td>PRIMARY KEY</td>
+<td>Unique document identifier.</td>
+</tr>
+<tr>
+<td><code>citizenProfileId</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>Reference to owning citizen.</td>
+</tr>
+<tr>
+<td><code>documentType</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Type (<code>AADHAAR</code>, <code>INCOME_CERTIFICATE</code>, <code>COMMUNITY</code>, etc.).</td>
+</tr>
+<tr>
+<td><code>storagePath</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Internal secure file system or object store path.</td>
+</tr>
+<tr>
+<td><code>fileChecksum</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>SHA-256 integrity hash of document content.</td>
+</tr>
+<tr>
+<td><code>ocrStatus</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>OCR state (<code>PENDING</code>, <code>AUTO_VERIFIED</code>, <code>FLAGGED</code>, <code>FAILED</code>).</td>
+</tr>
+<tr>
+<td><code>ocrExtractedData</code></td>
+<td><code>Object</code></td>
+<td>NULLABLE</td>
+<td>Parsed JSON attributes (certificate number, holder name, DOB).</td>
+</tr>
+<tr>
+<td><code>confidenceScore</code></td>
+<td><code>Double</code></td>
+<td>NULLABLE</td>
+<td>Machine learning extraction confidence (0.0 to 1.0).</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h4>ENTITY 6: Grievance</h4>
+<ul>
+<li><strong>Service:</strong> <code>schemebridge-scheme-service</code></li>
+<li><strong>Database:</strong> MongoDB 7.0</li>
+<li><strong>Collection Name:</strong> <code>grievances</code></li>
+</ul>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Data Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td><code>ObjectId / String</code></td>
+<td>PRIMARY KEY</td>
+<td>Unique grievance record ID.</td>
+</tr>
+<tr>
+<td><code>ticketNumber</code></td>
+<td><code>String</code></td>
+<td>UNIQUE, INDEXED, NOT NULL</td>
+<td>Citizen tracking ticket (e.g., &quot;GRV-2026-4412&quot;).</td>
+</tr>
+<tr>
+<td><code>applicationId</code></td>
+<td><code>String</code></td>
+<td>NOT NULL, INDEXED</td>
+<td>Reference to contested <code>applications._id</code>.</td>
+</tr>
+<tr>
+<td><code>citizenProfileId</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Reference to citizen filing dispute.</td>
+</tr>
+<tr>
+<td><code>grievanceType</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Category (<code>DELAYED_REVIEW</code>, <code>WRONGFUL_REJECTION</code>, <code>DISBURSEMENT</code>).</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>String</code></td>
+<td>NOT NULL</td>
+<td>Status (<code>OPEN</code>, <code>INVESTIGATING</code>, <code>RESOLVED</code>, <code>ESCALATED</code>).</td>
+</tr>
+<tr>
+<td><code>slaDeadline</code></td>
+<td><code>Date</code></td>
+<td>NOT NULL</td>
+<td>Statutory deadline for administrative resolution.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>9. API DESIGN OVERVIEW</h2>
+<h3>9.1 Authentication Service APIs (Port 8080)</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Auth Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/auth/register</code></td>
+<td>No</td>
+<td>Register new citizen/officer; sends 6-digit OTP.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/auth/verify-otp</code></td>
+<td>No</td>
+<td>Verifies registration OTP and activates account.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/auth/login</code></td>
+<td>No</td>
+<td>Authenticates credentials; returns signed JWT and refresh token.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/auth/refresh-token</code></td>
+<td>Yes (Refresh Token)</td>
+<td>Exchanges valid refresh token for fresh access JWT.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/auth/me</code></td>
+<td>Yes (<code>ROLE_USER</code>/<code>ADMIN</code>)</td>
+<td>Fetches session profile of currently authenticated user.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/auth/forgot-password</code></td>
+<td>No</td>
+<td>Dispatches password reset link with secure single-use token.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/auth/reset-password</code></td>
+<td>No</td>
+<td>Resets password upon presentation of valid reset token.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>9.2 Core Scheme &amp; Eligibility Service APIs (Port 8081)</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Auth Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/schemes</code></td>
+<td>No</td>
+<td>Retrieves paginated list of schemes with keyword and facet filters.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/schemes/{id}</code></td>
+<td>No</td>
+<td>Fetches complete scheme guidelines, AST rules, and benefits.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/eligibility/evaluate/{schemeId}</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Executes deterministic AST evaluation against citizen's profile.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/recommendations</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Returns personalized eligible schemes for logged-in citizen.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/citizen/profile</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Retrieves citizen's 6-step demographic profile.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/citizen/profile</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Updates citizen demographic attributes.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/vault/upload</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Uploads certificate file to digital vault (multipart form data).</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/vault/documents</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Lists all vault certificates with OCR verification badges.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/applications</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Submits formal application for a scheme.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/applications/my</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Returns citizen's submitted applications with progress status.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/applications/{id}</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Retrieves detailed application tracking timeline and receipt.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/grievances</code></td>
+<td>Yes (<code>ROLE_USER</code>)</td>
+<td>Submits a grievance against an application.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>9.3 Admin &amp; Verification Desk APIs (Port 8081)</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Auth Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/admin/applications</code></td>
+<td>Yes (<code>ROLE_VERIFICATION_OFFICER</code>)</td>
+<td>Fetches pending applications for officer review queue.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/admin/applications/{id}/review</code></td>
+<td>Yes (<code>ROLE_VERIFICATION_OFFICER</code>)</td>
+<td>Updates application state to <code>APPROVED</code> or <code>REJECTED</code> with remarks.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/admin/schemes</code></td>
+<td>Yes (<code>ROLE_SCHEME_MANAGER</code>/<code>ADMIN</code>)</td>
+<td>Creates and publishes a new scheme into the master catalog.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/admin/schemes/{id}</code></td>
+<td>Yes (<code>ROLE_SCHEME_MANAGER</code>/<code>ADMIN</code>)</td>
+<td>Modifies existing scheme criteria and guidelines.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/admin/analytics/overview</code></td>
+<td>Yes (<code>ROLE_ADMIN</code>)</td>
+<td>Returns platform KPIs, demographic saturation, and approval stats.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/admin/audit-logs</code></td>
+<td>Yes (<code>ROLE_ADMIN</code>)</td>
+<td>Fetches immutable system audit trails.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>9.4 AI / ML Inference Service APIs (Port 8000)</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Auth Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/predict/recommend-category</code></td>
+<td>Service Token</td>
+<td>Evaluates 9 citizen demographic features via Random Forest (Returns scheme category &amp; confidence).</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/ai/semantic-search</code></td>
+<td>Service Token</td>
+<td>Dense semantic vector search over 4,734 schemes using sentence-transformers.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/ai/citizen/chat</code></td>
+<td>Service Token</td>
+<td>Generative AI conversational assistant processing citizen questions.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/health</code></td>
+<td>No</td>
+<td>Microservice health check returning <code>{&quot;status&quot;:&quot;ok&quot;}</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>10. DEVOPS &amp; DEPLOYMENT PLAN</h2>
+<h3>10.1 CI/CD Pipeline — Jenkins</h3>
+<pre><code class="language-mermaid">flowchart LR
+    A[Git Push Main] --&gt; B[Jenkins Checkout]
+    B --&gt; C[Maven &amp; NPM Build]
+    C --&gt; D[JUnit 5 &amp; Vitest]
+    D --&gt; E[SonarQube Quality Gate]
+    E --&gt; F[Docker Multi-Build]
+    F --&gt; G[Docker Compose Deploy]
+    G --&gt; H[Actuator Health Ping]
+    H --&gt; I[Slack/Email Alert]
+</code></pre>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Stage</th>
+<th>Stage Name</th>
+<th>Actions &amp; Commands</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>Source Checkout</strong></td>
+<td>Webhook triggered on commit to <code>main</code>; Jenkins clones repository and verifies Git commit hash.</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>Compilation &amp; Build</strong></td>
+<td><code>mvn clean compile -DskipTests</code> for both Spring Boot microservices; <code>npm ci &amp;&amp; npm run build</code> for React SPA.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>Automated Testing</strong></td>
+<td><code>mvn test</code> running JUnit 5 unit and integration tests; executes Vitest unit tests for frontend components.</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>Code Quality Gate</strong></td>
+<td>SonarQube static code analysis evaluating code coverage (&gt; 75%), security hotspots, and cyclomatic complexity.</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>Container Packaging</strong></td>
+<td><code>docker build -t schemebridge-auth:${GIT_COMMIT} ./schemebridge-auth-service</code><br><code>docker build -t schemebridge-scheme:${GIT_COMMIT} ./schemebridge-scheme-service</code><br><code>docker build -t schemebridge-frontend:${GIT_COMMIT} ./schemebridge-frontend</code></td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>Container Push</strong></td>
+<td>Push tagged images to private container registry / Docker Hub repository.</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td><strong>Orchestrated Deploy</strong></td>
+<td><code>docker compose -f docker-compose.yml up -d --remove-orphans</code> on target host.</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>Health Verification</strong></td>
+<td>Curl verification scripts query <code>/actuator/health</code> on services; pipeline fails if status is not <code>UP</code>.</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td><strong>Notification</strong></td>
+<td>Automated build status alert dispatched to team Slack channel and Discord webhook.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>10.2 Docker Container Configuration</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Container</th>
+<th>Base Image</th>
+<th>Port Mapping</th>
+<th>Depends On</th>
+<th>Environment Variables</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>frontend</strong></td>
+<td><code>nginx:alpine</code></td>
+<td><code>80:80</code>, <code>443:443</code></td>
+<td><code>scheme-service</code>, <code>auth-service</code></td>
+<td><code>PORT=80</code>, <code>PROXY_PASS_AUTH=auth-service:8080</code>, <code>PROXY_PASS_SCHEME=scheme-service:8081</code></td>
+</tr>
+<tr>
+<td><strong>auth-service</strong></td>
+<td><code>eclipse-temurin:17-jre-jammy</code></td>
+<td><code>8080:8080</code></td>
+<td><code>oracle-db</code></td>
+<td><code>SERVER_PORT=8080</code>, <code>ORACLE_URL=jdbc:oracle:thin:@oracle-db:1521/XEPDB1</code>, <code>JWT_SECRET=...</code></td>
+</tr>
+<tr>
+<td><strong>scheme-service</strong></td>
+<td><code>eclipse-temurin:17-jre-jammy</code></td>
+<td><code>8081:8081</code></td>
+<td><code>mongodb</code>, <code>ai-service</code></td>
+<td><code>SERVER_PORT=8081</code>, <code>MONGODB_URI=mongodb://user:pass@mongodb:27017/schemebridge_db</code>, <code>AI_SERVICE_URL=http://ai-service:8000</code></td>
+</tr>
+<tr>
+<td><strong>ai-service</strong></td>
+<td><code>python:3.11-slim</code></td>
+<td><code>8000:8000</code></td>
+<td>None</td>
+<td><code>MODEL_PATH=/app/models/random_forest_scheme_model.pkl</code>, <code>INDEX_PATH=/app/data/ml_models</code></td>
+</tr>
+<tr>
+<td><strong>mongodb</strong></td>
+<td><code>mongo:7.0</code></td>
+<td><code>27017:27017</code></td>
+<td>None</td>
+<td><code>MONGO_INITDB_ROOT_USERNAME=schemebridge_user</code>, <code>MONGO_INITDB_DATABASE=schemebridge_scheme_db</code></td>
+</tr>
+<tr>
+<td><strong>oracle-db</strong></td>
+<td><code>gvenzl/oracle-xe:21-slim</code></td>
+<td><code>1521:1521</code></td>
+<td>None</td>
+<td><code>ORACLE_PASSWORD=system_secure_pass</code>, <code>APP_USER=schemebridge_auth</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3>10.3 Deployment Environments</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Environment</th>
+<th>Infrastructure</th>
+<th>Purpose &amp; Access URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Development</strong></td>
+<td>Local Workstations (Windows 11 / macOS / Ubuntu)</td>
+<td>Feature development with live hot-reloading via Vite HMR and Spring DevTools (<code>http://localhost:5173</code>, <code>http://localhost:8080</code>).</td>
+</tr>
+<tr>
+<td><strong>Testing / QA</strong></td>
+<td>Staging Linux Virtual Machine (2 vCPU, 4GB RAM)</td>
+<td>Automated nightly Jenkins integration test environment and mentor review (<code>http://staging.schemebridge.internal</code>).</td>
+</tr>
+<tr>
+<td><strong>Demo / Evaluation</strong></td>
+<td>Cloud VPS / AWS EC2 / Railway Cloud Container</td>
+<td>Smart India Hackathon live demonstration and evaluation instance (<code>https://schemebridge.demo.gov.in</code>).</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>11. PROJECT TIMELINE &amp; MILESTONES</h2>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Week</th>
+<th>Phase</th>
+<th>Deliverables &amp; Tasks (All 3 Team Members)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Week 1</strong></td>
+<td><strong>Foundation &amp; Architecture</strong></td>
+<td>Complete IEEE Std 830-1998 SRS document; initialize Git repositories with branch protection; design Oracle &amp; MongoDB schemas; containerize base services with Docker Compose; seed master scheme catalog with 4,734 records.</td>
+</tr>
+<tr>
+<td><strong>Week 2</strong></td>
+<td><strong>Core Backend &amp; Auth</strong></td>
+<td>Implement <code>schemebridge-auth-service</code> (BCrypt, JWT filters, OTP verification); configure Oracle database connection; create standalone Python Random Forest prototype; build initial AST rule evaluation logic in Java.</td>
+</tr>
+<tr>
+<td><strong>Week 3</strong></td>
+<td><strong>Full Backend Implementation</strong></td>
+<td>Implement <code>schemebridge-scheme-service</code> CRUD APIs; establish MongoDB repositories for applications, vault, and grievances; finalize AST rule evaluation engine; deploy Python FastAPI Random Forest inference endpoint; execute Postman test suite.</td>
+</tr>
+<tr>
+<td><strong>Week 4</strong></td>
+<td><strong>Frontend Foundation</strong></td>
+<td>Initialize React 18 SPA with Vite, Tailwind CSS, and Lucide icons; build authentication context and route guards (<code>CitizenGuard</code>, <code>AdminGuard</code>); implement Onboarding wizard and Scheme Explorer with dynamic filtering.</td>
+</tr>
+<tr>
+<td><strong>Week 5</strong></td>
+<td><strong>Frontend Completion &amp; AI Hookup</strong></td>
+<td>Implement 4-step Application Wizard, Digital Vault upload interface, and real-time status tracker; wire conversational AI assistant widget; integrate responsive mobile layouts (tested on 375px viewport).</td>
+</tr>
+<tr>
+<td><strong>Week 6</strong></td>
+<td><strong>Integration &amp; System Testing</strong></td>
+<td>End-to-end user journey verification (Registration ➔ Profile ➔ AST Eligibility ➔ Vault Upload ➔ Application Submission ➔ Admin Approval); execute 100+ JUnit 5 tests; configure Jenkins CI/CD pipeline.</td>
+</tr>
+<tr>
+<td><strong>Week 7</strong></td>
+<td><strong>Polish, Security Audit &amp; Docs</strong></td>
+<td>Comprehensive security audit (SQLi/XSS checks, rate-limiting); Swagger OpenAPI documentation finalization; record 5-minute product walkthrough demo video; conduct Day 22 Internal Review with faculty mentors.</td>
+</tr>
+<tr>
+<td><strong>Week 8</strong></td>
+<td><strong>Final Submission &amp; Viva</strong></td>
+<td>Incorporate faculty and industry mentor feedback; freeze release tag <code>v1.0</code>; prepare SIH slide deck, project poster, and live demonstration script; final viva rehearsal.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>12. TEAM COMPOSITION &amp; ROLE ASSIGNMENT</h2>
+<h3>12.1 Member Profile &amp; Responsibilities</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Member Name</th>
+<th>Degree / Branch</th>
+<th>Academic Year</th>
+<th>Primary Project Responsibilities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Student 1 (Team Lead)</strong></td>
+<td>B.E. Computer Science and Engineering</td>
+<td>Final Year (2025–26)</td>
+<td>Full Stack Java Architecture, Spring Boot Microservices (<code>Auth</code> &amp; <code>Scheme</code>), AST Eligibility Rules Engine, and Jenkins CI/CD pipeline.</td>
+</tr>
+<tr>
+<td><strong>Student 2</strong></td>
+<td>B.E. Computer Science and Engineering</td>
+<td>Final Year (2025–26)</td>
+<td>Machine Learning &amp; NLP Engineering, scikit-learn Random Forest Model, Dense Vector Embedding Generation, FastAPI inference service.</td>
+</tr>
+<tr>
+<td><strong>Student 3</strong></td>
+<td>B.Tech Information Technology / CSE</td>
+<td>Final Year (2025–26)</td>
+<td>Frontend Architecture (React 18, Vite, Tailwind CSS), UI/UX Design, Digital Document Vault, Quality Assurance &amp; API testing.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>12.2 Ownership Matrix</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Project Component</th>
+<th>Member 1 (Primary)</th>
+<th>Member 2 (Primary)</th>
+<th>Member 3 (Primary)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Spring Boot Auth Microservice</strong></td>
+<td><strong>Owner</strong></td>
+<td>Support</td>
+<td>Support</td>
+</tr>
+<tr>
+<td><strong>Spring Boot Scheme Microservice</strong></td>
+<td><strong>Owner</strong></td>
+<td>Support</td>
+<td>Support</td>
+</tr>
+<tr>
+<td><strong>AST Statutory Rules Engine</strong></td>
+<td><strong>Owner</strong></td>
+<td>Support</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Random Forest ML Module</strong></td>
+<td>Support</td>
+<td><strong>Owner</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Semantic Vector Search &amp; Chat</strong></td>
+<td>Support</td>
+<td><strong>Owner</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>React 18 Single Page Application</strong></td>
+<td>Support</td>
+<td>—</td>
+<td><strong>Owner</strong></td>
+</tr>
+<tr>
+<td><strong>Digital Document Vault &amp; OCR</strong></td>
+<td>Support</td>
+<td>Support</td>
+<td><strong>Owner</strong></td>
+</tr>
+<tr>
+<td><strong>Docker &amp; Jenkins CI/CD</strong></td>
+<td><strong>Owner</strong></td>
+<td>Support</td>
+<td>Support</td>
+</tr>
+<tr>
+<td><strong>Database Schema (Oracle + Mongo)</strong></td>
+<td><strong>Owner</strong></td>
+<td>Support</td>
+<td>Support</td>
+</tr>
+<tr>
+<td><strong>SRS Documentation (IEEE Std 830)</strong></td>
+<td><strong>Owner</strong></td>
+<td><strong>Owner</strong></td>
+<td><strong>Owner</strong></td>
+</tr>
+<tr>
+<td><strong>Automated Testing (JUnit + Vitest)</strong></td>
+<td><strong>Owner</strong></td>
+<td>Support</td>
+<td><strong>Owner</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>12.3 Interdisciplinary Contribution Map</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Academic Stream</th>
+<th>Expected Competency Area</th>
+<th>Specific Contribution in SchemeBridge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Computer Science (CSE)</strong></td>
+<td>Full-Stack Java (Spring Boot), Spring Security JWT, Distributed Systems, CI/CD pipelines, Machine Learning algorithms.</td>
+<td>Developed the core microservice cluster, statutory AST evaluation engine, Random Forest classification pipeline, and automated Jenkins pipelines.</td>
+</tr>
+<tr>
+<td><strong>Information Technology (IT)</strong></td>
+<td>Web Technologies, Responsive UX Engineering, Information Security, Cloud Operations.</td>
+<td>Built the responsive React 18 SPA, encrypted digital document vault, role-based route guards, and accessibility WCAG compliance.</td>
+</tr>
+<tr>
+<td><strong>Domain &amp; Policy Context</strong></td>
+<td>Public Administration, Welfare Policy, Digital Governance workflows.</td>
+<td>Researched and structured eligibility criteria for 4,734+ central and state schemes from official gazette notifications; designed realistic citizen personas.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>13. RISK REGISTER</h2>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>ID</th>
+<th>Risk Description</th>
+<th style="text-align:center">Prob.</th>
+<th style="text-align:center">Impact</th>
+<th>Concrete Mitigation Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R01</strong></td>
+<td><strong>AI Model Accuracy Degradation</strong><br>Model fails to generalize across diverse, rare citizen demographic edge cases.</td>
+<td style="text-align:center"><strong>M</strong></td>
+<td style="text-align:center"><strong>H</strong></td>
+<td>Implemented balanced class weighting in Random Forest; calibrated 1.5% stochastic noise; established strict deterministic AST rules engine as primary authority for statutory qualification.</td>
+</tr>
+<tr>
+<td><strong>R02</strong></td>
+<td><strong>Third-Party API Outage</strong><br>External email gateway or external NLP inference service experiences high latency or downtime.</td>
+<td style="text-align:center"><strong>M</strong></td>
+<td style="text-align:center"><strong>H</strong></td>
+<td>Designed asynchronous resilience patterns using fallback local templates, mock email services in development, and local Sentence-Transformer embeddings.</td>
+</tr>
+<tr>
+<td><strong>R03</strong></td>
+<td><strong>OCR Extraction Inaccuracies</strong><br>Low-resolution, skewed, or blurred certificates uploaded by rural citizens.</td>
+<td style="text-align:center"><strong>H</strong></td>
+<td style="text-align:center"><strong>M</strong></td>
+<td>Implemented image preprocessing (grayscale normalization, binarization); set strict confidence threshold (&gt;85% for auto-verification); route low-confidence docs to Officer Review Queue.</td>
+</tr>
+<tr>
+<td><strong>R04</strong></td>
+<td><strong>Data Privacy Exposure (PII Breach)</strong><br>Accidental disclosure of citizen personal data or certificates in logs or Git.</td>
+<td style="text-align:center"><strong>L</strong></td>
+<td style="text-align:center"><strong>H</strong></td>
+<td>Enforced strict <code>.gitignore</code> on environment configs (<code>.env</code>); zero storage of plaintext passwords; encrypted certificates at rest (AES-256); automated Git secret scanners.</td>
+</tr>
+<tr>
+<td><strong>R05</strong></td>
+<td><strong>Team Member Unavailability</strong><br>Illness or academic constraints preventing a member from delivering their module.</td>
+<td style="text-align:center"><strong>L</strong></td>
+<td style="text-align:center"><strong>H</strong></td>
+<td>Maintained clean architectural separation with standardized REST contracts; conducted weekly cross-training on Java and React components; maintained 1-week timeline buffer.</td>
+</tr>
+<tr>
+<td><strong>R06</strong></td>
+<td><strong>Container Deployment Failure during Live Demo</strong><br>Host environment networking or memory constraints breaking container startup.</td>
+<td style="text-align:center"><strong>M</strong></td>
+<td style="text-align:center"><strong>M</strong></td>
+<td>Pre-tested deployment on clean Linux virtual machines; verified <code>docker-compose.yml</code> health checks; prepared recorded 5-minute video demonstration as contingency.</td>
+</tr>
+<tr>
+<td><strong>R07</strong></td>
+<td><strong>Scope Creep &amp; Feature Bloat</strong><br>Attempting too many secondary features, compromising core stability before evaluation.</td>
+<td style="text-align:center"><strong>M</strong></td>
+<td style="text-align:center"><strong>M</strong></td>
+<td>Frozen core scope in Week 1 SRS; tracked features strictly via GitHub Milestones; designated advanced features (e.g. voice input) as optional stretch goals.</td>
+</tr>
+<tr>
+<td><strong>R08</strong></td>
+<td><strong>Database Lockups or Connection Exhaustion</strong><br>Surge in concurrent queries causing thread pool exhaustion in Oracle/MongoDB.</td>
+<td style="text-align:center"><strong>L</strong></td>
+<td style="text-align:center"><strong>H</strong></td>
+<td>Configured HikariCP connection pooling in Spring Boot (<code>maximum-pool-size=20</code>); indexed all foreign query keys in MongoDB (<code>userId</code>, <code>schemeId</code>, <code>status</code>).</td>
+</tr>
+<tr>
+<td><strong>R09</strong></td>
+<td><strong>Bilingual Localization Drift</strong><br>Translations out of sync with official scheme terminology causing citizen confusion.</td>
+<td style="text-align:center"><strong>M</strong></td>
+<td style="text-align:center"><strong>L</strong></td>
+<td>Structured multilingual scheme entities using canonical JSON dictionaries (<code>MultilingualText.java</code>) with English baseline fallback.</td>
+</tr>
+<tr>
+<td><strong>R10</strong></td>
+<td><strong>Stateless Session Synchronization Bugs</strong><br>Expired JWT tokens causing jarring page redirects or data loss during form submission.</td>
+<td style="text-align:center"><strong>M</strong></td>
+<td style="text-align:center"><strong>M</strong></td>
+<td>Implemented Axios interceptor automatically refreshing access tokens via refresh token rotation; cached form progress in <code>sessionStorage</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break"></div>
+<h2>14. APPENDIX</h2>
+<h3>14.1 Glossary of Domain-Specific Terms</h3>
+<div class="table-container"><table class="srs-table">
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Direct Benefit Transfer (DBT)</strong></td>
+<td>Government mechanism of transferring subsidy benefits directly to citizen verified bank accounts.</td>
+</tr>
+<tr>
+<td><strong>Economically Weaker Section (EWS)</strong></td>
+<td>Official reservation sub-category in India for citizens with annual household income below ₹8,00,000.</td>
+</tr>
+<tr>
+<td><strong>Below Poverty Line (BPL)</strong></td>
+<td>Economic benchmark used by government agencies to identify households eligible for maximum welfare subsidies.</td>
+</tr>
+<tr>
+<td><strong>Kisan Credit Card (KCC)</strong></td>
+<td>Specialized credit welfare scheme providing Indian farmers with timely credit for agricultural inputs.</td>
+</tr>
+<tr>
+<td><strong>Public Distribution System (PDS)</strong></td>
+<td>Indian food security system distributing subsidized food grains to vulnerable citizens via Ration Cards.</td>
+</tr>
+<tr>
+<td><strong>AST Business Rule</strong></td>
+<td>Tree structure representing statutory conditions: e.g., <code>(Age &gt;= 18 AND Age &lt;= 35) AND (Income &lt; 250000) AND (State == &quot;Tamil Nadu&quot;)</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>14.2 AI Model Details — Training Logs &amp; Hyperparameters</h3>
+<h4>Training Log Summary (Random Forest Classifier)</h4>
+<ul>
+<li><strong>Dataset File:</strong> <code>ml/random_forest/data/synthetic_citizen_eligibility_dataset.csv</code></li>
+<li><strong>Number of Records:</strong> 5,000 rows (4,000 training, 1,000 test; stratified 80:20 split)</li>
+<li><strong>Training Environment:</strong> Python 3.11.7, scikit-learn 1.4.1, CPU execution (4 physical cores)</li>
+<li><strong>Training Duration:</strong> 1.42 seconds (200 estimators parallelized via <code>n_jobs=-1</code>)</li>
+<li><strong>Model Size on Disk:</strong> 4.1 MB (<code>ml/random_forest/models/random_forest_scheme_model.pkl</code>)</li>
+</ul>
+<h4>Hyperparameters</h4>
+<pre><code class="language-python">RandomForestClassifier(
+    n_estimators=200,
+    criterion=&quot;gini&quot;,
+    max_depth=16,
+    min_samples_split=4,
+    min_samples_leaf=2,
+    max_features=&quot;sqrt&quot;,
+    class_weight=&quot;balanced&quot;,
+    random_state=42,
+    n_jobs=-1
+)
+</code></pre>
+<h4>Classification Report (Held-Out Test Set)</h4>
+<pre><code>                                        precision    recall  f1-score   support
+
+         Agriculture &amp; Farmer Welfare       0.99      0.98      0.98       143
+             Education &amp; Scholarships       0.98      0.99      0.98       143
+      Rural &amp; Urban Livelihood Support      0.97      0.97      0.97       143
+ Senior Citizen Pension &amp; Healthcare        0.99      0.99      0.99       143
+  Skill Development &amp; Entrepreneurship      0.98      0.98      0.98       143
+Social Welfare &amp; Disability Support         0.99      0.99      0.99       143
+          Women &amp; Child Development         0.99      0.99      0.99       142
+
+                             accuracy                           0.9840      1000
+                            macro avg       0.98      0.98      0.98      1000
+                         weighted avg       0.98      0.98      0.98      1000
+</code></pre>
+<div class="page-break"></div>
+<h3>14.3 API Request-Response Samples</h3>
+<h4>1. User Registration (<code>POST /api/auth/register</code>)</h4>
+<p><strong>Request:</strong></p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;Kavitha Raman&quot;,
+  &quot;email&quot;: &quot;kavitha.raman@example.com&quot;,
+  &quot;mobile&quot;: &quot;9876543210&quot;,
+  &quot;password&quot;: &quot;SecurePassword@2026&quot;,
+  &quot;role&quot;: &quot;ROLE_USER&quot;
+}
+</code></pre>
+<p><strong>Response (HTTP 201 Created):</strong></p>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;User registered successfully. Verification OTP dispatched.&quot;,
+  &quot;data&quot;: {
+    &quot;userId&quot;: 1042,
+    &quot;email&quot;: &quot;kavitha.raman@example.com&quot;,
+    &quot;status&quot;: &quot;PENDING_VERIFICATION&quot;
+  }
+}
+</code></pre>
+<h4>2. Deterministic AST Eligibility Evaluation (<code>POST /api/eligibility/evaluate/SCH-PM-KISAN-01</code>)</h4>
+<p><strong>Request:</strong></p>
+<pre><code class="language-json">{
+  &quot;citizenProfileId&quot;: &quot;6648dfa2e109ab43810&quot;
+}
+</code></pre>
+<p><strong>Response (HTTP 200 OK):</strong></p>
+<pre><code class="language-json">{
+  &quot;schemeCode&quot;: &quot;PM-KISAN&quot;,
+  &quot;schemeName&quot;: &quot;Pradhan Mantri Kisan Samman Nidhi&quot;,
+  &quot;eligibilityStatus&quot;: &quot;ELIGIBLE&quot;,
+  &quot;overallVerdict&quot;: true,
+  &quot;ruleEvaluations&quot;: [
+    {
+      &quot;criterion&quot;: &quot;Occupation&quot;,
+      &quot;required&quot;: &quot;FARMER&quot;,
+      &quot;actual&quot;: &quot;FARMER&quot;,
+      &quot;satisfied&quot;: true,
+      &quot;message&quot;: &quot;Citizen occupation matches agricultural criteria.&quot;
+    },
+    {
+      &quot;criterion&quot;: &quot;Landholding Cap&quot;,
+      &quot;required&quot;: &quot;&lt;= 2.0 Hectares&quot;,
+      &quot;actual&quot;: &quot;1.2 Hectares&quot;,
+      &quot;satisfied&quot;: true,
+      &quot;message&quot;: &quot;Cultivable land within small/marginal farmer ceiling.&quot;
+    },
+    {
+      &quot;criterion&quot;: &quot;Institutional Landowner&quot;,
+      &quot;required&quot;: &quot;false&quot;,
+      &quot;actual&quot;: &quot;false&quot;,
+      &quot;satisfied&quot;: true,
+      &quot;message&quot;: &quot;Applicant is not an institutional landholder.&quot;
+    }
+  ],
+  &quot;recommendedAction&quot;: &quot;Proceed to Application Wizard&quot;
+}
+</code></pre>
+<h4>3. AI Category Recommendation (<code>POST /predict/recommend-category</code>)</h4>
+<p><strong>Request:</strong></p>
+<pre><code class="language-json">{
+  &quot;age&quot;: 22,
+  &quot;gender&quot;: &quot;Female&quot;,
+  &quot;state&quot;: &quot;Tamil Nadu&quot;,
+  &quot;income&quot;: 120000,
+  &quot;occupation&quot;: &quot;Student&quot;,
+  &quot;category&quot;: &quot;OBC&quot;,
+  &quot;rural&quot;: &quot;Yes&quot;,
+  &quot;student&quot;: &quot;Yes&quot;,
+  &quot;disability&quot;: &quot;No&quot;
+}
+</code></pre>
+<p><strong>Response (HTTP 200 OK):</strong></p>
+<pre><code class="language-json">{
+  &quot;predictedCategory&quot;: &quot;Education &amp; Scholarships&quot;,
+  &quot;confidenceScore&quot;: 0.9702,
+  &quot;inferenceLatencyMs&quot;: 0.021,
+  &quot;alternativePredictions&quot;: [
+    { &quot;category&quot;: &quot;Skill Development &amp; Entrepreneurship&quot;, &quot;confidence&quot;: 0.018 },
+    { &quot;category&quot;: &quot;Women &amp; Child Development&quot;, &quot;confidence&quot;: 0.0118 }
+  ]
+}
+</code></pre>
+<div class="page-break"></div>
+<h3>14.4 References &amp; Citations</h3>
+<ol>
+<li><strong>Government of India Scheme Portals:</strong> myScheme National Platform (<a href="https://www.myscheme.gov.in/">https://www.myscheme.gov.in/</a>). Accessed: September 2026.</li>
+<li><strong>National Scholarship Portal (NSP):</strong> Ministry of Electronics and Information Technology (<a href="https://scholarships.gov.in/">https://scholarships.gov.in/</a>). Accessed: September 2026.</li>
+<li><strong>PM-KISAN Portal:</strong> Department of Agriculture and Farmers Welfare (<a href="https://pmkisan.gov.in/">https://pmkisan.gov.in/</a>). Accessed: September 2026.</li>
+<li><strong>IEEE Computer Society:</strong> IEEE Std 830-1998 — <em>IEEE Recommended Practice for Software Requirements Specifications</em>, IEEE Standards Coordinating Committee, 1998.</li>
+<li><strong>Breiman, Leo:</strong> <em>Random Forests</em>, Machine Learning 45, 5–32 (2001). <a href="https://doi.org/10.1023/A:1010933404324">https://doi.org/10.1023/A:1010933404324</a>.</li>
+<li><strong>Reimers, Nils &amp; Gurevych, Iryna:</strong> <em>Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks</em>, Proceedings of EMNLP-IJCNLP 2019.</li>
+</ol>
+<div class="page-break"></div>
+<h3>END OF SRS DOCUMENT — Version 1.0</h3>
+<p><strong>Full Stack Java (AI-Integrated) Training Programme</strong><br />
+<strong>Department of Computer Science and Engineering</strong><br />
+<strong>Karpagam College of Engineering, Coimbatore</strong><br />
+<em>Mentors: Dr. Arul Antran Vijay S &amp; Dr. Jothi Prakash V</em></p>
+
+
+    <div class="footer-running">
+        <span>Confidential — For Training Use Only | Karpagam College of Engineering</span>
+        <span>SchemeBridge SRS v1.0</span>
+    </div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+@startuml SchemeBridge_ER_Diagram
+!theme plain
+skinparam linetype ortho
+skinparam roundcorner 5
+skinparam classFontSize 11
+skinparam classAttributeFontSize 10
+skinparam shadowing false
+skinparam class {
+    BackgroundColor #FFFFFF
+    ArrowColor #1e3a8a
+    BorderColor #1e3a8a
+    HeaderBackgroundColor #1e3a8a
+    FontColor #FFFFFF
+}
+
+title SchemeBridge - Entity Relationship (ER) Diagram (IEEE Std 830-1998)
+
+' ── AUTH SERVICE ENTITIES (Oracle DB) ──────────────────────
+package "Identity & Auth Service (Oracle DB)" #E8F0FE {
+    entity "USERS" as users {
+        * id : NUMBER(19) <<PK, Generated>>
+        --
+        * email : VARCHAR2(150) <<UK>>
+        * mobile : VARCHAR2(15) <<UK>>
+        * password_hash : VARCHAR2(255)
+        * role : VARCHAR2(30)
+        * status : VARCHAR2(30)
+        * created_at : TIMESTAMP
+        last_login : TIMESTAMP
+    }
+
+    entity "REFRESH_TOKENS" as refresh_tokens {
+        * id : NUMBER(19) <<PK, Generated>>
+        --
+        * user_id : NUMBER(19) <<FK>>
+        * token : VARCHAR2(500) <<UK>>
+        * expiry_date : TIMESTAMP
+        * revoked : NUMBER(1)
+    }
+
+    entity "OTP_VERIFICATIONS" as otp_verifications {
+        * id : NUMBER(19) <<PK, Generated>>
+        --
+        * user_id : NUMBER(19) <<FK>>
+        * mobile : VARCHAR2(15)
+        * otp_code : VARCHAR2(6)
+        * purpose : VARCHAR2(30)
+        * expiry_time : TIMESTAMP
+        * attempts : NUMBER(2)
+        * verified : NUMBER(1)
+    }
+}
+
+' ── SCHEME & APPLICATION SERVICE ENTITIES (MongoDB) ────────
+package "Scheme & Citizen Core Service (MongoDB)" #FEF7E0 {
+    entity "CITIZEN_PROFILES" as citizen_profiles {
+        * _id : ObjectId / String <<PK>>
+        --
+        * user_id : Long <<FK>>
+        * full_name : String
+        * age : Integer
+        * gender : String
+        * state : String
+        * district : String
+        * annual_income : Double
+        * caste_category : String
+        * occupation : String
+        * is_rural : Boolean
+        * is_student : Boolean
+        * is_disabled : Boolean
+        family_size : Integer
+        bank_account_linked : Boolean
+        created_at : Date
+    }
+
+    entity "SCHEMES" as schemes {
+        * _id : ObjectId / String <<PK>>
+        --
+        * scheme_code : String <<UK>>
+        * scheme_name : String
+        * ministry : String
+        * category_id : String <<FK>>
+        * level : String
+        * eligibility_rules_ast : Document / JSON
+        * required_documents : Array<String>
+        * benefits : Document / JSON
+        * is_active : Boolean
+        created_at : Date
+        updated_at : Date
+    }
+
+    entity "SCHEME_CATEGORIES" as scheme_categories {
+        * _id : ObjectId / String <<PK>>
+        --
+        * code : String <<UK>>
+        * name : String
+        * description : String
+        icon_url : String
+    }
+
+    entity "APPLICATIONS" as applications {
+        * _id : ObjectId / String <<PK>>
+        --
+        * application_number : String <<UK>>
+        * citizen_profile_id : String <<FK>>
+        * scheme_id : String <<FK>>
+        * status : String
+        * submission_date : Date
+        priority_score : Double
+        review_remarks : String
+        reviewed_by : Long <<FK>>
+        reviewed_at : Date
+    }
+
+    entity "APPLICATION_EVENTS" as application_events {
+        * _id : ObjectId / String <<PK>>
+        --
+        * application_id : String <<FK>>
+        * event_type : String
+        * timestamp : Date
+        performed_by : String
+        notes : String
+    }
+}
+
+' ── DOCUMENT VAULT & OCR SUBSYSTEM ─────────────────────────
+package "Digital Vault & Verification (MongoDB)" #E6F4EA {
+    entity "CITIZEN_VAULT_DOCUMENTS" as vault_docs {
+        * _id : ObjectId / String <<PK>>
+        --
+        * citizen_profile_id : String <<FK>>
+        * document_type : String
+        * storage_path : String
+        * file_checksum : String
+        * mime_type : String
+        * ocr_status : String
+        confidence_score : Double
+        uploaded_at : Date
+    }
+
+    entity "DOCUMENT_VERIFICATION_RESULTS" as doc_verifications {
+        * _id : ObjectId / String <<PK>>
+        --
+        * document_id : String <<FK>>
+        * application_id : String <<FK>>
+        * verification_status : String
+        extracted_name : String
+        extracted_dob : String
+        extracted_cert_no : String
+        matching_score : Double
+        remarks : String
+        verified_at : Date
+    }
+}
+
+' ── GRIEVANCE, AUDIT & NOTIFICATION SUBSYSTEM ──────────────
+package "Support, Audit & Communication (MongoDB)" #FCE8E6 {
+    entity "GRIEVANCES" as grievances {
+        * _id : ObjectId / String <<PK>>
+        --
+        * ticket_number : String <<UK>>
+        * application_id : String <<FK>>
+        * citizen_profile_id : String <<FK>>
+        * grievance_type : String
+        * status : String
+        * priority : String
+        * description : String
+        * sla_deadline : Date
+        created_at : Date
+        resolved_at : Date
+    }
+
+    entity "GRIEVANCE_TIMELINE_ENTRIES" as grievance_timeline {
+        * _id : ObjectId / String <<PK>>
+        --
+        * grievance_id : String <<FK>>
+        * status : String
+        comment : String
+        officer_id : Long
+        timestamp : Date
+    }
+
+    entity "NOTIFICATIONS" as notifications {
+        * _id : ObjectId / String <<PK>>
+        --
+        * user_id : Long <<FK>>
+        * title : String
+        * message : String
+        * type : String
+        * is_read : Boolean
+        * created_at : Date
+    }
+
+    entity "ADMIN_AUDIT_LOGS" as audit_logs {
+        * _id : ObjectId / String <<PK>>
+        --
+        * admin_id : Long <<FK>>
+        * action : String
+        * target_entity : String
+        * target_id : String
+        ip_address : String
+        timestamp : Date
+        details : Document / JSON
+    }
+}
+
+' ── RELATIONSHIPS ──────────────────────────────────────────
+
+' Auth & Identity
+users ||--o{ refresh_tokens : "has"
+users ||--o{ otp_verifications : "authenticates"
+users ||--|| citizen_profiles : "owns profile (1:1)"
+users ||--o{ notifications : "receives"
+users ||--o{ audit_logs : "triggers (Admin/Officer)"
+
+' Scheme Domain
+scheme_categories ||--o{ schemes : "classifies"
+schemes ||--o{ applications : "applied to"
+
+' Citizen Domain
+citizen_profiles ||--o{ applications : "submits"
+citizen_profiles ||--o{ vault_docs : "stores"
+citizen_profiles ||--o{ grievances : "lodges"
+
+' Application Workflows
+applications ||--o{ application_events : "tracks timeline"
+applications ||--o{ doc_verifications : "requires"
+applications ||--o{ grievances : "subject of"
+vault_docs ||--o{ doc_verifications : "verified as"
+
+' Grievance Workflows
+grievances ||--o{ grievance_timeline : "escalation trail"
+
+@enduml
