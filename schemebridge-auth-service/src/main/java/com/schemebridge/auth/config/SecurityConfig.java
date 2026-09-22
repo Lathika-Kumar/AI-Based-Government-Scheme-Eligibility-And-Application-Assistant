@@ -49,7 +49,8 @@ public class SecurityConfig {
                     "/api/auth/logout",
                     "/api/auth/forgot-password",
                     "/api/auth/reset-password",
-                    "/api/auth/resend-otp"
+                    "/api/auth/resend-otp",
+                    "/api/auth/diagnostic"
                 ).permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
