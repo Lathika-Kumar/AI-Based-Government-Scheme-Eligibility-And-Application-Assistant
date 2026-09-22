@@ -515,9 +515,7 @@ Inference Latency  : 21.6 µs / record
 - **Faculty Mentors**:
   - Dr. Arul Antran Vijay S
   - Dr. Jothi Prakash V
-  - Mr. Jegathesh P
-  - Mr. Navaneetha Krishnan M
-  - Dr. Castro S
+  - Ms. Sogy
 
 ---
 
