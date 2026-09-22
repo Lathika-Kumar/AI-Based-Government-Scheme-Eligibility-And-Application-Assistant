@@ -17,8 +17,8 @@
  * Network/timeout failures surface a message without leaking internals.
  */
 
-const AUTH_BASE  = import.meta.env.VITE_AUTH_API_URL   ?? "";
-const SCHEME_BASE = import.meta.env.VITE_SCHEME_API_URL ?? "";
+const AUTH_BASE  = import.meta.env.VITE_AUTH_API_URL || (import.meta.env.PROD ? "https://schemebridge-auth-service.onrender.com" : "");
+const SCHEME_BASE = import.meta.env.VITE_SCHEME_API_URL || (import.meta.env.PROD ? "https://schemebridge-scheme-service.onrender.com" : "");
 
 
 const DEFAULT_TIMEOUT_MS = 60_000;
