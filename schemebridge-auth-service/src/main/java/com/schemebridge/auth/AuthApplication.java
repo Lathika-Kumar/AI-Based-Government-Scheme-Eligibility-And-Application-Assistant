@@ -70,4 +70,16 @@ public class AuthApplication {
 
         SpringApplication.run(AuthApplication.class, args);
     }
+
+    @org.springframework.context.annotation.Bean
+    public org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy flywayMigrationStrategy() {
+        return flyway -> {
+            try {
+                flyway.repair();
+            } catch (Exception e) {
+                System.err.println("WARN: Flyway repair warning: " + e.getMessage());
+            }
+            flyway.migrate();
+        };
+    }
 }
