@@ -22,6 +22,12 @@ public class SchemeDiagnosticController {
 
     private final MongoTemplate mongoTemplate;
 
+    @org.springframework.beans.factory.annotation.Value("${gemini.api-key:${GEMINI_API_KEY:${AI_API_KEY:}}}")
+    private String geminiApiKey;
+
+    @org.springframework.beans.factory.annotation.Value("${gemini.model:${GEMINI_MODEL:${AI_MODEL:gemini-1.5-flash}}}")
+    private String geminiModel;
+
     private static final String[] COLLECTIONS = {
             "schemes",
             "scheme_categories",
@@ -50,6 +56,8 @@ public class SchemeDiagnosticController {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("service", "schemebridge-scheme-service");
         result.put("timestamp", new Date());
+        result.put("geminiConfigured", geminiApiKey != null && !geminiApiKey.isBlank());
+        result.put("geminiModel", geminiModel);
 
         try {
             Document pingResult = mongoTemplate.getDb().runCommand(new Document("ping", 1));

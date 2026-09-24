@@ -205,6 +205,43 @@ public class DocumentExtractionService {
     }
 
     /**
+     * Inspects magic bytes of the file stream to accurately detect actual file format,
+     * protecting against file extension spoofing or incorrect Content-Type headers.
+     */
+    public String detectActualMimeType(byte[] bytes, String declaredMime, String filename) {
+        if (bytes != null && bytes.length >= 8) {
+            // PNG magic: 89 50 4E 47 0D 0A 1A 0A
+            if ((bytes[0] & 0xFF) == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4E && bytes[3] == 0x47) {
+                return "image/png";
+            }
+            // JPEG magic: FF D8 FF
+            if ((bytes[0] & 0xFF) == 0xFF && (bytes[1] & 0xFF) == 0xD8 && (bytes[2] & 0xFF) == 0xFF) {
+                return "image/jpeg";
+            }
+            // PDF magic: %PDF (25 50 44 46)
+            if (bytes[0] == 0x25 && bytes[1] == 0x50 && bytes[2] == 0x44 && bytes[3] == 0x46) {
+                return "application/pdf";
+            }
+            // WEBP magic: RIFF....WEBP
+            if (bytes[0] == 0x52 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x46 &&
+                    bytes.length >= 12 && bytes[8] == 0x57 && bytes[9] == 0x45 && bytes[10] == 0x42 && bytes[11] == 0x50) {
+                return "image/webp";
+            }
+        }
+        if (declaredMime != null && !declaredMime.isBlank() && !declaredMime.contains("octet-stream")) {
+            return declaredMime.toLowerCase();
+        }
+        if (filename != null) {
+            String lower = filename.toLowerCase();
+            if (lower.endsWith(".png")) return "image/png";
+            if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+            if (lower.endsWith(".pdf")) return "application/pdf";
+            if (lower.endsWith(".webp")) return "image/webp";
+        }
+        return "application/octet-stream";
+    }
+
+    /**
      * Core extraction pipeline:
      * Attempts Gemini LLM extraction if API key configured; otherwise uses deterministic OCR fallback.
      */
@@ -215,16 +252,14 @@ public class DocumentExtractionService {
             String documentCode,
             String documentTypeHint
     ) {
-        String mime = contentType != null ? contentType.toLowerCase() : "";
-        String fName = filename != null ? filename.toLowerCase() : "";
-
-        boolean isPdf = mime.contains("pdf") || fName.endsWith(".pdf");
+        String actualMime = detectActualMimeType(fileBytes, contentType, filename);
+        boolean isPdf = "application/pdf".equals(actualMime);
 
         // ── Attempt 1: Gemini Vision on raw document bytes (PDF or image) ──────────
         if (!apiKey.isEmpty() && fileBytes.length > 0) {
             try {
                 StructuredDocumentExtractionResponse llmResponse = callGeminiExtraction(
-                        fileBytes, filename, mime, documentCode, documentTypeHint);
+                        fileBytes, filename, actualMime, documentCode, documentTypeHint);
                 if (llmResponse != null && "SUCCESS".equalsIgnoreCase(llmResponse.getExtractionStatus())) {
                     return llmResponse;
                 }
@@ -254,7 +289,7 @@ public class DocumentExtractionService {
         }
 
         // ── Attempt 3: Grounded deterministic OCR & Regex extraction ─────────────
-        return performGroundedDeterministicExtraction(fileBytes, filename, mime, documentCode, documentTypeHint);
+        return performGroundedDeterministicExtraction(fileBytes, filename, actualMime, documentCode, documentTypeHint);
     }
 
     /**
@@ -268,7 +303,7 @@ public class DocumentExtractionService {
             String documentTypeHint
     ) {
         String prompt = buildGeminiExtractionPrompt(documentCode, documentTypeHint);
-        String requestUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + modelName + ":generateContent?key=" + apiKey;
+        String actualMime = detectActualMimeType(fileBytes, mime, filename);
 
         List<Map<String, Object>> parts = new ArrayList<>();
         parts.add(Map.of("text", prompt));
@@ -276,11 +311,8 @@ public class DocumentExtractionService {
         // Add multimodal file data (images or PDF)
         if (fileBytes != null && fileBytes.length > 0) {
             String base64Data = Base64.getEncoder().encodeToString(fileBytes);
-            String partMime = mime.contains("pdf") ? "application/pdf" :
-                    (mime.contains("png") ? "image/png" : "image/jpeg");
-
             parts.add(Map.of("inlineData", Map.of(
-                    "mimeType", partMime,
+                    "mimeType", actualMime,
                     "data", base64Data
             )));
         }
@@ -293,27 +325,42 @@ public class DocumentExtractionService {
                 )
         );
 
-        String responseJson = restClient.post()
-                .uri(requestUrl)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(requestBody)
-                .retrieve()
-                .body(String.class);
+        List<String> candidateModels = List.of(this.modelName, "gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.5-flash")
+                .stream().filter(m -> m != null && !m.isBlank()).distinct().toList();
 
-        return parseGeminiResponse(responseJson, documentCode, filename);
+        for (String m : candidateModels) {
+            try {
+                String requestUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + m + ":generateContent?key=" + apiKey;
+                String responseJson = restClient.post()
+                        .uri(requestUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(requestBody)
+                        .retrieve()
+                        .body(String.class);
+
+                StructuredDocumentExtractionResponse resp = parseGeminiResponse(responseJson, documentCode, filename);
+                if (resp != null) {
+                    log.info("Gemini extraction succeeded using model: {} for file: {}", m, filename);
+                    return resp;
+                }
+            } catch (Exception e) {
+                log.warn("Gemini model {} extraction attempt failed for {}: {}", m, filename, e.getMessage());
+            }
+        }
+        return null;
     }
 
     private String buildGeminiExtractionPrompt(String documentCode, String documentTypeHint) {
         return "You are an expert Indian Government Document Extraction Engine for SchemeBridge.\n" +
-                "Your ONLY task is to extract text that is physically visible and readable in the uploaded document.\n\n" +
+                "Your ONLY task is to extract text and attributes that are physically visible and readable in the uploaded document.\n\n" +
                 "CRITICAL ZERO-FABRICATION AND PRIVACY RULES:\n" +
                 "1. The uploaded document is the ONLY source of truth. DO NOT guess, infer, autocomplete, or invent any values.\n" +
                 "2. If a field is not physically visible or is unreadable, set \"value\": null and \"status\": \"NOT_FOUND\".\n" +
                 "3. If a field is ambiguous or partially readable, set \"value\": null and \"status\": \"UNCERTAIN\".\n" +
-                "4. For document numbers: Extract ONLY the exact digits visible. NEVER invent missing digits.\n" +
-                "5. For Aadhaar numbers: If the card shows masked digits (e.g. XXXX XXXX 4821 or **** **** 4821), preserve the masked representation.\n" +
-                "6. For dates: Extract the exact DOB printed on the document, then normalize into YYYY-MM-DD format.\n" +
-                "7. For holder names: Extract the exact person's name printed on the document. NEVER assume or substitute user profile details.\n" +
+                "4. For document numbers: Extract ONLY the exact digits/characters visible. If masked (e.g. xxxxxxxx0244 or XXXX XXXX 0244), preserve the exact format.\n" +
+                "5. For dates: Extract the exact DOB or issue date printed on the document, normalized into YYYY-MM-DD format if possible.\n" +
+                "6. For holder names: Extract the exact person's name printed on the document (e.g. 'Lathika K'). DO NOT include labels, relations, or parents' names as holder name.\n" +
+                "7. For address: Extract the complete residential address printed on the document, including door no, street, village, district, state, and pin code.\n" +
                 "8. Set status for each field to strictly: \"FOUND\", \"NOT_FOUND\", or \"UNCERTAIN\".\n" +
                 "9. Set overall extractionStatus to: \"SUCCESS\", \"PARTIAL\", \"UNCERTAIN\", or \"FAILED\".\n\n" +
                 "DOCUMENT CONTEXT HINT: documentCode=" + (documentCode != null ? documentCode : "GENERAL") +
@@ -327,6 +374,11 @@ public class DocumentExtractionService {
                 "    \"dateOfBirth\": { \"value\": \"YYYY-MM-DD\" or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
                 "    \"gender\": { \"value\": \"MALE\"|\"FEMALE\"|\"TRANSGENDER\" or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
                 "    \"documentNumber\": { \"value\": string or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
+                "    \"address\": { \"value\": string or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
+                "    \"annualIncome\": { \"value\": number or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
+                "    \"community\": { \"value\": string or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
+                "    \"businessOccupation\": { \"value\": string or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
+                "    \"issueDate\": { \"value\": \"YYYY-MM-DD\" or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
                 "    \"issuingAuthority\": { \"value\": string or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 },\n" +
                 "    \"expiryDate\": { \"value\": string or null, \"status\": \"FOUND\"|\"NOT_FOUND\"|\"UNCERTAIN\", \"confidence\": number between 0.0 and 1.0 }\n" +
                 "  },\n" +
@@ -358,7 +410,10 @@ public class DocumentExtractionService {
                         while (it.hasNext()) {
                             Map.Entry<String, JsonNode> entry = it.next();
                             JsonNode fNode = entry.getValue();
-                            Object val = fNode.path("value").isNull() ? null : fNode.path("value").asText();
+                            Object val = fNode.path("value").isNull() ? null :
+                                    (entry.getKey().equals("annualIncome") && fNode.path("value").isNumber()
+                                            ? fNode.path("value").asDouble()
+                                            : fNode.path("value").asText());
                             String st = fNode.path("status").asText("FOUND");
                             double conf = fNode.path("confidence").asDouble(0.95);
 
@@ -366,6 +421,7 @@ public class DocumentExtractionService {
                                     .value(val)
                                     .status(val == null ? "NOT_FOUND" : st)
                                     .confidence(conf)
+                                    .source("GEMINI_AI_VISION")
                                     .build());
                         }
                     }
@@ -605,10 +661,9 @@ public class DocumentExtractionService {
 
     public ExtractedTextResult extractRawTextWithSource(byte[] bytes, String filename, String mime) {
         if (bytes == null || bytes.length == 0) return new ExtractedTextResult("", "NONE", null);
-        String fName = filename != null ? filename.toLowerCase() : "";
-
-        boolean isImage = (mime != null && mime.contains("image")) ||
-                fName.endsWith(".png") || fName.endsWith(".jpg") || fName.endsWith(".jpeg") || fName.endsWith(".webp");
+        String actualMime = detectActualMimeType(bytes, mime, filename);
+        boolean isImage = actualMime.startsWith("image/");
+        boolean isPdf = "application/pdf".equals(actualMime);
 
         if (isImage) {
             OcrExecutionResult ocrRes = runVisualOcrDetailed(bytes);
@@ -617,7 +672,7 @@ public class DocumentExtractionService {
             }
         }
 
-        if ((mime != null && mime.contains("pdf")) || fName.endsWith(".pdf")) {
+        if (isPdf) {
             String posBoxText = null;
             String streamBoxText = null;
             try (PDDocument document = Loader.loadPDF(new RandomAccessReadBuffer(bytes))) {

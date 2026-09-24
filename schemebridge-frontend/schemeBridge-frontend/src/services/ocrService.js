@@ -247,8 +247,9 @@ export async function extractDocumentData({ file, type, fileName }) {
       const community = fields.community?.value ?? fields.caste?.value ?? null;
       const annualIncome = fields.annualIncome?.value ?? null;
       const businessOccupation = fields.businessOccupation?.value ?? fields.occupation?.value ?? null;
-      const issueDate = fields.issueDate?.value ?? null;
-      const issuer = fields.issuingAuthority?.value ?? resData.documentName ?? "Authorized Authority";
+      const isAadhaar = resData.documentType === "AADHAAR" || resData.documentName?.toLowerCase().includes("aadhaar") || file?.name?.toLowerCase().includes("aadhaar");
+      const defaultIssuer = isAadhaar ? "UIDAI (Govt of India)" : (resData.documentName ?? "Authorized Authority");
+      const issuer = fields.issuingAuthority?.value ?? defaultIssuer;
       const expiry = fields.expiryDate?.value ?? "No Expiration";
 
       const ocrConfidence = fields.holderName?.confidence ?? resData.overallConfidence ?? 0.95;
